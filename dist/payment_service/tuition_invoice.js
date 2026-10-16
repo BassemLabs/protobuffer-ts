@@ -493,6 +493,7 @@ function createBaseTuitionInvoice() {
         total_gross_if_all_enrolled: undefined,
         total_discounts_if_all_enrolled: undefined,
         schedule_preview: [],
+        estimated_schedule_preview: [],
     };
 }
 exports.TuitionInvoice = {
@@ -538,6 +539,9 @@ exports.TuitionInvoice = {
         }
         for (const v of message.schedule_preview) {
             exports.TuitionSchedulePreviewEntry.encode(v, writer.uint32(114).fork()).join();
+        }
+        for (const v of message.estimated_schedule_preview) {
+            exports.TuitionSchedulePreviewEntry.encode(v, writer.uint32(122).fork()).join();
         }
         return writer;
     },
@@ -632,6 +636,12 @@ exports.TuitionInvoice = {
                     }
                     message.schedule_preview.push(exports.TuitionSchedulePreviewEntry.decode(reader, reader.uint32()));
                     continue;
+                case 15:
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.estimated_schedule_preview.push(exports.TuitionSchedulePreviewEntry.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -665,6 +675,9 @@ exports.TuitionInvoice = {
                 : undefined,
             schedule_preview: globalThis.Array.isArray(object?.schedulePreview)
                 ? object.schedulePreview.map((e) => exports.TuitionSchedulePreviewEntry.fromJSON(e))
+                : [],
+            estimated_schedule_preview: globalThis.Array.isArray(object?.estimatedSchedulePreview)
+                ? object.estimatedSchedulePreview.map((e) => exports.TuitionSchedulePreviewEntry.fromJSON(e))
                 : [],
         };
     },
@@ -712,6 +725,9 @@ exports.TuitionInvoice = {
         if (message.schedule_preview?.length) {
             obj.schedulePreview = message.schedule_preview.map((e) => exports.TuitionSchedulePreviewEntry.toJSON(e));
         }
+        if (message.estimated_schedule_preview?.length) {
+            obj.estimatedSchedulePreview = message.estimated_schedule_preview.map((e) => exports.TuitionSchedulePreviewEntry.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -743,6 +759,8 @@ exports.TuitionInvoice = {
         message.total_gross_if_all_enrolled = object.total_gross_if_all_enrolled ?? undefined;
         message.total_discounts_if_all_enrolled = object.total_discounts_if_all_enrolled ?? undefined;
         message.schedule_preview = object.schedule_preview?.map((e) => exports.TuitionSchedulePreviewEntry.fromPartial(e)) || [];
+        message.estimated_schedule_preview =
+            object.estimated_schedule_preview?.map((e) => exports.TuitionSchedulePreviewEntry.fromPartial(e)) || [];
         return message;
     },
 };

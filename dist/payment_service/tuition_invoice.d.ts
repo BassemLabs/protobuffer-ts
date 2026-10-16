@@ -67,6 +67,11 @@ export interface TuitionInvoice {
     total_discounts_if_all_enrolled?: number | undefined;
     /** response-only; never persisted */
     schedule_preview: TuitionSchedulePreviewEntry[];
+    /**
+     * Hypothetical schedule if all admitted students were enrolled; response-only, never persisted.
+     * Auto-pay is false for these estimates; collection is determined by generated invoices.
+     */
+    estimated_schedule_preview: TuitionSchedulePreviewEntry[];
 }
 export declare const TuitionPlanSnapshot: MessageFns<TuitionPlanSnapshot>;
 export declare const TuitionInvoiceLineItem: MessageFns<TuitionInvoiceLineItem>;

@@ -211,6 +211,11 @@ export interface TuitionInvoice {
     | undefined;
   /** response-only; never persisted */
   schedule_preview: TuitionSchedulePreviewEntry[];
+  /**
+   * Hypothetical schedule if all admitted students were enrolled; response-only, never persisted.
+   * Auto-pay is false for these estimates; collection is determined by generated invoices.
+   */
+  estimated_schedule_preview: TuitionSchedulePreviewEntry[];
 }
 
 function createBaseTuitionPlanSnapshot(): TuitionPlanSnapshot {
@@ -604,6 +609,7 @@ function createBaseTuitionInvoice(): TuitionInvoice {
     total_gross_if_all_enrolled: undefined,
     total_discounts_if_all_enrolled: undefined,
     schedule_preview: [],
+    estimated_schedule_preview: [],
   };
 }
 
@@ -650,6 +656,9 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
     }
     for (const v of message.schedule_preview) {
       TuitionSchedulePreviewEntry.encode(v!, writer.uint32(114).fork()).join();
+    }
+    for (const v of message.estimated_schedule_preview) {
+      TuitionSchedulePreviewEntry.encode(v!, writer.uint32(122).fork()).join();
     }
     return writer;
   },
@@ -759,6 +768,13 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
 
           message.schedule_preview.push(TuitionSchedulePreviewEntry.decode(reader, reader.uint32()));
           continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.estimated_schedule_preview.push(TuitionSchedulePreviewEntry.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -793,6 +809,9 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
         : undefined,
       schedule_preview: globalThis.Array.isArray(object?.schedulePreview)
         ? object.schedulePreview.map((e: any) => TuitionSchedulePreviewEntry.fromJSON(e))
+        : [],
+      estimated_schedule_preview: globalThis.Array.isArray(object?.estimatedSchedulePreview)
+        ? object.estimatedSchedulePreview.map((e: any) => TuitionSchedulePreviewEntry.fromJSON(e))
         : [],
     };
   },
@@ -841,6 +860,11 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
     if (message.schedule_preview?.length) {
       obj.schedulePreview = message.schedule_preview.map((e) => TuitionSchedulePreviewEntry.toJSON(e));
     }
+    if (message.estimated_schedule_preview?.length) {
+      obj.estimatedSchedulePreview = message.estimated_schedule_preview.map((e) =>
+        TuitionSchedulePreviewEntry.toJSON(e)
+      );
+    }
     return obj;
   },
 
@@ -873,6 +897,8 @@ export const TuitionInvoice: MessageFns<TuitionInvoice> = {
     message.total_gross_if_all_enrolled = object.total_gross_if_all_enrolled ?? undefined;
     message.total_discounts_if_all_enrolled = object.total_discounts_if_all_enrolled ?? undefined;
     message.schedule_preview = object.schedule_preview?.map((e) => TuitionSchedulePreviewEntry.fromPartial(e)) || [];
+    message.estimated_schedule_preview =
+      object.estimated_schedule_preview?.map((e) => TuitionSchedulePreviewEntry.fromPartial(e)) || [];
     return message;
   },
 };
