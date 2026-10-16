@@ -6,6 +6,7 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import {
@@ -42,6 +43,7 @@ export interface CreateManualTransactionRequest {
   amount?: number | undefined;
   other_payment_method?: string | undefined;
   admin_note?: string | undefined;
+  transaction_date: Date | undefined;
 }
 
 export interface IssueRefundRequest {
@@ -305,6 +307,7 @@ function createBaseCreateManualTransactionRequest(): CreateManualTransactionRequ
     amount: undefined,
     other_payment_method: undefined,
     admin_note: undefined,
+    transaction_date: undefined,
   };
 }
 
@@ -327,6 +330,9 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
     }
     if (message.admin_note !== undefined) {
       writer.uint32(50).string(message.admin_note);
+    }
+    if (message.transaction_date !== undefined) {
+      Timestamp.encode(toTimestamp(message.transaction_date), writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -380,6 +386,13 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
 
           message.admin_note = reader.string();
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.transaction_date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -397,6 +410,7 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
       amount: isSet(object.amount) ? globalThis.Number(object.amount) : undefined,
       other_payment_method: isSet(object.otherPaymentMethod) ? globalThis.String(object.otherPaymentMethod) : undefined,
       admin_note: isSet(object.adminNote) ? globalThis.String(object.adminNote) : undefined,
+      transaction_date: isSet(object.transactionDate) ? fromJsonTimestamp(object.transactionDate) : undefined,
     };
   },
 
@@ -420,6 +434,9 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
     if (message.admin_note !== undefined) {
       obj.adminNote = message.admin_note;
     }
+    if (message.transaction_date !== undefined) {
+      obj.transactionDate = message.transaction_date.toISOString();
+    }
     return obj;
   },
 
@@ -440,6 +457,7 @@ export const CreateManualTransactionRequest: MessageFns<CreateManualTransactionR
     message.amount = object.amount ?? undefined;
     message.other_payment_method = object.other_payment_method ?? undefined;
     message.admin_note = object.admin_note ?? undefined;
+    message.transaction_date = object.transaction_date ?? undefined;
     return message;
   },
 };
@@ -584,6 +602,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

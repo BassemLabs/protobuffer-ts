@@ -23,6 +23,7 @@ export interface CreateManualTransactionRequest {
     amount?: number | undefined;
     other_payment_method?: string | undefined;
     admin_note?: string | undefined;
+    transaction_date: Date | undefined;
 }
 export interface IssueRefundRequest {
     context: RequestContext | undefined;

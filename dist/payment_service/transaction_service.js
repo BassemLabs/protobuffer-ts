@@ -8,6 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.IssueRefundRequest = exports.CreateManualTransactionRequest = exports.GetTransactionsResponse = exports.GetTransactionsRequest = exports.GetPaidTransactionRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const transaction_1 = require("./transaction");
@@ -240,6 +241,7 @@ function createBaseCreateManualTransactionRequest() {
         amount: undefined,
         other_payment_method: undefined,
         admin_note: undefined,
+        transaction_date: undefined,
     };
 }
 exports.CreateManualTransactionRequest = {
@@ -261,6 +263,9 @@ exports.CreateManualTransactionRequest = {
         }
         if (message.admin_note !== undefined) {
             writer.uint32(50).string(message.admin_note);
+        }
+        if (message.transaction_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.transaction_date), writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -307,6 +312,12 @@ exports.CreateManualTransactionRequest = {
                     }
                     message.admin_note = reader.string();
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.transaction_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -323,6 +334,7 @@ exports.CreateManualTransactionRequest = {
             amount: isSet(object.amount) ? globalThis.Number(object.amount) : undefined,
             other_payment_method: isSet(object.otherPaymentMethod) ? globalThis.String(object.otherPaymentMethod) : undefined,
             admin_note: isSet(object.adminNote) ? globalThis.String(object.adminNote) : undefined,
+            transaction_date: isSet(object.transactionDate) ? fromJsonTimestamp(object.transactionDate) : undefined,
         };
     },
     toJSON(message) {
@@ -345,6 +357,9 @@ exports.CreateManualTransactionRequest = {
         if (message.admin_note !== undefined) {
             obj.adminNote = message.admin_note;
         }
+        if (message.transaction_date !== undefined) {
+            obj.transactionDate = message.transaction_date.toISOString();
+        }
         return obj;
     },
     create(base) {
@@ -362,6 +377,7 @@ exports.CreateManualTransactionRequest = {
         message.amount = object.amount ?? undefined;
         message.other_payment_method = object.other_payment_method ?? undefined;
         message.admin_note = object.admin_note ?? undefined;
+        message.transaction_date = object.transaction_date ?? undefined;
         return message;
     },
 };
@@ -483,6 +499,27 @@ exports.IssueRefundRequest = {
         return message;
     },
 };
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }
