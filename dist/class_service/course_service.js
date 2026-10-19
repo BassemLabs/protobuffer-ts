@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/course_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetParentLmsCalendarResponse = exports.ParentLmsCalendarChild = exports.GetParentLmsCalendarRequest = exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.SetOwnerTeacherRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveLmsClassesForSchoolYearResponse = exports.ArchiveLmsClassesForSchoolYearRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentLmsCalendarRequest = exports.GetStudentProfileClassScopeResponse = exports.GetStudentProfileClassScopeRequest = exports.GetTeacherStudentScopeResponse = exports.GetTeacherStudentScopeRequest = exports.GetRecipientClassMembershipsResponse = exports.RecipientClassMembership = exports.GetRecipientClassMembershipsRequest = exports.GetStudentClassesResponse = exports.GetStudentClassesRequest = exports.GetStudentCoursesRequest = exports.GetStudentLmsCalendarResponse = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.ValidateStudentDeletionAcademicEligibilityRequest = exports.GetCourseRequest = exports.StudentProfileFeatureScope = exports.protobufPackage = void 0;
+exports.GetParentLmsCalendarResponse = exports.ParentLmsCalendarChild = exports.GetParentLmsCalendarRequest = exports.HomeroomCloneRequest = exports.HomeroomCreateRequest = exports.StandaloneCloneRequest = exports.StandaloneCreateRequest = exports.GetStudentLmsCourseWorkRequest = exports.GetLmsCourseWorkRequest = exports.AllAttendanceClassesRequest = exports.AttendanceClassesRequest = exports.RemoveStudentsRequest = exports.AddStudentsResponse = exports.AddTeachersResponse = exports.StudentFailure = exports.TeacherFailure = exports.AddStudentsRequest = exports.SetOwnerTeacherRequest = exports.RemoveTeachersRequest = exports.AddTeachersRequest = exports.UpdateCourseRequest = exports.UnarchiveCourseRequest = exports.ArchiveLmsClassesForSchoolYearResponse = exports.ArchiveLmsClassesForSchoolYearRequest = exports.ArchiveCourseRequest = exports.GetStudentCoursesForSchoolYearRequest = exports.GetStudentLmsCalendarRequest = exports.GetStudentProfileClassScopeResponse = exports.GetStudentProfileClassScopeRequest = exports.GetTeacherStudentScopeResponse = exports.GetTeacherStudentScopeRequest = exports.GetRecipientClassMembershipsResponse = exports.RecipientClassMembership = exports.GetRecipientClassMembershipsRequest = exports.GetStudentsLoginMembershipsResponse = exports.GetStudentsLoginMembershipsRequest = exports.GetTeacherLoginMembershipsResponse = exports.GetTeacherLoginMembershipsRequest = exports.GetStudentClassesResponse = exports.GetStudentClassesRequest = exports.GetStudentCoursesRequest = exports.GetStudentLmsCalendarResponse = exports.LmsStudentSubmissionResponse = exports.LmsCourseWorkResponse = exports.CourseResponse = exports.ListCoursesRequest = exports.ValidateStudentDeletionAcademicEligibilityRequest = exports.GetCourseRequest = exports.StudentProfileFeatureScope = exports.protobufPackage = void 0;
 exports.studentProfileFeatureScopeFromJSON = studentProfileFeatureScopeFromJSON;
 exports.studentProfileFeatureScopeToJSON = studentProfileFeatureScopeToJSON;
 exports.studentProfileFeatureScopeToNumber = studentProfileFeatureScopeToNumber;
@@ -871,6 +871,334 @@ exports.GetStudentClassesResponse = {
         const message = createBaseGetStudentClassesResponse();
         message.courses = object.courses?.map((e) => course_1.Course.fromPartial(e)) || [];
         message.homerooms = object.homerooms?.map((e) => homeroom_1.Homeroom.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetTeacherLoginMembershipsRequest() {
+    return { context: undefined, teacher_id: undefined };
+}
+exports.GetTeacherLoginMembershipsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.teacher_id !== undefined) {
+            object_id_1.ObjectId.encode(message.teacher_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetTeacherLoginMembershipsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.teacher_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            teacher_id: isSet(object.teacherId) ? object_id_1.ObjectId.fromJSON(object.teacherId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.teacher_id !== undefined) {
+            obj.teacherId = object_id_1.ObjectId.toJSON(message.teacher_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetTeacherLoginMembershipsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetTeacherLoginMembershipsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.teacher_id = (object.teacher_id !== undefined && object.teacher_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.teacher_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetTeacherLoginMembershipsResponse() {
+    return { course_ids: [], homeroom_ids: [], student_ids: [], homeroom_subjects: [] };
+}
+exports.GetTeacherLoginMembershipsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.homeroom_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.homeroom_subjects) {
+            request_context_1.HomeroomSubjectId.encode(v, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetTeacherLoginMembershipsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.homeroom_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.homeroom_subjects.push(request_context_1.HomeroomSubjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            course_ids: globalThis.Array.isArray(object?.courseIds)
+                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+                ? object.homeroomIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homeroom_subjects: globalThis.Array.isArray(object?.homeroomSubjects)
+                ? object.homeroomSubjects.map((e) => request_context_1.HomeroomSubjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.course_ids?.length) {
+            obj.courseIds = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homeroom_ids?.length) {
+            obj.homeroomIds = message.homeroom_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homeroom_subjects?.length) {
+            obj.homeroomSubjects = message.homeroom_subjects.map((e) => request_context_1.HomeroomSubjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetTeacherLoginMembershipsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetTeacherLoginMembershipsResponse();
+        message.course_ids = object.course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homeroom_subjects = object.homeroom_subjects?.map((e) => request_context_1.HomeroomSubjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetStudentsLoginMembershipsRequest() {
+    return { context: undefined, student_ids: [] };
+}
+exports.GetStudentsLoginMembershipsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentsLoginMembershipsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            student_ids: globalThis.Array.isArray(object?.studentIds)
+                ? object.studentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.student_ids?.length) {
+            obj.studentIds = message.student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentsLoginMembershipsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentsLoginMembershipsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.student_ids = object.student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetStudentsLoginMembershipsResponse() {
+    return { course_ids: [], homeroom_ids: [], teacher_basic_info_ids: [] };
+}
+exports.GetStudentsLoginMembershipsResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.course_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.homeroom_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        for (const v of message.teacher_basic_info_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStudentsLoginMembershipsResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.course_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.homeroom_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.teacher_basic_info_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            course_ids: globalThis.Array.isArray(object?.courseIds)
+                ? object.courseIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            homeroom_ids: globalThis.Array.isArray(object?.homeroomIds)
+                ? object.homeroomIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            teacher_basic_info_ids: globalThis.Array.isArray(object?.teacherBasicInfoIds)
+                ? object.teacherBasicInfoIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.course_ids?.length) {
+            obj.courseIds = message.course_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.homeroom_ids?.length) {
+            obj.homeroomIds = message.homeroom_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.teacher_basic_info_ids?.length) {
+            obj.teacherBasicInfoIds = message.teacher_basic_info_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStudentsLoginMembershipsResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStudentsLoginMembershipsResponse();
+        message.course_ids = object.course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.teacher_basic_info_ids = object.teacher_basic_info_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

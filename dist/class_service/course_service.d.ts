@@ -1,6 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
-import { RequestContext } from "../utils/request_context";
+import { HomeroomSubjectId, RequestContext } from "../utils/request_context";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
 import { LmsCalendarItem, LmsCourseWork, LmsProviderType, LmsSubmission } from "./lms_course";
@@ -61,6 +61,39 @@ export interface GetStudentClassesRequest {
 export interface GetStudentClassesResponse {
     courses: Course[];
     homerooms: Homeroom[];
+}
+/**
+ * Loads the teacher's course, homeroom, and student scopes for the login token.
+ * Includes archived classes and all school years, excluding soft-deleted classes.
+ */
+export interface GetTeacherLoginMembershipsRequest {
+    /** Organization-scoped system root context created by the authentication caller. */
+    context: RequestContext | undefined;
+    teacher_id: ObjectId | undefined;
+}
+/** All lists are sorted and unique; pairs sort by homeroom_id, then subject_id. */
+export interface GetTeacherLoginMembershipsResponse {
+    course_ids: ObjectId[];
+    homeroom_ids: ObjectId[];
+    student_ids: ObjectId[];
+    /** Each pair links a homeroom to a course; subject_id contains the course ID. */
+    homeroom_subjects: HomeroomSubjectId[];
+}
+/**
+ * Loads the combined class and teacher-basic-info scopes for parent/student login tokens.
+ * Includes archived classes and all school years, excluding soft-deleted classes.
+ */
+export interface GetStudentsLoginMembershipsRequest {
+    /** Organization-scoped system root context created by the authentication caller. */
+    context: RequestContext | undefined;
+    /** Freshly resolved owned children for parent login, or one student ID for student login. */
+    student_ids: ObjectId[];
+}
+/** All ID lists are sorted and unique. */
+export interface GetStudentsLoginMembershipsResponse {
+    course_ids: ObjectId[];
+    homeroom_ids: ObjectId[];
+    teacher_basic_info_ids: ObjectId[];
 }
 export interface GetRecipientClassMembershipsRequest {
     context: RequestContext | undefined;
@@ -258,6 +291,10 @@ export declare const GetStudentLmsCalendarResponse: MessageFns<GetStudentLmsCale
 export declare const GetStudentCoursesRequest: MessageFns<GetStudentCoursesRequest>;
 export declare const GetStudentClassesRequest: MessageFns<GetStudentClassesRequest>;
 export declare const GetStudentClassesResponse: MessageFns<GetStudentClassesResponse>;
+export declare const GetTeacherLoginMembershipsRequest: MessageFns<GetTeacherLoginMembershipsRequest>;
+export declare const GetTeacherLoginMembershipsResponse: MessageFns<GetTeacherLoginMembershipsResponse>;
+export declare const GetStudentsLoginMembershipsRequest: MessageFns<GetStudentsLoginMembershipsRequest>;
+export declare const GetStudentsLoginMembershipsResponse: MessageFns<GetStudentsLoginMembershipsResponse>;
 export declare const GetRecipientClassMembershipsRequest: MessageFns<GetRecipientClassMembershipsRequest>;
 export declare const RecipientClassMembership: MessageFns<RecipientClassMembership>;
 export declare const GetRecipientClassMembershipsResponse: MessageFns<GetRecipientClassMembershipsResponse>;
