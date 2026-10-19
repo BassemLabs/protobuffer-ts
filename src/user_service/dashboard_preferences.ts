@@ -24,6 +24,8 @@ export enum DashboardWidgetName {
   DASHBOARD_WIDGET_GRADE_DISTRIBUTION = "DASHBOARD_WIDGET_GRADE_DISTRIBUTION",
   DASHBOARD_WIDGET_LOWEST_CLASS_AVERAGES = "DASHBOARD_WIDGET_LOWEST_CLASS_AVERAGES",
   DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES = "DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES",
+  DASHBOARD_WIDGET_MY_SCHEDULE = "DASHBOARD_WIDGET_MY_SCHEDULE",
+  DASHBOARD_WIDGET_SCHOOL_SCHEDULE = "DASHBOARD_WIDGET_SCHOOL_SCHEDULE",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -65,6 +67,12 @@ export function dashboardWidgetNameFromJSON(object: any): DashboardWidgetName {
     case 11:
     case "DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES":
       return DashboardWidgetName.DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES;
+    case 12:
+    case "DASHBOARD_WIDGET_MY_SCHEDULE":
+      return DashboardWidgetName.DASHBOARD_WIDGET_MY_SCHEDULE;
+    case 13:
+    case "DASHBOARD_WIDGET_SCHOOL_SCHEDULE":
+      return DashboardWidgetName.DASHBOARD_WIDGET_SCHOOL_SCHEDULE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -98,6 +106,10 @@ export function dashboardWidgetNameToJSON(object: DashboardWidgetName): string {
       return "DASHBOARD_WIDGET_LOWEST_CLASS_AVERAGES";
     case DashboardWidgetName.DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES:
       return "DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES";
+    case DashboardWidgetName.DASHBOARD_WIDGET_MY_SCHEDULE:
+      return "DASHBOARD_WIDGET_MY_SCHEDULE";
+    case DashboardWidgetName.DASHBOARD_WIDGET_SCHOOL_SCHEDULE:
+      return "DASHBOARD_WIDGET_SCHOOL_SCHEDULE";
     case DashboardWidgetName.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -130,6 +142,10 @@ export function dashboardWidgetNameToNumber(object: DashboardWidgetName): number
       return 10;
     case DashboardWidgetName.DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES:
       return 11;
+    case DashboardWidgetName.DASHBOARD_WIDGET_MY_SCHEDULE:
+      return 12;
+    case DashboardWidgetName.DASHBOARD_WIDGET_SCHOOL_SCHEDULE:
+      return 13;
     case DashboardWidgetName.UNRECOGNIZED:
     default:
       return -1;

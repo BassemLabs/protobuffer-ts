@@ -1,5 +1,6 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { DayOfWeek } from "../google/type/dayofweek";
+import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { Uuid } from "../utils/uuid";
 import { SchedulingScheduleSubjectMemberInfo } from "./scheduling";
@@ -223,6 +224,11 @@ export interface SchedulingCalendarResourceScope {
     semester_name?: string | undefined;
     campus_id: ObjectId | undefined;
     campus_name?: string | undefined;
+    /**
+     * Current offered grades for this campus/semester, for school overview grouping.
+     * Empty on older servers and on personal calendars.
+     */
+    offered_grades: StudentGrade[];
 }
 /**
  * Keys use section:<uuid>, teacher:<oid>, student:<oid>, or offering:<oid>.

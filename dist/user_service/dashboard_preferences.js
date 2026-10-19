@@ -34,6 +34,8 @@ var DashboardWidgetName;
     DashboardWidgetName["DASHBOARD_WIDGET_GRADE_DISTRIBUTION"] = "DASHBOARD_WIDGET_GRADE_DISTRIBUTION";
     DashboardWidgetName["DASHBOARD_WIDGET_LOWEST_CLASS_AVERAGES"] = "DASHBOARD_WIDGET_LOWEST_CLASS_AVERAGES";
     DashboardWidgetName["DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES"] = "DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES";
+    DashboardWidgetName["DASHBOARD_WIDGET_MY_SCHEDULE"] = "DASHBOARD_WIDGET_MY_SCHEDULE";
+    DashboardWidgetName["DASHBOARD_WIDGET_SCHOOL_SCHEDULE"] = "DASHBOARD_WIDGET_SCHOOL_SCHEDULE";
     DashboardWidgetName["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(DashboardWidgetName || (exports.DashboardWidgetName = DashboardWidgetName = {}));
 function dashboardWidgetNameFromJSON(object) {
@@ -74,6 +76,12 @@ function dashboardWidgetNameFromJSON(object) {
         case 11:
         case "DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES":
             return DashboardWidgetName.DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES;
+        case 12:
+        case "DASHBOARD_WIDGET_MY_SCHEDULE":
+            return DashboardWidgetName.DASHBOARD_WIDGET_MY_SCHEDULE;
+        case 13:
+        case "DASHBOARD_WIDGET_SCHOOL_SCHEDULE":
+            return DashboardWidgetName.DASHBOARD_WIDGET_SCHOOL_SCHEDULE;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -106,6 +114,10 @@ function dashboardWidgetNameToJSON(object) {
             return "DASHBOARD_WIDGET_LOWEST_CLASS_AVERAGES";
         case DashboardWidgetName.DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES:
             return "DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES";
+        case DashboardWidgetName.DASHBOARD_WIDGET_MY_SCHEDULE:
+            return "DASHBOARD_WIDGET_MY_SCHEDULE";
+        case DashboardWidgetName.DASHBOARD_WIDGET_SCHOOL_SCHEDULE:
+            return "DASHBOARD_WIDGET_SCHOOL_SCHEDULE";
         case DashboardWidgetName.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -137,6 +149,10 @@ function dashboardWidgetNameToNumber(object) {
             return 10;
         case DashboardWidgetName.DASHBOARD_WIDGET_LOWEST_STUDENT_AVERAGES:
             return 11;
+        case DashboardWidgetName.DASHBOARD_WIDGET_MY_SCHEDULE:
+            return 12;
+        case DashboardWidgetName.DASHBOARD_WIDGET_SCHOOL_SCHEDULE:
+            return 13;
         case DashboardWidgetName.UNRECOGNIZED:
         default:
             return -1;

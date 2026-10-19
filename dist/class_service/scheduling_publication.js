@@ -33,6 +33,7 @@ exports.schedulingPublishedLessonTimePolicyToNumber = schedulingPublishedLessonT
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const dayofweek_1 = require("../google/type/dayofweek");
+const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
 const uuid_1 = require("../utils/uuid");
 const scheduling_1 = require("./scheduling");
@@ -2502,7 +2503,13 @@ exports.SchedulingPublishedLessonSuppression = {
     },
 };
 function createBaseSchedulingCalendarResourceScope() {
-    return { semester_id: undefined, semester_name: undefined, campus_id: undefined, campus_name: undefined };
+    return {
+        semester_id: undefined,
+        semester_name: undefined,
+        campus_id: undefined,
+        campus_name: undefined,
+        offered_grades: [],
+    };
 }
 exports.SchedulingCalendarResourceScope = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2518,6 +2525,11 @@ exports.SchedulingCalendarResourceScope = {
         if (message.campus_name !== undefined) {
             writer.uint32(34).string(message.campus_name);
         }
+        writer.uint32(42).fork();
+        for (const v of message.offered_grades) {
+            writer.int32((0, student_1.studentGradeToNumber)(v));
+        }
+        writer.join();
         return writer;
     },
     decode(input, length) {
@@ -2551,6 +2563,19 @@ exports.SchedulingCalendarResourceScope = {
                     }
                     message.campus_name = reader.string();
                     continue;
+                case 5:
+                    if (tag === 40) {
+                        message.offered_grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 42) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.offered_grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2565,6 +2590,9 @@ exports.SchedulingCalendarResourceScope = {
             semester_name: isSet(object.semesterName) ? globalThis.String(object.semesterName) : undefined,
             campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
             campus_name: isSet(object.campusName) ? globalThis.String(object.campusName) : undefined,
+            offered_grades: globalThis.Array.isArray(object?.offeredGrades)
+                ? object.offeredGrades.map((e) => (0, student_1.studentGradeFromJSON)(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -2581,6 +2609,9 @@ exports.SchedulingCalendarResourceScope = {
         if (message.campus_name !== undefined) {
             obj.campusName = message.campus_name;
         }
+        if (message.offered_grades?.length) {
+            obj.offeredGrades = message.offered_grades.map((e) => (0, student_1.studentGradeToJSON)(e));
+        }
         return obj;
     },
     create(base) {
@@ -2596,6 +2627,7 @@ exports.SchedulingCalendarResourceScope = {
             ? object_id_1.ObjectId.fromPartial(object.campus_id)
             : undefined;
         message.campus_name = object.campus_name ?? undefined;
+        message.offered_grades = object.offered_grades?.map((e) => e) || [];
         return message;
     },
 };
