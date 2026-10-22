@@ -9,11 +9,28 @@ export declare enum ReportBlockType {
     REPORT_BLOCK_TYPE_HEADING = "REPORT_BLOCK_TYPE_HEADING",
     REPORT_BLOCK_TYPE_TEXT = "REPORT_BLOCK_TYPE_TEXT",
     REPORT_BLOCK_TYPE_FIELD = "REPORT_BLOCK_TYPE_FIELD",
+    REPORT_BLOCK_TYPE_COURSES = "REPORT_BLOCK_TYPE_COURSES",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function reportBlockTypeFromJSON(object: any): ReportBlockType;
 export declare function reportBlockTypeToJSON(object: ReportBlockType): string;
 export declare function reportBlockTypeToNumber(object: ReportBlockType): number;
+export declare enum ReportTemplateTextAlignment {
+    REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT = "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT",
+    REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER = "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER",
+    REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT = "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reportTemplateTextAlignmentFromJSON(object: any): ReportTemplateTextAlignment;
+export declare function reportTemplateTextAlignmentToJSON(object: ReportTemplateTextAlignment): string;
+export declare function reportTemplateTextAlignmentToNumber(object: ReportTemplateTextAlignment): number;
+export interface ReportTemplateFieldStyle {
+    /** PDF points; supported sizes are 6 through 36. */
+    font_size?: number | undefined;
+    bold?: boolean | undefined;
+    alignment?: ReportTemplateTextAlignment | undefined;
+    inline_label?: boolean | undefined;
+}
 export interface ReportTemplateFieldReference {
     /** A supported information key, not an arbitrary record path. */
     key?: string | undefined;
@@ -24,14 +41,18 @@ export interface ReportTemplateBlock {
     block_type?: ReportBlockType | undefined;
     /** Heading/Text content; editable label (not a record value) for field blocks. */
     text?: string | undefined;
+    /** Course children describe one repeated course; courses cannot be nested. */
     children: ReportTemplateBlock[];
     columns?: number | undefined;
     field?: ReportTemplateFieldReference | undefined;
+    /** Field blocks only. */
+    field_style?: ReportTemplateFieldStyle | undefined;
 }
 export interface ReportTemplateDesign {
     theme: ReportTemplateTheme | undefined;
     blocks: ReportTemplateBlock[];
 }
+export declare const ReportTemplateFieldStyle: MessageFns<ReportTemplateFieldStyle>;
 export declare const ReportTemplateFieldReference: MessageFns<ReportTemplateFieldReference>;
 export declare const ReportTemplateBlock: MessageFns<ReportTemplateBlock>;
 export declare const ReportTemplateDesign: MessageFns<ReportTemplateDesign>;

@@ -18,6 +18,7 @@ export enum ReportBlockType {
   REPORT_BLOCK_TYPE_HEADING = "REPORT_BLOCK_TYPE_HEADING",
   REPORT_BLOCK_TYPE_TEXT = "REPORT_BLOCK_TYPE_TEXT",
   REPORT_BLOCK_TYPE_FIELD = "REPORT_BLOCK_TYPE_FIELD",
+  REPORT_BLOCK_TYPE_COURSES = "REPORT_BLOCK_TYPE_COURSES",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -41,6 +42,9 @@ export function reportBlockTypeFromJSON(object: any): ReportBlockType {
     case 5:
     case "REPORT_BLOCK_TYPE_FIELD":
       return ReportBlockType.REPORT_BLOCK_TYPE_FIELD;
+    case 6:
+    case "REPORT_BLOCK_TYPE_COURSES":
+      return ReportBlockType.REPORT_BLOCK_TYPE_COURSES;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -62,6 +66,8 @@ export function reportBlockTypeToJSON(object: ReportBlockType): string {
       return "REPORT_BLOCK_TYPE_TEXT";
     case ReportBlockType.REPORT_BLOCK_TYPE_FIELD:
       return "REPORT_BLOCK_TYPE_FIELD";
+    case ReportBlockType.REPORT_BLOCK_TYPE_COURSES:
+      return "REPORT_BLOCK_TYPE_COURSES";
     case ReportBlockType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -82,10 +88,73 @@ export function reportBlockTypeToNumber(object: ReportBlockType): number {
       return 4;
     case ReportBlockType.REPORT_BLOCK_TYPE_FIELD:
       return 5;
+    case ReportBlockType.REPORT_BLOCK_TYPE_COURSES:
+      return 6;
     case ReportBlockType.UNRECOGNIZED:
     default:
       return -1;
   }
+}
+
+export enum ReportTemplateTextAlignment {
+  REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT = "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT",
+  REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER = "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER",
+  REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT = "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function reportTemplateTextAlignmentFromJSON(object: any): ReportTemplateTextAlignment {
+  switch (object) {
+    case 0:
+    case "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT":
+      return ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT;
+    case 1:
+    case "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER":
+      return ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER;
+    case 2:
+    case "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT":
+      return ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReportTemplateTextAlignment.UNRECOGNIZED;
+  }
+}
+
+export function reportTemplateTextAlignmentToJSON(object: ReportTemplateTextAlignment): string {
+  switch (object) {
+    case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT:
+      return "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT";
+    case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER:
+      return "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER";
+    case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT:
+      return "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT";
+    case ReportTemplateTextAlignment.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function reportTemplateTextAlignmentToNumber(object: ReportTemplateTextAlignment): number {
+  switch (object) {
+    case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT:
+      return 0;
+    case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER:
+      return 1;
+    case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT:
+      return 2;
+    case ReportTemplateTextAlignment.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export interface ReportTemplateFieldStyle {
+  /** PDF points; supported sizes are 6 through 36. */
+  font_size?: number | undefined;
+  bold?: boolean | undefined;
+  alignment?: ReportTemplateTextAlignment | undefined;
+  inline_label?: boolean | undefined;
 }
 
 export interface ReportTemplateFieldReference {
@@ -100,16 +169,127 @@ export interface ReportTemplateBlock {
     | ReportBlockType
     | undefined;
   /** Heading/Text content; editable label (not a record value) for field blocks. */
-  text?: string | undefined;
+  text?:
+    | string
+    | undefined;
+  /** Course children describe one repeated course; courses cannot be nested. */
   children: ReportTemplateBlock[];
   columns?: number | undefined;
-  field?: ReportTemplateFieldReference | undefined;
+  field?:
+    | ReportTemplateFieldReference
+    | undefined;
+  /** Field blocks only. */
+  field_style?: ReportTemplateFieldStyle | undefined;
 }
 
 export interface ReportTemplateDesign {
   theme: ReportTemplateTheme | undefined;
   blocks: ReportTemplateBlock[];
 }
+
+function createBaseReportTemplateFieldStyle(): ReportTemplateFieldStyle {
+  return { font_size: undefined, bold: undefined, alignment: undefined, inline_label: undefined };
+}
+
+export const ReportTemplateFieldStyle: MessageFns<ReportTemplateFieldStyle> = {
+  encode(message: ReportTemplateFieldStyle, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.font_size !== undefined) {
+      writer.uint32(8).uint32(message.font_size);
+    }
+    if (message.bold !== undefined) {
+      writer.uint32(16).bool(message.bold);
+    }
+    if (message.alignment !== undefined) {
+      writer.uint32(24).int32(reportTemplateTextAlignmentToNumber(message.alignment));
+    }
+    if (message.inline_label !== undefined) {
+      writer.uint32(32).bool(message.inline_label);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportTemplateFieldStyle {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportTemplateFieldStyle();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.font_size = reader.uint32();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.bold = reader.bool();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.alignment = reportTemplateTextAlignmentFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.inline_label = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportTemplateFieldStyle {
+    return {
+      font_size: isSet(object.fontSize) ? globalThis.Number(object.fontSize) : undefined,
+      bold: isSet(object.bold) ? globalThis.Boolean(object.bold) : undefined,
+      alignment: isSet(object.alignment) ? reportTemplateTextAlignmentFromJSON(object.alignment) : undefined,
+      inline_label: isSet(object.inlineLabel) ? globalThis.Boolean(object.inlineLabel) : undefined,
+    };
+  },
+
+  toJSON(message: ReportTemplateFieldStyle): unknown {
+    const obj: any = {};
+    if (message.font_size !== undefined) {
+      obj.fontSize = Math.round(message.font_size);
+    }
+    if (message.bold !== undefined) {
+      obj.bold = message.bold;
+    }
+    if (message.alignment !== undefined) {
+      obj.alignment = reportTemplateTextAlignmentToJSON(message.alignment);
+    }
+    if (message.inline_label !== undefined) {
+      obj.inlineLabel = message.inline_label;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportTemplateFieldStyle>, I>>(base?: I): ReportTemplateFieldStyle {
+    return ReportTemplateFieldStyle.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportTemplateFieldStyle>, I>>(object: I): ReportTemplateFieldStyle {
+    const message = createBaseReportTemplateFieldStyle();
+    message.font_size = object.font_size ?? undefined;
+    message.bold = object.bold ?? undefined;
+    message.alignment = object.alignment ?? undefined;
+    message.inline_label = object.inline_label ?? undefined;
+    return message;
+  },
+};
 
 function createBaseReportTemplateFieldReference(): ReportTemplateFieldReference {
   return { key: undefined, custom_field_id: undefined };
@@ -188,7 +368,15 @@ export const ReportTemplateFieldReference: MessageFns<ReportTemplateFieldReferen
 };
 
 function createBaseReportTemplateBlock(): ReportTemplateBlock {
-  return { id: undefined, block_type: undefined, text: undefined, children: [], columns: undefined, field: undefined };
+  return {
+    id: undefined,
+    block_type: undefined,
+    text: undefined,
+    children: [],
+    columns: undefined,
+    field: undefined,
+    field_style: undefined,
+  };
 }
 
 export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
@@ -210,6 +398,9 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
     }
     if (message.field !== undefined) {
       ReportTemplateFieldReference.encode(message.field, writer.uint32(50).fork()).join();
+    }
+    if (message.field_style !== undefined) {
+      ReportTemplateFieldStyle.encode(message.field_style, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -263,6 +454,13 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
 
           message.field = ReportTemplateFieldReference.decode(reader, reader.uint32());
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.field_style = ReportTemplateFieldStyle.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -282,6 +480,7 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
         : [],
       columns: isSet(object.columns) ? globalThis.Number(object.columns) : undefined,
       field: isSet(object.field) ? ReportTemplateFieldReference.fromJSON(object.field) : undefined,
+      field_style: isSet(object.fieldStyle) ? ReportTemplateFieldStyle.fromJSON(object.fieldStyle) : undefined,
     };
   },
 
@@ -305,6 +504,9 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
     if (message.field !== undefined) {
       obj.field = ReportTemplateFieldReference.toJSON(message.field);
     }
+    if (message.field_style !== undefined) {
+      obj.fieldStyle = ReportTemplateFieldStyle.toJSON(message.field_style);
+    }
     return obj;
   },
 
@@ -320,6 +522,9 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
     message.columns = object.columns ?? undefined;
     message.field = (object.field !== undefined && object.field !== null)
       ? ReportTemplateFieldReference.fromPartial(object.field)
+      : undefined;
+    message.field_style = (object.field_style !== undefined && object.field_style !== null)
+      ? ReportTemplateFieldStyle.fromPartial(object.field_style)
       : undefined;
     return message;
   },

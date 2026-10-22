@@ -5,10 +5,13 @@
 //   protoc               unknown
 // source: class_service/report_template/report_template_design.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReportTemplateDesign = exports.ReportTemplateBlock = exports.ReportTemplateFieldReference = exports.ReportBlockType = exports.protobufPackage = void 0;
+exports.ReportTemplateDesign = exports.ReportTemplateBlock = exports.ReportTemplateFieldReference = exports.ReportTemplateFieldStyle = exports.ReportTemplateTextAlignment = exports.ReportBlockType = exports.protobufPackage = void 0;
 exports.reportBlockTypeFromJSON = reportBlockTypeFromJSON;
 exports.reportBlockTypeToJSON = reportBlockTypeToJSON;
 exports.reportBlockTypeToNumber = reportBlockTypeToNumber;
+exports.reportTemplateTextAlignmentFromJSON = reportTemplateTextAlignmentFromJSON;
+exports.reportTemplateTextAlignmentToJSON = reportTemplateTextAlignmentToJSON;
+exports.reportTemplateTextAlignmentToNumber = reportTemplateTextAlignmentToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../../utils/object_id");
@@ -22,6 +25,7 @@ var ReportBlockType;
     ReportBlockType["REPORT_BLOCK_TYPE_HEADING"] = "REPORT_BLOCK_TYPE_HEADING";
     ReportBlockType["REPORT_BLOCK_TYPE_TEXT"] = "REPORT_BLOCK_TYPE_TEXT";
     ReportBlockType["REPORT_BLOCK_TYPE_FIELD"] = "REPORT_BLOCK_TYPE_FIELD";
+    ReportBlockType["REPORT_BLOCK_TYPE_COURSES"] = "REPORT_BLOCK_TYPE_COURSES";
     ReportBlockType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ReportBlockType || (exports.ReportBlockType = ReportBlockType = {}));
 function reportBlockTypeFromJSON(object) {
@@ -44,6 +48,9 @@ function reportBlockTypeFromJSON(object) {
         case 5:
         case "REPORT_BLOCK_TYPE_FIELD":
             return ReportBlockType.REPORT_BLOCK_TYPE_FIELD;
+        case 6:
+        case "REPORT_BLOCK_TYPE_COURSES":
+            return ReportBlockType.REPORT_BLOCK_TYPE_COURSES;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -64,6 +71,8 @@ function reportBlockTypeToJSON(object) {
             return "REPORT_BLOCK_TYPE_TEXT";
         case ReportBlockType.REPORT_BLOCK_TYPE_FIELD:
             return "REPORT_BLOCK_TYPE_FIELD";
+        case ReportBlockType.REPORT_BLOCK_TYPE_COURSES:
+            return "REPORT_BLOCK_TYPE_COURSES";
         case ReportBlockType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -83,11 +92,157 @@ function reportBlockTypeToNumber(object) {
             return 4;
         case ReportBlockType.REPORT_BLOCK_TYPE_FIELD:
             return 5;
+        case ReportBlockType.REPORT_BLOCK_TYPE_COURSES:
+            return 6;
         case ReportBlockType.UNRECOGNIZED:
         default:
             return -1;
     }
 }
+var ReportTemplateTextAlignment;
+(function (ReportTemplateTextAlignment) {
+    ReportTemplateTextAlignment["REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT"] = "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT";
+    ReportTemplateTextAlignment["REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER"] = "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER";
+    ReportTemplateTextAlignment["REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT"] = "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT";
+    ReportTemplateTextAlignment["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReportTemplateTextAlignment || (exports.ReportTemplateTextAlignment = ReportTemplateTextAlignment = {}));
+function reportTemplateTextAlignmentFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT":
+            return ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT;
+        case 1:
+        case "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER":
+            return ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER;
+        case 2:
+        case "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT":
+            return ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReportTemplateTextAlignment.UNRECOGNIZED;
+    }
+}
+function reportTemplateTextAlignmentToJSON(object) {
+    switch (object) {
+        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT:
+            return "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT";
+        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER:
+            return "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER";
+        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT:
+            return "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT";
+        case ReportTemplateTextAlignment.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reportTemplateTextAlignmentToNumber(object) {
+    switch (object) {
+        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT:
+            return 0;
+        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER:
+            return 1;
+        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT:
+            return 2;
+        case ReportTemplateTextAlignment.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+function createBaseReportTemplateFieldStyle() {
+    return { font_size: undefined, bold: undefined, alignment: undefined, inline_label: undefined };
+}
+exports.ReportTemplateFieldStyle = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.font_size !== undefined) {
+            writer.uint32(8).uint32(message.font_size);
+        }
+        if (message.bold !== undefined) {
+            writer.uint32(16).bool(message.bold);
+        }
+        if (message.alignment !== undefined) {
+            writer.uint32(24).int32(reportTemplateTextAlignmentToNumber(message.alignment));
+        }
+        if (message.inline_label !== undefined) {
+            writer.uint32(32).bool(message.inline_label);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateFieldStyle();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.font_size = reader.uint32();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.bold = reader.bool();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.alignment = reportTemplateTextAlignmentFromJSON(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.inline_label = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            font_size: isSet(object.fontSize) ? globalThis.Number(object.fontSize) : undefined,
+            bold: isSet(object.bold) ? globalThis.Boolean(object.bold) : undefined,
+            alignment: isSet(object.alignment) ? reportTemplateTextAlignmentFromJSON(object.alignment) : undefined,
+            inline_label: isSet(object.inlineLabel) ? globalThis.Boolean(object.inlineLabel) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.font_size !== undefined) {
+            obj.fontSize = Math.round(message.font_size);
+        }
+        if (message.bold !== undefined) {
+            obj.bold = message.bold;
+        }
+        if (message.alignment !== undefined) {
+            obj.alignment = reportTemplateTextAlignmentToJSON(message.alignment);
+        }
+        if (message.inline_label !== undefined) {
+            obj.inlineLabel = message.inline_label;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateFieldStyle.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateFieldStyle();
+        message.font_size = object.font_size ?? undefined;
+        message.bold = object.bold ?? undefined;
+        message.alignment = object.alignment ?? undefined;
+        message.inline_label = object.inline_label ?? undefined;
+        return message;
+    },
+};
 function createBaseReportTemplateFieldReference() {
     return { key: undefined, custom_field_id: undefined };
 }
@@ -157,7 +312,15 @@ exports.ReportTemplateFieldReference = {
     },
 };
 function createBaseReportTemplateBlock() {
-    return { id: undefined, block_type: undefined, text: undefined, children: [], columns: undefined, field: undefined };
+    return {
+        id: undefined,
+        block_type: undefined,
+        text: undefined,
+        children: [],
+        columns: undefined,
+        field: undefined,
+        field_style: undefined,
+    };
 }
 exports.ReportTemplateBlock = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -178,6 +341,9 @@ exports.ReportTemplateBlock = {
         }
         if (message.field !== undefined) {
             exports.ReportTemplateFieldReference.encode(message.field, writer.uint32(50).fork()).join();
+        }
+        if (message.field_style !== undefined) {
+            exports.ReportTemplateFieldStyle.encode(message.field_style, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -224,6 +390,12 @@ exports.ReportTemplateBlock = {
                     }
                     message.field = exports.ReportTemplateFieldReference.decode(reader, reader.uint32());
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.field_style = exports.ReportTemplateFieldStyle.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -242,6 +414,7 @@ exports.ReportTemplateBlock = {
                 : [],
             columns: isSet(object.columns) ? globalThis.Number(object.columns) : undefined,
             field: isSet(object.field) ? exports.ReportTemplateFieldReference.fromJSON(object.field) : undefined,
+            field_style: isSet(object.fieldStyle) ? exports.ReportTemplateFieldStyle.fromJSON(object.fieldStyle) : undefined,
         };
     },
     toJSON(message) {
@@ -264,6 +437,9 @@ exports.ReportTemplateBlock = {
         if (message.field !== undefined) {
             obj.field = exports.ReportTemplateFieldReference.toJSON(message.field);
         }
+        if (message.field_style !== undefined) {
+            obj.fieldStyle = exports.ReportTemplateFieldStyle.toJSON(message.field_style);
+        }
         return obj;
     },
     create(base) {
@@ -278,6 +454,9 @@ exports.ReportTemplateBlock = {
         message.columns = object.columns ?? undefined;
         message.field = (object.field !== undefined && object.field !== null)
             ? exports.ReportTemplateFieldReference.fromPartial(object.field)
+            : undefined;
+        message.field_style = (object.field_style !== undefined && object.field_style !== null)
+            ? exports.ReportTemplateFieldStyle.fromPartial(object.field_style)
             : undefined;
         return message;
     },
