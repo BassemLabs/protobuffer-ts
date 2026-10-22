@@ -72,6 +72,17 @@ export interface UpdateParentProfileRequest {
     parent_id: ObjectId | undefined;
     profile: ParentProfile | undefined;
 }
+export interface GetParentProfileCompletionRequest {
+    context: RequestContext | undefined;
+}
+export interface UpdateOwnParentNameRequest {
+    context: RequestContext | undefined;
+    name?: string | undefined;
+}
+export interface UpdateOwnParentPhoneRequest {
+    context: RequestContext | undefined;
+    phone: PhoneNumber | undefined;
+}
 export interface AuthenticateParentForOrgRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
@@ -132,6 +143,9 @@ export declare const GetContextActiveSchoolYearEnrolledStudentIdsRequest: Messag
 export declare const GetContextActiveSchoolYearEnrolledStudentIdsResponse: MessageFns<GetContextActiveSchoolYearEnrolledStudentIdsResponse>;
 export declare const AddNewGuardianToFamilyRequest: MessageFns<AddNewGuardianToFamilyRequest>;
 export declare const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest>;
+export declare const GetParentProfileCompletionRequest: MessageFns<GetParentProfileCompletionRequest>;
+export declare const UpdateOwnParentNameRequest: MessageFns<UpdateOwnParentNameRequest>;
+export declare const UpdateOwnParentPhoneRequest: MessageFns<UpdateOwnParentPhoneRequest>;
 export declare const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOrgRequest>;
 export declare const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForOrgResponse>;
 export declare const UpdateParentPaymentMethodFromSetupIntentRequest: MessageFns<UpdateParentPaymentMethodFromSetupIntentRequest>;

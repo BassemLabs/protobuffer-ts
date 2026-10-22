@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/parent_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetAllParentsForStagingResponse = exports.GetAllParentsForStagingRequest = exports.SetParentStripeCustomerIdRequest = exports.SetParentSetupIntentFailureRequest = exports.SetParentSetupIntentRequiresActionRequest = exports.UpdateParentPaymentMethodFromSetupIntentRequest = exports.AuthenticateParentForOrgResponse = exports.AuthenticateParentForOrgRequest = exports.UpdateParentProfileRequest = exports.AddNewGuardianToFamilyRequest = exports.GetContextActiveSchoolYearEnrolledStudentIdsResponse = exports.GetContextActiveSchoolYearEnrolledStudentIdsRequest = exports.GetParentStudentIdsResponse = exports.GetParentStudentIdsRequest = exports.GetParentStudentsWithLatestSchoolYearInfoResponse = exports.ParentStudentWithSchoolYearInfo = exports.GetParentStudentsWithLatestSchoolYearInfoFromContextRequest = exports.GetParentStudentsFromContextRequest = exports.GetParentStudentsResponse = exports.GetParentStudentsRequest = exports.GetParentsByEmailResponse = exports.GetParentsByEmailRequest = exports.GetParentsByIdsResponse = exports.GetParentsByIdsRequest = exports.GetParentRequest = exports.protobufPackage = void 0;
+exports.GetAllParentsForStagingResponse = exports.GetAllParentsForStagingRequest = exports.SetParentStripeCustomerIdRequest = exports.SetParentSetupIntentFailureRequest = exports.SetParentSetupIntentRequiresActionRequest = exports.UpdateParentPaymentMethodFromSetupIntentRequest = exports.AuthenticateParentForOrgResponse = exports.AuthenticateParentForOrgRequest = exports.UpdateOwnParentPhoneRequest = exports.UpdateOwnParentNameRequest = exports.GetParentProfileCompletionRequest = exports.UpdateParentProfileRequest = exports.AddNewGuardianToFamilyRequest = exports.GetContextActiveSchoolYearEnrolledStudentIdsResponse = exports.GetContextActiveSchoolYearEnrolledStudentIdsRequest = exports.GetParentStudentIdsResponse = exports.GetParentStudentIdsRequest = exports.GetParentStudentsWithLatestSchoolYearInfoResponse = exports.ParentStudentWithSchoolYearInfo = exports.GetParentStudentsWithLatestSchoolYearInfoFromContextRequest = exports.GetParentStudentsFromContextRequest = exports.GetParentStudentsResponse = exports.GetParentStudentsRequest = exports.GetParentsByEmailResponse = exports.GetParentsByEmailRequest = exports.GetParentsByIdsResponse = exports.GetParentsByIdsRequest = exports.GetParentRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -1105,6 +1105,196 @@ exports.UpdateParentProfileRequest = {
             : undefined;
         message.profile = (object.profile !== undefined && object.profile !== null)
             ? parent_1.ParentProfile.fromPartial(object.profile)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetParentProfileCompletionRequest() {
+    return { context: undefined };
+}
+exports.GetParentProfileCompletionRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetParentProfileCompletionRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetParentProfileCompletionRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetParentProfileCompletionRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseUpdateOwnParentNameRequest() {
+    return { context: undefined, name: undefined };
+}
+exports.UpdateOwnParentNameRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateOwnParentNameRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateOwnParentNameRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateOwnParentNameRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.name = object.name ?? undefined;
+        return message;
+    },
+};
+function createBaseUpdateOwnParentPhoneRequest() {
+    return { context: undefined, phone: undefined };
+}
+exports.UpdateOwnParentPhoneRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.phone !== undefined) {
+            phone_number_1.PhoneNumber.encode(message.phone, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateOwnParentPhoneRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.phone = phone_number_1.PhoneNumber.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            phone: isSet(object.phone) ? phone_number_1.PhoneNumber.fromJSON(object.phone) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.phone !== undefined) {
+            obj.phone = phone_number_1.PhoneNumber.toJSON(message.phone);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateOwnParentPhoneRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateOwnParentPhoneRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.phone = (object.phone !== undefined && object.phone !== null)
+            ? phone_number_1.PhoneNumber.fromPartial(object.phone)
             : undefined;
         return message;
     },

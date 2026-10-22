@@ -5,12 +5,75 @@
 //   protoc               unknown
 // source: user_service/parent.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ParentProfile = exports.Parent = exports.ParentPaymentInformation = exports.protobufPackage = void 0;
+exports.ParentProfileCompletionAction = exports.ParentProfileCompletion = exports.ParentProfile = exports.Parent = exports.ParentPaymentInformation = exports.ParentProfileCompletionActionType = exports.protobufPackage = void 0;
+exports.parentProfileCompletionActionTypeFromJSON = parentProfileCompletionActionTypeFromJSON;
+exports.parentProfileCompletionActionTypeToJSON = parentProfileCompletionActionTypeToJSON;
+exports.parentProfileCompletionActionTypeToNumber = parentProfileCompletionActionTypeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
 const phone_number_1 = require("../utils/phone_number");
+const custom_field_1 = require("./custom_field");
+const family_1 = require("./family");
 exports.protobufPackage = "user_service";
+var ParentProfileCompletionActionType;
+(function (ParentProfileCompletionActionType) {
+    ParentProfileCompletionActionType["PROFILE_NAME"] = "PROFILE_NAME";
+    ParentProfileCompletionActionType["PROFILE_PHONE"] = "PROFILE_PHONE";
+    ParentProfileCompletionActionType["PROFILE_EMERGENCY_CONTACT"] = "PROFILE_EMERGENCY_CONTACT";
+    ParentProfileCompletionActionType["PROFILE_CUSTOM_FIELDS"] = "PROFILE_CUSTOM_FIELDS";
+    ParentProfileCompletionActionType["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ParentProfileCompletionActionType || (exports.ParentProfileCompletionActionType = ParentProfileCompletionActionType = {}));
+function parentProfileCompletionActionTypeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "PROFILE_NAME":
+            return ParentProfileCompletionActionType.PROFILE_NAME;
+        case 1:
+        case "PROFILE_PHONE":
+            return ParentProfileCompletionActionType.PROFILE_PHONE;
+        case 2:
+        case "PROFILE_EMERGENCY_CONTACT":
+            return ParentProfileCompletionActionType.PROFILE_EMERGENCY_CONTACT;
+        case 3:
+        case "PROFILE_CUSTOM_FIELDS":
+            return ParentProfileCompletionActionType.PROFILE_CUSTOM_FIELDS;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ParentProfileCompletionActionType.UNRECOGNIZED;
+    }
+}
+function parentProfileCompletionActionTypeToJSON(object) {
+    switch (object) {
+        case ParentProfileCompletionActionType.PROFILE_NAME:
+            return "PROFILE_NAME";
+        case ParentProfileCompletionActionType.PROFILE_PHONE:
+            return "PROFILE_PHONE";
+        case ParentProfileCompletionActionType.PROFILE_EMERGENCY_CONTACT:
+            return "PROFILE_EMERGENCY_CONTACT";
+        case ParentProfileCompletionActionType.PROFILE_CUSTOM_FIELDS:
+            return "PROFILE_CUSTOM_FIELDS";
+        case ParentProfileCompletionActionType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function parentProfileCompletionActionTypeToNumber(object) {
+    switch (object) {
+        case ParentProfileCompletionActionType.PROFILE_NAME:
+            return 0;
+        case ParentProfileCompletionActionType.PROFILE_PHONE:
+            return 1;
+        case ParentProfileCompletionActionType.PROFILE_EMERGENCY_CONTACT:
+            return 2;
+        case ParentProfileCompletionActionType.PROFILE_CUSTOM_FIELDS:
+            return 3;
+        case ParentProfileCompletionActionType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseParentPaymentInformation() {
     return {
         enable_auto_pay: undefined,
@@ -441,6 +504,290 @@ exports.ParentProfile = {
         message.phone = (object.phone !== undefined && object.phone !== null)
             ? phone_number_1.PhoneNumber.fromPartial(object.phone)
             : undefined;
+        return message;
+    },
+};
+function createBaseParentProfileCompletion() {
+    return { parent_id: undefined, parent_name: undefined, parent_phone: undefined, actions: [] };
+}
+exports.ParentProfileCompletion = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.parent_id !== undefined) {
+            object_id_1.ObjectId.encode(message.parent_id, writer.uint32(10).fork()).join();
+        }
+        if (message.parent_name !== undefined) {
+            writer.uint32(18).string(message.parent_name);
+        }
+        if (message.parent_phone !== undefined) {
+            phone_number_1.PhoneNumber.encode(message.parent_phone, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.actions) {
+            exports.ParentProfileCompletionAction.encode(v, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseParentProfileCompletion();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.parent_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.parent_name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.parent_phone = phone_number_1.PhoneNumber.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.actions.push(exports.ParentProfileCompletionAction.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            parent_id: isSet(object.parentId) ? object_id_1.ObjectId.fromJSON(object.parentId) : undefined,
+            parent_name: isSet(object.parentName) ? globalThis.String(object.parentName) : undefined,
+            parent_phone: isSet(object.parentPhone) ? phone_number_1.PhoneNumber.fromJSON(object.parentPhone) : undefined,
+            actions: globalThis.Array.isArray(object?.actions)
+                ? object.actions.map((e) => exports.ParentProfileCompletionAction.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.parent_id !== undefined) {
+            obj.parentId = object_id_1.ObjectId.toJSON(message.parent_id);
+        }
+        if (message.parent_name !== undefined) {
+            obj.parentName = message.parent_name;
+        }
+        if (message.parent_phone !== undefined) {
+            obj.parentPhone = phone_number_1.PhoneNumber.toJSON(message.parent_phone);
+        }
+        if (message.actions?.length) {
+            obj.actions = message.actions.map((e) => exports.ParentProfileCompletionAction.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ParentProfileCompletion.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseParentProfileCompletion();
+        message.parent_id = (object.parent_id !== undefined && object.parent_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.parent_id)
+            : undefined;
+        message.parent_name = object.parent_name ?? undefined;
+        message.parent_phone = (object.parent_phone !== undefined && object.parent_phone !== null)
+            ? phone_number_1.PhoneNumber.fromPartial(object.parent_phone)
+            : undefined;
+        message.actions = object.actions?.map((e) => exports.ParentProfileCompletionAction.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseParentProfileCompletionAction() {
+    return {
+        action_type: undefined,
+        title: undefined,
+        family_id: undefined,
+        group_id: undefined,
+        rejection_message: undefined,
+        emergency_contact: undefined,
+        family_name: undefined,
+        custom_fields_group: undefined,
+        group_status: undefined,
+    };
+}
+exports.ParentProfileCompletionAction = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.action_type !== undefined) {
+            writer.uint32(8).int32(parentProfileCompletionActionTypeToNumber(message.action_type));
+        }
+        if (message.title !== undefined) {
+            writer.uint32(18).string(message.title);
+        }
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(26).fork()).join();
+        }
+        if (message.group_id !== undefined) {
+            object_id_1.ObjectId.encode(message.group_id, writer.uint32(34).fork()).join();
+        }
+        if (message.rejection_message !== undefined) {
+            writer.uint32(42).string(message.rejection_message);
+        }
+        if (message.emergency_contact !== undefined) {
+            family_1.FamilyContact.encode(message.emergency_contact, writer.uint32(50).fork()).join();
+        }
+        if (message.family_name !== undefined) {
+            writer.uint32(58).string(message.family_name);
+        }
+        if (message.custom_fields_group !== undefined) {
+            custom_field_1.CustomFieldsGroup.encode(message.custom_fields_group, writer.uint32(66).fork()).join();
+        }
+        if (message.group_status !== undefined) {
+            writer.uint32(72).int32((0, custom_field_1.approvalStatusToNumber)(message.group_status));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseParentProfileCompletionAction();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.action_type = parentProfileCompletionActionTypeFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.group_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.rejection_message = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.emergency_contact = family_1.FamilyContact.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.family_name = reader.string();
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.custom_fields_group = custom_field_1.CustomFieldsGroup.decode(reader, reader.uint32());
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.group_status = (0, custom_field_1.approvalStatusFromJSON)(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            action_type: isSet(object.actionType) ? parentProfileCompletionActionTypeFromJSON(object.actionType) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            group_id: isSet(object.groupId) ? object_id_1.ObjectId.fromJSON(object.groupId) : undefined,
+            rejection_message: isSet(object.rejectionMessage) ? globalThis.String(object.rejectionMessage) : undefined,
+            emergency_contact: isSet(object.emergencyContact) ? family_1.FamilyContact.fromJSON(object.emergencyContact) : undefined,
+            family_name: isSet(object.familyName) ? globalThis.String(object.familyName) : undefined,
+            custom_fields_group: isSet(object.customFieldsGroup)
+                ? custom_field_1.CustomFieldsGroup.fromJSON(object.customFieldsGroup)
+                : undefined,
+            group_status: isSet(object.groupStatus) ? (0, custom_field_1.approvalStatusFromJSON)(object.groupStatus) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.action_type !== undefined) {
+            obj.actionType = parentProfileCompletionActionTypeToJSON(message.action_type);
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
+        }
+        if (message.group_id !== undefined) {
+            obj.groupId = object_id_1.ObjectId.toJSON(message.group_id);
+        }
+        if (message.rejection_message !== undefined) {
+            obj.rejectionMessage = message.rejection_message;
+        }
+        if (message.emergency_contact !== undefined) {
+            obj.emergencyContact = family_1.FamilyContact.toJSON(message.emergency_contact);
+        }
+        if (message.family_name !== undefined) {
+            obj.familyName = message.family_name;
+        }
+        if (message.custom_fields_group !== undefined) {
+            obj.customFieldsGroup = custom_field_1.CustomFieldsGroup.toJSON(message.custom_fields_group);
+        }
+        if (message.group_status !== undefined) {
+            obj.groupStatus = (0, custom_field_1.approvalStatusToJSON)(message.group_status);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ParentProfileCompletionAction.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseParentProfileCompletionAction();
+        message.action_type = object.action_type ?? undefined;
+        message.title = object.title ?? undefined;
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
+            : undefined;
+        message.group_id = (object.group_id !== undefined && object.group_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.group_id)
+            : undefined;
+        message.rejection_message = object.rejection_message ?? undefined;
+        message.emergency_contact = (object.emergency_contact !== undefined && object.emergency_contact !== null)
+            ? family_1.FamilyContact.fromPartial(object.emergency_contact)
+            : undefined;
+        message.family_name = object.family_name ?? undefined;
+        message.custom_fields_group = (object.custom_fields_group !== undefined && object.custom_fields_group !== null)
+            ? custom_field_1.CustomFieldsGroup.fromPartial(object.custom_fields_group)
+            : undefined;
+        message.group_status = object.group_status ?? undefined;
         return message;
     },
 };

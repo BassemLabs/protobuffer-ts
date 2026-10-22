@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
-import { Family, FamilyInformation } from "./family";
+import { Family, FamilyContact, FamilyInformation } from "./family";
 import { Parent } from "./parent";
 import { SchoolYearStudent, Student, StudentStatus } from "./student";
 export declare const protobufPackage = "user_service";
@@ -14,6 +14,11 @@ export declare enum CreateFamilyPreferredContact {
 export declare function createFamilyPreferredContactFromJSON(object: any): CreateFamilyPreferredContact;
 export declare function createFamilyPreferredContactToJSON(object: CreateFamilyPreferredContact): string;
 export declare function createFamilyPreferredContactToNumber(object: CreateFamilyPreferredContact): number;
+export interface UpdateFamilyEmergencyContactRequest {
+    context: RequestContext | undefined;
+    family_id: ObjectId | undefined;
+    contact: FamilyContact | undefined;
+}
 export interface GetFamilyRequest {
     context: RequestContext | undefined;
     family_id: ObjectId | undefined;
@@ -159,6 +164,7 @@ export interface CreateFamilyWithGuardianAndInviteResponse {
     family: Family | undefined;
     guardian: Parent | undefined;
 }
+export declare const UpdateFamilyEmergencyContactRequest: MessageFns<UpdateFamilyEmergencyContactRequest>;
 export declare const GetFamilyRequest: MessageFns<GetFamilyRequest>;
 export declare const GetAllFamiliesRequest: MessageFns<GetAllFamiliesRequest>;
 export declare const GetAllFamiliesResponse: MessageFns<GetAllFamiliesResponse>;

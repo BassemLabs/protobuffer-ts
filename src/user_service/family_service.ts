@@ -9,7 +9,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { PhoneNumber } from "../utils/phone_number";
 import { RequestContext } from "../utils/request_context";
-import { Family, FamilyInformation } from "./family";
+import { Family, FamilyContact, FamilyInformation } from "./family";
 import { Parent } from "./parent";
 import {
   SchoolYearStudent,
@@ -65,6 +65,12 @@ export function createFamilyPreferredContactToNumber(object: CreateFamilyPreferr
     default:
       return -1;
   }
+}
+
+export interface UpdateFamilyEmergencyContactRequest {
+  context: RequestContext | undefined;
+  family_id: ObjectId | undefined;
+  contact: FamilyContact | undefined;
 }
 
 export interface GetFamilyRequest {
@@ -246,6 +252,105 @@ export interface CreateFamilyWithGuardianAndInviteResponse {
   family: Family | undefined;
   guardian: Parent | undefined;
 }
+
+function createBaseUpdateFamilyEmergencyContactRequest(): UpdateFamilyEmergencyContactRequest {
+  return { context: undefined, family_id: undefined, contact: undefined };
+}
+
+export const UpdateFamilyEmergencyContactRequest: MessageFns<UpdateFamilyEmergencyContactRequest> = {
+  encode(message: UpdateFamilyEmergencyContactRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.family_id !== undefined) {
+      ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
+    }
+    if (message.contact !== undefined) {
+      FamilyContact.encode(message.contact, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateFamilyEmergencyContactRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateFamilyEmergencyContactRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.family_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.contact = FamilyContact.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateFamilyEmergencyContactRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      family_id: isSet(object.familyId) ? ObjectId.fromJSON(object.familyId) : undefined,
+      contact: isSet(object.contact) ? FamilyContact.fromJSON(object.contact) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateFamilyEmergencyContactRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.family_id !== undefined) {
+      obj.familyId = ObjectId.toJSON(message.family_id);
+    }
+    if (message.contact !== undefined) {
+      obj.contact = FamilyContact.toJSON(message.contact);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateFamilyEmergencyContactRequest>, I>>(
+    base?: I,
+  ): UpdateFamilyEmergencyContactRequest {
+    return UpdateFamilyEmergencyContactRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateFamilyEmergencyContactRequest>, I>>(
+    object: I,
+  ): UpdateFamilyEmergencyContactRequest {
+    const message = createBaseUpdateFamilyEmergencyContactRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.family_id = (object.family_id !== undefined && object.family_id !== null)
+      ? ObjectId.fromPartial(object.family_id)
+      : undefined;
+    message.contact = (object.contact !== undefined && object.contact !== null)
+      ? FamilyContact.fromPartial(object.contact)
+      : undefined;
+    return message;
+  },
+};
 
 function createBaseGetFamilyRequest(): GetFamilyRequest {
   return { context: undefined, family_id: undefined };

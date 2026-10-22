@@ -98,6 +98,20 @@ export interface UpdateParentProfileRequest {
   profile: ParentProfile | undefined;
 }
 
+export interface GetParentProfileCompletionRequest {
+  context: RequestContext | undefined;
+}
+
+export interface UpdateOwnParentNameRequest {
+  context: RequestContext | undefined;
+  name?: string | undefined;
+}
+
+export interface UpdateOwnParentPhoneRequest {
+  context: RequestContext | undefined;
+  phone: PhoneNumber | undefined;
+}
+
 export interface AuthenticateParentForOrgRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
@@ -1417,6 +1431,223 @@ export const UpdateParentProfileRequest: MessageFns<UpdateParentProfileRequest> 
       : undefined;
     message.profile = (object.profile !== undefined && object.profile !== null)
       ? ParentProfile.fromPartial(object.profile)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetParentProfileCompletionRequest(): GetParentProfileCompletionRequest {
+  return { context: undefined };
+}
+
+export const GetParentProfileCompletionRequest: MessageFns<GetParentProfileCompletionRequest> = {
+  encode(message: GetParentProfileCompletionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetParentProfileCompletionRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetParentProfileCompletionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetParentProfileCompletionRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetParentProfileCompletionRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetParentProfileCompletionRequest>, I>>(
+    base?: I,
+  ): GetParentProfileCompletionRequest {
+    return GetParentProfileCompletionRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetParentProfileCompletionRequest>, I>>(
+    object: I,
+  ): GetParentProfileCompletionRequest {
+    const message = createBaseGetParentProfileCompletionRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateOwnParentNameRequest(): UpdateOwnParentNameRequest {
+  return { context: undefined, name: undefined };
+}
+
+export const UpdateOwnParentNameRequest: MessageFns<UpdateOwnParentNameRequest> = {
+  encode(message: UpdateOwnParentNameRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateOwnParentNameRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateOwnParentNameRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateOwnParentNameRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateOwnParentNameRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateOwnParentNameRequest>, I>>(base?: I): UpdateOwnParentNameRequest {
+    return UpdateOwnParentNameRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateOwnParentNameRequest>, I>>(object: I): UpdateOwnParentNameRequest {
+    const message = createBaseUpdateOwnParentNameRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.name = object.name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateOwnParentPhoneRequest(): UpdateOwnParentPhoneRequest {
+  return { context: undefined, phone: undefined };
+}
+
+export const UpdateOwnParentPhoneRequest: MessageFns<UpdateOwnParentPhoneRequest> = {
+  encode(message: UpdateOwnParentPhoneRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.phone !== undefined) {
+      PhoneNumber.encode(message.phone, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateOwnParentPhoneRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateOwnParentPhoneRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.phone = PhoneNumber.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateOwnParentPhoneRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      phone: isSet(object.phone) ? PhoneNumber.fromJSON(object.phone) : undefined,
+    };
+  },
+
+  toJSON(message: UpdateOwnParentPhoneRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.phone !== undefined) {
+      obj.phone = PhoneNumber.toJSON(message.phone);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateOwnParentPhoneRequest>, I>>(base?: I): UpdateOwnParentPhoneRequest {
+    return UpdateOwnParentPhoneRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<UpdateOwnParentPhoneRequest>, I>>(object: I): UpdateOwnParentPhoneRequest {
+    const message = createBaseUpdateOwnParentPhoneRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.phone = (object.phone !== undefined && object.phone !== null)
+      ? PhoneNumber.fromPartial(object.phone)
       : undefined;
     return message;
   },

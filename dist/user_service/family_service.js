@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/family_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateFamilyWithGuardianAndInviteResponse = exports.CreateFamilyWithGuardianAndInviteRequest = exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyGuardian = exports.CreateFamilyRequest = exports.GetInvoiceViewScopeResponse = exports.GetInvoiceViewScopeRequest = exports.SearchInvoiceIdentitiesResponse = exports.SearchInvoiceIdentitiesRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetAdmittedStudentsForFamilyResponse = exports.GetAdmittedStudentsForFamilyRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.CreateFamilyPreferredContact = exports.protobufPackage = void 0;
+exports.CreateFamilyWithGuardianAndInviteResponse = exports.CreateFamilyWithGuardianAndInviteRequest = exports.UpdateFamilyAutoPayRequest = exports.UpdateFamilyNameRequest = exports.UpdateFamilyRequest = exports.CreateFamilyGuardian = exports.CreateFamilyRequest = exports.GetInvoiceViewScopeResponse = exports.GetInvoiceViewScopeRequest = exports.SearchInvoiceIdentitiesResponse = exports.SearchInvoiceIdentitiesRequest = exports.GetFamiliesByStudentStatusResponse = exports.FamilyWithStudentCount = exports.GetFamiliesByStudentStatusRequest = exports.GetAdmittedStudentsForFamilyResponse = exports.GetAdmittedStudentsForFamilyRequest = exports.GetEnrolledStudentsForFamilyResponse = exports.GetEnrolledStudentsForFamilyRequest = exports.GetFamilyStudentsResponse = exports.GetFamilyStudentsRequest = exports.GetContactGuardiansResponse = exports.GetContactGuardiansRequest = exports.GetFamilyGuardiansResponse = exports.GetFamilyGuardiansRequest = exports.GetFamiliesByParentResponse = exports.GetFamiliesByParentRequest = exports.GetFamiliesByIdsResponse = exports.GetFamiliesByIdsRequest = exports.GetAllFamiliesResponse = exports.GetAllFamiliesRequest = exports.GetFamilyRequest = exports.UpdateFamilyEmergencyContactRequest = exports.CreateFamilyPreferredContact = exports.protobufPackage = void 0;
 exports.createFamilyPreferredContactFromJSON = createFamilyPreferredContactFromJSON;
 exports.createFamilyPreferredContactToJSON = createFamilyPreferredContactToJSON;
 exports.createFamilyPreferredContactToNumber = createFamilyPreferredContactToNumber;
@@ -60,6 +60,92 @@ function createFamilyPreferredContactToNumber(object) {
             return -1;
     }
 }
+function createBaseUpdateFamilyEmergencyContactRequest() {
+    return { context: undefined, family_id: undefined, contact: undefined };
+}
+exports.UpdateFamilyEmergencyContactRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.family_id !== undefined) {
+            object_id_1.ObjectId.encode(message.family_id, writer.uint32(18).fork()).join();
+        }
+        if (message.contact !== undefined) {
+            family_1.FamilyContact.encode(message.contact, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateFamilyEmergencyContactRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.family_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.contact = family_1.FamilyContact.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            family_id: isSet(object.familyId) ? object_id_1.ObjectId.fromJSON(object.familyId) : undefined,
+            contact: isSet(object.contact) ? family_1.FamilyContact.fromJSON(object.contact) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.family_id !== undefined) {
+            obj.familyId = object_id_1.ObjectId.toJSON(message.family_id);
+        }
+        if (message.contact !== undefined) {
+            obj.contact = family_1.FamilyContact.toJSON(message.contact);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateFamilyEmergencyContactRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateFamilyEmergencyContactRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.family_id = (object.family_id !== undefined && object.family_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.family_id)
+            : undefined;
+        message.contact = (object.contact !== undefined && object.contact !== null)
+            ? family_1.FamilyContact.fromPartial(object.contact)
+            : undefined;
+        return message;
+    },
+};
 function createBaseGetFamilyRequest() {
     return { context: undefined, family_id: undefined };
 }
