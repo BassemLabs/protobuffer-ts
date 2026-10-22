@@ -165,6 +165,10 @@ export interface GetStudentGroupsWithFieldsRequest {
     require_all_access_for_status?: boolean | undefined;
     writable_by_parents_only?: boolean | undefined;
 }
+export interface GetReportTemplateFieldsRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+}
 export interface GetParentGroupsWithFieldsRequest {
     context: RequestContext | undefined;
 }
@@ -277,6 +281,7 @@ export declare const GetAllCustomFieldsGroupsRequest: MessageFns<GetAllCustomFie
 export declare const GetAccessibleCustomFieldsGroupsRequest: MessageFns<GetAccessibleCustomFieldsGroupsRequest>;
 export declare const GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest: MessageFns<GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest>;
 export declare const GetStudentGroupsWithFieldsRequest: MessageFns<GetStudentGroupsWithFieldsRequest>;
+export declare const GetReportTemplateFieldsRequest: MessageFns<GetReportTemplateFieldsRequest>;
 export declare const GetParentGroupsWithFieldsRequest: MessageFns<GetParentGroupsWithFieldsRequest>;
 export declare const GetTeacherGroupsWithFieldsRequest: MessageFns<GetTeacherGroupsWithFieldsRequest>;
 export declare const ReorderCustomFieldsGroupsRequest: MessageFns<ReorderCustomFieldsGroupsRequest>;

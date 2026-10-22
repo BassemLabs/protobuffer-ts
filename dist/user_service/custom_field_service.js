@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/custom_field_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GenerateRegexPatternFromDescriptionResponse = exports.GenerateRegexPatternFromDescriptionRequest = exports.UpdateResourceAccessSettingsRequest = exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.ReorderCustomFieldsRequest = exports.ReorderCustomFieldsGroupsRequest = exports.GetTeacherGroupsWithFieldsRequest = exports.GetParentGroupsWithFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.UpdateStudentPrimaryIdCustomFieldRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
+exports.GenerateRegexPatternFromDescriptionResponse = exports.GenerateRegexPatternFromDescriptionRequest = exports.UpdateResourceAccessSettingsRequest = exports.CreateResourceAccessSettingsRequest = exports.GetResourceAccessSettingsResponse = exports.GetResourceAccessSettingsRequest = exports.RejectGroupRequest = exports.ApproveGroupRequest = exports.GetGroupStatusRequest = exports.GetCustomFieldsGroupsWithFieldsResponse = exports.ReorderCustomFieldsRequest = exports.ReorderCustomFieldsGroupsRequest = exports.GetTeacherGroupsWithFieldsRequest = exports.GetParentGroupsWithFieldsRequest = exports.GetReportTemplateFieldsRequest = exports.GetStudentGroupsWithFieldsRequest = exports.GetCustomFieldsGroupsByUserTypeAndProfileSectionRequest = exports.GetAccessibleCustomFieldsGroupsRequest = exports.GetAllCustomFieldsGroupsRequest = exports.UpdateCustomFieldsGroupRequest = exports.CreateCustomFieldsGroupRequest = exports.GetCustomFieldsGroupsResponse = exports.RemoveDocumentFromCustomFieldEntryRequest = exports.UploadDocumentToCustomFieldEntryRequest = exports.UpdateCustomFieldsForGroupResponse = exports.CustomFieldEntryUpdate = exports.UpdateCustomFieldsForGroupRequest = exports.GetGroupActiveEntriesForUserResponse = exports.GetGroupActiveEntriesForUserRequest = exports.GetCustomFieldEntriesByUserAndGroupResponse = exports.GetCustomFieldEntriesByUserAndGroupRequest = exports.GetAllCustomFieldEntriesByUserResponse = exports.GetAllCustomFieldEntriesByUserRequest = exports.UpdateStudentPrimaryIdCustomFieldRequest = exports.GetStudentPrimaryIdFieldResponse = exports.GetStudentPrimaryIdFieldRequest = exports.UpdateCustomFieldRequest = exports.CreateCustomFieldRequest = exports.GetCustomFieldsByUserTypeResponse = exports.GetCustomFieldsByUserTypeRequest = exports.GetActiveCustomFieldsByGroupResponse = exports.GetActiveCustomFieldsByGroupRequest = exports.GetCustomFieldsByGroupResponse = exports.GetCustomFieldsByGroupRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const organization_profile_settings_1 = require("../organization_service/organization_profile_settings");
@@ -2560,6 +2560,76 @@ exports.GetStudentGroupsWithFieldsRequest = {
         message.student_status = object.student_status ?? undefined;
         message.require_all_access_for_status = object.require_all_access_for_status ?? undefined;
         message.writable_by_parents_only = object.writable_by_parents_only ?? undefined;
+        return message;
+    },
+};
+function createBaseGetReportTemplateFieldsRequest() {
+    return { context: undefined, organization_id: undefined };
+}
+exports.GetReportTemplateFieldsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetReportTemplateFieldsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetReportTemplateFieldsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetReportTemplateFieldsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
         return message;
     },
 };
