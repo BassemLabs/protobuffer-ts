@@ -5,16 +5,27 @@
 //   protoc               unknown
 // source: class_service/report_template/report_template_design.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReportTemplateDesign = exports.ReportTemplateBlock = exports.ReportTemplateFieldReference = exports.ReportTemplateFieldStyle = exports.ReportTemplateTextAlignment = exports.ReportBlockType = exports.protobufPackage = void 0;
+exports.ReportTemplateDesign = exports.ReportTemplateBlock = exports.ReportTemplateFieldReference = exports.ReportTemplateContent = exports.ReportTemplateContentField = exports.ReportTemplateFieldStyle = exports.ReportTemplateSignatureRole = exports.ReportTemplateContentScope = exports.ReportTemplateContentFieldType = exports.ReportTemplateTextAlignment = exports.ReportBlockType = exports.protobufPackage = void 0;
 exports.reportBlockTypeFromJSON = reportBlockTypeFromJSON;
 exports.reportBlockTypeToJSON = reportBlockTypeToJSON;
 exports.reportBlockTypeToNumber = reportBlockTypeToNumber;
 exports.reportTemplateTextAlignmentFromJSON = reportTemplateTextAlignmentFromJSON;
 exports.reportTemplateTextAlignmentToJSON = reportTemplateTextAlignmentToJSON;
 exports.reportTemplateTextAlignmentToNumber = reportTemplateTextAlignmentToNumber;
+exports.reportTemplateContentFieldTypeFromJSON = reportTemplateContentFieldTypeFromJSON;
+exports.reportTemplateContentFieldTypeToJSON = reportTemplateContentFieldTypeToJSON;
+exports.reportTemplateContentFieldTypeToNumber = reportTemplateContentFieldTypeToNumber;
+exports.reportTemplateContentScopeFromJSON = reportTemplateContentScopeFromJSON;
+exports.reportTemplateContentScopeToJSON = reportTemplateContentScopeToJSON;
+exports.reportTemplateContentScopeToNumber = reportTemplateContentScopeToNumber;
+exports.reportTemplateSignatureRoleFromJSON = reportTemplateSignatureRoleFromJSON;
+exports.reportTemplateSignatureRoleToJSON = reportTemplateSignatureRoleToJSON;
+exports.reportTemplateSignatureRoleToNumber = reportTemplateSignatureRoleToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const student_1 = require("../../user_service/student");
 const object_id_1 = require("../../utils/object_id");
+const report_layout_1 = require("../report_layout");
 const report_template_theme_1 = require("./report_template_theme");
 exports.protobufPackage = "class_service.report_template";
 var ReportBlockType;
@@ -26,6 +37,8 @@ var ReportBlockType;
     ReportBlockType["REPORT_BLOCK_TYPE_TEXT"] = "REPORT_BLOCK_TYPE_TEXT";
     ReportBlockType["REPORT_BLOCK_TYPE_FIELD"] = "REPORT_BLOCK_TYPE_FIELD";
     ReportBlockType["REPORT_BLOCK_TYPE_COURSES"] = "REPORT_BLOCK_TYPE_COURSES";
+    ReportBlockType["REPORT_BLOCK_TYPE_PARENT_MESSAGE"] = "REPORT_BLOCK_TYPE_PARENT_MESSAGE";
+    ReportBlockType["REPORT_BLOCK_TYPE_SIGNATURES"] = "REPORT_BLOCK_TYPE_SIGNATURES";
     ReportBlockType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ReportBlockType || (exports.ReportBlockType = ReportBlockType = {}));
 function reportBlockTypeFromJSON(object) {
@@ -51,6 +64,12 @@ function reportBlockTypeFromJSON(object) {
         case 6:
         case "REPORT_BLOCK_TYPE_COURSES":
             return ReportBlockType.REPORT_BLOCK_TYPE_COURSES;
+        case 7:
+        case "REPORT_BLOCK_TYPE_PARENT_MESSAGE":
+            return ReportBlockType.REPORT_BLOCK_TYPE_PARENT_MESSAGE;
+        case 8:
+        case "REPORT_BLOCK_TYPE_SIGNATURES":
+            return ReportBlockType.REPORT_BLOCK_TYPE_SIGNATURES;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -73,6 +92,10 @@ function reportBlockTypeToJSON(object) {
             return "REPORT_BLOCK_TYPE_FIELD";
         case ReportBlockType.REPORT_BLOCK_TYPE_COURSES:
             return "REPORT_BLOCK_TYPE_COURSES";
+        case ReportBlockType.REPORT_BLOCK_TYPE_PARENT_MESSAGE:
+            return "REPORT_BLOCK_TYPE_PARENT_MESSAGE";
+        case ReportBlockType.REPORT_BLOCK_TYPE_SIGNATURES:
+            return "REPORT_BLOCK_TYPE_SIGNATURES";
         case ReportBlockType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -94,6 +117,10 @@ function reportBlockTypeToNumber(object) {
             return 5;
         case ReportBlockType.REPORT_BLOCK_TYPE_COURSES:
             return 6;
+        case ReportBlockType.REPORT_BLOCK_TYPE_PARENT_MESSAGE:
+            return 7;
+        case ReportBlockType.REPORT_BLOCK_TYPE_SIGNATURES:
+            return 8;
         case ReportBlockType.UNRECOGNIZED:
         default:
             return -1;
@@ -145,6 +172,140 @@ function reportTemplateTextAlignmentToNumber(object) {
         case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT:
             return 2;
         case ReportTemplateTextAlignment.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var ReportTemplateContentFieldType;
+(function (ReportTemplateContentFieldType) {
+    ReportTemplateContentFieldType["REPORT_TEMPLATE_CONTENT_FIELD_TYPE_LONG_TEXT"] = "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_LONG_TEXT";
+    ReportTemplateContentFieldType["REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT"] = "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT";
+    ReportTemplateContentFieldType["REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN"] = "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN";
+    ReportTemplateContentFieldType["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReportTemplateContentFieldType || (exports.ReportTemplateContentFieldType = ReportTemplateContentFieldType = {}));
+function reportTemplateContentFieldTypeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_LONG_TEXT":
+            return ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_LONG_TEXT;
+        case 1:
+        case "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT":
+            return ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT;
+        case 2:
+        case "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN":
+            return ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReportTemplateContentFieldType.UNRECOGNIZED;
+    }
+}
+function reportTemplateContentFieldTypeToJSON(object) {
+    switch (object) {
+        case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_LONG_TEXT:
+            return "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_LONG_TEXT";
+        case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT:
+            return "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT";
+        case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN:
+            return "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN";
+        case ReportTemplateContentFieldType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reportTemplateContentFieldTypeToNumber(object) {
+    switch (object) {
+        case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_LONG_TEXT:
+            return 0;
+        case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT:
+            return 1;
+        case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN:
+            return 2;
+        case ReportTemplateContentFieldType.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var ReportTemplateContentScope;
+(function (ReportTemplateContentScope) {
+    ReportTemplateContentScope["REPORT_TEMPLATE_CONTENT_SCOPE_HOMEROOM"] = "REPORT_TEMPLATE_CONTENT_SCOPE_HOMEROOM";
+    ReportTemplateContentScope["REPORT_TEMPLATE_CONTENT_SCOPE_COURSE"] = "REPORT_TEMPLATE_CONTENT_SCOPE_COURSE";
+    ReportTemplateContentScope["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReportTemplateContentScope || (exports.ReportTemplateContentScope = ReportTemplateContentScope = {}));
+function reportTemplateContentScopeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REPORT_TEMPLATE_CONTENT_SCOPE_HOMEROOM":
+            return ReportTemplateContentScope.REPORT_TEMPLATE_CONTENT_SCOPE_HOMEROOM;
+        case 1:
+        case "REPORT_TEMPLATE_CONTENT_SCOPE_COURSE":
+            return ReportTemplateContentScope.REPORT_TEMPLATE_CONTENT_SCOPE_COURSE;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReportTemplateContentScope.UNRECOGNIZED;
+    }
+}
+function reportTemplateContentScopeToJSON(object) {
+    switch (object) {
+        case ReportTemplateContentScope.REPORT_TEMPLATE_CONTENT_SCOPE_HOMEROOM:
+            return "REPORT_TEMPLATE_CONTENT_SCOPE_HOMEROOM";
+        case ReportTemplateContentScope.REPORT_TEMPLATE_CONTENT_SCOPE_COURSE:
+            return "REPORT_TEMPLATE_CONTENT_SCOPE_COURSE";
+        case ReportTemplateContentScope.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reportTemplateContentScopeToNumber(object) {
+    switch (object) {
+        case ReportTemplateContentScope.REPORT_TEMPLATE_CONTENT_SCOPE_HOMEROOM:
+            return 0;
+        case ReportTemplateContentScope.REPORT_TEMPLATE_CONTENT_SCOPE_COURSE:
+            return 1;
+        case ReportTemplateContentScope.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var ReportTemplateSignatureRole;
+(function (ReportTemplateSignatureRole) {
+    ReportTemplateSignatureRole["REPORT_TEMPLATE_SIGNATURE_ROLE_TEACHER"] = "REPORT_TEMPLATE_SIGNATURE_ROLE_TEACHER";
+    ReportTemplateSignatureRole["REPORT_TEMPLATE_SIGNATURE_ROLE_PRINCIPAL"] = "REPORT_TEMPLATE_SIGNATURE_ROLE_PRINCIPAL";
+    ReportTemplateSignatureRole["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReportTemplateSignatureRole || (exports.ReportTemplateSignatureRole = ReportTemplateSignatureRole = {}));
+function reportTemplateSignatureRoleFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REPORT_TEMPLATE_SIGNATURE_ROLE_TEACHER":
+            return ReportTemplateSignatureRole.REPORT_TEMPLATE_SIGNATURE_ROLE_TEACHER;
+        case 1:
+        case "REPORT_TEMPLATE_SIGNATURE_ROLE_PRINCIPAL":
+            return ReportTemplateSignatureRole.REPORT_TEMPLATE_SIGNATURE_ROLE_PRINCIPAL;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReportTemplateSignatureRole.UNRECOGNIZED;
+    }
+}
+function reportTemplateSignatureRoleToJSON(object) {
+    switch (object) {
+        case ReportTemplateSignatureRole.REPORT_TEMPLATE_SIGNATURE_ROLE_TEACHER:
+            return "REPORT_TEMPLATE_SIGNATURE_ROLE_TEACHER";
+        case ReportTemplateSignatureRole.REPORT_TEMPLATE_SIGNATURE_ROLE_PRINCIPAL:
+            return "REPORT_TEMPLATE_SIGNATURE_ROLE_PRINCIPAL";
+        case ReportTemplateSignatureRole.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reportTemplateSignatureRoleToNumber(object) {
+    switch (object) {
+        case ReportTemplateSignatureRole.REPORT_TEMPLATE_SIGNATURE_ROLE_TEACHER:
+            return 0;
+        case ReportTemplateSignatureRole.REPORT_TEMPLATE_SIGNATURE_ROLE_PRINCIPAL:
+            return 1;
+        case ReportTemplateSignatureRole.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -243,8 +404,269 @@ exports.ReportTemplateFieldStyle = {
         return message;
     },
 };
+function createBaseReportTemplateContentField() {
+    return {
+        id: undefined,
+        title: undefined,
+        description: undefined,
+        field_type: undefined,
+        scopes: [],
+        required: undefined,
+        allowed_values: [],
+    };
+}
+exports.ReportTemplateContentField = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.title !== undefined) {
+            writer.uint32(18).string(message.title);
+        }
+        if (message.description !== undefined) {
+            writer.uint32(26).string(message.description);
+        }
+        if (message.field_type !== undefined) {
+            writer.uint32(32).int32(reportTemplateContentFieldTypeToNumber(message.field_type));
+        }
+        writer.uint32(42).fork();
+        for (const v of message.scopes) {
+            writer.int32(reportTemplateContentScopeToNumber(v));
+        }
+        writer.join();
+        if (message.required !== undefined) {
+            writer.uint32(48).bool(message.required);
+        }
+        for (const v of message.allowed_values) {
+            writer.uint32(58).string(v);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateContentField();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.description = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.field_type = reportTemplateContentFieldTypeFromJSON(reader.int32());
+                    continue;
+                case 5:
+                    if (tag === 40) {
+                        message.scopes.push(reportTemplateContentScopeFromJSON(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 42) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.scopes.push(reportTemplateContentScopeFromJSON(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.required = reader.bool();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.allowed_values.push(reader.string());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            field_type: isSet(object.fieldType) ? reportTemplateContentFieldTypeFromJSON(object.fieldType) : undefined,
+            scopes: globalThis.Array.isArray(object?.scopes)
+                ? object.scopes.map((e) => reportTemplateContentScopeFromJSON(e))
+                : [],
+            required: isSet(object.required) ? globalThis.Boolean(object.required) : undefined,
+            allowed_values: globalThis.Array.isArray(object?.allowedValues)
+                ? object.allowedValues.map((e) => globalThis.String(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = message.id;
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.description !== undefined) {
+            obj.description = message.description;
+        }
+        if (message.field_type !== undefined) {
+            obj.fieldType = reportTemplateContentFieldTypeToJSON(message.field_type);
+        }
+        if (message.scopes?.length) {
+            obj.scopes = message.scopes.map((e) => reportTemplateContentScopeToJSON(e));
+        }
+        if (message.required !== undefined) {
+            obj.required = message.required;
+        }
+        if (message.allowed_values?.length) {
+            obj.allowedValues = message.allowed_values;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateContentField.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateContentField();
+        message.id = object.id ?? undefined;
+        message.title = object.title ?? undefined;
+        message.description = object.description ?? undefined;
+        message.field_type = object.field_type ?? undefined;
+        message.scopes = object.scopes?.map((e) => e) || [];
+        message.required = object.required ?? undefined;
+        message.allowed_values = object.allowed_values?.map((e) => e) || [];
+        return message;
+    },
+};
+function createBaseReportTemplateContent() {
+    return { supported_grades: [], supported_report_types: [], fields: [] };
+}
+exports.ReportTemplateContent = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        writer.uint32(10).fork();
+        for (const v of message.supported_grades) {
+            writer.int32((0, student_1.studentGradeToNumber)(v));
+        }
+        writer.join();
+        writer.uint32(18).fork();
+        for (const v of message.supported_report_types) {
+            writer.int32((0, report_layout_1.reportTypeToNumber)(v));
+        }
+        writer.join();
+        for (const v of message.fields) {
+            exports.ReportTemplateContentField.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateContent();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag === 8) {
+                        message.supported_grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 10) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.supported_grades.push((0, student_1.studentGradeFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+                case 2:
+                    if (tag === 16) {
+                        message.supported_report_types.push((0, report_layout_1.reportTypeFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 18) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.supported_report_types.push((0, report_layout_1.reportTypeFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.fields.push(exports.ReportTemplateContentField.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            supported_grades: globalThis.Array.isArray(object?.supportedGrades)
+                ? object.supportedGrades.map((e) => (0, student_1.studentGradeFromJSON)(e))
+                : [],
+            supported_report_types: globalThis.Array.isArray(object?.supportedReportTypes)
+                ? object.supportedReportTypes.map((e) => (0, report_layout_1.reportTypeFromJSON)(e))
+                : [],
+            fields: globalThis.Array.isArray(object?.fields)
+                ? object.fields.map((e) => exports.ReportTemplateContentField.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.supported_grades?.length) {
+            obj.supportedGrades = message.supported_grades.map((e) => (0, student_1.studentGradeToJSON)(e));
+        }
+        if (message.supported_report_types?.length) {
+            obj.supportedReportTypes = message.supported_report_types.map((e) => (0, report_layout_1.reportTypeToJSON)(e));
+        }
+        if (message.fields?.length) {
+            obj.fields = message.fields.map((e) => exports.ReportTemplateContentField.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateContent.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateContent();
+        message.supported_grades = object.supported_grades?.map((e) => e) || [];
+        message.supported_report_types = object.supported_report_types?.map((e) => e) || [];
+        message.fields = object.fields?.map((e) => exports.ReportTemplateContentField.fromPartial(e)) || [];
+        return message;
+    },
+};
 function createBaseReportTemplateFieldReference() {
-    return { key: undefined, custom_field_id: undefined };
+    return { key: undefined, custom_field_id: undefined, report_field_id: undefined };
 }
 exports.ReportTemplateFieldReference = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -253,6 +675,9 @@ exports.ReportTemplateFieldReference = {
         }
         if (message.custom_field_id !== undefined) {
             object_id_1.ObjectId.encode(message.custom_field_id, writer.uint32(18).fork()).join();
+        }
+        if (message.report_field_id !== undefined) {
+            writer.uint32(26).string(message.report_field_id);
         }
         return writer;
     },
@@ -275,6 +700,12 @@ exports.ReportTemplateFieldReference = {
                     }
                     message.custom_field_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.report_field_id = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -287,6 +718,7 @@ exports.ReportTemplateFieldReference = {
         return {
             key: isSet(object.key) ? globalThis.String(object.key) : undefined,
             custom_field_id: isSet(object.customFieldId) ? object_id_1.ObjectId.fromJSON(object.customFieldId) : undefined,
+            report_field_id: isSet(object.reportFieldId) ? globalThis.String(object.reportFieldId) : undefined,
         };
     },
     toJSON(message) {
@@ -296,6 +728,9 @@ exports.ReportTemplateFieldReference = {
         }
         if (message.custom_field_id !== undefined) {
             obj.customFieldId = object_id_1.ObjectId.toJSON(message.custom_field_id);
+        }
+        if (message.report_field_id !== undefined) {
+            obj.reportFieldId = message.report_field_id;
         }
         return obj;
     },
@@ -308,6 +743,7 @@ exports.ReportTemplateFieldReference = {
         message.custom_field_id = (object.custom_field_id !== undefined && object.custom_field_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.custom_field_id)
             : undefined;
+        message.report_field_id = object.report_field_id ?? undefined;
         return message;
     },
 };
@@ -320,6 +756,8 @@ function createBaseReportTemplateBlock() {
         columns: undefined,
         field: undefined,
         field_style: undefined,
+        body: undefined,
+        signature_roles: [],
     };
 }
 exports.ReportTemplateBlock = {
@@ -345,6 +783,14 @@ exports.ReportTemplateBlock = {
         if (message.field_style !== undefined) {
             exports.ReportTemplateFieldStyle.encode(message.field_style, writer.uint32(58).fork()).join();
         }
+        if (message.body !== undefined) {
+            writer.uint32(66).string(message.body);
+        }
+        writer.uint32(74).fork();
+        for (const v of message.signature_roles) {
+            writer.int32(reportTemplateSignatureRoleToNumber(v));
+        }
+        writer.join();
         return writer;
     },
     decode(input, length) {
@@ -396,6 +842,25 @@ exports.ReportTemplateBlock = {
                     }
                     message.field_style = exports.ReportTemplateFieldStyle.decode(reader, reader.uint32());
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.body = reader.string();
+                    continue;
+                case 9:
+                    if (tag === 72) {
+                        message.signature_roles.push(reportTemplateSignatureRoleFromJSON(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 74) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.signature_roles.push(reportTemplateSignatureRoleFromJSON(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -415,6 +880,10 @@ exports.ReportTemplateBlock = {
             columns: isSet(object.columns) ? globalThis.Number(object.columns) : undefined,
             field: isSet(object.field) ? exports.ReportTemplateFieldReference.fromJSON(object.field) : undefined,
             field_style: isSet(object.fieldStyle) ? exports.ReportTemplateFieldStyle.fromJSON(object.fieldStyle) : undefined,
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+            signature_roles: globalThis.Array.isArray(object?.signatureRoles)
+                ? object.signatureRoles.map((e) => reportTemplateSignatureRoleFromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -440,6 +909,12 @@ exports.ReportTemplateBlock = {
         if (message.field_style !== undefined) {
             obj.fieldStyle = exports.ReportTemplateFieldStyle.toJSON(message.field_style);
         }
+        if (message.body !== undefined) {
+            obj.body = message.body;
+        }
+        if (message.signature_roles?.length) {
+            obj.signatureRoles = message.signature_roles.map((e) => reportTemplateSignatureRoleToJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -458,11 +933,13 @@ exports.ReportTemplateBlock = {
         message.field_style = (object.field_style !== undefined && object.field_style !== null)
             ? exports.ReportTemplateFieldStyle.fromPartial(object.field_style)
             : undefined;
+        message.body = object.body ?? undefined;
+        message.signature_roles = object.signature_roles?.map((e) => e) || [];
         return message;
     },
 };
 function createBaseReportTemplateDesign() {
-    return { theme: undefined, blocks: [] };
+    return { theme: undefined, blocks: [], content: undefined };
 }
 exports.ReportTemplateDesign = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -471,6 +948,9 @@ exports.ReportTemplateDesign = {
         }
         for (const v of message.blocks) {
             exports.ReportTemplateBlock.encode(v, writer.uint32(18).fork()).join();
+        }
+        if (message.content !== undefined) {
+            exports.ReportTemplateContent.encode(message.content, writer.uint32(26).fork()).join();
         }
         return writer;
     },
@@ -493,6 +973,12 @@ exports.ReportTemplateDesign = {
                     }
                     message.blocks.push(exports.ReportTemplateBlock.decode(reader, reader.uint32()));
                     continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.content = exports.ReportTemplateContent.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -507,6 +993,7 @@ exports.ReportTemplateDesign = {
             blocks: globalThis.Array.isArray(object?.blocks)
                 ? object.blocks.map((e) => exports.ReportTemplateBlock.fromJSON(e))
                 : [],
+            content: isSet(object.content) ? exports.ReportTemplateContent.fromJSON(object.content) : undefined,
         };
     },
     toJSON(message) {
@@ -516,6 +1003,9 @@ exports.ReportTemplateDesign = {
         }
         if (message.blocks?.length) {
             obj.blocks = message.blocks.map((e) => exports.ReportTemplateBlock.toJSON(e));
+        }
+        if (message.content !== undefined) {
+            obj.content = exports.ReportTemplateContent.toJSON(message.content);
         }
         return obj;
     },
@@ -528,6 +1018,9 @@ exports.ReportTemplateDesign = {
             ? report_template_theme_1.ReportTemplateTheme.fromPartial(object.theme)
             : undefined;
         message.blocks = object.blocks?.map((e) => exports.ReportTemplateBlock.fromPartial(e)) || [];
+        message.content = (object.content !== undefined && object.content !== null)
+            ? exports.ReportTemplateContent.fromPartial(object.content)
+            : undefined;
         return message;
     },
 };

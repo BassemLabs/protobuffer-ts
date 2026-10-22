@@ -15,10 +15,18 @@ export interface ReportTemplate {
   id: ObjectId | undefined;
   name?: string | undefined;
   design: ReportTemplateDesign | undefined;
+  version_id?: ObjectId | undefined;
+  version_number?: number | undefined;
+}
+
+export interface ReportTemplateVersionMetadata {
+  version_id: ObjectId | undefined;
+  version_number?: number | undefined;
+  name?: string | undefined;
 }
 
 function createBaseReportTemplate(): ReportTemplate {
-  return { id: undefined, name: undefined, design: undefined };
+  return { id: undefined, name: undefined, design: undefined, version_id: undefined, version_number: undefined };
 }
 
 export const ReportTemplate: MessageFns<ReportTemplate> = {
@@ -31,6 +39,12 @@ export const ReportTemplate: MessageFns<ReportTemplate> = {
     }
     if (message.design !== undefined) {
       ReportTemplateDesign.encode(message.design, writer.uint32(26).fork()).join();
+    }
+    if (message.version_id !== undefined) {
+      ObjectId.encode(message.version_id, writer.uint32(34).fork()).join();
+    }
+    if (message.version_number !== undefined) {
+      writer.uint32(40).uint32(message.version_number);
     }
     return writer;
   },
@@ -63,6 +77,20 @@ export const ReportTemplate: MessageFns<ReportTemplate> = {
 
           message.design = ReportTemplateDesign.decode(reader, reader.uint32());
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.version_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.version_number = reader.uint32();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -77,6 +105,8 @@ export const ReportTemplate: MessageFns<ReportTemplate> = {
       id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       design: isSet(object.design) ? ReportTemplateDesign.fromJSON(object.design) : undefined,
+      version_id: isSet(object.versionId) ? ObjectId.fromJSON(object.versionId) : undefined,
+      version_number: isSet(object.versionNumber) ? globalThis.Number(object.versionNumber) : undefined,
     };
   },
 
@@ -91,6 +121,12 @@ export const ReportTemplate: MessageFns<ReportTemplate> = {
     if (message.design !== undefined) {
       obj.design = ReportTemplateDesign.toJSON(message.design);
     }
+    if (message.version_id !== undefined) {
+      obj.versionId = ObjectId.toJSON(message.version_id);
+    }
+    if (message.version_number !== undefined) {
+      obj.versionNumber = Math.round(message.version_number);
+    }
     return obj;
   },
 
@@ -104,6 +140,103 @@ export const ReportTemplate: MessageFns<ReportTemplate> = {
     message.design = (object.design !== undefined && object.design !== null)
       ? ReportTemplateDesign.fromPartial(object.design)
       : undefined;
+    message.version_id = (object.version_id !== undefined && object.version_id !== null)
+      ? ObjectId.fromPartial(object.version_id)
+      : undefined;
+    message.version_number = object.version_number ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReportTemplateVersionMetadata(): ReportTemplateVersionMetadata {
+  return { version_id: undefined, version_number: undefined, name: undefined };
+}
+
+export const ReportTemplateVersionMetadata: MessageFns<ReportTemplateVersionMetadata> = {
+  encode(message: ReportTemplateVersionMetadata, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.version_id !== undefined) {
+      ObjectId.encode(message.version_id, writer.uint32(10).fork()).join();
+    }
+    if (message.version_number !== undefined) {
+      writer.uint32(16).uint32(message.version_number);
+    }
+    if (message.name !== undefined) {
+      writer.uint32(26).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportTemplateVersionMetadata {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportTemplateVersionMetadata();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.version_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.version_number = reader.uint32();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportTemplateVersionMetadata {
+    return {
+      version_id: isSet(object.versionId) ? ObjectId.fromJSON(object.versionId) : undefined,
+      version_number: isSet(object.versionNumber) ? globalThis.Number(object.versionNumber) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+    };
+  },
+
+  toJSON(message: ReportTemplateVersionMetadata): unknown {
+    const obj: any = {};
+    if (message.version_id !== undefined) {
+      obj.versionId = ObjectId.toJSON(message.version_id);
+    }
+    if (message.version_number !== undefined) {
+      obj.versionNumber = Math.round(message.version_number);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportTemplateVersionMetadata>, I>>(base?: I): ReportTemplateVersionMetadata {
+    return ReportTemplateVersionMetadata.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportTemplateVersionMetadata>, I>>(
+    object: I,
+  ): ReportTemplateVersionMetadata {
+    const message = createBaseReportTemplateVersionMetadata();
+    message.version_id = (object.version_id !== undefined && object.version_id !== null)
+      ? ObjectId.fromPartial(object.version_id)
+      : undefined;
+    message.version_number = object.version_number ?? undefined;
+    message.name = object.name ?? undefined;
     return message;
   },
 };

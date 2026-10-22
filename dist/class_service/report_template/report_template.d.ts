@@ -6,8 +6,16 @@ export interface ReportTemplate {
     id: ObjectId | undefined;
     name?: string | undefined;
     design: ReportTemplateDesign | undefined;
+    version_id?: ObjectId | undefined;
+    version_number?: number | undefined;
+}
+export interface ReportTemplateVersionMetadata {
+    version_id: ObjectId | undefined;
+    version_number?: number | undefined;
+    name?: string | undefined;
 }
 export declare const ReportTemplate: MessageFns<ReportTemplate>;
+export declare const ReportTemplateVersionMetadata: MessageFns<ReportTemplateVersionMetadata>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

@@ -5,14 +5,14 @@
 //   protoc               unknown
 // source: class_service/report_template/report_template.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReportTemplate = exports.protobufPackage = void 0;
+exports.ReportTemplateVersionMetadata = exports.ReportTemplate = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../../utils/object_id");
 const report_template_design_1 = require("./report_template_design");
 exports.protobufPackage = "class_service.report_template";
 function createBaseReportTemplate() {
-    return { id: undefined, name: undefined, design: undefined };
+    return { id: undefined, name: undefined, design: undefined, version_id: undefined, version_number: undefined };
 }
 exports.ReportTemplate = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -24,6 +24,12 @@ exports.ReportTemplate = {
         }
         if (message.design !== undefined) {
             report_template_design_1.ReportTemplateDesign.encode(message.design, writer.uint32(26).fork()).join();
+        }
+        if (message.version_id !== undefined) {
+            object_id_1.ObjectId.encode(message.version_id, writer.uint32(34).fork()).join();
+        }
+        if (message.version_number !== undefined) {
+            writer.uint32(40).uint32(message.version_number);
         }
         return writer;
     },
@@ -52,6 +58,18 @@ exports.ReportTemplate = {
                     }
                     message.design = report_template_design_1.ReportTemplateDesign.decode(reader, reader.uint32());
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.version_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.version_number = reader.uint32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -65,6 +83,8 @@ exports.ReportTemplate = {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
             name: isSet(object.name) ? globalThis.String(object.name) : undefined,
             design: isSet(object.design) ? report_template_design_1.ReportTemplateDesign.fromJSON(object.design) : undefined,
+            version_id: isSet(object.versionId) ? object_id_1.ObjectId.fromJSON(object.versionId) : undefined,
+            version_number: isSet(object.versionNumber) ? globalThis.Number(object.versionNumber) : undefined,
         };
     },
     toJSON(message) {
@@ -78,6 +98,12 @@ exports.ReportTemplate = {
         if (message.design !== undefined) {
             obj.design = report_template_design_1.ReportTemplateDesign.toJSON(message.design);
         }
+        if (message.version_id !== undefined) {
+            obj.versionId = object_id_1.ObjectId.toJSON(message.version_id);
+        }
+        if (message.version_number !== undefined) {
+            obj.versionNumber = Math.round(message.version_number);
+        }
         return obj;
     },
     create(base) {
@@ -90,6 +116,92 @@ exports.ReportTemplate = {
         message.design = (object.design !== undefined && object.design !== null)
             ? report_template_design_1.ReportTemplateDesign.fromPartial(object.design)
             : undefined;
+        message.version_id = (object.version_id !== undefined && object.version_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.version_id)
+            : undefined;
+        message.version_number = object.version_number ?? undefined;
+        return message;
+    },
+};
+function createBaseReportTemplateVersionMetadata() {
+    return { version_id: undefined, version_number: undefined, name: undefined };
+}
+exports.ReportTemplateVersionMetadata = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.version_id !== undefined) {
+            object_id_1.ObjectId.encode(message.version_id, writer.uint32(10).fork()).join();
+        }
+        if (message.version_number !== undefined) {
+            writer.uint32(16).uint32(message.version_number);
+        }
+        if (message.name !== undefined) {
+            writer.uint32(26).string(message.name);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateVersionMetadata();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.version_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.version_number = reader.uint32();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            version_id: isSet(object.versionId) ? object_id_1.ObjectId.fromJSON(object.versionId) : undefined,
+            version_number: isSet(object.versionNumber) ? globalThis.Number(object.versionNumber) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.version_id !== undefined) {
+            obj.versionId = object_id_1.ObjectId.toJSON(message.version_id);
+        }
+        if (message.version_number !== undefined) {
+            obj.versionNumber = Math.round(message.version_number);
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateVersionMetadata.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateVersionMetadata();
+        message.version_id = (object.version_id !== undefined && object.version_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.version_id)
+            : undefined;
+        message.version_number = object.version_number ?? undefined;
+        message.name = object.name ?? undefined;
         return message;
     },
 };

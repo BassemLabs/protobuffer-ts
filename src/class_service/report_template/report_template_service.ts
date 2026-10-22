@@ -8,7 +8,7 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../../utils/object_id";
 import { RequestContext } from "../../utils/request_context";
-import { ReportTemplate } from "./report_template";
+import { ReportTemplate, ReportTemplateVersionMetadata } from "./report_template";
 import { ReportTemplateDesign } from "./report_template_design";
 
 export const protobufPackage = "class_service.report_template";
@@ -17,6 +17,7 @@ export interface GetReportTemplateRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
   report_template_id: ObjectId | undefined;
+  version_id?: ObjectId | undefined;
 }
 
 export interface ListReportTemplatesRequest {
@@ -41,10 +42,25 @@ export interface UpdateReportTemplateRequest {
   report_template_id: ObjectId | undefined;
   name?: string | undefined;
   design: ReportTemplateDesign | undefined;
+  expected_version_id?: ObjectId | undefined;
+}
+
+export interface ListReportTemplateVersionsRequest {
+  context: RequestContext | undefined;
+  organization_id: ObjectId | undefined;
+  report_template_id:
+    | ObjectId
+    | undefined;
+  /** Newest first; at most 100 revisions per response. */
+  before_version_number?: number | undefined;
+}
+
+export interface ListReportTemplateVersionsResponse {
+  versions: ReportTemplateVersionMetadata[];
 }
 
 function createBaseGetReportTemplateRequest(): GetReportTemplateRequest {
-  return { context: undefined, organization_id: undefined, report_template_id: undefined };
+  return { context: undefined, organization_id: undefined, report_template_id: undefined, version_id: undefined };
 }
 
 export const GetReportTemplateRequest: MessageFns<GetReportTemplateRequest> = {
@@ -57,6 +73,9 @@ export const GetReportTemplateRequest: MessageFns<GetReportTemplateRequest> = {
     }
     if (message.report_template_id !== undefined) {
       ObjectId.encode(message.report_template_id, writer.uint32(26).fork()).join();
+    }
+    if (message.version_id !== undefined) {
+      ObjectId.encode(message.version_id, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -89,6 +108,13 @@ export const GetReportTemplateRequest: MessageFns<GetReportTemplateRequest> = {
 
           message.report_template_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.version_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -103,6 +129,7 @@ export const GetReportTemplateRequest: MessageFns<GetReportTemplateRequest> = {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
       report_template_id: isSet(object.reportTemplateId) ? ObjectId.fromJSON(object.reportTemplateId) : undefined,
+      version_id: isSet(object.versionId) ? ObjectId.fromJSON(object.versionId) : undefined,
     };
   },
 
@@ -116,6 +143,9 @@ export const GetReportTemplateRequest: MessageFns<GetReportTemplateRequest> = {
     }
     if (message.report_template_id !== undefined) {
       obj.reportTemplateId = ObjectId.toJSON(message.report_template_id);
+    }
+    if (message.version_id !== undefined) {
+      obj.versionId = ObjectId.toJSON(message.version_id);
     }
     return obj;
   },
@@ -133,6 +163,9 @@ export const GetReportTemplateRequest: MessageFns<GetReportTemplateRequest> = {
       : undefined;
     message.report_template_id = (object.report_template_id !== undefined && object.report_template_id !== null)
       ? ObjectId.fromPartial(object.report_template_id)
+      : undefined;
+    message.version_id = (object.version_id !== undefined && object.version_id !== null)
+      ? ObjectId.fromPartial(object.version_id)
       : undefined;
     return message;
   },
@@ -394,6 +427,7 @@ function createBaseUpdateReportTemplateRequest(): UpdateReportTemplateRequest {
     report_template_id: undefined,
     name: undefined,
     design: undefined,
+    expected_version_id: undefined,
   };
 }
 
@@ -413,6 +447,9 @@ export const UpdateReportTemplateRequest: MessageFns<UpdateReportTemplateRequest
     }
     if (message.design !== undefined) {
       ReportTemplateDesign.encode(message.design, writer.uint32(42).fork()).join();
+    }
+    if (message.expected_version_id !== undefined) {
+      ObjectId.encode(message.expected_version_id, writer.uint32(50).fork()).join();
     }
     return writer;
   },
@@ -459,6 +496,13 @@ export const UpdateReportTemplateRequest: MessageFns<UpdateReportTemplateRequest
 
           message.design = ReportTemplateDesign.decode(reader, reader.uint32());
           continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.expected_version_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -475,6 +519,7 @@ export const UpdateReportTemplateRequest: MessageFns<UpdateReportTemplateRequest
       report_template_id: isSet(object.reportTemplateId) ? ObjectId.fromJSON(object.reportTemplateId) : undefined,
       name: isSet(object.name) ? globalThis.String(object.name) : undefined,
       design: isSet(object.design) ? ReportTemplateDesign.fromJSON(object.design) : undefined,
+      expected_version_id: isSet(object.expectedVersionId) ? ObjectId.fromJSON(object.expectedVersionId) : undefined,
     };
   },
 
@@ -494,6 +539,9 @@ export const UpdateReportTemplateRequest: MessageFns<UpdateReportTemplateRequest
     }
     if (message.design !== undefined) {
       obj.design = ReportTemplateDesign.toJSON(message.design);
+    }
+    if (message.expected_version_id !== undefined) {
+      obj.expectedVersionId = ObjectId.toJSON(message.expected_version_id);
     }
     return obj;
   },
@@ -516,6 +564,195 @@ export const UpdateReportTemplateRequest: MessageFns<UpdateReportTemplateRequest
     message.design = (object.design !== undefined && object.design !== null)
       ? ReportTemplateDesign.fromPartial(object.design)
       : undefined;
+    message.expected_version_id = (object.expected_version_id !== undefined && object.expected_version_id !== null)
+      ? ObjectId.fromPartial(object.expected_version_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseListReportTemplateVersionsRequest(): ListReportTemplateVersionsRequest {
+  return {
+    context: undefined,
+    organization_id: undefined,
+    report_template_id: undefined,
+    before_version_number: undefined,
+  };
+}
+
+export const ListReportTemplateVersionsRequest: MessageFns<ListReportTemplateVersionsRequest> = {
+  encode(message: ListReportTemplateVersionsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.report_template_id !== undefined) {
+      ObjectId.encode(message.report_template_id, writer.uint32(26).fork()).join();
+    }
+    if (message.before_version_number !== undefined) {
+      writer.uint32(32).uint32(message.before_version_number);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListReportTemplateVersionsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListReportTemplateVersionsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.report_template_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.before_version_number = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListReportTemplateVersionsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      report_template_id: isSet(object.reportTemplateId) ? ObjectId.fromJSON(object.reportTemplateId) : undefined,
+      before_version_number: isSet(object.beforeVersionNumber)
+        ? globalThis.Number(object.beforeVersionNumber)
+        : undefined,
+    };
+  },
+
+  toJSON(message: ListReportTemplateVersionsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.report_template_id !== undefined) {
+      obj.reportTemplateId = ObjectId.toJSON(message.report_template_id);
+    }
+    if (message.before_version_number !== undefined) {
+      obj.beforeVersionNumber = Math.round(message.before_version_number);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListReportTemplateVersionsRequest>, I>>(
+    base?: I,
+  ): ListReportTemplateVersionsRequest {
+    return ListReportTemplateVersionsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListReportTemplateVersionsRequest>, I>>(
+    object: I,
+  ): ListReportTemplateVersionsRequest {
+    const message = createBaseListReportTemplateVersionsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.report_template_id = (object.report_template_id !== undefined && object.report_template_id !== null)
+      ? ObjectId.fromPartial(object.report_template_id)
+      : undefined;
+    message.before_version_number = object.before_version_number ?? undefined;
+    return message;
+  },
+};
+
+function createBaseListReportTemplateVersionsResponse(): ListReportTemplateVersionsResponse {
+  return { versions: [] };
+}
+
+export const ListReportTemplateVersionsResponse: MessageFns<ListReportTemplateVersionsResponse> = {
+  encode(message: ListReportTemplateVersionsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.versions) {
+      ReportTemplateVersionMetadata.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListReportTemplateVersionsResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListReportTemplateVersionsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.versions.push(ReportTemplateVersionMetadata.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListReportTemplateVersionsResponse {
+    return {
+      versions: globalThis.Array.isArray(object?.versions)
+        ? object.versions.map((e: any) => ReportTemplateVersionMetadata.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ListReportTemplateVersionsResponse): unknown {
+    const obj: any = {};
+    if (message.versions?.length) {
+      obj.versions = message.versions.map((e) => ReportTemplateVersionMetadata.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListReportTemplateVersionsResponse>, I>>(
+    base?: I,
+  ): ListReportTemplateVersionsResponse {
+    return ListReportTemplateVersionsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListReportTemplateVersionsResponse>, I>>(
+    object: I,
+  ): ListReportTemplateVersionsResponse {
+    const message = createBaseListReportTemplateVersionsResponse();
+    message.versions = object.versions?.map((e) => ReportTemplateVersionMetadata.fromPartial(e)) || [];
     return message;
   },
 };
