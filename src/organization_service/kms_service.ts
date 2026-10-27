@@ -12,11 +12,73 @@ import {
   lmsProviderTypeToJSON,
   lmsProviderTypeToNumber,
 } from "../class_service/lms_course";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { KMSKey, KMSKeyType, kMSKeyTypeFromJSON, kMSKeyTypeToJSON, kMSKeyTypeToNumber } from "./kms_key";
 
 export const protobufPackage = "organization_service";
+
+export enum LmsConnectionStatus {
+  LMS_CONNECTION_UNCONFIGURED = "LMS_CONNECTION_UNCONFIGURED",
+  LMS_CONNECTION_READY = "LMS_CONNECTION_READY",
+  LMS_CONNECTION_DISCONNECTED = "LMS_CONNECTION_DISCONNECTED",
+  LMS_CONNECTION_REAUTHORIZATION_REQUIRED = "LMS_CONNECTION_REAUTHORIZATION_REQUIRED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function lmsConnectionStatusFromJSON(object: any): LmsConnectionStatus {
+  switch (object) {
+    case 0:
+    case "LMS_CONNECTION_UNCONFIGURED":
+      return LmsConnectionStatus.LMS_CONNECTION_UNCONFIGURED;
+    case 1:
+    case "LMS_CONNECTION_READY":
+      return LmsConnectionStatus.LMS_CONNECTION_READY;
+    case 2:
+    case "LMS_CONNECTION_DISCONNECTED":
+      return LmsConnectionStatus.LMS_CONNECTION_DISCONNECTED;
+    case 3:
+    case "LMS_CONNECTION_REAUTHORIZATION_REQUIRED":
+      return LmsConnectionStatus.LMS_CONNECTION_REAUTHORIZATION_REQUIRED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return LmsConnectionStatus.UNRECOGNIZED;
+  }
+}
+
+export function lmsConnectionStatusToJSON(object: LmsConnectionStatus): string {
+  switch (object) {
+    case LmsConnectionStatus.LMS_CONNECTION_UNCONFIGURED:
+      return "LMS_CONNECTION_UNCONFIGURED";
+    case LmsConnectionStatus.LMS_CONNECTION_READY:
+      return "LMS_CONNECTION_READY";
+    case LmsConnectionStatus.LMS_CONNECTION_DISCONNECTED:
+      return "LMS_CONNECTION_DISCONNECTED";
+    case LmsConnectionStatus.LMS_CONNECTION_REAUTHORIZATION_REQUIRED:
+      return "LMS_CONNECTION_REAUTHORIZATION_REQUIRED";
+    case LmsConnectionStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function lmsConnectionStatusToNumber(object: LmsConnectionStatus): number {
+  switch (object) {
+    case LmsConnectionStatus.LMS_CONNECTION_UNCONFIGURED:
+      return 0;
+    case LmsConnectionStatus.LMS_CONNECTION_READY:
+      return 1;
+    case LmsConnectionStatus.LMS_CONNECTION_DISCONNECTED:
+      return 2;
+    case LmsConnectionStatus.LMS_CONNECTION_REAUTHORIZATION_REQUIRED:
+      return 3;
+    case LmsConnectionStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
 
 export interface GetKmsKeyRequest {
   context: RequestContext | undefined;
@@ -46,6 +108,176 @@ export interface GetAvailableLmsProvidersRequest {
 
 export interface GetAvailableLmsProvidersResponse {
   providers: LmsProviderType[];
+}
+
+export interface LmsConnectionState {
+  connection_id: ObjectId | undefined;
+  organization_id: ObjectId | undefined;
+  provider?: LmsProviderType | undefined;
+  revision?: number | undefined;
+  enabled?: boolean | undefined;
+  status?: LmsConnectionStatus | undefined;
+  base_url?: string | undefined;
+  grant_subject?: string | undefined;
+  event_generation?: number | undefined;
+}
+
+/**
+ * Shared by GetLmsConnectionState and DisconnectLmsConnection. The school is
+ * derived from context, so the request cannot target an arbitrary organization.
+ * State reads return non-secret metadata and do not create a connection row.
+ * The HTTP settings route additionally requires ORG_SETTINGS_FULL_ACCESS.
+ *
+ * Disconnect requires a teacher/organization-owner actor with that exact role,
+ * retires the stored grant and advances revision/event_generation to reject old
+ * work/events. It does not delete saved coursework or the Canvas key in KMS.
+ */
+export interface GetLmsConnectionStateRequest {
+  /**
+   * Authenticated school context, or organization-system context for internal reads.
+   * Disconnect requires the original permitted human actor.
+   */
+  context:
+    | RequestContext
+    | undefined;
+  /** The school's CANVAS or GOOGLE_CLASSROOM connection. */
+  provider?: LmsProviderType | undefined;
+}
+
+/**
+ * Internal worker credential access requiring an organization-system context;
+ * a school administrator's ordinary context cannot retrieve these secrets.
+ * The connection must be enabled/ready and expected_revision must still match.
+ *
+ * Canvas reads its KMS token. Google may refresh an expiring token while
+ * serializing grant rotation across replicas. Transient/throttle failures retain
+ * the grant and return typed retry metadata; revoked authorization requires reconnect.
+ * Never expose the response to frontend clients, telemetry or logs.
+ */
+export interface GetLmsCredentialSnapshotRequest {
+  /** System context for the school owning the worker's claimed scope. */
+  context:
+    | RequestContext
+    | undefined;
+  /** Selects which provider credential to load for that school. */
+  provider?:
+    | LmsProviderType
+    | undefined;
+  /**
+   * Revision captured in the claimed work, not event_generation. A mismatch
+   * rejects stale work instead of silently switching it to a newer credential.
+   */
+  expected_revision?: number | undefined;
+}
+
+export interface LmsCredentialSnapshot {
+  state: LmsConnectionState | undefined;
+  canvas_token?: string | undefined;
+  google_access_token?: string | undefined;
+  expires_at?: Date | undefined;
+}
+
+/**
+ * Starts retained-user Classroom OAuth consent for the context's school.
+ * Requires a teacher/organization-owner actor with ORG_SETTINGS_FULL_ACCESS;
+ * elevated/root authority alone does not replace that role.
+ *
+ * Creates random state and PKCE material bound to the actor, school, current
+ * connection revision and server-derived school callback. Consent expires after
+ * ten minutes; starting again retires earlier pending/exchanging consent.
+ * Opening the returned URL does not enable updates: complete consent, then enable.
+ */
+export interface StartLmsGoogleConsentRequest {
+  /** Original school administrator identity; no school/actor is accepted from OAuth parameters. */
+  context: RequestContext | undefined;
+}
+
+/**
+ * Used only by the central public GET callback before the school session is known.
+ * Requires a global system context with no attached school or human actor.
+ * Validates pending state, expiry, current connection revision and the school's
+ * current sign-in address against the stored destination.
+ *
+ * Returns only the fixed school callback URL. It neither consumes the state nor
+ * exchanges the code; grant completion still requires the initiating school/actor.
+ * Unknown, used, expired or replaced state must restart the connection flow.
+ */
+export interface ResolveLmsGoogleConsentReturnRequest {
+  /** Internal callback resolver identity, never a browser-supplied context. */
+  context:
+    | RequestContext
+    | undefined;
+  /**
+   * Exact 43-character base64url state returned through Google's callback, generated
+   * in StartLmsGoogleConsent's authorization URL. Treat as a secret; never log it.
+   */
+  state?: string | undefined;
+}
+
+export interface LmsGoogleConsentReturn {
+  return_url?: string | undefined;
+}
+
+export interface LmsGoogleConsent {
+  authorization_url?: string | undefined;
+  expires_at: Date | undefined;
+}
+
+/**
+ * Completes the browser callback under the initiating school and administrator,
+ * who must still have ORG_SETTINGS_FULL_ACCESS. The server retrieves the bound
+ * PKCE verifier; the browser cannot supply a school, actor, verifier or return URL.
+ * Pending consent must be unexpired and match the current connection revision.
+ *
+ * Concurrent exchanges are fenced. After successful completion, retrying the
+ * same actor-bound state returns current connection state without re-exchanging
+ * the code, allowing recovery from a lost response. Expired/failed consent needs
+ * a new flow. A newly connected grant stays paused until explicitly enabled.
+ */
+export interface CompleteLmsGoogleConsentRequest {
+  /** Original signed-in school administrator, not the public callback's system identity. */
+  context:
+    | RequestContext
+    | undefined;
+  /**
+   * Authorization code from the callback fragment; exchanged server-side with PKCE.
+   * Never log it, put it in browser storage or retain it in client mutation caches.
+   */
+  code?:
+    | string
+    | undefined;
+  /** Original opaque state from the same callback; selects the stored actor-bound consent. */
+  state?: string | undefined;
+}
+
+/**
+ * Enables/pauses the school's synchronization, requiring a teacher/organization-owner
+ * actor with ORG_SETTINGS_FULL_ACCESS and the last observed connection revision.
+ * Enable requires usable Canvas KMS configuration or a ready Classroom OAuth grant.
+ * This changes connection state; provider reconciliation/registration runs in the worker.
+ *
+ * Pause preserves credentials. A toggle advances revision to invalidate saved
+ * authority/work, while event_generation stays stable for configured Canvas delivery.
+ * On a revision conflict, reload state before deciding whether to retry the change.
+ */
+export interface SetLmsSyncEnabledRequest {
+  /** Original permitted administrator in the school being managed. */
+  context:
+    | RequestContext
+    | undefined;
+  /** The school's CANVAS or GOOGLE_CLASSROOM connection. */
+  provider?:
+    | LmsProviderType
+    | undefined;
+  /** Pause or enable synchronization without disconnecting the provider grant. */
+  enabled?:
+    | boolean
+    | undefined;
+  /**
+   * Revision from GetLmsConnectionState, not event_generation. Zero is allowed
+   * when enabling an initially unconfigured connection; do not use zero as a wildcard.
+   */
+  expected_revision?: number | undefined;
 }
 
 function createBaseGetKmsKeyRequest(): GetKmsKeyRequest {
@@ -526,6 +758,943 @@ export const GetAvailableLmsProvidersResponse: MessageFns<GetAvailableLmsProvide
   },
 };
 
+function createBaseLmsConnectionState(): LmsConnectionState {
+  return {
+    connection_id: undefined,
+    organization_id: undefined,
+    provider: undefined,
+    revision: undefined,
+    enabled: undefined,
+    status: undefined,
+    base_url: undefined,
+    grant_subject: undefined,
+    event_generation: undefined,
+  };
+}
+
+export const LmsConnectionState: MessageFns<LmsConnectionState> = {
+  encode(message: LmsConnectionState, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.connection_id !== undefined) {
+      ObjectId.encode(message.connection_id, writer.uint32(10).fork()).join();
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+    }
+    if (message.provider !== undefined) {
+      writer.uint32(24).int32(lmsProviderTypeToNumber(message.provider));
+    }
+    if (message.revision !== undefined) {
+      writer.uint32(32).uint64(message.revision);
+    }
+    if (message.enabled !== undefined) {
+      writer.uint32(40).bool(message.enabled);
+    }
+    if (message.status !== undefined) {
+      writer.uint32(48).int32(lmsConnectionStatusToNumber(message.status));
+    }
+    if (message.base_url !== undefined) {
+      writer.uint32(58).string(message.base_url);
+    }
+    if (message.grant_subject !== undefined) {
+      writer.uint32(66).string(message.grant_subject);
+    }
+    if (message.event_generation !== undefined) {
+      writer.uint32(72).uint64(message.event_generation);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LmsConnectionState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLmsConnectionState();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.connection_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.provider = lmsProviderTypeFromJSON(reader.int32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.revision = longToNumber(reader.uint64());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.enabled = reader.bool();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.status = lmsConnectionStatusFromJSON(reader.int32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.base_url = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.grant_subject = reader.string();
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.event_generation = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LmsConnectionState {
+    return {
+      connection_id: isSet(object.connectionId) ? ObjectId.fromJSON(object.connectionId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
+      revision: isSet(object.revision) ? globalThis.Number(object.revision) : undefined,
+      enabled: isSet(object.enabled) ? globalThis.Boolean(object.enabled) : undefined,
+      status: isSet(object.status) ? lmsConnectionStatusFromJSON(object.status) : undefined,
+      base_url: isSet(object.baseUrl) ? globalThis.String(object.baseUrl) : undefined,
+      grant_subject: isSet(object.grantSubject) ? globalThis.String(object.grantSubject) : undefined,
+      event_generation: isSet(object.eventGeneration) ? globalThis.Number(object.eventGeneration) : undefined,
+    };
+  },
+
+  toJSON(message: LmsConnectionState): unknown {
+    const obj: any = {};
+    if (message.connection_id !== undefined) {
+      obj.connectionId = ObjectId.toJSON(message.connection_id);
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    if (message.provider !== undefined) {
+      obj.provider = lmsProviderTypeToJSON(message.provider);
+    }
+    if (message.revision !== undefined) {
+      obj.revision = Math.round(message.revision);
+    }
+    if (message.enabled !== undefined) {
+      obj.enabled = message.enabled;
+    }
+    if (message.status !== undefined) {
+      obj.status = lmsConnectionStatusToJSON(message.status);
+    }
+    if (message.base_url !== undefined) {
+      obj.baseUrl = message.base_url;
+    }
+    if (message.grant_subject !== undefined) {
+      obj.grantSubject = message.grant_subject;
+    }
+    if (message.event_generation !== undefined) {
+      obj.eventGeneration = Math.round(message.event_generation);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LmsConnectionState>, I>>(base?: I): LmsConnectionState {
+    return LmsConnectionState.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LmsConnectionState>, I>>(object: I): LmsConnectionState {
+    const message = createBaseLmsConnectionState();
+    message.connection_id = (object.connection_id !== undefined && object.connection_id !== null)
+      ? ObjectId.fromPartial(object.connection_id)
+      : undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    message.provider = object.provider ?? undefined;
+    message.revision = object.revision ?? undefined;
+    message.enabled = object.enabled ?? undefined;
+    message.status = object.status ?? undefined;
+    message.base_url = object.base_url ?? undefined;
+    message.grant_subject = object.grant_subject ?? undefined;
+    message.event_generation = object.event_generation ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetLmsConnectionStateRequest(): GetLmsConnectionStateRequest {
+  return { context: undefined, provider: undefined };
+}
+
+export const GetLmsConnectionStateRequest: MessageFns<GetLmsConnectionStateRequest> = {
+  encode(message: GetLmsConnectionStateRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.provider !== undefined) {
+      writer.uint32(16).int32(lmsProviderTypeToNumber(message.provider));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetLmsConnectionStateRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetLmsConnectionStateRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.provider = lmsProviderTypeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetLmsConnectionStateRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
+    };
+  },
+
+  toJSON(message: GetLmsConnectionStateRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.provider !== undefined) {
+      obj.provider = lmsProviderTypeToJSON(message.provider);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetLmsConnectionStateRequest>, I>>(base?: I): GetLmsConnectionStateRequest {
+    return GetLmsConnectionStateRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetLmsConnectionStateRequest>, I>>(object: I): GetLmsConnectionStateRequest {
+    const message = createBaseGetLmsConnectionStateRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.provider = object.provider ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetLmsCredentialSnapshotRequest(): GetLmsCredentialSnapshotRequest {
+  return { context: undefined, provider: undefined, expected_revision: undefined };
+}
+
+export const GetLmsCredentialSnapshotRequest: MessageFns<GetLmsCredentialSnapshotRequest> = {
+  encode(message: GetLmsCredentialSnapshotRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.provider !== undefined) {
+      writer.uint32(16).int32(lmsProviderTypeToNumber(message.provider));
+    }
+    if (message.expected_revision !== undefined) {
+      writer.uint32(24).uint64(message.expected_revision);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetLmsCredentialSnapshotRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetLmsCredentialSnapshotRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.provider = lmsProviderTypeFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.expected_revision = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetLmsCredentialSnapshotRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
+      expected_revision: isSet(object.expectedRevision) ? globalThis.Number(object.expectedRevision) : undefined,
+    };
+  },
+
+  toJSON(message: GetLmsCredentialSnapshotRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.provider !== undefined) {
+      obj.provider = lmsProviderTypeToJSON(message.provider);
+    }
+    if (message.expected_revision !== undefined) {
+      obj.expectedRevision = Math.round(message.expected_revision);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetLmsCredentialSnapshotRequest>, I>>(base?: I): GetLmsCredentialSnapshotRequest {
+    return GetLmsCredentialSnapshotRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetLmsCredentialSnapshotRequest>, I>>(
+    object: I,
+  ): GetLmsCredentialSnapshotRequest {
+    const message = createBaseGetLmsCredentialSnapshotRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.provider = object.provider ?? undefined;
+    message.expected_revision = object.expected_revision ?? undefined;
+    return message;
+  },
+};
+
+function createBaseLmsCredentialSnapshot(): LmsCredentialSnapshot {
+  return { state: undefined, canvas_token: undefined, google_access_token: undefined, expires_at: undefined };
+}
+
+export const LmsCredentialSnapshot: MessageFns<LmsCredentialSnapshot> = {
+  encode(message: LmsCredentialSnapshot, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.state !== undefined) {
+      LmsConnectionState.encode(message.state, writer.uint32(10).fork()).join();
+    }
+    if (message.canvas_token !== undefined) {
+      writer.uint32(18).string(message.canvas_token);
+    }
+    if (message.google_access_token !== undefined) {
+      writer.uint32(26).string(message.google_access_token);
+    }
+    if (message.expires_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.expires_at), writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LmsCredentialSnapshot {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLmsCredentialSnapshot();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.state = LmsConnectionState.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.canvas_token = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.google_access_token = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.expires_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LmsCredentialSnapshot {
+    return {
+      state: isSet(object.state) ? LmsConnectionState.fromJSON(object.state) : undefined,
+      canvas_token: isSet(object.canvasToken) ? globalThis.String(object.canvasToken) : undefined,
+      google_access_token: isSet(object.googleAccessToken) ? globalThis.String(object.googleAccessToken) : undefined,
+      expires_at: isSet(object.expiresAt) ? fromJsonTimestamp(object.expiresAt) : undefined,
+    };
+  },
+
+  toJSON(message: LmsCredentialSnapshot): unknown {
+    const obj: any = {};
+    if (message.state !== undefined) {
+      obj.state = LmsConnectionState.toJSON(message.state);
+    }
+    if (message.canvas_token !== undefined) {
+      obj.canvasToken = message.canvas_token;
+    }
+    if (message.google_access_token !== undefined) {
+      obj.googleAccessToken = message.google_access_token;
+    }
+    if (message.expires_at !== undefined) {
+      obj.expiresAt = message.expires_at.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LmsCredentialSnapshot>, I>>(base?: I): LmsCredentialSnapshot {
+    return LmsCredentialSnapshot.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LmsCredentialSnapshot>, I>>(object: I): LmsCredentialSnapshot {
+    const message = createBaseLmsCredentialSnapshot();
+    message.state = (object.state !== undefined && object.state !== null)
+      ? LmsConnectionState.fromPartial(object.state)
+      : undefined;
+    message.canvas_token = object.canvas_token ?? undefined;
+    message.google_access_token = object.google_access_token ?? undefined;
+    message.expires_at = object.expires_at ?? undefined;
+    return message;
+  },
+};
+
+function createBaseStartLmsGoogleConsentRequest(): StartLmsGoogleConsentRequest {
+  return { context: undefined };
+}
+
+export const StartLmsGoogleConsentRequest: MessageFns<StartLmsGoogleConsentRequest> = {
+  encode(message: StartLmsGoogleConsentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StartLmsGoogleConsentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStartLmsGoogleConsentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StartLmsGoogleConsentRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: StartLmsGoogleConsentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StartLmsGoogleConsentRequest>, I>>(base?: I): StartLmsGoogleConsentRequest {
+    return StartLmsGoogleConsentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StartLmsGoogleConsentRequest>, I>>(object: I): StartLmsGoogleConsentRequest {
+    const message = createBaseStartLmsGoogleConsentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseResolveLmsGoogleConsentReturnRequest(): ResolveLmsGoogleConsentReturnRequest {
+  return { context: undefined, state: undefined };
+}
+
+export const ResolveLmsGoogleConsentReturnRequest: MessageFns<ResolveLmsGoogleConsentReturnRequest> = {
+  encode(message: ResolveLmsGoogleConsentReturnRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.state !== undefined) {
+      writer.uint32(18).string(message.state);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ResolveLmsGoogleConsentReturnRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseResolveLmsGoogleConsentReturnRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.state = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ResolveLmsGoogleConsentReturnRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      state: isSet(object.state) ? globalThis.String(object.state) : undefined,
+    };
+  },
+
+  toJSON(message: ResolveLmsGoogleConsentReturnRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.state !== undefined) {
+      obj.state = message.state;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ResolveLmsGoogleConsentReturnRequest>, I>>(
+    base?: I,
+  ): ResolveLmsGoogleConsentReturnRequest {
+    return ResolveLmsGoogleConsentReturnRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ResolveLmsGoogleConsentReturnRequest>, I>>(
+    object: I,
+  ): ResolveLmsGoogleConsentReturnRequest {
+    const message = createBaseResolveLmsGoogleConsentReturnRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.state = object.state ?? undefined;
+    return message;
+  },
+};
+
+function createBaseLmsGoogleConsentReturn(): LmsGoogleConsentReturn {
+  return { return_url: undefined };
+}
+
+export const LmsGoogleConsentReturn: MessageFns<LmsGoogleConsentReturn> = {
+  encode(message: LmsGoogleConsentReturn, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.return_url !== undefined) {
+      writer.uint32(10).string(message.return_url);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LmsGoogleConsentReturn {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLmsGoogleConsentReturn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.return_url = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LmsGoogleConsentReturn {
+    return { return_url: isSet(object.returnUrl) ? globalThis.String(object.returnUrl) : undefined };
+  },
+
+  toJSON(message: LmsGoogleConsentReturn): unknown {
+    const obj: any = {};
+    if (message.return_url !== undefined) {
+      obj.returnUrl = message.return_url;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LmsGoogleConsentReturn>, I>>(base?: I): LmsGoogleConsentReturn {
+    return LmsGoogleConsentReturn.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LmsGoogleConsentReturn>, I>>(object: I): LmsGoogleConsentReturn {
+    const message = createBaseLmsGoogleConsentReturn();
+    message.return_url = object.return_url ?? undefined;
+    return message;
+  },
+};
+
+function createBaseLmsGoogleConsent(): LmsGoogleConsent {
+  return { authorization_url: undefined, expires_at: undefined };
+}
+
+export const LmsGoogleConsent: MessageFns<LmsGoogleConsent> = {
+  encode(message: LmsGoogleConsent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.authorization_url !== undefined) {
+      writer.uint32(10).string(message.authorization_url);
+    }
+    if (message.expires_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.expires_at), writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LmsGoogleConsent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLmsGoogleConsent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.authorization_url = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.expires_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LmsGoogleConsent {
+    return {
+      authorization_url: isSet(object.authorizationUrl) ? globalThis.String(object.authorizationUrl) : undefined,
+      expires_at: isSet(object.expiresAt) ? fromJsonTimestamp(object.expiresAt) : undefined,
+    };
+  },
+
+  toJSON(message: LmsGoogleConsent): unknown {
+    const obj: any = {};
+    if (message.authorization_url !== undefined) {
+      obj.authorizationUrl = message.authorization_url;
+    }
+    if (message.expires_at !== undefined) {
+      obj.expiresAt = message.expires_at.toISOString();
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LmsGoogleConsent>, I>>(base?: I): LmsGoogleConsent {
+    return LmsGoogleConsent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<LmsGoogleConsent>, I>>(object: I): LmsGoogleConsent {
+    const message = createBaseLmsGoogleConsent();
+    message.authorization_url = object.authorization_url ?? undefined;
+    message.expires_at = object.expires_at ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCompleteLmsGoogleConsentRequest(): CompleteLmsGoogleConsentRequest {
+  return { context: undefined, code: undefined, state: undefined };
+}
+
+export const CompleteLmsGoogleConsentRequest: MessageFns<CompleteLmsGoogleConsentRequest> = {
+  encode(message: CompleteLmsGoogleConsentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.code !== undefined) {
+      writer.uint32(18).string(message.code);
+    }
+    if (message.state !== undefined) {
+      writer.uint32(26).string(message.state);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CompleteLmsGoogleConsentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCompleteLmsGoogleConsentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.code = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.state = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CompleteLmsGoogleConsentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+      state: isSet(object.state) ? globalThis.String(object.state) : undefined,
+    };
+  },
+
+  toJSON(message: CompleteLmsGoogleConsentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.code !== undefined) {
+      obj.code = message.code;
+    }
+    if (message.state !== undefined) {
+      obj.state = message.state;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CompleteLmsGoogleConsentRequest>, I>>(base?: I): CompleteLmsGoogleConsentRequest {
+    return CompleteLmsGoogleConsentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CompleteLmsGoogleConsentRequest>, I>>(
+    object: I,
+  ): CompleteLmsGoogleConsentRequest {
+    const message = createBaseCompleteLmsGoogleConsentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.code = object.code ?? undefined;
+    message.state = object.state ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSetLmsSyncEnabledRequest(): SetLmsSyncEnabledRequest {
+  return { context: undefined, provider: undefined, enabled: undefined, expected_revision: undefined };
+}
+
+export const SetLmsSyncEnabledRequest: MessageFns<SetLmsSyncEnabledRequest> = {
+  encode(message: SetLmsSyncEnabledRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.provider !== undefined) {
+      writer.uint32(16).int32(lmsProviderTypeToNumber(message.provider));
+    }
+    if (message.enabled !== undefined) {
+      writer.uint32(24).bool(message.enabled);
+    }
+    if (message.expected_revision !== undefined) {
+      writer.uint32(32).uint64(message.expected_revision);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SetLmsSyncEnabledRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSetLmsSyncEnabledRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.provider = lmsProviderTypeFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.enabled = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.expected_revision = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SetLmsSyncEnabledRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
+      enabled: isSet(object.enabled) ? globalThis.Boolean(object.enabled) : undefined,
+      expected_revision: isSet(object.expectedRevision) ? globalThis.Number(object.expectedRevision) : undefined,
+    };
+  },
+
+  toJSON(message: SetLmsSyncEnabledRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.provider !== undefined) {
+      obj.provider = lmsProviderTypeToJSON(message.provider);
+    }
+    if (message.enabled !== undefined) {
+      obj.enabled = message.enabled;
+    }
+    if (message.expected_revision !== undefined) {
+      obj.expectedRevision = Math.round(message.expected_revision);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SetLmsSyncEnabledRequest>, I>>(base?: I): SetLmsSyncEnabledRequest {
+    return SetLmsSyncEnabledRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SetLmsSyncEnabledRequest>, I>>(object: I): SetLmsSyncEnabledRequest {
+    const message = createBaseSetLmsSyncEnabledRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.provider = object.provider ?? undefined;
+    message.enabled = object.enabled ?? undefined;
+    message.expected_revision = object.expected_revision ?? undefined;
+    return message;
+  },
+};
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -537,6 +1706,39 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

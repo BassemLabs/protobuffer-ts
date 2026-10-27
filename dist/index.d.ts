@@ -100,6 +100,8 @@ import * as Comment_template_service from './class_service/comment_template_serv
 export { Comment_template_service };
 import * as Ai_interaction_service from './class_service/ai_interaction_service';
 export { Ai_interaction_service };
+import * as Lms_sync_service from './class_service/lms_sync/lms_sync_service';
+export { Lms_sync_service };
 import * as Device_token_service from './user_service/device_token_service';
 export { Device_token_service };
 import * as Data_export from './user_service/data_export';

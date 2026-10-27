@@ -5,14 +5,76 @@
 //   protoc               unknown
 // source: organization_service/kms_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetAvailableLmsProvidersResponse = exports.GetAvailableLmsProvidersRequest = exports.UpdateKmsKeyRequest = exports.GetOrganizationKmsKeysResponse = exports.GetOrganizationKmsKeysRequest = exports.GetKmsKeyRequest = exports.protobufPackage = void 0;
+exports.SetLmsSyncEnabledRequest = exports.CompleteLmsGoogleConsentRequest = exports.LmsGoogleConsent = exports.LmsGoogleConsentReturn = exports.ResolveLmsGoogleConsentReturnRequest = exports.StartLmsGoogleConsentRequest = exports.LmsCredentialSnapshot = exports.GetLmsCredentialSnapshotRequest = exports.GetLmsConnectionStateRequest = exports.LmsConnectionState = exports.GetAvailableLmsProvidersResponse = exports.GetAvailableLmsProvidersRequest = exports.UpdateKmsKeyRequest = exports.GetOrganizationKmsKeysResponse = exports.GetOrganizationKmsKeysRequest = exports.GetKmsKeyRequest = exports.LmsConnectionStatus = exports.protobufPackage = void 0;
+exports.lmsConnectionStatusFromJSON = lmsConnectionStatusFromJSON;
+exports.lmsConnectionStatusToJSON = lmsConnectionStatusToJSON;
+exports.lmsConnectionStatusToNumber = lmsConnectionStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const lms_course_1 = require("../class_service/lms_course");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const kms_key_1 = require("./kms_key");
 exports.protobufPackage = "organization_service";
+var LmsConnectionStatus;
+(function (LmsConnectionStatus) {
+    LmsConnectionStatus["LMS_CONNECTION_UNCONFIGURED"] = "LMS_CONNECTION_UNCONFIGURED";
+    LmsConnectionStatus["LMS_CONNECTION_READY"] = "LMS_CONNECTION_READY";
+    LmsConnectionStatus["LMS_CONNECTION_DISCONNECTED"] = "LMS_CONNECTION_DISCONNECTED";
+    LmsConnectionStatus["LMS_CONNECTION_REAUTHORIZATION_REQUIRED"] = "LMS_CONNECTION_REAUTHORIZATION_REQUIRED";
+    LmsConnectionStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(LmsConnectionStatus || (exports.LmsConnectionStatus = LmsConnectionStatus = {}));
+function lmsConnectionStatusFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "LMS_CONNECTION_UNCONFIGURED":
+            return LmsConnectionStatus.LMS_CONNECTION_UNCONFIGURED;
+        case 1:
+        case "LMS_CONNECTION_READY":
+            return LmsConnectionStatus.LMS_CONNECTION_READY;
+        case 2:
+        case "LMS_CONNECTION_DISCONNECTED":
+            return LmsConnectionStatus.LMS_CONNECTION_DISCONNECTED;
+        case 3:
+        case "LMS_CONNECTION_REAUTHORIZATION_REQUIRED":
+            return LmsConnectionStatus.LMS_CONNECTION_REAUTHORIZATION_REQUIRED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return LmsConnectionStatus.UNRECOGNIZED;
+    }
+}
+function lmsConnectionStatusToJSON(object) {
+    switch (object) {
+        case LmsConnectionStatus.LMS_CONNECTION_UNCONFIGURED:
+            return "LMS_CONNECTION_UNCONFIGURED";
+        case LmsConnectionStatus.LMS_CONNECTION_READY:
+            return "LMS_CONNECTION_READY";
+        case LmsConnectionStatus.LMS_CONNECTION_DISCONNECTED:
+            return "LMS_CONNECTION_DISCONNECTED";
+        case LmsConnectionStatus.LMS_CONNECTION_REAUTHORIZATION_REQUIRED:
+            return "LMS_CONNECTION_REAUTHORIZATION_REQUIRED";
+        case LmsConnectionStatus.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function lmsConnectionStatusToNumber(object) {
+    switch (object) {
+        case LmsConnectionStatus.LMS_CONNECTION_UNCONFIGURED:
+            return 0;
+        case LmsConnectionStatus.LMS_CONNECTION_READY:
+            return 1;
+        case LmsConnectionStatus.LMS_CONNECTION_DISCONNECTED:
+            return 2;
+        case LmsConnectionStatus.LMS_CONNECTION_REAUTHORIZATION_REQUIRED:
+            return 3;
+        case LmsConnectionStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseGetKmsKeyRequest() {
     return { context: undefined, organization_id: undefined, key_type: undefined };
 }
@@ -430,6 +492,875 @@ exports.GetAvailableLmsProvidersResponse = {
         return message;
     },
 };
+function createBaseLmsConnectionState() {
+    return {
+        connection_id: undefined,
+        organization_id: undefined,
+        provider: undefined,
+        revision: undefined,
+        enabled: undefined,
+        status: undefined,
+        base_url: undefined,
+        grant_subject: undefined,
+        event_generation: undefined,
+    };
+}
+exports.LmsConnectionState = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.connection_id !== undefined) {
+            object_id_1.ObjectId.encode(message.connection_id, writer.uint32(10).fork()).join();
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
+        }
+        if (message.provider !== undefined) {
+            writer.uint32(24).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.provider));
+        }
+        if (message.revision !== undefined) {
+            writer.uint32(32).uint64(message.revision);
+        }
+        if (message.enabled !== undefined) {
+            writer.uint32(40).bool(message.enabled);
+        }
+        if (message.status !== undefined) {
+            writer.uint32(48).int32(lmsConnectionStatusToNumber(message.status));
+        }
+        if (message.base_url !== undefined) {
+            writer.uint32(58).string(message.base_url);
+        }
+        if (message.grant_subject !== undefined) {
+            writer.uint32(66).string(message.grant_subject);
+        }
+        if (message.event_generation !== undefined) {
+            writer.uint32(72).uint64(message.event_generation);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseLmsConnectionState();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.connection_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.provider = (0, lms_course_1.lmsProviderTypeFromJSON)(reader.int32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.revision = longToNumber(reader.uint64());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.enabled = reader.bool();
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.status = lmsConnectionStatusFromJSON(reader.int32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.base_url = reader.string();
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.grant_subject = reader.string();
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.event_generation = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            connection_id: isSet(object.connectionId) ? object_id_1.ObjectId.fromJSON(object.connectionId) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : undefined,
+            revision: isSet(object.revision) ? globalThis.Number(object.revision) : undefined,
+            enabled: isSet(object.enabled) ? globalThis.Boolean(object.enabled) : undefined,
+            status: isSet(object.status) ? lmsConnectionStatusFromJSON(object.status) : undefined,
+            base_url: isSet(object.baseUrl) ? globalThis.String(object.baseUrl) : undefined,
+            grant_subject: isSet(object.grantSubject) ? globalThis.String(object.grantSubject) : undefined,
+            event_generation: isSet(object.eventGeneration) ? globalThis.Number(object.eventGeneration) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.connection_id !== undefined) {
+            obj.connectionId = object_id_1.ObjectId.toJSON(message.connection_id);
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        if (message.provider !== undefined) {
+            obj.provider = (0, lms_course_1.lmsProviderTypeToJSON)(message.provider);
+        }
+        if (message.revision !== undefined) {
+            obj.revision = Math.round(message.revision);
+        }
+        if (message.enabled !== undefined) {
+            obj.enabled = message.enabled;
+        }
+        if (message.status !== undefined) {
+            obj.status = lmsConnectionStatusToJSON(message.status);
+        }
+        if (message.base_url !== undefined) {
+            obj.baseUrl = message.base_url;
+        }
+        if (message.grant_subject !== undefined) {
+            obj.grantSubject = message.grant_subject;
+        }
+        if (message.event_generation !== undefined) {
+            obj.eventGeneration = Math.round(message.event_generation);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.LmsConnectionState.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseLmsConnectionState();
+        message.connection_id = (object.connection_id !== undefined && object.connection_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.connection_id)
+            : undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        message.provider = object.provider ?? undefined;
+        message.revision = object.revision ?? undefined;
+        message.enabled = object.enabled ?? undefined;
+        message.status = object.status ?? undefined;
+        message.base_url = object.base_url ?? undefined;
+        message.grant_subject = object.grant_subject ?? undefined;
+        message.event_generation = object.event_generation ?? undefined;
+        return message;
+    },
+};
+function createBaseGetLmsConnectionStateRequest() {
+    return { context: undefined, provider: undefined };
+}
+exports.GetLmsConnectionStateRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.provider !== undefined) {
+            writer.uint32(16).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.provider));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetLmsConnectionStateRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.provider = (0, lms_course_1.lmsProviderTypeFromJSON)(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.provider !== undefined) {
+            obj.provider = (0, lms_course_1.lmsProviderTypeToJSON)(message.provider);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetLmsConnectionStateRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetLmsConnectionStateRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.provider = object.provider ?? undefined;
+        return message;
+    },
+};
+function createBaseGetLmsCredentialSnapshotRequest() {
+    return { context: undefined, provider: undefined, expected_revision: undefined };
+}
+exports.GetLmsCredentialSnapshotRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.provider !== undefined) {
+            writer.uint32(16).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.provider));
+        }
+        if (message.expected_revision !== undefined) {
+            writer.uint32(24).uint64(message.expected_revision);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetLmsCredentialSnapshotRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.provider = (0, lms_course_1.lmsProviderTypeFromJSON)(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.expected_revision = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : undefined,
+            expected_revision: isSet(object.expectedRevision) ? globalThis.Number(object.expectedRevision) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.provider !== undefined) {
+            obj.provider = (0, lms_course_1.lmsProviderTypeToJSON)(message.provider);
+        }
+        if (message.expected_revision !== undefined) {
+            obj.expectedRevision = Math.round(message.expected_revision);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetLmsCredentialSnapshotRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetLmsCredentialSnapshotRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.provider = object.provider ?? undefined;
+        message.expected_revision = object.expected_revision ?? undefined;
+        return message;
+    },
+};
+function createBaseLmsCredentialSnapshot() {
+    return { state: undefined, canvas_token: undefined, google_access_token: undefined, expires_at: undefined };
+}
+exports.LmsCredentialSnapshot = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.state !== undefined) {
+            exports.LmsConnectionState.encode(message.state, writer.uint32(10).fork()).join();
+        }
+        if (message.canvas_token !== undefined) {
+            writer.uint32(18).string(message.canvas_token);
+        }
+        if (message.google_access_token !== undefined) {
+            writer.uint32(26).string(message.google_access_token);
+        }
+        if (message.expires_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.expires_at), writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseLmsCredentialSnapshot();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.state = exports.LmsConnectionState.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.canvas_token = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.google_access_token = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.expires_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            state: isSet(object.state) ? exports.LmsConnectionState.fromJSON(object.state) : undefined,
+            canvas_token: isSet(object.canvasToken) ? globalThis.String(object.canvasToken) : undefined,
+            google_access_token: isSet(object.googleAccessToken) ? globalThis.String(object.googleAccessToken) : undefined,
+            expires_at: isSet(object.expiresAt) ? fromJsonTimestamp(object.expiresAt) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.state !== undefined) {
+            obj.state = exports.LmsConnectionState.toJSON(message.state);
+        }
+        if (message.canvas_token !== undefined) {
+            obj.canvasToken = message.canvas_token;
+        }
+        if (message.google_access_token !== undefined) {
+            obj.googleAccessToken = message.google_access_token;
+        }
+        if (message.expires_at !== undefined) {
+            obj.expiresAt = message.expires_at.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.LmsCredentialSnapshot.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseLmsCredentialSnapshot();
+        message.state = (object.state !== undefined && object.state !== null)
+            ? exports.LmsConnectionState.fromPartial(object.state)
+            : undefined;
+        message.canvas_token = object.canvas_token ?? undefined;
+        message.google_access_token = object.google_access_token ?? undefined;
+        message.expires_at = object.expires_at ?? undefined;
+        return message;
+    },
+};
+function createBaseStartLmsGoogleConsentRequest() {
+    return { context: undefined };
+}
+exports.StartLmsGoogleConsentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStartLmsGoogleConsentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StartLmsGoogleConsentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStartLmsGoogleConsentRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseResolveLmsGoogleConsentReturnRequest() {
+    return { context: undefined, state: undefined };
+}
+exports.ResolveLmsGoogleConsentReturnRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.state !== undefined) {
+            writer.uint32(18).string(message.state);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseResolveLmsGoogleConsentReturnRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.state = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            state: isSet(object.state) ? globalThis.String(object.state) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.state !== undefined) {
+            obj.state = message.state;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ResolveLmsGoogleConsentReturnRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseResolveLmsGoogleConsentReturnRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.state = object.state ?? undefined;
+        return message;
+    },
+};
+function createBaseLmsGoogleConsentReturn() {
+    return { return_url: undefined };
+}
+exports.LmsGoogleConsentReturn = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.return_url !== undefined) {
+            writer.uint32(10).string(message.return_url);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseLmsGoogleConsentReturn();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.return_url = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { return_url: isSet(object.returnUrl) ? globalThis.String(object.returnUrl) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.return_url !== undefined) {
+            obj.returnUrl = message.return_url;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.LmsGoogleConsentReturn.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseLmsGoogleConsentReturn();
+        message.return_url = object.return_url ?? undefined;
+        return message;
+    },
+};
+function createBaseLmsGoogleConsent() {
+    return { authorization_url: undefined, expires_at: undefined };
+}
+exports.LmsGoogleConsent = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.authorization_url !== undefined) {
+            writer.uint32(10).string(message.authorization_url);
+        }
+        if (message.expires_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.expires_at), writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseLmsGoogleConsent();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.authorization_url = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.expires_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            authorization_url: isSet(object.authorizationUrl) ? globalThis.String(object.authorizationUrl) : undefined,
+            expires_at: isSet(object.expiresAt) ? fromJsonTimestamp(object.expiresAt) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.authorization_url !== undefined) {
+            obj.authorizationUrl = message.authorization_url;
+        }
+        if (message.expires_at !== undefined) {
+            obj.expiresAt = message.expires_at.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.LmsGoogleConsent.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseLmsGoogleConsent();
+        message.authorization_url = object.authorization_url ?? undefined;
+        message.expires_at = object.expires_at ?? undefined;
+        return message;
+    },
+};
+function createBaseCompleteLmsGoogleConsentRequest() {
+    return { context: undefined, code: undefined, state: undefined };
+}
+exports.CompleteLmsGoogleConsentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.code !== undefined) {
+            writer.uint32(18).string(message.code);
+        }
+        if (message.state !== undefined) {
+            writer.uint32(26).string(message.state);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCompleteLmsGoogleConsentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.code = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.state = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+            state: isSet(object.state) ? globalThis.String(object.state) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.code !== undefined) {
+            obj.code = message.code;
+        }
+        if (message.state !== undefined) {
+            obj.state = message.state;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CompleteLmsGoogleConsentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCompleteLmsGoogleConsentRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.code = object.code ?? undefined;
+        message.state = object.state ?? undefined;
+        return message;
+    },
+};
+function createBaseSetLmsSyncEnabledRequest() {
+    return { context: undefined, provider: undefined, enabled: undefined, expected_revision: undefined };
+}
+exports.SetLmsSyncEnabledRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.provider !== undefined) {
+            writer.uint32(16).int32((0, lms_course_1.lmsProviderTypeToNumber)(message.provider));
+        }
+        if (message.enabled !== undefined) {
+            writer.uint32(24).bool(message.enabled);
+        }
+        if (message.expected_revision !== undefined) {
+            writer.uint32(32).uint64(message.expected_revision);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSetLmsSyncEnabledRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.provider = (0, lms_course_1.lmsProviderTypeFromJSON)(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.enabled = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.expected_revision = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            provider: isSet(object.provider) ? (0, lms_course_1.lmsProviderTypeFromJSON)(object.provider) : undefined,
+            enabled: isSet(object.enabled) ? globalThis.Boolean(object.enabled) : undefined,
+            expected_revision: isSet(object.expectedRevision) ? globalThis.Number(object.expectedRevision) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.provider !== undefined) {
+            obj.provider = (0, lms_course_1.lmsProviderTypeToJSON)(message.provider);
+        }
+        if (message.enabled !== undefined) {
+            obj.enabled = message.enabled;
+        }
+        if (message.expected_revision !== undefined) {
+            obj.expectedRevision = Math.round(message.expected_revision);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SetLmsSyncEnabledRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSetLmsSyncEnabledRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.provider = object.provider ?? undefined;
+        message.enabled = object.enabled ?? undefined;
+        message.expected_revision = object.expected_revision ?? undefined;
+        return message;
+    },
+};
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }
