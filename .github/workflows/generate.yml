@@ -61,11 +61,14 @@ jobs:
         run: npm install
 
       - name: Build the library
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
         run: npm run build
 
 
       # Step 8: Commit and push the generated code
       - name: Commit and push changes
+        if: github.ref == 'refs/heads/main'
         run: |
           rm -rf proto-repo
           git config --global user.name "GitHub Actions"
