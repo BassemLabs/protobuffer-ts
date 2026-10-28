@@ -169,6 +169,10 @@ export interface CheckCanRemoveOrgDomainResponse {
     active_teachers_count?: number | undefined;
     students_count?: number | undefined;
 }
+export interface OrganizationAdminProvisioningRequest {
+    context: RequestContext | undefined;
+    request_id?: string | undefined;
+}
 export declare const GetTeacherRequest: MessageFns<GetTeacherRequest>;
 export declare const GetTeacherByEmailRequest: MessageFns<GetTeacherByEmailRequest>;
 export declare const GetTeachersListRequest: MessageFns<GetTeachersListRequest>;
@@ -204,6 +208,7 @@ export declare const GetTeacherUploadHeaderRequest: MessageFns<GetTeacherUploadH
 export declare const GetTeacherUploadHeaderResponse: MessageFns<GetTeacherUploadHeaderResponse>;
 export declare const CheckCanRemoveOrgDomainRequest: MessageFns<CheckCanRemoveOrgDomainRequest>;
 export declare const CheckCanRemoveOrgDomainResponse: MessageFns<CheckCanRemoveOrgDomainResponse>;
+export declare const OrganizationAdminProvisioningRequest: MessageFns<OrganizationAdminProvisioningRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

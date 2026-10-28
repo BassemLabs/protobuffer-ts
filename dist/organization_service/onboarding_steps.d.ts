@@ -11,7 +11,7 @@ export declare function onboardingStepStatusFromJSON(object: any): OnboardingSte
 export declare function onboardingStepStatusToJSON(object: OnboardingStepStatus): string;
 export declare function onboardingStepStatusToNumber(object: OnboardingStepStatus): number;
 export declare enum OnboardingStepName {
-    ORG_OWNER_PROFILE = "ORG_OWNER_PROFILE",
+    ONBOARDING_STEP_NAME_UNSPECIFIED = "ONBOARDING_STEP_NAME_UNSPECIFIED",
     ORGANIZATION_SETTINGS = "ORGANIZATION_SETTINGS",
     ORGANIZATION_KEYS = "ORGANIZATION_KEYS",
     PAYMENTS = "PAYMENTS",

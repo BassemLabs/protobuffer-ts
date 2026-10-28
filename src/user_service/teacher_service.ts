@@ -280,6 +280,11 @@ export interface CheckCanRemoveOrgDomainResponse {
   students_count?: number | undefined;
 }
 
+export interface OrganizationAdminProvisioningRequest {
+  context: RequestContext | undefined;
+  request_id?: string | undefined;
+}
+
 function createBaseGetTeacherRequest(): GetTeacherRequest {
   return { context: undefined, teacher_id: undefined };
 }
@@ -3155,6 +3160,86 @@ export const CheckCanRemoveOrgDomainResponse: MessageFns<CheckCanRemoveOrgDomain
     message.can_remove = object.can_remove ?? undefined;
     message.active_teachers_count = object.active_teachers_count ?? undefined;
     message.students_count = object.students_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseOrganizationAdminProvisioningRequest(): OrganizationAdminProvisioningRequest {
+  return { context: undefined, request_id: undefined };
+}
+
+export const OrganizationAdminProvisioningRequest: MessageFns<OrganizationAdminProvisioningRequest> = {
+  encode(message: OrganizationAdminProvisioningRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.request_id !== undefined) {
+      writer.uint32(18).string(message.request_id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): OrganizationAdminProvisioningRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseOrganizationAdminProvisioningRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.request_id = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): OrganizationAdminProvisioningRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      request_id: isSet(object.requestId) ? globalThis.String(object.requestId) : undefined,
+    };
+  },
+
+  toJSON(message: OrganizationAdminProvisioningRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.request_id !== undefined) {
+      obj.requestId = message.request_id;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<OrganizationAdminProvisioningRequest>, I>>(
+    base?: I,
+  ): OrganizationAdminProvisioningRequest {
+    return OrganizationAdminProvisioningRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<OrganizationAdminProvisioningRequest>, I>>(
+    object: I,
+  ): OrganizationAdminProvisioningRequest {
+    const message = createBaseOrganizationAdminProvisioningRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.request_id = object.request_id ?? undefined;
     return message;
   },
 };

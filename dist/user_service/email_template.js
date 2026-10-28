@@ -45,6 +45,7 @@ var EmailTemplateKey;
     EmailTemplateKey["REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL"] = "REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL";
     /** PAYMENT_REMINDER_EMAIL - Tuition payment reminder template */
     EmailTemplateKey["PAYMENT_REMINDER_EMAIL"] = "PAYMENT_REMINDER_EMAIL";
+    EmailTemplateKey["ORGANIZATION_SETUP_INVITATION_EMAIL"] = "ORGANIZATION_SETUP_INVITATION_EMAIL";
     EmailTemplateKey["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(EmailTemplateKey || (exports.EmailTemplateKey = EmailTemplateKey = {}));
 function emailTemplateKeyFromJSON(object) {
@@ -112,6 +113,9 @@ function emailTemplateKeyFromJSON(object) {
         case 21:
         case "PAYMENT_REMINDER_EMAIL":
             return EmailTemplateKey.PAYMENT_REMINDER_EMAIL;
+        case 22:
+        case "ORGANIZATION_SETUP_INVITATION_EMAIL":
+            return EmailTemplateKey.ORGANIZATION_SETUP_INVITATION_EMAIL;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -162,6 +166,8 @@ function emailTemplateKeyToJSON(object) {
             return "REREGISTRATION_ENROLLMENT_CONFIRMATION_EMAIL";
         case EmailTemplateKey.PAYMENT_REMINDER_EMAIL:
             return "PAYMENT_REMINDER_EMAIL";
+        case EmailTemplateKey.ORGANIZATION_SETUP_INVITATION_EMAIL:
+            return "ORGANIZATION_SETUP_INVITATION_EMAIL";
         case EmailTemplateKey.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -211,6 +217,8 @@ function emailTemplateKeyToNumber(object) {
             return 20;
         case EmailTemplateKey.PAYMENT_REMINDER_EMAIL:
             return 21;
+        case EmailTemplateKey.ORGANIZATION_SETUP_INVITATION_EMAIL:
+            return 22;
         case EmailTemplateKey.UNRECOGNIZED:
         default:
             return -1;

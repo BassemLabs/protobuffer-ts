@@ -69,7 +69,7 @@ function onboardingStepStatusToNumber(object) {
 }
 var OnboardingStepName;
 (function (OnboardingStepName) {
-    OnboardingStepName["ORG_OWNER_PROFILE"] = "ORG_OWNER_PROFILE";
+    OnboardingStepName["ONBOARDING_STEP_NAME_UNSPECIFIED"] = "ONBOARDING_STEP_NAME_UNSPECIFIED";
     OnboardingStepName["ORGANIZATION_SETTINGS"] = "ORGANIZATION_SETTINGS";
     OnboardingStepName["ORGANIZATION_KEYS"] = "ORGANIZATION_KEYS";
     OnboardingStepName["PAYMENTS"] = "PAYMENTS";
@@ -93,8 +93,8 @@ var OnboardingStepName;
 function onboardingStepNameFromJSON(object) {
     switch (object) {
         case 0:
-        case "ORG_OWNER_PROFILE":
-            return OnboardingStepName.ORG_OWNER_PROFILE;
+        case "ONBOARDING_STEP_NAME_UNSPECIFIED":
+            return OnboardingStepName.ONBOARDING_STEP_NAME_UNSPECIFIED;
         case 1:
         case "ORGANIZATION_SETTINGS":
             return OnboardingStepName.ORGANIZATION_SETTINGS;
@@ -157,8 +157,8 @@ function onboardingStepNameFromJSON(object) {
 }
 function onboardingStepNameToJSON(object) {
     switch (object) {
-        case OnboardingStepName.ORG_OWNER_PROFILE:
-            return "ORG_OWNER_PROFILE";
+        case OnboardingStepName.ONBOARDING_STEP_NAME_UNSPECIFIED:
+            return "ONBOARDING_STEP_NAME_UNSPECIFIED";
         case OnboardingStepName.ORGANIZATION_SETTINGS:
             return "ORGANIZATION_SETTINGS";
         case OnboardingStepName.ORGANIZATION_KEYS:
@@ -202,7 +202,7 @@ function onboardingStepNameToJSON(object) {
 }
 function onboardingStepNameToNumber(object) {
     switch (object) {
-        case OnboardingStepName.ORG_OWNER_PROFILE:
+        case OnboardingStepName.ONBOARDING_STEP_NAME_UNSPECIFIED:
             return 0;
         case OnboardingStepName.ORGANIZATION_SETTINGS:
             return 1;

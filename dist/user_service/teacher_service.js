@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/teacher_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.GetTeacherUploadHeaderResponse = exports.GetTeacherUploadHeaderRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.ValidateTeacherUsernameResponse = exports.ValidateTeacherUsernameRequest = exports.SuggestTeacherUsernameResponse = exports.SuggestTeacherUsernameRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.ResolveTeacherSignatureUrlsResponse = exports.TeacherSignatureUrlResolution = exports.ResolveTeacherSignatureUrlsRequest = exports.GetTeacherSignatureUrlResponse = exports.SaveTeacherSignatureResponse = exports.SaveTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.TeacherSignatureResolutionStatus = exports.protobufPackage = void 0;
+exports.OrganizationAdminProvisioningRequest = exports.CheckCanRemoveOrgDomainResponse = exports.CheckCanRemoveOrgDomainRequest = exports.GetTeacherUploadHeaderResponse = exports.GetTeacherUploadHeaderRequest = exports.UploadTeachersResponse = exports.UploadTeachersRequest = exports.ReactivateTeacherRequest = exports.WithdrawTeacherRequest = exports.ValidateTeacherUsernameResponse = exports.ValidateTeacherUsernameRequest = exports.SuggestTeacherUsernameResponse = exports.SuggestTeacherUsernameRequest = exports.CreateTeacherRequest = exports.ChangeTeacherPasswordRequest = exports.UpdateTeacherProfileRequest = exports.DeleteTeacherSignatureRequest = exports.UpdateTeacherSignatureRequest = exports.ResolveTeacherSignatureUrlsResponse = exports.TeacherSignatureUrlResolution = exports.ResolveTeacherSignatureUrlsRequest = exports.GetTeacherSignatureUrlResponse = exports.SaveTeacherSignatureResponse = exports.SaveTeacherSignatureRequest = exports.GetTeacherSignatureResponse = exports.GetTeacherSignatureRequest = exports.GetFullTeachersByIdsResponse = exports.GetFullTeachersByIdsRequest = exports.GetTeachersByIdsResponse = exports.GetTeachersByIdsRequest = exports.GetAllTeachersForStagingResponse = exports.GetAllTeachersForStagingRequest = exports.GetTeachersListResponse = exports.GetTeachersListRequest = exports.GetTeacherByEmailRequest = exports.GetTeacherRequest = exports.TeacherSignatureResolutionStatus = exports.protobufPackage = void 0;
 exports.teacherSignatureResolutionStatusFromJSON = teacherSignatureResolutionStatusFromJSON;
 exports.teacherSignatureResolutionStatusToJSON = teacherSignatureResolutionStatusToJSON;
 exports.teacherSignatureResolutionStatusToNumber = teacherSignatureResolutionStatusToNumber;
@@ -2621,6 +2621,74 @@ exports.CheckCanRemoveOrgDomainResponse = {
         message.can_remove = object.can_remove ?? undefined;
         message.active_teachers_count = object.active_teachers_count ?? undefined;
         message.students_count = object.students_count ?? undefined;
+        return message;
+    },
+};
+function createBaseOrganizationAdminProvisioningRequest() {
+    return { context: undefined, request_id: undefined };
+}
+exports.OrganizationAdminProvisioningRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.request_id !== undefined) {
+            writer.uint32(18).string(message.request_id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseOrganizationAdminProvisioningRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.request_id = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            request_id: isSet(object.requestId) ? globalThis.String(object.requestId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.request_id !== undefined) {
+            obj.requestId = message.request_id;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.OrganizationAdminProvisioningRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseOrganizationAdminProvisioningRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.request_id = object.request_id ?? undefined;
         return message;
     },
 };

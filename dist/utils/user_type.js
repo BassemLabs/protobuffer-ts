@@ -18,6 +18,11 @@ var UserType;
     UserType["TEACHER"] = "TEACHER";
     UserType["PARENT"] = "PARENT";
     UserType["BASSEM_LABS_STAFF"] = "BASSEM_LABS_STAFF";
+    /**
+     * ORGANIZATION_OWNER - Deprecated historical identity; retained for persisted attribution, not new accounts.
+     *
+     * @deprecated
+     */
     UserType["ORGANIZATION_OWNER"] = "ORGANIZATION_OWNER";
     UserType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(UserType || (exports.UserType = UserType = {}));

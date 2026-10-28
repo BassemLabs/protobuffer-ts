@@ -5,6 +5,11 @@ export declare enum UserType {
     TEACHER = "TEACHER",
     PARENT = "PARENT",
     BASSEM_LABS_STAFF = "BASSEM_LABS_STAFF",
+    /**
+     * ORGANIZATION_OWNER - Deprecated historical identity; retained for persisted attribution, not new accounts.
+     *
+     * @deprecated
+     */
     ORGANIZATION_OWNER = "ORGANIZATION_OWNER",
     UNRECOGNIZED = "UNRECOGNIZED"
 }

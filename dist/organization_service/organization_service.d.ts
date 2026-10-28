@@ -59,6 +59,24 @@ export declare enum StartSchoolYearPhaseStatus {
 export declare function startSchoolYearPhaseStatusFromJSON(object: any): StartSchoolYearPhaseStatus;
 export declare function startSchoolYearPhaseStatusToJSON(object: StartSchoolYearPhaseStatus): string;
 export declare function startSchoolYearPhaseStatusToNumber(object: StartSchoolYearPhaseStatus): number;
+export declare enum OrganizationProvisioningPhase {
+    ORGANIZATION_PROVISIONING_PHASE_RESERVED = "ORGANIZATION_PROVISIONING_PHASE_RESERVED",
+    ORGANIZATION_PROVISIONING_PHASE_ORGANIZATION_READY = "ORGANIZATION_PROVISIONING_PHASE_ORGANIZATION_READY",
+    ORGANIZATION_PROVISIONING_PHASE_COMPLETED = "ORGANIZATION_PROVISIONING_PHASE_COMPLETED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function organizationProvisioningPhaseFromJSON(object: any): OrganizationProvisioningPhase;
+export declare function organizationProvisioningPhaseToJSON(object: OrganizationProvisioningPhase): string;
+export declare function organizationProvisioningPhaseToNumber(object: OrganizationProvisioningPhase): number;
+export declare enum OrganizationSetupInvitationState {
+    ORGANIZATION_SETUP_INVITATION_STATE_PENDING = "ORGANIZATION_SETUP_INVITATION_STATE_PENDING",
+    ORGANIZATION_SETUP_INVITATION_STATE_QUEUED = "ORGANIZATION_SETUP_INVITATION_STATE_QUEUED",
+    ORGANIZATION_SETUP_INVITATION_STATE_FAILED = "ORGANIZATION_SETUP_INVITATION_STATE_FAILED",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function organizationSetupInvitationStateFromJSON(object: any): OrganizationSetupInvitationState;
+export declare function organizationSetupInvitationStateToJSON(object: OrganizationSetupInvitationState): string;
+export declare function organizationSetupInvitationStateToNumber(object: OrganizationSetupInvitationState): number;
 /** Request to fetch an organization by its ID */
 export interface GetOrganizationRequest {
     context: RequestContext | undefined;
@@ -326,6 +344,42 @@ export interface UpdateOrganizationEmailBrandingRequest {
     header_background_color?: string | undefined;
     header_border_color?: string | undefined;
 }
+export interface FirstOrganizationAdminInput {
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+    school_email?: string | undefined;
+    gender?: string | undefined;
+    date_of_birth?: string | undefined;
+    phone_number?: string | undefined;
+}
+export interface OrganizationProvisioning {
+    request_id?: string | undefined;
+    organization_id: ObjectId | undefined;
+    administrator_id: ObjectId | undefined;
+    administrator: FirstOrganizationAdminInput | undefined;
+    phase?: OrganizationProvisioningPhase | undefined;
+    invitation_state?: OrganizationSetupInvitationState | undefined;
+    organization_name?: string | undefined;
+    login_id?: string | undefined;
+    domain?: string | undefined;
+    active_school_year_id: ObjectId | undefined;
+}
+export interface ProvisionOrganizationRequest {
+    context: RequestContext | undefined;
+    request_id?: string | undefined;
+    organization_name?: string | undefined;
+    login_id?: string | undefined;
+    domain?: string | undefined;
+    administrator: FirstOrganizationAdminInput | undefined;
+}
+export interface GetOrganizationProvisioningRequest {
+    context: RequestContext | undefined;
+    request_id?: string | undefined;
+}
+export interface SendOrganizationSetupInvitationRequest {
+    context: RequestContext | undefined;
+    organization_id: ObjectId | undefined;
+}
 export declare const GetOrganizationRequest: MessageFns<GetOrganizationRequest>;
 export declare const GetOrganizationByDomainRequest: MessageFns<GetOrganizationByDomainRequest>;
 export declare const UnsafeGetOrganizationByOrganizationIdRequest: MessageFns<UnsafeGetOrganizationByOrganizationIdRequest>;
@@ -378,6 +432,11 @@ export declare const GetCurrentStartSchoolYearRunResponse: MessageFns<GetCurrent
 export declare const StartCurrentStartSchoolYearPhaseRequest: MessageFns<StartCurrentStartSchoolYearPhaseRequest>;
 export declare const GetOrganizationEmailBrandingRequest: MessageFns<GetOrganizationEmailBrandingRequest>;
 export declare const UpdateOrganizationEmailBrandingRequest: MessageFns<UpdateOrganizationEmailBrandingRequest>;
+export declare const FirstOrganizationAdminInput: MessageFns<FirstOrganizationAdminInput>;
+export declare const OrganizationProvisioning: MessageFns<OrganizationProvisioning>;
+export declare const ProvisionOrganizationRequest: MessageFns<ProvisionOrganizationRequest>;
+export declare const GetOrganizationProvisioningRequest: MessageFns<GetOrganizationProvisioningRequest>;
+export declare const SendOrganizationSetupInvitationRequest: MessageFns<SendOrganizationSetupInvitationRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

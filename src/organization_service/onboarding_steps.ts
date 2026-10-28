@@ -65,7 +65,7 @@ export function onboardingStepStatusToNumber(object: OnboardingStepStatus): numb
 }
 
 export enum OnboardingStepName {
-  ORG_OWNER_PROFILE = "ORG_OWNER_PROFILE",
+  ONBOARDING_STEP_NAME_UNSPECIFIED = "ONBOARDING_STEP_NAME_UNSPECIFIED",
   ORGANIZATION_SETTINGS = "ORGANIZATION_SETTINGS",
   ORGANIZATION_KEYS = "ORGANIZATION_KEYS",
   PAYMENTS = "PAYMENTS",
@@ -90,8 +90,8 @@ export enum OnboardingStepName {
 export function onboardingStepNameFromJSON(object: any): OnboardingStepName {
   switch (object) {
     case 0:
-    case "ORG_OWNER_PROFILE":
-      return OnboardingStepName.ORG_OWNER_PROFILE;
+    case "ONBOARDING_STEP_NAME_UNSPECIFIED":
+      return OnboardingStepName.ONBOARDING_STEP_NAME_UNSPECIFIED;
     case 1:
     case "ORGANIZATION_SETTINGS":
       return OnboardingStepName.ORGANIZATION_SETTINGS;
@@ -155,8 +155,8 @@ export function onboardingStepNameFromJSON(object: any): OnboardingStepName {
 
 export function onboardingStepNameToJSON(object: OnboardingStepName): string {
   switch (object) {
-    case OnboardingStepName.ORG_OWNER_PROFILE:
-      return "ORG_OWNER_PROFILE";
+    case OnboardingStepName.ONBOARDING_STEP_NAME_UNSPECIFIED:
+      return "ONBOARDING_STEP_NAME_UNSPECIFIED";
     case OnboardingStepName.ORGANIZATION_SETTINGS:
       return "ORGANIZATION_SETTINGS";
     case OnboardingStepName.ORGANIZATION_KEYS:
@@ -201,7 +201,7 @@ export function onboardingStepNameToJSON(object: OnboardingStepName): string {
 
 export function onboardingStepNameToNumber(object: OnboardingStepName): number {
   switch (object) {
-    case OnboardingStepName.ORG_OWNER_PROFILE:
+    case OnboardingStepName.ONBOARDING_STEP_NAME_UNSPECIFIED:
       return 0;
     case OnboardingStepName.ORGANIZATION_SETTINGS:
       return 1;
