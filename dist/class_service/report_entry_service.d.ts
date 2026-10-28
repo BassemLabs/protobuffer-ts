@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { ClassRef } from "./class_ref";
-import { GuardianSignatureSessionMetadata, ParentStudentReportSummary, ReportEntry, ReportEntryCheckBox, ReportEntryLearningSkill, ReportEntryMedian, ReportEntrySection, ReportEntryView } from "./report_entry";
+import { GuardianSignatureSessionMetadata, ParentStudentReportSummary, ReportEntry, ReportEntryCheckBox, ReportEntryContentAnswers, ReportEntryLearningSkill, ReportEntryMedian, ReportEntrySection, ReportEntryView } from "./report_entry";
 import { ReportType } from "./report_layout";
 export declare const protobufPackage = "class_service.report_entry_service";
 export declare enum TeacherReportCardHomepageUrgency {
@@ -297,6 +297,17 @@ export interface UpdateReportEntryRequest {
     learning_skills: ReportEntryLearningSkill[];
     credit_earned?: boolean | undefined;
     update_mode?: ReportEntryUpdateMode | undefined;
+    /**
+     * The selection shown by the custom editor. Required by the domain when
+     * creating or editing configured entries; absence preserves legacy updates.
+     * Reject a stale custom preview instead of silently applying another design.
+     */
+    expected_report_template_assignment_id?: ObjectId | undefined;
+    /**
+     * Omission preserves saved answers. Presence replaces this contribution's
+     * answers atomically; an empty envelope clears answers when saving a draft.
+     */
+    content_answers?: ReportEntryContentAnswers | undefined;
 }
 export interface ReportEntryViewResponse {
     report_entry: ReportEntryView | undefined;

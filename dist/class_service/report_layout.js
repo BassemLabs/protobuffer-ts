@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/report_layout.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReportCheckBoxLayout = exports.ReportLayoutSection = exports.ReportCardEligibility = exports.ReportLayout = exports.ReportType = exports.protobufPackage = void 0;
+exports.ReportCheckBoxLayout = exports.ReportLayoutSectionPolicy = exports.ReportLayoutSection = exports.ReportCardEligibility = exports.ReportLayout = exports.ReportType = exports.protobufPackage = void 0;
 exports.reportTypeFromJSON = reportTypeFromJSON;
 exports.reportTypeToJSON = reportTypeToJSON;
 exports.reportTypeToNumber = reportTypeToNumber;
@@ -73,6 +73,7 @@ function createBaseReportLayout() {
         check_boxes: [],
         credit_weight: undefined,
         report_card_eligibility: undefined,
+        section_policy: undefined,
     };
 }
 exports.ReportLayout = {
@@ -100,6 +101,9 @@ exports.ReportLayout = {
         }
         if (message.report_card_eligibility !== undefined) {
             exports.ReportCardEligibility.encode(message.report_card_eligibility, writer.uint32(66).fork()).join();
+        }
+        if (message.section_policy !== undefined) {
+            exports.ReportLayoutSectionPolicy.encode(message.section_policy, writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -158,6 +162,12 @@ exports.ReportLayout = {
                     }
                     message.report_card_eligibility = exports.ReportCardEligibility.decode(reader, reader.uint32());
                     continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.section_policy = exports.ReportLayoutSectionPolicy.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -181,6 +191,9 @@ exports.ReportLayout = {
             credit_weight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : undefined,
             report_card_eligibility: isSet(object.reportCardEligibility)
                 ? exports.ReportCardEligibility.fromJSON(object.reportCardEligibility)
+                : undefined,
+            section_policy: isSet(object.sectionPolicy)
+                ? exports.ReportLayoutSectionPolicy.fromJSON(object.sectionPolicy)
                 : undefined,
         };
     },
@@ -210,6 +223,9 @@ exports.ReportLayout = {
         if (message.report_card_eligibility !== undefined) {
             obj.reportCardEligibility = exports.ReportCardEligibility.toJSON(message.report_card_eligibility);
         }
+        if (message.section_policy !== undefined) {
+            obj.sectionPolicy = exports.ReportLayoutSectionPolicy.toJSON(message.section_policy);
+        }
         return obj;
     },
     create(base) {
@@ -232,6 +248,9 @@ exports.ReportLayout = {
             (object.report_card_eligibility !== undefined && object.report_card_eligibility !== null)
                 ? exports.ReportCardEligibility.fromPartial(object.report_card_eligibility)
                 : undefined;
+        message.section_policy = (object.section_policy !== undefined && object.section_policy !== null)
+            ? exports.ReportLayoutSectionPolicy.fromPartial(object.section_policy)
+            : undefined;
         return message;
     },
 };
@@ -375,6 +394,85 @@ exports.ReportLayoutSection = {
         const message = createBaseReportLayoutSection();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
         message.name = object.name ?? undefined;
+        return message;
+    },
+};
+function createBaseReportLayoutSectionPolicy() {
+    return { allowed_values: [], enabled_report_types: [] };
+}
+exports.ReportLayoutSectionPolicy = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.allowed_values) {
+            writer.uint32(10).string(v);
+        }
+        writer.uint32(18).fork();
+        for (const v of message.enabled_report_types) {
+            writer.int32(reportTypeToNumber(v));
+        }
+        writer.join();
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportLayoutSectionPolicy();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.allowed_values.push(reader.string());
+                    continue;
+                case 2:
+                    if (tag === 16) {
+                        message.enabled_report_types.push(reportTypeFromJSON(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 18) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.enabled_report_types.push(reportTypeFromJSON(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            allowed_values: globalThis.Array.isArray(object?.allowedValues)
+                ? object.allowedValues.map((e) => globalThis.String(e))
+                : [],
+            enabled_report_types: globalThis.Array.isArray(object?.enabledReportTypes)
+                ? object.enabledReportTypes.map((e) => reportTypeFromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.allowed_values?.length) {
+            obj.allowedValues = message.allowed_values;
+        }
+        if (message.enabled_report_types?.length) {
+            obj.enabledReportTypes = message.enabled_report_types.map((e) => reportTypeToJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportLayoutSectionPolicy.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportLayoutSectionPolicy();
+        message.allowed_values = object.allowed_values?.map((e) => e) || [];
+        message.enabled_report_types = object.enabled_report_types?.map((e) => e) || [];
         return message;
     },
 };

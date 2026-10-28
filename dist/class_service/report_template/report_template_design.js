@@ -5,13 +5,16 @@
 //   protoc               unknown
 // source: class_service/report_template/report_template_design.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReportTemplateDesign = exports.ReportTemplateBlock = exports.ReportTemplateFieldReference = exports.ReportTemplateContent = exports.ReportTemplateContentField = exports.ReportTemplateFieldStyle = exports.ReportTemplateSignatureRole = exports.ReportTemplateContentScope = exports.ReportTemplateContentFieldType = exports.ReportTemplateTextAlignment = exports.ReportBlockType = exports.protobufPackage = void 0;
+exports.ReportTemplateDesign = exports.ReportTemplateBlock = exports.ReportTemplateFieldReference = exports.ReportTemplateContent = exports.ReportTemplateContentArea = exports.ReportTemplateContentField = exports.ReportTemplatePageLayout = exports.ReportTemplatePageRegion = exports.ReportTemplateBlockStyle = exports.ReportTemplateRichText = exports.ReportTemplateParagraph = exports.ReportTemplateTextRun = exports.ReportTemplateImage = exports.ReportTemplateSignatureRole = exports.ReportTemplateContentScope = exports.ReportTemplateContentFieldType = exports.ReportTemplateListType = exports.ReportTemplateLogoSource = exports.ReportBlockType = exports.protobufPackage = void 0;
 exports.reportBlockTypeFromJSON = reportBlockTypeFromJSON;
 exports.reportBlockTypeToJSON = reportBlockTypeToJSON;
 exports.reportBlockTypeToNumber = reportBlockTypeToNumber;
-exports.reportTemplateTextAlignmentFromJSON = reportTemplateTextAlignmentFromJSON;
-exports.reportTemplateTextAlignmentToJSON = reportTemplateTextAlignmentToJSON;
-exports.reportTemplateTextAlignmentToNumber = reportTemplateTextAlignmentToNumber;
+exports.reportTemplateLogoSourceFromJSON = reportTemplateLogoSourceFromJSON;
+exports.reportTemplateLogoSourceToJSON = reportTemplateLogoSourceToJSON;
+exports.reportTemplateLogoSourceToNumber = reportTemplateLogoSourceToNumber;
+exports.reportTemplateListTypeFromJSON = reportTemplateListTypeFromJSON;
+exports.reportTemplateListTypeToJSON = reportTemplateListTypeToJSON;
+exports.reportTemplateListTypeToNumber = reportTemplateListTypeToNumber;
 exports.reportTemplateContentFieldTypeFromJSON = reportTemplateContentFieldTypeFromJSON;
 exports.reportTemplateContentFieldTypeToJSON = reportTemplateContentFieldTypeToJSON;
 exports.reportTemplateContentFieldTypeToNumber = reportTemplateContentFieldTypeToNumber;
@@ -26,6 +29,7 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const student_1 = require("../../user_service/student");
 const object_id_1 = require("../../utils/object_id");
 const report_layout_1 = require("../report_layout");
+const report_template_style_1 = require("./report_template_style");
 const report_template_theme_1 = require("./report_template_theme");
 exports.protobufPackage = "class_service.report_template";
 var ReportBlockType;
@@ -39,6 +43,9 @@ var ReportBlockType;
     ReportBlockType["REPORT_BLOCK_TYPE_COURSES"] = "REPORT_BLOCK_TYPE_COURSES";
     ReportBlockType["REPORT_BLOCK_TYPE_PARENT_MESSAGE"] = "REPORT_BLOCK_TYPE_PARENT_MESSAGE";
     ReportBlockType["REPORT_BLOCK_TYPE_SIGNATURES"] = "REPORT_BLOCK_TYPE_SIGNATURES";
+    ReportBlockType["REPORT_BLOCK_TYPE_LOGO"] = "REPORT_BLOCK_TYPE_LOGO";
+    ReportBlockType["REPORT_BLOCK_TYPE_IMAGE"] = "REPORT_BLOCK_TYPE_IMAGE";
+    ReportBlockType["REPORT_BLOCK_TYPE_PAGE_NUMBER"] = "REPORT_BLOCK_TYPE_PAGE_NUMBER";
     ReportBlockType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ReportBlockType || (exports.ReportBlockType = ReportBlockType = {}));
 function reportBlockTypeFromJSON(object) {
@@ -70,6 +77,15 @@ function reportBlockTypeFromJSON(object) {
         case 8:
         case "REPORT_BLOCK_TYPE_SIGNATURES":
             return ReportBlockType.REPORT_BLOCK_TYPE_SIGNATURES;
+        case 9:
+        case "REPORT_BLOCK_TYPE_LOGO":
+            return ReportBlockType.REPORT_BLOCK_TYPE_LOGO;
+        case 10:
+        case "REPORT_BLOCK_TYPE_IMAGE":
+            return ReportBlockType.REPORT_BLOCK_TYPE_IMAGE;
+        case 11:
+        case "REPORT_BLOCK_TYPE_PAGE_NUMBER":
+            return ReportBlockType.REPORT_BLOCK_TYPE_PAGE_NUMBER;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -96,6 +112,12 @@ function reportBlockTypeToJSON(object) {
             return "REPORT_BLOCK_TYPE_PARENT_MESSAGE";
         case ReportBlockType.REPORT_BLOCK_TYPE_SIGNATURES:
             return "REPORT_BLOCK_TYPE_SIGNATURES";
+        case ReportBlockType.REPORT_BLOCK_TYPE_LOGO:
+            return "REPORT_BLOCK_TYPE_LOGO";
+        case ReportBlockType.REPORT_BLOCK_TYPE_IMAGE:
+            return "REPORT_BLOCK_TYPE_IMAGE";
+        case ReportBlockType.REPORT_BLOCK_TYPE_PAGE_NUMBER:
+            return "REPORT_BLOCK_TYPE_PAGE_NUMBER";
         case ReportBlockType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -121,57 +143,113 @@ function reportBlockTypeToNumber(object) {
             return 7;
         case ReportBlockType.REPORT_BLOCK_TYPE_SIGNATURES:
             return 8;
+        case ReportBlockType.REPORT_BLOCK_TYPE_LOGO:
+            return 9;
+        case ReportBlockType.REPORT_BLOCK_TYPE_IMAGE:
+            return 10;
+        case ReportBlockType.REPORT_BLOCK_TYPE_PAGE_NUMBER:
+            return 11;
         case ReportBlockType.UNRECOGNIZED:
         default:
             return -1;
     }
 }
-var ReportTemplateTextAlignment;
-(function (ReportTemplateTextAlignment) {
-    ReportTemplateTextAlignment["REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT"] = "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT";
-    ReportTemplateTextAlignment["REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER"] = "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER";
-    ReportTemplateTextAlignment["REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT"] = "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT";
-    ReportTemplateTextAlignment["UNRECOGNIZED"] = "UNRECOGNIZED";
-})(ReportTemplateTextAlignment || (exports.ReportTemplateTextAlignment = ReportTemplateTextAlignment = {}));
-function reportTemplateTextAlignmentFromJSON(object) {
+var ReportTemplateLogoSource;
+(function (ReportTemplateLogoSource) {
+    ReportTemplateLogoSource["REPORT_TEMPLATE_LOGO_SOURCE_CAMPUS"] = "REPORT_TEMPLATE_LOGO_SOURCE_CAMPUS";
+    ReportTemplateLogoSource["REPORT_TEMPLATE_LOGO_SOURCE_ORGANIZATION"] = "REPORT_TEMPLATE_LOGO_SOURCE_ORGANIZATION";
+    ReportTemplateLogoSource["REPORT_TEMPLATE_LOGO_SOURCE_UPLOADED"] = "REPORT_TEMPLATE_LOGO_SOURCE_UPLOADED";
+    ReportTemplateLogoSource["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReportTemplateLogoSource || (exports.ReportTemplateLogoSource = ReportTemplateLogoSource = {}));
+function reportTemplateLogoSourceFromJSON(object) {
     switch (object) {
         case 0:
-        case "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT":
-            return ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT;
+        case "REPORT_TEMPLATE_LOGO_SOURCE_CAMPUS":
+            return ReportTemplateLogoSource.REPORT_TEMPLATE_LOGO_SOURCE_CAMPUS;
         case 1:
-        case "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER":
-            return ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER;
+        case "REPORT_TEMPLATE_LOGO_SOURCE_ORGANIZATION":
+            return ReportTemplateLogoSource.REPORT_TEMPLATE_LOGO_SOURCE_ORGANIZATION;
         case 2:
-        case "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT":
-            return ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT;
+        case "REPORT_TEMPLATE_LOGO_SOURCE_UPLOADED":
+            return ReportTemplateLogoSource.REPORT_TEMPLATE_LOGO_SOURCE_UPLOADED;
         case -1:
         case "UNRECOGNIZED":
         default:
-            return ReportTemplateTextAlignment.UNRECOGNIZED;
+            return ReportTemplateLogoSource.UNRECOGNIZED;
     }
 }
-function reportTemplateTextAlignmentToJSON(object) {
+function reportTemplateLogoSourceToJSON(object) {
     switch (object) {
-        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT:
-            return "REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT";
-        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER:
-            return "REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER";
-        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT:
-            return "REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT";
-        case ReportTemplateTextAlignment.UNRECOGNIZED:
+        case ReportTemplateLogoSource.REPORT_TEMPLATE_LOGO_SOURCE_CAMPUS:
+            return "REPORT_TEMPLATE_LOGO_SOURCE_CAMPUS";
+        case ReportTemplateLogoSource.REPORT_TEMPLATE_LOGO_SOURCE_ORGANIZATION:
+            return "REPORT_TEMPLATE_LOGO_SOURCE_ORGANIZATION";
+        case ReportTemplateLogoSource.REPORT_TEMPLATE_LOGO_SOURCE_UPLOADED:
+            return "REPORT_TEMPLATE_LOGO_SOURCE_UPLOADED";
+        case ReportTemplateLogoSource.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
     }
 }
-function reportTemplateTextAlignmentToNumber(object) {
+function reportTemplateLogoSourceToNumber(object) {
     switch (object) {
-        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_LEFT:
+        case ReportTemplateLogoSource.REPORT_TEMPLATE_LOGO_SOURCE_CAMPUS:
             return 0;
-        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_CENTER:
+        case ReportTemplateLogoSource.REPORT_TEMPLATE_LOGO_SOURCE_ORGANIZATION:
             return 1;
-        case ReportTemplateTextAlignment.REPORT_TEMPLATE_TEXT_ALIGNMENT_RIGHT:
+        case ReportTemplateLogoSource.REPORT_TEMPLATE_LOGO_SOURCE_UPLOADED:
             return 2;
-        case ReportTemplateTextAlignment.UNRECOGNIZED:
+        case ReportTemplateLogoSource.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var ReportTemplateListType;
+(function (ReportTemplateListType) {
+    ReportTemplateListType["REPORT_TEMPLATE_LIST_TYPE_NONE"] = "REPORT_TEMPLATE_LIST_TYPE_NONE";
+    ReportTemplateListType["REPORT_TEMPLATE_LIST_TYPE_BULLET"] = "REPORT_TEMPLATE_LIST_TYPE_BULLET";
+    ReportTemplateListType["REPORT_TEMPLATE_LIST_TYPE_NUMBERED"] = "REPORT_TEMPLATE_LIST_TYPE_NUMBERED";
+    ReportTemplateListType["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReportTemplateListType || (exports.ReportTemplateListType = ReportTemplateListType = {}));
+function reportTemplateListTypeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REPORT_TEMPLATE_LIST_TYPE_NONE":
+            return ReportTemplateListType.REPORT_TEMPLATE_LIST_TYPE_NONE;
+        case 1:
+        case "REPORT_TEMPLATE_LIST_TYPE_BULLET":
+            return ReportTemplateListType.REPORT_TEMPLATE_LIST_TYPE_BULLET;
+        case 2:
+        case "REPORT_TEMPLATE_LIST_TYPE_NUMBERED":
+            return ReportTemplateListType.REPORT_TEMPLATE_LIST_TYPE_NUMBERED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReportTemplateListType.UNRECOGNIZED;
+    }
+}
+function reportTemplateListTypeToJSON(object) {
+    switch (object) {
+        case ReportTemplateListType.REPORT_TEMPLATE_LIST_TYPE_NONE:
+            return "REPORT_TEMPLATE_LIST_TYPE_NONE";
+        case ReportTemplateListType.REPORT_TEMPLATE_LIST_TYPE_BULLET:
+            return "REPORT_TEMPLATE_LIST_TYPE_BULLET";
+        case ReportTemplateListType.REPORT_TEMPLATE_LIST_TYPE_NUMBERED:
+            return "REPORT_TEMPLATE_LIST_TYPE_NUMBERED";
+        case ReportTemplateListType.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reportTemplateListTypeToNumber(object) {
+    switch (object) {
+        case ReportTemplateListType.REPORT_TEMPLATE_LIST_TYPE_NONE:
+            return 0;
+        case ReportTemplateListType.REPORT_TEMPLATE_LIST_TYPE_BULLET:
+            return 1;
+        case ReportTemplateListType.REPORT_TEMPLATE_LIST_TYPE_NUMBERED:
+            return 2;
+        case ReportTemplateListType.UNRECOGNIZED:
         default:
             return -1;
     }
@@ -181,6 +259,8 @@ var ReportTemplateContentFieldType;
     ReportTemplateContentFieldType["REPORT_TEMPLATE_CONTENT_FIELD_TYPE_LONG_TEXT"] = "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_LONG_TEXT";
     ReportTemplateContentFieldType["REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT"] = "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT";
     ReportTemplateContentFieldType["REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN"] = "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN";
+    /** REPORT_TEMPLATE_CONTENT_FIELD_TYPE_STATIC_TEXT - Text written once by the school, shared by every report using the template. */
+    ReportTemplateContentFieldType["REPORT_TEMPLATE_CONTENT_FIELD_TYPE_STATIC_TEXT"] = "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_STATIC_TEXT";
     ReportTemplateContentFieldType["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ReportTemplateContentFieldType || (exports.ReportTemplateContentFieldType = ReportTemplateContentFieldType = {}));
 function reportTemplateContentFieldTypeFromJSON(object) {
@@ -194,6 +274,9 @@ function reportTemplateContentFieldTypeFromJSON(object) {
         case 2:
         case "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN":
             return ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN;
+        case 3:
+        case "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_STATIC_TEXT":
+            return ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_STATIC_TEXT;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -208,6 +291,8 @@ function reportTemplateContentFieldTypeToJSON(object) {
             return "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_SINGLE_SELECT";
         case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN:
             return "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN";
+        case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_STATIC_TEXT:
+            return "REPORT_TEMPLATE_CONTENT_FIELD_TYPE_STATIC_TEXT";
         case ReportTemplateContentFieldType.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -221,6 +306,8 @@ function reportTemplateContentFieldTypeToNumber(object) {
             return 1;
         case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_BOOLEAN:
             return 2;
+        case ReportTemplateContentFieldType.REPORT_TEMPLATE_CONTENT_FIELD_TYPE_STATIC_TEXT:
+            return 3;
         case ReportTemplateContentFieldType.UNRECOGNIZED:
         default:
             return -1;
@@ -310,55 +397,64 @@ function reportTemplateSignatureRoleToNumber(object) {
             return -1;
     }
 }
-function createBaseReportTemplateFieldStyle() {
-    return { font_size: undefined, bold: undefined, alignment: undefined, inline_label: undefined };
+function createBaseReportTemplateImage() {
+    return { asset_id: undefined, logo_source: undefined, width: undefined, height: undefined, description: undefined };
 }
-exports.ReportTemplateFieldStyle = {
+exports.ReportTemplateImage = {
     encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.font_size !== undefined) {
-            writer.uint32(8).uint32(message.font_size);
+        if (message.asset_id !== undefined) {
+            object_id_1.ObjectId.encode(message.asset_id, writer.uint32(10).fork()).join();
         }
-        if (message.bold !== undefined) {
-            writer.uint32(16).bool(message.bold);
+        if (message.logo_source !== undefined) {
+            writer.uint32(16).int32(reportTemplateLogoSourceToNumber(message.logo_source));
         }
-        if (message.alignment !== undefined) {
-            writer.uint32(24).int32(reportTemplateTextAlignmentToNumber(message.alignment));
+        if (message.width !== undefined) {
+            writer.uint32(24).uint32(message.width);
         }
-        if (message.inline_label !== undefined) {
-            writer.uint32(32).bool(message.inline_label);
+        if (message.height !== undefined) {
+            writer.uint32(32).uint32(message.height);
+        }
+        if (message.description !== undefined) {
+            writer.uint32(42).string(message.description);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseReportTemplateFieldStyle();
+        const message = createBaseReportTemplateImage();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    if (tag !== 8) {
+                    if (tag !== 10) {
                         break;
                     }
-                    message.font_size = reader.uint32();
+                    message.asset_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
                 case 2:
                     if (tag !== 16) {
                         break;
                     }
-                    message.bold = reader.bool();
+                    message.logo_source = reportTemplateLogoSourceFromJSON(reader.int32());
                     continue;
                 case 3:
                     if (tag !== 24) {
                         break;
                     }
-                    message.alignment = reportTemplateTextAlignmentFromJSON(reader.int32());
+                    message.width = reader.uint32();
                     continue;
                 case 4:
                     if (tag !== 32) {
                         break;
                     }
-                    message.inline_label = reader.bool();
+                    message.height = reader.uint32();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.description = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -370,37 +466,612 @@ exports.ReportTemplateFieldStyle = {
     },
     fromJSON(object) {
         return {
-            font_size: isSet(object.fontSize) ? globalThis.Number(object.fontSize) : undefined,
-            bold: isSet(object.bold) ? globalThis.Boolean(object.bold) : undefined,
-            alignment: isSet(object.alignment) ? reportTemplateTextAlignmentFromJSON(object.alignment) : undefined,
-            inline_label: isSet(object.inlineLabel) ? globalThis.Boolean(object.inlineLabel) : undefined,
+            asset_id: isSet(object.assetId) ? object_id_1.ObjectId.fromJSON(object.assetId) : undefined,
+            logo_source: isSet(object.logoSource) ? reportTemplateLogoSourceFromJSON(object.logoSource) : undefined,
+            width: isSet(object.width) ? globalThis.Number(object.width) : undefined,
+            height: isSet(object.height) ? globalThis.Number(object.height) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
         };
     },
     toJSON(message) {
         const obj = {};
-        if (message.font_size !== undefined) {
-            obj.fontSize = Math.round(message.font_size);
+        if (message.asset_id !== undefined) {
+            obj.assetId = object_id_1.ObjectId.toJSON(message.asset_id);
         }
-        if (message.bold !== undefined) {
-            obj.bold = message.bold;
+        if (message.logo_source !== undefined) {
+            obj.logoSource = reportTemplateLogoSourceToJSON(message.logo_source);
         }
-        if (message.alignment !== undefined) {
-            obj.alignment = reportTemplateTextAlignmentToJSON(message.alignment);
+        if (message.width !== undefined) {
+            obj.width = Math.round(message.width);
         }
-        if (message.inline_label !== undefined) {
-            obj.inlineLabel = message.inline_label;
+        if (message.height !== undefined) {
+            obj.height = Math.round(message.height);
+        }
+        if (message.description !== undefined) {
+            obj.description = message.description;
         }
         return obj;
     },
     create(base) {
-        return exports.ReportTemplateFieldStyle.fromPartial(base ?? {});
+        return exports.ReportTemplateImage.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseReportTemplateFieldStyle();
-        message.font_size = object.font_size ?? undefined;
+        const message = createBaseReportTemplateImage();
+        message.asset_id = (object.asset_id !== undefined && object.asset_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.asset_id)
+            : undefined;
+        message.logo_source = object.logo_source ?? undefined;
+        message.width = object.width ?? undefined;
+        message.height = object.height ?? undefined;
+        message.description = object.description ?? undefined;
+        return message;
+    },
+};
+function createBaseReportTemplateTextRun() {
+    return { text: undefined, bold: undefined, italic: undefined, underline: undefined };
+}
+exports.ReportTemplateTextRun = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.text !== undefined) {
+            writer.uint32(10).string(message.text);
+        }
+        if (message.bold !== undefined) {
+            writer.uint32(16).bool(message.bold);
+        }
+        if (message.italic !== undefined) {
+            writer.uint32(24).bool(message.italic);
+        }
+        if (message.underline !== undefined) {
+            writer.uint32(32).bool(message.underline);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateTextRun();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.text = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.bold = reader.bool();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.italic = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.underline = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            text: isSet(object.text) ? globalThis.String(object.text) : undefined,
+            bold: isSet(object.bold) ? globalThis.Boolean(object.bold) : undefined,
+            italic: isSet(object.italic) ? globalThis.Boolean(object.italic) : undefined,
+            underline: isSet(object.underline) ? globalThis.Boolean(object.underline) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.text !== undefined) {
+            obj.text = message.text;
+        }
+        if (message.bold !== undefined) {
+            obj.bold = message.bold;
+        }
+        if (message.italic !== undefined) {
+            obj.italic = message.italic;
+        }
+        if (message.underline !== undefined) {
+            obj.underline = message.underline;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateTextRun.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateTextRun();
+        message.text = object.text ?? undefined;
         message.bold = object.bold ?? undefined;
-        message.alignment = object.alignment ?? undefined;
-        message.inline_label = object.inline_label ?? undefined;
+        message.italic = object.italic ?? undefined;
+        message.underline = object.underline ?? undefined;
+        return message;
+    },
+};
+function createBaseReportTemplateParagraph() {
+    return { runs: [], list_type: undefined };
+}
+exports.ReportTemplateParagraph = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.runs) {
+            exports.ReportTemplateTextRun.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.list_type !== undefined) {
+            writer.uint32(16).int32(reportTemplateListTypeToNumber(message.list_type));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateParagraph();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.runs.push(exports.ReportTemplateTextRun.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.list_type = reportTemplateListTypeFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            runs: globalThis.Array.isArray(object?.runs)
+                ? object.runs.map((e) => exports.ReportTemplateTextRun.fromJSON(e))
+                : [],
+            list_type: isSet(object.listType) ? reportTemplateListTypeFromJSON(object.listType) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.runs?.length) {
+            obj.runs = message.runs.map((e) => exports.ReportTemplateTextRun.toJSON(e));
+        }
+        if (message.list_type !== undefined) {
+            obj.listType = reportTemplateListTypeToJSON(message.list_type);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateParagraph.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateParagraph();
+        message.runs = object.runs?.map((e) => exports.ReportTemplateTextRun.fromPartial(e)) || [];
+        message.list_type = object.list_type ?? undefined;
+        return message;
+    },
+};
+function createBaseReportTemplateRichText() {
+    return { paragraphs: [] };
+}
+exports.ReportTemplateRichText = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.paragraphs) {
+            exports.ReportTemplateParagraph.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateRichText();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.paragraphs.push(exports.ReportTemplateParagraph.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            paragraphs: globalThis.Array.isArray(object?.paragraphs)
+                ? object.paragraphs.map((e) => exports.ReportTemplateParagraph.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.paragraphs?.length) {
+            obj.paragraphs = message.paragraphs.map((e) => exports.ReportTemplateParagraph.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateRichText.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateRichText();
+        message.paragraphs = object.paragraphs?.map((e) => exports.ReportTemplateParagraph.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseReportTemplateBlockStyle() {
+    return { block_type: undefined, style: undefined, label_style: undefined, value_style: undefined };
+}
+exports.ReportTemplateBlockStyle = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.block_type !== undefined) {
+            writer.uint32(8).int32(reportBlockTypeToNumber(message.block_type));
+        }
+        if (message.style !== undefined) {
+            report_template_style_1.ReportTemplateStyle.encode(message.style, writer.uint32(18).fork()).join();
+        }
+        if (message.label_style !== undefined) {
+            report_template_style_1.ReportTemplateStyle.encode(message.label_style, writer.uint32(26).fork()).join();
+        }
+        if (message.value_style !== undefined) {
+            report_template_style_1.ReportTemplateStyle.encode(message.value_style, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateBlockStyle();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.block_type = reportBlockTypeFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.style = report_template_style_1.ReportTemplateStyle.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.label_style = report_template_style_1.ReportTemplateStyle.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.value_style = report_template_style_1.ReportTemplateStyle.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            block_type: isSet(object.blockType) ? reportBlockTypeFromJSON(object.blockType) : undefined,
+            style: isSet(object.style) ? report_template_style_1.ReportTemplateStyle.fromJSON(object.style) : undefined,
+            label_style: isSet(object.labelStyle) ? report_template_style_1.ReportTemplateStyle.fromJSON(object.labelStyle) : undefined,
+            value_style: isSet(object.valueStyle) ? report_template_style_1.ReportTemplateStyle.fromJSON(object.valueStyle) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.block_type !== undefined) {
+            obj.blockType = reportBlockTypeToJSON(message.block_type);
+        }
+        if (message.style !== undefined) {
+            obj.style = report_template_style_1.ReportTemplateStyle.toJSON(message.style);
+        }
+        if (message.label_style !== undefined) {
+            obj.labelStyle = report_template_style_1.ReportTemplateStyle.toJSON(message.label_style);
+        }
+        if (message.value_style !== undefined) {
+            obj.valueStyle = report_template_style_1.ReportTemplateStyle.toJSON(message.value_style);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateBlockStyle.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateBlockStyle();
+        message.block_type = object.block_type ?? undefined;
+        message.style = (object.style !== undefined && object.style !== null)
+            ? report_template_style_1.ReportTemplateStyle.fromPartial(object.style)
+            : undefined;
+        message.label_style = (object.label_style !== undefined && object.label_style !== null)
+            ? report_template_style_1.ReportTemplateStyle.fromPartial(object.label_style)
+            : undefined;
+        message.value_style = (object.value_style !== undefined && object.value_style !== null)
+            ? report_template_style_1.ReportTemplateStyle.fromPartial(object.value_style)
+            : undefined;
+        return message;
+    },
+};
+function createBaseReportTemplatePageRegion() {
+    return { blocks: [], gap: undefined };
+}
+exports.ReportTemplatePageRegion = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.blocks) {
+            exports.ReportTemplateBlock.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.gap !== undefined) {
+            writer.uint32(16).uint32(message.gap);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplatePageRegion();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.blocks.push(exports.ReportTemplateBlock.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.gap = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            blocks: globalThis.Array.isArray(object?.blocks)
+                ? object.blocks.map((e) => exports.ReportTemplateBlock.fromJSON(e))
+                : [],
+            gap: isSet(object.gap) ? globalThis.Number(object.gap) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.blocks?.length) {
+            obj.blocks = message.blocks.map((e) => exports.ReportTemplateBlock.toJSON(e));
+        }
+        if (message.gap !== undefined) {
+            obj.gap = Math.round(message.gap);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplatePageRegion.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplatePageRegion();
+        message.blocks = object.blocks?.map((e) => exports.ReportTemplateBlock.fromPartial(e)) || [];
+        message.gap = object.gap ?? undefined;
+        return message;
+    },
+};
+function createBaseReportTemplatePageLayout() {
+    return {
+        page_size: undefined,
+        margins: undefined,
+        background_color: undefined,
+        background_asset_id: undefined,
+        hide_header: undefined,
+        hide_footer: undefined,
+        header: undefined,
+        footer: undefined,
+        hide_background_image: undefined,
+    };
+}
+exports.ReportTemplatePageLayout = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.page_size !== undefined) {
+            writer.uint32(8).int32((0, report_template_theme_1.reportTemplatePageSizeToNumber)(message.page_size));
+        }
+        if (message.margins !== undefined) {
+            report_template_style_1.ReportTemplateMargins.encode(message.margins, writer.uint32(18).fork()).join();
+        }
+        if (message.background_color !== undefined) {
+            writer.uint32(26).string(message.background_color);
+        }
+        if (message.background_asset_id !== undefined) {
+            object_id_1.ObjectId.encode(message.background_asset_id, writer.uint32(34).fork()).join();
+        }
+        if (message.hide_header !== undefined) {
+            writer.uint32(40).bool(message.hide_header);
+        }
+        if (message.hide_footer !== undefined) {
+            writer.uint32(48).bool(message.hide_footer);
+        }
+        if (message.header !== undefined) {
+            exports.ReportTemplatePageRegion.encode(message.header, writer.uint32(58).fork()).join();
+        }
+        if (message.footer !== undefined) {
+            exports.ReportTemplatePageRegion.encode(message.footer, writer.uint32(66).fork()).join();
+        }
+        if (message.hide_background_image !== undefined) {
+            writer.uint32(72).bool(message.hide_background_image);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplatePageLayout();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.page_size = (0, report_template_theme_1.reportTemplatePageSizeFromJSON)(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.margins = report_template_style_1.ReportTemplateMargins.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.background_color = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.background_asset_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.hide_header = reader.bool();
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.hide_footer = reader.bool();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.header = exports.ReportTemplatePageRegion.decode(reader, reader.uint32());
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.footer = exports.ReportTemplatePageRegion.decode(reader, reader.uint32());
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.hide_background_image = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            page_size: isSet(object.pageSize) ? (0, report_template_theme_1.reportTemplatePageSizeFromJSON)(object.pageSize) : undefined,
+            margins: isSet(object.margins) ? report_template_style_1.ReportTemplateMargins.fromJSON(object.margins) : undefined,
+            background_color: isSet(object.backgroundColor) ? globalThis.String(object.backgroundColor) : undefined,
+            background_asset_id: isSet(object.backgroundAssetId) ? object_id_1.ObjectId.fromJSON(object.backgroundAssetId) : undefined,
+            hide_header: isSet(object.hideHeader) ? globalThis.Boolean(object.hideHeader) : undefined,
+            hide_footer: isSet(object.hideFooter) ? globalThis.Boolean(object.hideFooter) : undefined,
+            header: isSet(object.header) ? exports.ReportTemplatePageRegion.fromJSON(object.header) : undefined,
+            footer: isSet(object.footer) ? exports.ReportTemplatePageRegion.fromJSON(object.footer) : undefined,
+            hide_background_image: isSet(object.hideBackgroundImage)
+                ? globalThis.Boolean(object.hideBackgroundImage)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.page_size !== undefined) {
+            obj.pageSize = (0, report_template_theme_1.reportTemplatePageSizeToJSON)(message.page_size);
+        }
+        if (message.margins !== undefined) {
+            obj.margins = report_template_style_1.ReportTemplateMargins.toJSON(message.margins);
+        }
+        if (message.background_color !== undefined) {
+            obj.backgroundColor = message.background_color;
+        }
+        if (message.background_asset_id !== undefined) {
+            obj.backgroundAssetId = object_id_1.ObjectId.toJSON(message.background_asset_id);
+        }
+        if (message.hide_header !== undefined) {
+            obj.hideHeader = message.hide_header;
+        }
+        if (message.hide_footer !== undefined) {
+            obj.hideFooter = message.hide_footer;
+        }
+        if (message.header !== undefined) {
+            obj.header = exports.ReportTemplatePageRegion.toJSON(message.header);
+        }
+        if (message.footer !== undefined) {
+            obj.footer = exports.ReportTemplatePageRegion.toJSON(message.footer);
+        }
+        if (message.hide_background_image !== undefined) {
+            obj.hideBackgroundImage = message.hide_background_image;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplatePageLayout.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplatePageLayout();
+        message.page_size = object.page_size ?? undefined;
+        message.margins = (object.margins !== undefined && object.margins !== null)
+            ? report_template_style_1.ReportTemplateMargins.fromPartial(object.margins)
+            : undefined;
+        message.background_color = object.background_color ?? undefined;
+        message.background_asset_id = (object.background_asset_id !== undefined && object.background_asset_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.background_asset_id)
+            : undefined;
+        message.hide_header = object.hide_header ?? undefined;
+        message.hide_footer = object.hide_footer ?? undefined;
+        message.header = (object.header !== undefined && object.header !== null)
+            ? exports.ReportTemplatePageRegion.fromPartial(object.header)
+            : undefined;
+        message.footer = (object.footer !== undefined && object.footer !== null)
+            ? exports.ReportTemplatePageRegion.fromPartial(object.footer)
+            : undefined;
+        message.hide_background_image = object.hide_background_image ?? undefined;
         return message;
     },
 };
@@ -413,6 +1084,8 @@ function createBaseReportTemplateContentField() {
         scopes: [],
         required: undefined,
         allowed_values: [],
+        text: undefined,
+        rich_text: undefined,
     };
 }
 exports.ReportTemplateContentField = {
@@ -439,6 +1112,12 @@ exports.ReportTemplateContentField = {
         }
         for (const v of message.allowed_values) {
             writer.uint32(58).string(v);
+        }
+        if (message.text !== undefined) {
+            writer.uint32(66).string(message.text);
+        }
+        if (message.rich_text !== undefined) {
+            exports.ReportTemplateRichText.encode(message.rich_text, writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -498,6 +1177,18 @@ exports.ReportTemplateContentField = {
                     }
                     message.allowed_values.push(reader.string());
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.text = reader.string();
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.rich_text = exports.ReportTemplateRichText.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -519,6 +1210,8 @@ exports.ReportTemplateContentField = {
             allowed_values: globalThis.Array.isArray(object?.allowedValues)
                 ? object.allowedValues.map((e) => globalThis.String(e))
                 : [],
+            text: isSet(object.text) ? globalThis.String(object.text) : undefined,
+            rich_text: isSet(object.richText) ? exports.ReportTemplateRichText.fromJSON(object.richText) : undefined,
         };
     },
     toJSON(message) {
@@ -544,6 +1237,12 @@ exports.ReportTemplateContentField = {
         if (message.allowed_values?.length) {
             obj.allowedValues = message.allowed_values;
         }
+        if (message.text !== undefined) {
+            obj.text = message.text;
+        }
+        if (message.rich_text !== undefined) {
+            obj.richText = exports.ReportTemplateRichText.toJSON(message.rich_text);
+        }
         return obj;
     },
     create(base) {
@@ -558,11 +1257,97 @@ exports.ReportTemplateContentField = {
         message.scopes = object.scopes?.map((e) => e) || [];
         message.required = object.required ?? undefined;
         message.allowed_values = object.allowed_values?.map((e) => e) || [];
+        message.text = object.text ?? undefined;
+        message.rich_text = (object.rich_text !== undefined && object.rich_text !== null)
+            ? exports.ReportTemplateRichText.fromPartial(object.rich_text)
+            : undefined;
+        return message;
+    },
+};
+function createBaseReportTemplateContentArea() {
+    return { id: undefined, title: undefined, field_ids: [] };
+}
+exports.ReportTemplateContentArea = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            writer.uint32(10).string(message.id);
+        }
+        if (message.title !== undefined) {
+            writer.uint32(18).string(message.title);
+        }
+        for (const v of message.field_ids) {
+            writer.uint32(26).string(v);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateContentArea();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.field_ids.push(reader.string());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? globalThis.String(object.id) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            field_ids: globalThis.Array.isArray(object?.fieldIds)
+                ? object.fieldIds.map((e) => globalThis.String(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = message.id;
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.field_ids?.length) {
+            obj.fieldIds = message.field_ids;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateContentArea.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateContentArea();
+        message.id = object.id ?? undefined;
+        message.title = object.title ?? undefined;
+        message.field_ids = object.field_ids?.map((e) => e) || [];
         return message;
     },
 };
 function createBaseReportTemplateContent() {
-    return { supported_grades: [], supported_report_types: [], fields: [] };
+    return { supported_grades: [], supported_report_types: [], fields: [], areas: [] };
 }
 exports.ReportTemplateContent = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -578,6 +1363,9 @@ exports.ReportTemplateContent = {
         writer.join();
         for (const v of message.fields) {
             exports.ReportTemplateContentField.encode(v, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.areas) {
+            exports.ReportTemplateContentArea.encode(v, writer.uint32(34).fork()).join();
         }
         return writer;
     },
@@ -620,6 +1408,12 @@ exports.ReportTemplateContent = {
                     }
                     message.fields.push(exports.ReportTemplateContentField.decode(reader, reader.uint32()));
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.areas.push(exports.ReportTemplateContentArea.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -639,6 +1433,9 @@ exports.ReportTemplateContent = {
             fields: globalThis.Array.isArray(object?.fields)
                 ? object.fields.map((e) => exports.ReportTemplateContentField.fromJSON(e))
                 : [],
+            areas: globalThis.Array.isArray(object?.areas)
+                ? object.areas.map((e) => exports.ReportTemplateContentArea.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -652,6 +1449,9 @@ exports.ReportTemplateContent = {
         if (message.fields?.length) {
             obj.fields = message.fields.map((e) => exports.ReportTemplateContentField.toJSON(e));
         }
+        if (message.areas?.length) {
+            obj.areas = message.areas.map((e) => exports.ReportTemplateContentArea.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -662,6 +1462,7 @@ exports.ReportTemplateContent = {
         message.supported_grades = object.supported_grades?.map((e) => e) || [];
         message.supported_report_types = object.supported_report_types?.map((e) => e) || [];
         message.fields = object.fields?.map((e) => exports.ReportTemplateContentField.fromPartial(e)) || [];
+        message.areas = object.areas?.map((e) => exports.ReportTemplateContentArea.fromPartial(e)) || [];
         return message;
     },
 };
@@ -752,12 +1553,19 @@ function createBaseReportTemplateBlock() {
         id: undefined,
         block_type: undefined,
         text: undefined,
+        rich_text: undefined,
         children: [],
         columns: undefined,
         field: undefined,
-        field_style: undefined,
         body: undefined,
         signature_roles: [],
+        style: undefined,
+        label_style: undefined,
+        value_style: undefined,
+        column_widths: [],
+        page_layout: undefined,
+        image: undefined,
+        inline_label: undefined,
     };
 }
 exports.ReportTemplateBlock = {
@@ -771,6 +1579,9 @@ exports.ReportTemplateBlock = {
         if (message.text !== undefined) {
             writer.uint32(26).string(message.text);
         }
+        if (message.rich_text !== undefined) {
+            exports.ReportTemplateRichText.encode(message.rich_text, writer.uint32(130).fork()).join();
+        }
         for (const v of message.children) {
             exports.ReportTemplateBlock.encode(v, writer.uint32(34).fork()).join();
         }
@@ -780,9 +1591,6 @@ exports.ReportTemplateBlock = {
         if (message.field !== undefined) {
             exports.ReportTemplateFieldReference.encode(message.field, writer.uint32(50).fork()).join();
         }
-        if (message.field_style !== undefined) {
-            exports.ReportTemplateFieldStyle.encode(message.field_style, writer.uint32(58).fork()).join();
-        }
         if (message.body !== undefined) {
             writer.uint32(66).string(message.body);
         }
@@ -791,6 +1599,29 @@ exports.ReportTemplateBlock = {
             writer.int32(reportTemplateSignatureRoleToNumber(v));
         }
         writer.join();
+        if (message.style !== undefined) {
+            report_template_style_1.ReportTemplateStyle.encode(message.style, writer.uint32(82).fork()).join();
+        }
+        if (message.label_style !== undefined) {
+            report_template_style_1.ReportTemplateStyle.encode(message.label_style, writer.uint32(90).fork()).join();
+        }
+        if (message.value_style !== undefined) {
+            report_template_style_1.ReportTemplateStyle.encode(message.value_style, writer.uint32(98).fork()).join();
+        }
+        writer.uint32(106).fork();
+        for (const v of message.column_widths) {
+            writer.uint32(v);
+        }
+        writer.join();
+        if (message.page_layout !== undefined) {
+            exports.ReportTemplatePageLayout.encode(message.page_layout, writer.uint32(114).fork()).join();
+        }
+        if (message.image !== undefined) {
+            exports.ReportTemplateImage.encode(message.image, writer.uint32(122).fork()).join();
+        }
+        if (message.inline_label !== undefined) {
+            writer.uint32(136).bool(message.inline_label);
+        }
         return writer;
     },
     decode(input, length) {
@@ -818,6 +1649,12 @@ exports.ReportTemplateBlock = {
                     }
                     message.text = reader.string();
                     continue;
+                case 16:
+                    if (tag !== 130) {
+                        break;
+                    }
+                    message.rich_text = exports.ReportTemplateRichText.decode(reader, reader.uint32());
+                    continue;
                 case 4:
                     if (tag !== 34) {
                         break;
@@ -835,12 +1672,6 @@ exports.ReportTemplateBlock = {
                         break;
                     }
                     message.field = exports.ReportTemplateFieldReference.decode(reader, reader.uint32());
-                    continue;
-                case 7:
-                    if (tag !== 58) {
-                        break;
-                    }
-                    message.field_style = exports.ReportTemplateFieldStyle.decode(reader, reader.uint32());
                     continue;
                 case 8:
                     if (tag !== 66) {
@@ -861,6 +1692,55 @@ exports.ReportTemplateBlock = {
                         continue;
                     }
                     break;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.style = report_template_style_1.ReportTemplateStyle.decode(reader, reader.uint32());
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.label_style = report_template_style_1.ReportTemplateStyle.decode(reader, reader.uint32());
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.value_style = report_template_style_1.ReportTemplateStyle.decode(reader, reader.uint32());
+                    continue;
+                case 13:
+                    if (tag === 104) {
+                        message.column_widths.push(reader.uint32());
+                        continue;
+                    }
+                    if (tag === 106) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.column_widths.push(reader.uint32());
+                        }
+                        continue;
+                    }
+                    break;
+                case 14:
+                    if (tag !== 114) {
+                        break;
+                    }
+                    message.page_layout = exports.ReportTemplatePageLayout.decode(reader, reader.uint32());
+                    continue;
+                case 15:
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.image = exports.ReportTemplateImage.decode(reader, reader.uint32());
+                    continue;
+                case 17:
+                    if (tag !== 136) {
+                        break;
+                    }
+                    message.inline_label = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -874,16 +1754,25 @@ exports.ReportTemplateBlock = {
             id: isSet(object.id) ? globalThis.String(object.id) : undefined,
             block_type: isSet(object.blockType) ? reportBlockTypeFromJSON(object.blockType) : undefined,
             text: isSet(object.text) ? globalThis.String(object.text) : undefined,
+            rich_text: isSet(object.richText) ? exports.ReportTemplateRichText.fromJSON(object.richText) : undefined,
             children: globalThis.Array.isArray(object?.children)
                 ? object.children.map((e) => exports.ReportTemplateBlock.fromJSON(e))
                 : [],
             columns: isSet(object.columns) ? globalThis.Number(object.columns) : undefined,
             field: isSet(object.field) ? exports.ReportTemplateFieldReference.fromJSON(object.field) : undefined,
-            field_style: isSet(object.fieldStyle) ? exports.ReportTemplateFieldStyle.fromJSON(object.fieldStyle) : undefined,
             body: isSet(object.body) ? globalThis.String(object.body) : undefined,
             signature_roles: globalThis.Array.isArray(object?.signatureRoles)
                 ? object.signatureRoles.map((e) => reportTemplateSignatureRoleFromJSON(e))
                 : [],
+            style: isSet(object.style) ? report_template_style_1.ReportTemplateStyle.fromJSON(object.style) : undefined,
+            label_style: isSet(object.labelStyle) ? report_template_style_1.ReportTemplateStyle.fromJSON(object.labelStyle) : undefined,
+            value_style: isSet(object.valueStyle) ? report_template_style_1.ReportTemplateStyle.fromJSON(object.valueStyle) : undefined,
+            column_widths: globalThis.Array.isArray(object?.columnWidths)
+                ? object.columnWidths.map((e) => globalThis.Number(e))
+                : [],
+            page_layout: isSet(object.pageLayout) ? exports.ReportTemplatePageLayout.fromJSON(object.pageLayout) : undefined,
+            image: isSet(object.image) ? exports.ReportTemplateImage.fromJSON(object.image) : undefined,
+            inline_label: isSet(object.inlineLabel) ? globalThis.Boolean(object.inlineLabel) : undefined,
         };
     },
     toJSON(message) {
@@ -897,6 +1786,9 @@ exports.ReportTemplateBlock = {
         if (message.text !== undefined) {
             obj.text = message.text;
         }
+        if (message.rich_text !== undefined) {
+            obj.richText = exports.ReportTemplateRichText.toJSON(message.rich_text);
+        }
         if (message.children?.length) {
             obj.children = message.children.map((e) => exports.ReportTemplateBlock.toJSON(e));
         }
@@ -906,14 +1798,32 @@ exports.ReportTemplateBlock = {
         if (message.field !== undefined) {
             obj.field = exports.ReportTemplateFieldReference.toJSON(message.field);
         }
-        if (message.field_style !== undefined) {
-            obj.fieldStyle = exports.ReportTemplateFieldStyle.toJSON(message.field_style);
-        }
         if (message.body !== undefined) {
             obj.body = message.body;
         }
         if (message.signature_roles?.length) {
             obj.signatureRoles = message.signature_roles.map((e) => reportTemplateSignatureRoleToJSON(e));
+        }
+        if (message.style !== undefined) {
+            obj.style = report_template_style_1.ReportTemplateStyle.toJSON(message.style);
+        }
+        if (message.label_style !== undefined) {
+            obj.labelStyle = report_template_style_1.ReportTemplateStyle.toJSON(message.label_style);
+        }
+        if (message.value_style !== undefined) {
+            obj.valueStyle = report_template_style_1.ReportTemplateStyle.toJSON(message.value_style);
+        }
+        if (message.column_widths?.length) {
+            obj.columnWidths = message.column_widths.map((e) => Math.round(e));
+        }
+        if (message.page_layout !== undefined) {
+            obj.pageLayout = exports.ReportTemplatePageLayout.toJSON(message.page_layout);
+        }
+        if (message.image !== undefined) {
+            obj.image = exports.ReportTemplateImage.toJSON(message.image);
+        }
+        if (message.inline_label !== undefined) {
+            obj.inlineLabel = message.inline_label;
         }
         return obj;
     },
@@ -925,21 +1835,46 @@ exports.ReportTemplateBlock = {
         message.id = object.id ?? undefined;
         message.block_type = object.block_type ?? undefined;
         message.text = object.text ?? undefined;
+        message.rich_text = (object.rich_text !== undefined && object.rich_text !== null)
+            ? exports.ReportTemplateRichText.fromPartial(object.rich_text)
+            : undefined;
         message.children = object.children?.map((e) => exports.ReportTemplateBlock.fromPartial(e)) || [];
         message.columns = object.columns ?? undefined;
         message.field = (object.field !== undefined && object.field !== null)
             ? exports.ReportTemplateFieldReference.fromPartial(object.field)
             : undefined;
-        message.field_style = (object.field_style !== undefined && object.field_style !== null)
-            ? exports.ReportTemplateFieldStyle.fromPartial(object.field_style)
-            : undefined;
         message.body = object.body ?? undefined;
         message.signature_roles = object.signature_roles?.map((e) => e) || [];
+        message.style = (object.style !== undefined && object.style !== null)
+            ? report_template_style_1.ReportTemplateStyle.fromPartial(object.style)
+            : undefined;
+        message.label_style = (object.label_style !== undefined && object.label_style !== null)
+            ? report_template_style_1.ReportTemplateStyle.fromPartial(object.label_style)
+            : undefined;
+        message.value_style = (object.value_style !== undefined && object.value_style !== null)
+            ? report_template_style_1.ReportTemplateStyle.fromPartial(object.value_style)
+            : undefined;
+        message.column_widths = object.column_widths?.map((e) => e) || [];
+        message.page_layout = (object.page_layout !== undefined && object.page_layout !== null)
+            ? exports.ReportTemplatePageLayout.fromPartial(object.page_layout)
+            : undefined;
+        message.image = (object.image !== undefined && object.image !== null)
+            ? exports.ReportTemplateImage.fromPartial(object.image)
+            : undefined;
+        message.inline_label = object.inline_label ?? undefined;
         return message;
     },
 };
 function createBaseReportTemplateDesign() {
-    return { theme: undefined, blocks: [], content: undefined };
+    return {
+        theme: undefined,
+        blocks: [],
+        content: undefined,
+        block_styles: [],
+        header: undefined,
+        footer: undefined,
+        background_asset_id: undefined,
+    };
 }
 exports.ReportTemplateDesign = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -951,6 +1886,18 @@ exports.ReportTemplateDesign = {
         }
         if (message.content !== undefined) {
             exports.ReportTemplateContent.encode(message.content, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.block_styles) {
+            exports.ReportTemplateBlockStyle.encode(v, writer.uint32(34).fork()).join();
+        }
+        if (message.header !== undefined) {
+            exports.ReportTemplatePageRegion.encode(message.header, writer.uint32(42).fork()).join();
+        }
+        if (message.footer !== undefined) {
+            exports.ReportTemplatePageRegion.encode(message.footer, writer.uint32(50).fork()).join();
+        }
+        if (message.background_asset_id !== undefined) {
+            object_id_1.ObjectId.encode(message.background_asset_id, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -979,6 +1926,30 @@ exports.ReportTemplateDesign = {
                     }
                     message.content = exports.ReportTemplateContent.decode(reader, reader.uint32());
                     continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.block_styles.push(exports.ReportTemplateBlockStyle.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.header = exports.ReportTemplatePageRegion.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.footer = exports.ReportTemplatePageRegion.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.background_asset_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -994,6 +1965,12 @@ exports.ReportTemplateDesign = {
                 ? object.blocks.map((e) => exports.ReportTemplateBlock.fromJSON(e))
                 : [],
             content: isSet(object.content) ? exports.ReportTemplateContent.fromJSON(object.content) : undefined,
+            block_styles: globalThis.Array.isArray(object?.blockStyles)
+                ? object.blockStyles.map((e) => exports.ReportTemplateBlockStyle.fromJSON(e))
+                : [],
+            header: isSet(object.header) ? exports.ReportTemplatePageRegion.fromJSON(object.header) : undefined,
+            footer: isSet(object.footer) ? exports.ReportTemplatePageRegion.fromJSON(object.footer) : undefined,
+            background_asset_id: isSet(object.backgroundAssetId) ? object_id_1.ObjectId.fromJSON(object.backgroundAssetId) : undefined,
         };
     },
     toJSON(message) {
@@ -1006,6 +1983,18 @@ exports.ReportTemplateDesign = {
         }
         if (message.content !== undefined) {
             obj.content = exports.ReportTemplateContent.toJSON(message.content);
+        }
+        if (message.block_styles?.length) {
+            obj.blockStyles = message.block_styles.map((e) => exports.ReportTemplateBlockStyle.toJSON(e));
+        }
+        if (message.header !== undefined) {
+            obj.header = exports.ReportTemplatePageRegion.toJSON(message.header);
+        }
+        if (message.footer !== undefined) {
+            obj.footer = exports.ReportTemplatePageRegion.toJSON(message.footer);
+        }
+        if (message.background_asset_id !== undefined) {
+            obj.backgroundAssetId = object_id_1.ObjectId.toJSON(message.background_asset_id);
         }
         return obj;
     },
@@ -1020,6 +2009,16 @@ exports.ReportTemplateDesign = {
         message.blocks = object.blocks?.map((e) => exports.ReportTemplateBlock.fromPartial(e)) || [];
         message.content = (object.content !== undefined && object.content !== null)
             ? exports.ReportTemplateContent.fromPartial(object.content)
+            : undefined;
+        message.block_styles = object.block_styles?.map((e) => exports.ReportTemplateBlockStyle.fromPartial(e)) || [];
+        message.header = (object.header !== undefined && object.header !== null)
+            ? exports.ReportTemplatePageRegion.fromPartial(object.header)
+            : undefined;
+        message.footer = (object.footer !== undefined && object.footer !== null)
+            ? exports.ReportTemplatePageRegion.fromPartial(object.footer)
+            : undefined;
+        message.background_asset_id = (object.background_asset_id !== undefined && object.background_asset_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.background_asset_id)
             : undefined;
         return message;
     },

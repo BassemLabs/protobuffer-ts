@@ -71,7 +71,14 @@ export interface ReportLayout {
   sections: ReportLayoutSection[];
   check_boxes: ReportCheckBoxLayout[];
   credit_weight?: number | undefined;
-  report_card_eligibility: ReportCardEligibility | undefined;
+  report_card_eligibility:
+    | ReportCardEligibility
+    | undefined;
+  /**
+   * Absence retains the legacy section behavior. Omission on update preserves
+   * the stored policy so older clients cannot erase it.
+   */
+  section_policy?: ReportLayoutSectionPolicy | undefined;
 }
 
 export interface ReportCardEligibility {
@@ -82,6 +89,16 @@ export interface ReportCardEligibility {
 export interface ReportLayoutSection {
   id: ObjectId | undefined;
   name?: string | undefined;
+}
+
+export interface ReportLayoutSectionPolicy {
+  /** Canonical stored marks, such as M/P/B/N; no display-label translation. */
+  allowed_values: string[];
+  /**
+   * All section rows are required before review for these report types.
+   * An empty list explicitly disables section assessments for every type.
+   */
+  enabled_report_types: ReportType[];
 }
 
 export interface ReportCheckBoxLayout {
@@ -99,6 +116,7 @@ function createBaseReportLayout(): ReportLayout {
     check_boxes: [],
     credit_weight: undefined,
     report_card_eligibility: undefined,
+    section_policy: undefined,
   };
 }
 
@@ -127,6 +145,9 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     }
     if (message.report_card_eligibility !== undefined) {
       ReportCardEligibility.encode(message.report_card_eligibility, writer.uint32(66).fork()).join();
+    }
+    if (message.section_policy !== undefined) {
+      ReportLayoutSectionPolicy.encode(message.section_policy, writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -194,6 +215,13 @@ export const ReportLayout: MessageFns<ReportLayout> = {
 
           message.report_card_eligibility = ReportCardEligibility.decode(reader, reader.uint32());
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.section_policy = ReportLayoutSectionPolicy.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -218,6 +246,9 @@ export const ReportLayout: MessageFns<ReportLayout> = {
       credit_weight: isSet(object.creditWeight) ? globalThis.Number(object.creditWeight) : undefined,
       report_card_eligibility: isSet(object.reportCardEligibility)
         ? ReportCardEligibility.fromJSON(object.reportCardEligibility)
+        : undefined,
+      section_policy: isSet(object.sectionPolicy)
+        ? ReportLayoutSectionPolicy.fromJSON(object.sectionPolicy)
         : undefined,
     };
   },
@@ -248,6 +279,9 @@ export const ReportLayout: MessageFns<ReportLayout> = {
     if (message.report_card_eligibility !== undefined) {
       obj.reportCardEligibility = ReportCardEligibility.toJSON(message.report_card_eligibility);
     }
+    if (message.section_policy !== undefined) {
+      obj.sectionPolicy = ReportLayoutSectionPolicy.toJSON(message.section_policy);
+    }
     return obj;
   },
 
@@ -271,6 +305,9 @@ export const ReportLayout: MessageFns<ReportLayout> = {
       (object.report_card_eligibility !== undefined && object.report_card_eligibility !== null)
         ? ReportCardEligibility.fromPartial(object.report_card_eligibility)
         : undefined;
+    message.section_policy = (object.section_policy !== undefined && object.section_policy !== null)
+      ? ReportLayoutSectionPolicy.fromPartial(object.section_policy)
+      : undefined;
     return message;
   },
 };
@@ -433,6 +470,96 @@ export const ReportLayoutSection: MessageFns<ReportLayoutSection> = {
     const message = createBaseReportLayoutSection();
     message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
     message.name = object.name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReportLayoutSectionPolicy(): ReportLayoutSectionPolicy {
+  return { allowed_values: [], enabled_report_types: [] };
+}
+
+export const ReportLayoutSectionPolicy: MessageFns<ReportLayoutSectionPolicy> = {
+  encode(message: ReportLayoutSectionPolicy, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.allowed_values) {
+      writer.uint32(10).string(v!);
+    }
+    writer.uint32(18).fork();
+    for (const v of message.enabled_report_types) {
+      writer.int32(reportTypeToNumber(v));
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportLayoutSectionPolicy {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportLayoutSectionPolicy();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.allowed_values.push(reader.string());
+          continue;
+        case 2:
+          if (tag === 16) {
+            message.enabled_report_types.push(reportTypeFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.enabled_report_types.push(reportTypeFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportLayoutSectionPolicy {
+    return {
+      allowed_values: globalThis.Array.isArray(object?.allowedValues)
+        ? object.allowedValues.map((e: any) => globalThis.String(e))
+        : [],
+      enabled_report_types: globalThis.Array.isArray(object?.enabledReportTypes)
+        ? object.enabledReportTypes.map((e: any) => reportTypeFromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ReportLayoutSectionPolicy): unknown {
+    const obj: any = {};
+    if (message.allowed_values?.length) {
+      obj.allowedValues = message.allowed_values;
+    }
+    if (message.enabled_report_types?.length) {
+      obj.enabledReportTypes = message.enabled_report_types.map((e) => reportTypeToJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportLayoutSectionPolicy>, I>>(base?: I): ReportLayoutSectionPolicy {
+    return ReportLayoutSectionPolicy.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportLayoutSectionPolicy>, I>>(object: I): ReportLayoutSectionPolicy {
+    const message = createBaseReportLayoutSectionPolicy();
+    message.allowed_values = object.allowed_values?.map((e) => e) || [];
+    message.enabled_report_types = object.enabled_report_types?.map((e) => e) || [];
     return message;
   },
 };

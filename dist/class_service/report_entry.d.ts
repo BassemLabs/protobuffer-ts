@@ -44,6 +44,16 @@ export interface GuardianSignature {
     guardian_signed_at: Date | undefined;
     session_metadata?: GuardianSignatureSessionMetadata | undefined;
 }
+export interface ReportEntryContentAnswer {
+    field_id?: string | undefined;
+    text_value?: string | undefined;
+    /** Exact canonical code from the pinned definition's allowed_values. */
+    selected_value?: string | undefined;
+    boolean_value?: boolean | undefined;
+}
+export interface ReportEntryContentAnswers {
+    answers: ReportEntryContentAnswer[];
+}
 export interface ReportEntry {
     id: ObjectId | undefined;
     organization: ObjectId | undefined;
@@ -59,6 +69,12 @@ export interface ReportEntry {
     learning_skills: ReportEntryLearningSkill[];
     credit_earned?: boolean | undefined;
     guardian_signature?: GuardianSignature | undefined;
+    /**
+     * Exact scoped template selection pinned at first save. Absence preserves
+     * the existing preset workflow, even if a template is assigned later.
+     */
+    report_template_assignment_id?: ObjectId | undefined;
+    content_answers: ReportEntryContentAnswer[];
 }
 export interface ReportEntryView {
     entry: ReportEntry | undefined;
@@ -86,6 +102,8 @@ export declare const ReportEntryLearningSkill: MessageFns<ReportEntryLearningSki
 export declare const GuardianSignatureHeader: MessageFns<GuardianSignatureHeader>;
 export declare const GuardianSignatureSessionMetadata: MessageFns<GuardianSignatureSessionMetadata>;
 export declare const GuardianSignature: MessageFns<GuardianSignature>;
+export declare const ReportEntryContentAnswer: MessageFns<ReportEntryContentAnswer>;
+export declare const ReportEntryContentAnswers: MessageFns<ReportEntryContentAnswers>;
 export declare const ReportEntry: MessageFns<ReportEntry>;
 export declare const ReportEntryView: MessageFns<ReportEntryView>;
 export declare const ReportEntrySectionMedian: MessageFns<ReportEntrySectionMedian>;

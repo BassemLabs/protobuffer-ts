@@ -19,6 +19,11 @@ export interface ReportLayout {
     check_boxes: ReportCheckBoxLayout[];
     credit_weight?: number | undefined;
     report_card_eligibility: ReportCardEligibility | undefined;
+    /**
+     * Absence retains the legacy section behavior. Omission on update preserves
+     * the stored policy so older clients cannot erase it.
+     */
+    section_policy?: ReportLayoutSectionPolicy | undefined;
 }
 export interface ReportCardEligibility {
     enabled?: boolean | undefined;
@@ -28,6 +33,15 @@ export interface ReportLayoutSection {
     id: ObjectId | undefined;
     name?: string | undefined;
 }
+export interface ReportLayoutSectionPolicy {
+    /** Canonical stored marks, such as M/P/B/N; no display-label translation. */
+    allowed_values: string[];
+    /**
+     * All section rows are required before review for these report types.
+     * An empty list explicitly disables section assessments for every type.
+     */
+    enabled_report_types: ReportType[];
+}
 export interface ReportCheckBoxLayout {
     id: ObjectId | undefined;
     name?: string | undefined;
@@ -35,6 +49,7 @@ export interface ReportCheckBoxLayout {
 export declare const ReportLayout: MessageFns<ReportLayout>;
 export declare const ReportCardEligibility: MessageFns<ReportCardEligibility>;
 export declare const ReportLayoutSection: MessageFns<ReportLayoutSection>;
+export declare const ReportLayoutSectionPolicy: MessageFns<ReportLayoutSectionPolicy>;
 export declare const ReportCheckBoxLayout: MessageFns<ReportCheckBoxLayout>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

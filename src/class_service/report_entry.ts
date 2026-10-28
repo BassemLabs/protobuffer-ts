@@ -125,6 +125,20 @@ export interface GuardianSignature {
   session_metadata?: GuardianSignatureSessionMetadata | undefined;
 }
 
+export interface ReportEntryContentAnswer {
+  field_id?: string | undefined;
+  text_value?:
+    | string
+    | undefined;
+  /** Exact canonical code from the pinned definition's allowed_values. */
+  selected_value?: string | undefined;
+  boolean_value?: boolean | undefined;
+}
+
+export interface ReportEntryContentAnswers {
+  answers: ReportEntryContentAnswer[];
+}
+
 export interface ReportEntry {
   id: ObjectId | undefined;
   organization: ObjectId | undefined;
@@ -139,7 +153,15 @@ export interface ReportEntry {
   requested_changes?: string | undefined;
   learning_skills: ReportEntryLearningSkill[];
   credit_earned?: boolean | undefined;
-  guardian_signature?: GuardianSignature | undefined;
+  guardian_signature?:
+    | GuardianSignature
+    | undefined;
+  /**
+   * Exact scoped template selection pinned at first save. Absence preserves
+   * the existing preset workflow, even if a template is assigned later.
+   */
+  report_template_assignment_id?: ObjectId | undefined;
+  content_answers: ReportEntryContentAnswer[];
 }
 
 export interface ReportEntryView {
@@ -693,6 +715,171 @@ export const GuardianSignature: MessageFns<GuardianSignature> = {
   },
 };
 
+function createBaseReportEntryContentAnswer(): ReportEntryContentAnswer {
+  return { field_id: undefined, text_value: undefined, selected_value: undefined, boolean_value: undefined };
+}
+
+export const ReportEntryContentAnswer: MessageFns<ReportEntryContentAnswer> = {
+  encode(message: ReportEntryContentAnswer, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.field_id !== undefined) {
+      writer.uint32(10).string(message.field_id);
+    }
+    if (message.text_value !== undefined) {
+      writer.uint32(18).string(message.text_value);
+    }
+    if (message.selected_value !== undefined) {
+      writer.uint32(26).string(message.selected_value);
+    }
+    if (message.boolean_value !== undefined) {
+      writer.uint32(32).bool(message.boolean_value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportEntryContentAnswer {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportEntryContentAnswer();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.field_id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.text_value = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.selected_value = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.boolean_value = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportEntryContentAnswer {
+    return {
+      field_id: isSet(object.fieldId) ? globalThis.String(object.fieldId) : undefined,
+      text_value: isSet(object.textValue) ? globalThis.String(object.textValue) : undefined,
+      selected_value: isSet(object.selectedValue) ? globalThis.String(object.selectedValue) : undefined,
+      boolean_value: isSet(object.booleanValue) ? globalThis.Boolean(object.booleanValue) : undefined,
+    };
+  },
+
+  toJSON(message: ReportEntryContentAnswer): unknown {
+    const obj: any = {};
+    if (message.field_id !== undefined) {
+      obj.fieldId = message.field_id;
+    }
+    if (message.text_value !== undefined) {
+      obj.textValue = message.text_value;
+    }
+    if (message.selected_value !== undefined) {
+      obj.selectedValue = message.selected_value;
+    }
+    if (message.boolean_value !== undefined) {
+      obj.booleanValue = message.boolean_value;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportEntryContentAnswer>, I>>(base?: I): ReportEntryContentAnswer {
+    return ReportEntryContentAnswer.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportEntryContentAnswer>, I>>(object: I): ReportEntryContentAnswer {
+    const message = createBaseReportEntryContentAnswer();
+    message.field_id = object.field_id ?? undefined;
+    message.text_value = object.text_value ?? undefined;
+    message.selected_value = object.selected_value ?? undefined;
+    message.boolean_value = object.boolean_value ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReportEntryContentAnswers(): ReportEntryContentAnswers {
+  return { answers: [] };
+}
+
+export const ReportEntryContentAnswers: MessageFns<ReportEntryContentAnswers> = {
+  encode(message: ReportEntryContentAnswers, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.answers) {
+      ReportEntryContentAnswer.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportEntryContentAnswers {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportEntryContentAnswers();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.answers.push(ReportEntryContentAnswer.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportEntryContentAnswers {
+    return {
+      answers: globalThis.Array.isArray(object?.answers)
+        ? object.answers.map((e: any) => ReportEntryContentAnswer.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ReportEntryContentAnswers): unknown {
+    const obj: any = {};
+    if (message.answers?.length) {
+      obj.answers = message.answers.map((e) => ReportEntryContentAnswer.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportEntryContentAnswers>, I>>(base?: I): ReportEntryContentAnswers {
+    return ReportEntryContentAnswers.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportEntryContentAnswers>, I>>(object: I): ReportEntryContentAnswers {
+    const message = createBaseReportEntryContentAnswers();
+    message.answers = object.answers?.map((e) => ReportEntryContentAnswer.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 function createBaseReportEntry(): ReportEntry {
   return {
     id: undefined,
@@ -709,6 +896,8 @@ function createBaseReportEntry(): ReportEntry {
     learning_skills: [],
     credit_earned: undefined,
     guardian_signature: undefined,
+    report_template_assignment_id: undefined,
+    content_answers: [],
   };
 }
 
@@ -755,6 +944,12 @@ export const ReportEntry: MessageFns<ReportEntry> = {
     }
     if (message.guardian_signature !== undefined) {
       GuardianSignature.encode(message.guardian_signature, writer.uint32(114).fork()).join();
+    }
+    if (message.report_template_assignment_id !== undefined) {
+      ObjectId.encode(message.report_template_assignment_id, writer.uint32(122).fork()).join();
+    }
+    for (const v of message.content_answers) {
+      ReportEntryContentAnswer.encode(v!, writer.uint32(130).fork()).join();
     }
     return writer;
   },
@@ -864,6 +1059,20 @@ export const ReportEntry: MessageFns<ReportEntry> = {
 
           message.guardian_signature = GuardianSignature.decode(reader, reader.uint32());
           continue;
+        case 15:
+          if (tag !== 122) {
+            break;
+          }
+
+          message.report_template_assignment_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 16:
+          if (tag !== 130) {
+            break;
+          }
+
+          message.content_answers.push(ReportEntryContentAnswer.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -897,6 +1106,12 @@ export const ReportEntry: MessageFns<ReportEntry> = {
       guardian_signature: isSet(object.guardianSignature)
         ? GuardianSignature.fromJSON(object.guardianSignature)
         : undefined,
+      report_template_assignment_id: isSet(object.reportTemplateAssignmentId)
+        ? ObjectId.fromJSON(object.reportTemplateAssignmentId)
+        : undefined,
+      content_answers: globalThis.Array.isArray(object?.contentAnswers)
+        ? object.contentAnswers.map((e: any) => ReportEntryContentAnswer.fromJSON(e))
+        : [],
     };
   },
 
@@ -944,6 +1159,12 @@ export const ReportEntry: MessageFns<ReportEntry> = {
     if (message.guardian_signature !== undefined) {
       obj.guardianSignature = GuardianSignature.toJSON(message.guardian_signature);
     }
+    if (message.report_template_assignment_id !== undefined) {
+      obj.reportTemplateAssignmentId = ObjectId.toJSON(message.report_template_assignment_id);
+    }
+    if (message.content_answers?.length) {
+      obj.contentAnswers = message.content_answers.map((e) => ReportEntryContentAnswer.toJSON(e));
+    }
     return obj;
   },
 
@@ -976,6 +1197,11 @@ export const ReportEntry: MessageFns<ReportEntry> = {
     message.guardian_signature = (object.guardian_signature !== undefined && object.guardian_signature !== null)
       ? GuardianSignature.fromPartial(object.guardian_signature)
       : undefined;
+    message.report_template_assignment_id =
+      (object.report_template_assignment_id !== undefined && object.report_template_assignment_id !== null)
+        ? ObjectId.fromPartial(object.report_template_assignment_id)
+        : undefined;
+    message.content_answers = object.content_answers?.map((e) => ReportEntryContentAnswer.fromPartial(e)) || [];
     return message;
   },
 };

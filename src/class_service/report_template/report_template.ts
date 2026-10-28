@@ -15,7 +15,7 @@ export interface ReportTemplate {
   id: ObjectId | undefined;
   name?: string | undefined;
   design: ReportTemplateDesign | undefined;
-  version_id?: ObjectId | undefined;
+  version_id: ObjectId | undefined;
   version_number?: number | undefined;
 }
 

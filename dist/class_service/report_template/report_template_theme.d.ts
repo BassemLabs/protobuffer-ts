@@ -1,5 +1,14 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { ReportTemplateMargins, ReportTemplateStyle } from "./report_template_style";
 export declare const protobufPackage = "class_service.report_template";
+export declare enum ReportTemplatePageSize {
+    REPORT_TEMPLATE_PAGE_SIZE_A4 = "REPORT_TEMPLATE_PAGE_SIZE_A4",
+    REPORT_TEMPLATE_PAGE_SIZE_LETTER = "REPORT_TEMPLATE_PAGE_SIZE_LETTER",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reportTemplatePageSizeFromJSON(object: any): ReportTemplatePageSize;
+export declare function reportTemplatePageSizeToJSON(object: ReportTemplatePageSize): string;
+export declare function reportTemplatePageSizeToNumber(object: ReportTemplatePageSize): number;
 export declare enum ReportTemplatePageOrientation {
     REPORT_TEMPLATE_PAGE_ORIENTATION_PORTRAIT = "REPORT_TEMPLATE_PAGE_ORIENTATION_PORTRAIT",
     REPORT_TEMPLATE_PAGE_ORIENTATION_LANDSCAPE = "REPORT_TEMPLATE_PAGE_ORIENTATION_LANDSCAPE",
@@ -13,8 +22,10 @@ export interface ReportTemplateTheme {
     text_color?: string | undefined;
     background_color?: string | undefined;
     orientation?: ReportTemplatePageOrientation | undefined;
-    /** PDF points (72 per inch). */
-    page_margin?: number | undefined;
+    /** Font and colors above remain the report defaults; do not duplicate them here. */
+    default_style?: ReportTemplateStyle | undefined;
+    page_size?: ReportTemplatePageSize | undefined;
+    margins: ReportTemplateMargins | undefined;
 }
 export declare const ReportTemplateTheme: MessageFns<ReportTemplateTheme>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

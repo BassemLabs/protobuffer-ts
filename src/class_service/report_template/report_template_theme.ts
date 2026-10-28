@@ -6,8 +6,54 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { ReportTemplateMargins, ReportTemplateStyle } from "./report_template_style";
 
 export const protobufPackage = "class_service.report_template";
+
+export enum ReportTemplatePageSize {
+  REPORT_TEMPLATE_PAGE_SIZE_A4 = "REPORT_TEMPLATE_PAGE_SIZE_A4",
+  REPORT_TEMPLATE_PAGE_SIZE_LETTER = "REPORT_TEMPLATE_PAGE_SIZE_LETTER",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function reportTemplatePageSizeFromJSON(object: any): ReportTemplatePageSize {
+  switch (object) {
+    case 0:
+    case "REPORT_TEMPLATE_PAGE_SIZE_A4":
+      return ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_A4;
+    case 1:
+    case "REPORT_TEMPLATE_PAGE_SIZE_LETTER":
+      return ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_LETTER;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReportTemplatePageSize.UNRECOGNIZED;
+  }
+}
+
+export function reportTemplatePageSizeToJSON(object: ReportTemplatePageSize): string {
+  switch (object) {
+    case ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_A4:
+      return "REPORT_TEMPLATE_PAGE_SIZE_A4";
+    case ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_LETTER:
+      return "REPORT_TEMPLATE_PAGE_SIZE_LETTER";
+    case ReportTemplatePageSize.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function reportTemplatePageSizeToNumber(object: ReportTemplatePageSize): number {
+  switch (object) {
+    case ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_A4:
+      return 0;
+    case ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_LETTER:
+      return 1;
+    case ReportTemplatePageSize.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
 
 export enum ReportTemplatePageOrientation {
   REPORT_TEMPLATE_PAGE_ORIENTATION_PORTRAIT = "REPORT_TEMPLATE_PAGE_ORIENTATION_PORTRAIT",
@@ -61,8 +107,10 @@ export interface ReportTemplateTheme {
   orientation?:
     | ReportTemplatePageOrientation
     | undefined;
-  /** PDF points (72 per inch). */
-  page_margin?: number | undefined;
+  /** Font and colors above remain the report defaults; do not duplicate them here. */
+  default_style?: ReportTemplateStyle | undefined;
+  page_size?: ReportTemplatePageSize | undefined;
+  margins: ReportTemplateMargins | undefined;
 }
 
 function createBaseReportTemplateTheme(): ReportTemplateTheme {
@@ -71,7 +119,9 @@ function createBaseReportTemplateTheme(): ReportTemplateTheme {
     text_color: undefined,
     background_color: undefined,
     orientation: undefined,
-    page_margin: undefined,
+    default_style: undefined,
+    page_size: undefined,
+    margins: undefined,
   };
 }
 
@@ -89,8 +139,14 @@ export const ReportTemplateTheme: MessageFns<ReportTemplateTheme> = {
     if (message.orientation !== undefined) {
       writer.uint32(32).int32(reportTemplatePageOrientationToNumber(message.orientation));
     }
-    if (message.page_margin !== undefined) {
-      writer.uint32(40).uint32(message.page_margin);
+    if (message.default_style !== undefined) {
+      ReportTemplateStyle.encode(message.default_style, writer.uint32(50).fork()).join();
+    }
+    if (message.page_size !== undefined) {
+      writer.uint32(56).int32(reportTemplatePageSizeToNumber(message.page_size));
+    }
+    if (message.margins !== undefined) {
+      ReportTemplateMargins.encode(message.margins, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -130,12 +186,26 @@ export const ReportTemplateTheme: MessageFns<ReportTemplateTheme> = {
 
           message.orientation = reportTemplatePageOrientationFromJSON(reader.int32());
           continue;
-        case 5:
-          if (tag !== 40) {
+        case 6:
+          if (tag !== 50) {
             break;
           }
 
-          message.page_margin = reader.uint32();
+          message.default_style = ReportTemplateStyle.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.page_size = reportTemplatePageSizeFromJSON(reader.int32());
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.margins = ReportTemplateMargins.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -152,7 +222,9 @@ export const ReportTemplateTheme: MessageFns<ReportTemplateTheme> = {
       text_color: isSet(object.textColor) ? globalThis.String(object.textColor) : undefined,
       background_color: isSet(object.backgroundColor) ? globalThis.String(object.backgroundColor) : undefined,
       orientation: isSet(object.orientation) ? reportTemplatePageOrientationFromJSON(object.orientation) : undefined,
-      page_margin: isSet(object.pageMargin) ? globalThis.Number(object.pageMargin) : undefined,
+      default_style: isSet(object.defaultStyle) ? ReportTemplateStyle.fromJSON(object.defaultStyle) : undefined,
+      page_size: isSet(object.pageSize) ? reportTemplatePageSizeFromJSON(object.pageSize) : undefined,
+      margins: isSet(object.margins) ? ReportTemplateMargins.fromJSON(object.margins) : undefined,
     };
   },
 
@@ -170,8 +242,14 @@ export const ReportTemplateTheme: MessageFns<ReportTemplateTheme> = {
     if (message.orientation !== undefined) {
       obj.orientation = reportTemplatePageOrientationToJSON(message.orientation);
     }
-    if (message.page_margin !== undefined) {
-      obj.pageMargin = Math.round(message.page_margin);
+    if (message.default_style !== undefined) {
+      obj.defaultStyle = ReportTemplateStyle.toJSON(message.default_style);
+    }
+    if (message.page_size !== undefined) {
+      obj.pageSize = reportTemplatePageSizeToJSON(message.page_size);
+    }
+    if (message.margins !== undefined) {
+      obj.margins = ReportTemplateMargins.toJSON(message.margins);
     }
     return obj;
   },
@@ -185,7 +263,13 @@ export const ReportTemplateTheme: MessageFns<ReportTemplateTheme> = {
     message.text_color = object.text_color ?? undefined;
     message.background_color = object.background_color ?? undefined;
     message.orientation = object.orientation ?? undefined;
-    message.page_margin = object.page_margin ?? undefined;
+    message.default_style = (object.default_style !== undefined && object.default_style !== null)
+      ? ReportTemplateStyle.fromPartial(object.default_style)
+      : undefined;
+    message.page_size = object.page_size ?? undefined;
+    message.margins = (object.margins !== undefined && object.margins !== null)
+      ? ReportTemplateMargins.fromPartial(object.margins)
+      : undefined;
     return message;
   },
 };

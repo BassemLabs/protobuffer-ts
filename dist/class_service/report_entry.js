@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/report_entry.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ParentStudentReportSummary = exports.ReportEntryMedian = exports.ReportEntrySectionMedian = exports.ReportEntryView = exports.ReportEntry = exports.GuardianSignature = exports.GuardianSignatureSessionMetadata = exports.GuardianSignatureHeader = exports.ReportEntryLearningSkill = exports.ReportEntrySection = exports.ReportEntryCheckBox = exports.ReportStatus = exports.protobufPackage = void 0;
+exports.ParentStudentReportSummary = exports.ReportEntryMedian = exports.ReportEntrySectionMedian = exports.ReportEntryView = exports.ReportEntry = exports.ReportEntryContentAnswers = exports.ReportEntryContentAnswer = exports.GuardianSignature = exports.GuardianSignatureSessionMetadata = exports.GuardianSignatureHeader = exports.ReportEntryLearningSkill = exports.ReportEntrySection = exports.ReportEntryCheckBox = exports.ReportStatus = exports.protobufPackage = void 0;
 exports.reportStatusFromJSON = reportStatusFromJSON;
 exports.reportStatusToJSON = reportStatusToJSON;
 exports.reportStatusToNumber = reportStatusToNumber;
@@ -562,6 +562,154 @@ exports.GuardianSignature = {
         return message;
     },
 };
+function createBaseReportEntryContentAnswer() {
+    return { field_id: undefined, text_value: undefined, selected_value: undefined, boolean_value: undefined };
+}
+exports.ReportEntryContentAnswer = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.field_id !== undefined) {
+            writer.uint32(10).string(message.field_id);
+        }
+        if (message.text_value !== undefined) {
+            writer.uint32(18).string(message.text_value);
+        }
+        if (message.selected_value !== undefined) {
+            writer.uint32(26).string(message.selected_value);
+        }
+        if (message.boolean_value !== undefined) {
+            writer.uint32(32).bool(message.boolean_value);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportEntryContentAnswer();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.field_id = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.text_value = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.selected_value = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.boolean_value = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            field_id: isSet(object.fieldId) ? globalThis.String(object.fieldId) : undefined,
+            text_value: isSet(object.textValue) ? globalThis.String(object.textValue) : undefined,
+            selected_value: isSet(object.selectedValue) ? globalThis.String(object.selectedValue) : undefined,
+            boolean_value: isSet(object.booleanValue) ? globalThis.Boolean(object.booleanValue) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.field_id !== undefined) {
+            obj.fieldId = message.field_id;
+        }
+        if (message.text_value !== undefined) {
+            obj.textValue = message.text_value;
+        }
+        if (message.selected_value !== undefined) {
+            obj.selectedValue = message.selected_value;
+        }
+        if (message.boolean_value !== undefined) {
+            obj.booleanValue = message.boolean_value;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportEntryContentAnswer.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportEntryContentAnswer();
+        message.field_id = object.field_id ?? undefined;
+        message.text_value = object.text_value ?? undefined;
+        message.selected_value = object.selected_value ?? undefined;
+        message.boolean_value = object.boolean_value ?? undefined;
+        return message;
+    },
+};
+function createBaseReportEntryContentAnswers() {
+    return { answers: [] };
+}
+exports.ReportEntryContentAnswers = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.answers) {
+            exports.ReportEntryContentAnswer.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportEntryContentAnswers();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.answers.push(exports.ReportEntryContentAnswer.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            answers: globalThis.Array.isArray(object?.answers)
+                ? object.answers.map((e) => exports.ReportEntryContentAnswer.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.answers?.length) {
+            obj.answers = message.answers.map((e) => exports.ReportEntryContentAnswer.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportEntryContentAnswers.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportEntryContentAnswers();
+        message.answers = object.answers?.map((e) => exports.ReportEntryContentAnswer.fromPartial(e)) || [];
+        return message;
+    },
+};
 function createBaseReportEntry() {
     return {
         id: undefined,
@@ -578,6 +726,8 @@ function createBaseReportEntry() {
         learning_skills: [],
         credit_earned: undefined,
         guardian_signature: undefined,
+        report_template_assignment_id: undefined,
+        content_answers: [],
     };
 }
 exports.ReportEntry = {
@@ -623,6 +773,12 @@ exports.ReportEntry = {
         }
         if (message.guardian_signature !== undefined) {
             exports.GuardianSignature.encode(message.guardian_signature, writer.uint32(114).fork()).join();
+        }
+        if (message.report_template_assignment_id !== undefined) {
+            object_id_1.ObjectId.encode(message.report_template_assignment_id, writer.uint32(122).fork()).join();
+        }
+        for (const v of message.content_answers) {
+            exports.ReportEntryContentAnswer.encode(v, writer.uint32(130).fork()).join();
         }
         return writer;
     },
@@ -717,6 +873,18 @@ exports.ReportEntry = {
                     }
                     message.guardian_signature = exports.GuardianSignature.decode(reader, reader.uint32());
                     continue;
+                case 15:
+                    if (tag !== 122) {
+                        break;
+                    }
+                    message.report_template_assignment_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 16:
+                    if (tag !== 130) {
+                        break;
+                    }
+                    message.content_answers.push(exports.ReportEntryContentAnswer.decode(reader, reader.uint32()));
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -749,6 +917,12 @@ exports.ReportEntry = {
             guardian_signature: isSet(object.guardianSignature)
                 ? exports.GuardianSignature.fromJSON(object.guardianSignature)
                 : undefined,
+            report_template_assignment_id: isSet(object.reportTemplateAssignmentId)
+                ? object_id_1.ObjectId.fromJSON(object.reportTemplateAssignmentId)
+                : undefined,
+            content_answers: globalThis.Array.isArray(object?.contentAnswers)
+                ? object.contentAnswers.map((e) => exports.ReportEntryContentAnswer.fromJSON(e))
+                : [],
         };
     },
     toJSON(message) {
@@ -795,6 +969,12 @@ exports.ReportEntry = {
         if (message.guardian_signature !== undefined) {
             obj.guardianSignature = exports.GuardianSignature.toJSON(message.guardian_signature);
         }
+        if (message.report_template_assignment_id !== undefined) {
+            obj.reportTemplateAssignmentId = object_id_1.ObjectId.toJSON(message.report_template_assignment_id);
+        }
+        if (message.content_answers?.length) {
+            obj.contentAnswers = message.content_answers.map((e) => exports.ReportEntryContentAnswer.toJSON(e));
+        }
         return obj;
     },
     create(base) {
@@ -826,6 +1006,11 @@ exports.ReportEntry = {
         message.guardian_signature = (object.guardian_signature !== undefined && object.guardian_signature !== null)
             ? exports.GuardianSignature.fromPartial(object.guardian_signature)
             : undefined;
+        message.report_template_assignment_id =
+            (object.report_template_assignment_id !== undefined && object.report_template_assignment_id !== null)
+                ? object_id_1.ObjectId.fromPartial(object.report_template_assignment_id)
+                : undefined;
+        message.content_answers = object.content_answers?.map((e) => exports.ReportEntryContentAnswer.fromPartial(e)) || [];
         return message;
     },
 };

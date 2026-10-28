@@ -15,6 +15,7 @@ import {
   ParentStudentReportSummary,
   ReportEntry,
   ReportEntryCheckBox,
+  ReportEntryContentAnswers,
   ReportEntryLearningSkill,
   ReportEntryMedian,
   ReportEntrySection,
@@ -708,7 +709,22 @@ export interface UpdateReportEntryRequest {
   sections: ReportEntrySection[];
   learning_skills: ReportEntryLearningSkill[];
   credit_earned?: boolean | undefined;
-  update_mode?: ReportEntryUpdateMode | undefined;
+  update_mode?:
+    | ReportEntryUpdateMode
+    | undefined;
+  /**
+   * The selection shown by the custom editor. Required by the domain when
+   * creating or editing configured entries; absence preserves legacy updates.
+   * Reject a stale custom preview instead of silently applying another design.
+   */
+  expected_report_template_assignment_id?:
+    | ObjectId
+    | undefined;
+  /**
+   * Omission preserves saved answers. Presence replaces this contribution's
+   * answers atomically; an empty envelope clears answers when saving a draft.
+   */
+  content_answers?: ReportEntryContentAnswers | undefined;
 }
 
 export interface ReportEntryViewResponse {
@@ -4255,6 +4271,8 @@ function createBaseUpdateReportEntryRequest(): UpdateReportEntryRequest {
     learning_skills: [],
     credit_earned: undefined,
     update_mode: undefined,
+    expected_report_template_assignment_id: undefined,
+    content_answers: undefined,
   };
 }
 
@@ -4292,6 +4310,12 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
     }
     if (message.update_mode !== undefined) {
       writer.uint32(88).int32(reportEntryUpdateModeToNumber(message.update_mode));
+    }
+    if (message.expected_report_template_assignment_id !== undefined) {
+      ObjectId.encode(message.expected_report_template_assignment_id, writer.uint32(98).fork()).join();
+    }
+    if (message.content_answers !== undefined) {
+      ReportEntryContentAnswers.encode(message.content_answers, writer.uint32(106).fork()).join();
     }
     return writer;
   },
@@ -4380,6 +4404,20 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
 
           message.update_mode = reportEntryUpdateModeFromJSON(reader.int32());
           continue;
+        case 12:
+          if (tag !== 98) {
+            break;
+          }
+
+          message.expected_report_template_assignment_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 13:
+          if (tag !== 106) {
+            break;
+          }
+
+          message.content_answers = ReportEntryContentAnswers.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4408,6 +4446,12 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
         : [],
       credit_earned: isSet(object.creditEarned) ? globalThis.Boolean(object.creditEarned) : undefined,
       update_mode: isSet(object.updateMode) ? reportEntryUpdateModeFromJSON(object.updateMode) : undefined,
+      expected_report_template_assignment_id: isSet(object.expectedReportTemplateAssignmentId)
+        ? ObjectId.fromJSON(object.expectedReportTemplateAssignmentId)
+        : undefined,
+      content_answers: isSet(object.contentAnswers)
+        ? ReportEntryContentAnswers.fromJSON(object.contentAnswers)
+        : undefined,
     };
   },
 
@@ -4446,6 +4490,12 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
     if (message.update_mode !== undefined) {
       obj.updateMode = reportEntryUpdateModeToJSON(message.update_mode);
     }
+    if (message.expected_report_template_assignment_id !== undefined) {
+      obj.expectedReportTemplateAssignmentId = ObjectId.toJSON(message.expected_report_template_assignment_id);
+    }
+    if (message.content_answers !== undefined) {
+      obj.contentAnswers = ReportEntryContentAnswers.toJSON(message.content_answers);
+    }
     return obj;
   },
 
@@ -4473,6 +4523,14 @@ export const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest> = {
     message.learning_skills = object.learning_skills?.map((e) => ReportEntryLearningSkill.fromPartial(e)) || [];
     message.credit_earned = object.credit_earned ?? undefined;
     message.update_mode = object.update_mode ?? undefined;
+    message.expected_report_template_assignment_id =
+      (object.expected_report_template_assignment_id !== undefined &&
+          object.expected_report_template_assignment_id !== null)
+        ? ObjectId.fromPartial(object.expected_report_template_assignment_id)
+        : undefined;
+    message.content_answers = (object.content_answers !== undefined && object.content_answers !== null)
+      ? ReportEntryContentAnswers.fromPartial(object.content_answers)
+      : undefined;
     return message;
   },
 };

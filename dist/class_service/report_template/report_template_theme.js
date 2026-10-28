@@ -5,13 +5,59 @@
 //   protoc               unknown
 // source: class_service/report_template/report_template_theme.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReportTemplateTheme = exports.ReportTemplatePageOrientation = exports.protobufPackage = void 0;
+exports.ReportTemplateTheme = exports.ReportTemplatePageOrientation = exports.ReportTemplatePageSize = exports.protobufPackage = void 0;
+exports.reportTemplatePageSizeFromJSON = reportTemplatePageSizeFromJSON;
+exports.reportTemplatePageSizeToJSON = reportTemplatePageSizeToJSON;
+exports.reportTemplatePageSizeToNumber = reportTemplatePageSizeToNumber;
 exports.reportTemplatePageOrientationFromJSON = reportTemplatePageOrientationFromJSON;
 exports.reportTemplatePageOrientationToJSON = reportTemplatePageOrientationToJSON;
 exports.reportTemplatePageOrientationToNumber = reportTemplatePageOrientationToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const report_template_style_1 = require("./report_template_style");
 exports.protobufPackage = "class_service.report_template";
+var ReportTemplatePageSize;
+(function (ReportTemplatePageSize) {
+    ReportTemplatePageSize["REPORT_TEMPLATE_PAGE_SIZE_A4"] = "REPORT_TEMPLATE_PAGE_SIZE_A4";
+    ReportTemplatePageSize["REPORT_TEMPLATE_PAGE_SIZE_LETTER"] = "REPORT_TEMPLATE_PAGE_SIZE_LETTER";
+    ReportTemplatePageSize["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ReportTemplatePageSize || (exports.ReportTemplatePageSize = ReportTemplatePageSize = {}));
+function reportTemplatePageSizeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "REPORT_TEMPLATE_PAGE_SIZE_A4":
+            return ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_A4;
+        case 1:
+        case "REPORT_TEMPLATE_PAGE_SIZE_LETTER":
+            return ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_LETTER;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ReportTemplatePageSize.UNRECOGNIZED;
+    }
+}
+function reportTemplatePageSizeToJSON(object) {
+    switch (object) {
+        case ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_A4:
+            return "REPORT_TEMPLATE_PAGE_SIZE_A4";
+        case ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_LETTER:
+            return "REPORT_TEMPLATE_PAGE_SIZE_LETTER";
+        case ReportTemplatePageSize.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function reportTemplatePageSizeToNumber(object) {
+    switch (object) {
+        case ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_A4:
+            return 0;
+        case ReportTemplatePageSize.REPORT_TEMPLATE_PAGE_SIZE_LETTER:
+            return 1;
+        case ReportTemplatePageSize.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 var ReportTemplatePageOrientation;
 (function (ReportTemplatePageOrientation) {
     ReportTemplatePageOrientation["REPORT_TEMPLATE_PAGE_ORIENTATION_PORTRAIT"] = "REPORT_TEMPLATE_PAGE_ORIENTATION_PORTRAIT";
@@ -60,7 +106,9 @@ function createBaseReportTemplateTheme() {
         text_color: undefined,
         background_color: undefined,
         orientation: undefined,
-        page_margin: undefined,
+        default_style: undefined,
+        page_size: undefined,
+        margins: undefined,
     };
 }
 exports.ReportTemplateTheme = {
@@ -77,8 +125,14 @@ exports.ReportTemplateTheme = {
         if (message.orientation !== undefined) {
             writer.uint32(32).int32(reportTemplatePageOrientationToNumber(message.orientation));
         }
-        if (message.page_margin !== undefined) {
-            writer.uint32(40).uint32(message.page_margin);
+        if (message.default_style !== undefined) {
+            report_template_style_1.ReportTemplateStyle.encode(message.default_style, writer.uint32(50).fork()).join();
+        }
+        if (message.page_size !== undefined) {
+            writer.uint32(56).int32(reportTemplatePageSizeToNumber(message.page_size));
+        }
+        if (message.margins !== undefined) {
+            report_template_style_1.ReportTemplateMargins.encode(message.margins, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -113,11 +167,23 @@ exports.ReportTemplateTheme = {
                     }
                     message.orientation = reportTemplatePageOrientationFromJSON(reader.int32());
                     continue;
-                case 5:
-                    if (tag !== 40) {
+                case 6:
+                    if (tag !== 50) {
                         break;
                     }
-                    message.page_margin = reader.uint32();
+                    message.default_style = report_template_style_1.ReportTemplateStyle.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.page_size = reportTemplatePageSizeFromJSON(reader.int32());
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.margins = report_template_style_1.ReportTemplateMargins.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -133,7 +199,9 @@ exports.ReportTemplateTheme = {
             text_color: isSet(object.textColor) ? globalThis.String(object.textColor) : undefined,
             background_color: isSet(object.backgroundColor) ? globalThis.String(object.backgroundColor) : undefined,
             orientation: isSet(object.orientation) ? reportTemplatePageOrientationFromJSON(object.orientation) : undefined,
-            page_margin: isSet(object.pageMargin) ? globalThis.Number(object.pageMargin) : undefined,
+            default_style: isSet(object.defaultStyle) ? report_template_style_1.ReportTemplateStyle.fromJSON(object.defaultStyle) : undefined,
+            page_size: isSet(object.pageSize) ? reportTemplatePageSizeFromJSON(object.pageSize) : undefined,
+            margins: isSet(object.margins) ? report_template_style_1.ReportTemplateMargins.fromJSON(object.margins) : undefined,
         };
     },
     toJSON(message) {
@@ -150,8 +218,14 @@ exports.ReportTemplateTheme = {
         if (message.orientation !== undefined) {
             obj.orientation = reportTemplatePageOrientationToJSON(message.orientation);
         }
-        if (message.page_margin !== undefined) {
-            obj.pageMargin = Math.round(message.page_margin);
+        if (message.default_style !== undefined) {
+            obj.defaultStyle = report_template_style_1.ReportTemplateStyle.toJSON(message.default_style);
+        }
+        if (message.page_size !== undefined) {
+            obj.pageSize = reportTemplatePageSizeToJSON(message.page_size);
+        }
+        if (message.margins !== undefined) {
+            obj.margins = report_template_style_1.ReportTemplateMargins.toJSON(message.margins);
         }
         return obj;
     },
@@ -164,7 +238,13 @@ exports.ReportTemplateTheme = {
         message.text_color = object.text_color ?? undefined;
         message.background_color = object.background_color ?? undefined;
         message.orientation = object.orientation ?? undefined;
-        message.page_margin = object.page_margin ?? undefined;
+        message.default_style = (object.default_style !== undefined && object.default_style !== null)
+            ? report_template_style_1.ReportTemplateStyle.fromPartial(object.default_style)
+            : undefined;
+        message.page_size = object.page_size ?? undefined;
+        message.margins = (object.margins !== undefined && object.margins !== null)
+            ? report_template_style_1.ReportTemplateMargins.fromPartial(object.margins)
+            : undefined;
         return message;
     },
 };

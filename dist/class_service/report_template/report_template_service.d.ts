@@ -29,7 +29,7 @@ export interface UpdateReportTemplateRequest {
     report_template_id: ObjectId | undefined;
     name?: string | undefined;
     design: ReportTemplateDesign | undefined;
-    expected_version_id?: ObjectId | undefined;
+    expected_version_id: ObjectId | undefined;
 }
 export interface ListReportTemplateVersionsRequest {
     context: RequestContext | undefined;
