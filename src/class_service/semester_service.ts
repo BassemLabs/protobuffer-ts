@@ -11,7 +11,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
-import { Semester, SemesterReportLayout } from "./semester";
+import { Semester, SemesterReportLayout, SemesterReportSchedule } from "./semester";
 
 export const protobufPackage = "class_service.semester_service";
 
@@ -67,7 +67,11 @@ export interface UpdateRequest {
   start_date: Date | undefined;
   end_date: Date | undefined;
   report_layout?: SemesterReportLayout | undefined;
-  campus_id: ObjectId | undefined;
+  campus_id:
+    | ObjectId
+    | undefined;
+  /** Absence preserves the stored schedule; older clients retain report_layout. */
+  report_schedule?: SemesterReportSchedule | undefined;
 }
 
 export interface ArchiveRequest {
@@ -750,6 +754,7 @@ function createBaseUpdateRequest(): UpdateRequest {
     end_date: undefined,
     report_layout: undefined,
     campus_id: undefined,
+    report_schedule: undefined,
   };
 }
 
@@ -775,6 +780,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     }
     if (message.campus_id !== undefined) {
       ObjectId.encode(message.campus_id, writer.uint32(58).fork()).join();
+    }
+    if (message.report_schedule !== undefined) {
+      SemesterReportSchedule.encode(message.report_schedule, writer.uint32(66).fork()).join();
     }
     return writer;
   },
@@ -835,6 +843,13 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
 
           message.campus_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.report_schedule = SemesterReportSchedule.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -853,6 +868,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
       report_layout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
       campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
+      report_schedule: isSet(object.reportSchedule)
+        ? SemesterReportSchedule.fromJSON(object.reportSchedule)
+        : undefined,
     };
   },
 
@@ -879,6 +897,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.campus_id !== undefined) {
       obj.campusId = ObjectId.toJSON(message.campus_id);
     }
+    if (message.report_schedule !== undefined) {
+      obj.reportSchedule = SemesterReportSchedule.toJSON(message.report_schedule);
+    }
     return obj;
   },
 
@@ -901,6 +922,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       : undefined;
     message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
       ? ObjectId.fromPartial(object.campus_id)
+      : undefined;
+    message.report_schedule = (object.report_schedule !== undefined && object.report_schedule !== null)
+      ? SemesterReportSchedule.fromPartial(object.report_schedule)
       : undefined;
     return message;
   },

@@ -21,6 +21,7 @@ import {
   GuardianSignatureSessionMetadata,
   ReportEntryCheckBox,
   ReportEntrySection,
+  ReportEntrySectionMedian,
 } from "../report_entry";
 import {
   ReportCheckBoxLayout,
@@ -53,6 +54,14 @@ export interface GetConfiguredReportCardExportRequest {
   mode?: ReportCardExportMode | undefined;
 }
 
+export interface GetConfiguredSemesterReportCardExportRequest {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  semester_id: ObjectId | undefined;
+  report_type?: ReportType | undefined;
+  mode?: ReportCardExportMode | undefined;
+}
+
 export interface ReportTemplateResolvedCheckBoxes {
   definitions: ReportCheckBoxLayout[];
   values: ReportEntryCheckBox[];
@@ -61,6 +70,7 @@ export interface ReportTemplateResolvedCheckBoxes {
 export interface ReportTemplateResolvedSections {
   definitions: ReportLayoutSection[];
   values: ReportEntrySection[];
+  medians: ReportEntrySectionMedian[];
 }
 
 export interface ResolvedReportTemplateField {
@@ -97,6 +107,13 @@ export interface SignConfiguredReportCardRequest {
 export interface ConfiguredReportCardCourse {
   course_id: ObjectId | undefined;
   values: ResolvedReportTemplateField[];
+  /** Only actual published sources have identities, including in preview mode. */
+  sources: ConfiguredReportCardSource[];
+}
+
+export interface ConfiguredReportCardSource {
+  report_type?: ReportType | undefined;
+  issuance: ReportCardIssuanceMetadata | undefined;
 }
 
 export interface ConfiguredReportCardSignature {
@@ -271,6 +288,138 @@ export const GetConfiguredReportCardExportRequest: MessageFns<GetConfiguredRepor
   },
 };
 
+function createBaseGetConfiguredSemesterReportCardExportRequest(): GetConfiguredSemesterReportCardExportRequest {
+  return { context: undefined, student_id: undefined, semester_id: undefined, report_type: undefined, mode: undefined };
+}
+
+export const GetConfiguredSemesterReportCardExportRequest: MessageFns<GetConfiguredSemesterReportCardExportRequest> = {
+  encode(
+    message: GetConfiguredSemesterReportCardExportRequest,
+    writer: BinaryWriter = new BinaryWriter(),
+  ): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.semester_id !== undefined) {
+      ObjectId.encode(message.semester_id, writer.uint32(26).fork()).join();
+    }
+    if (message.report_type !== undefined) {
+      writer.uint32(32).int32(reportTypeToNumber(message.report_type));
+    }
+    if (message.mode !== undefined) {
+      writer.uint32(40).int32(reportCardExportModeToNumber(message.mode));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetConfiguredSemesterReportCardExportRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetConfiguredSemesterReportCardExportRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.semester_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.report_type = reportTypeFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.mode = reportCardExportModeFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetConfiguredSemesterReportCardExportRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
+      mode: isSet(object.mode) ? reportCardExportModeFromJSON(object.mode) : undefined,
+    };
+  },
+
+  toJSON(message: GetConfiguredSemesterReportCardExportRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.semester_id !== undefined) {
+      obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.report_type !== undefined) {
+      obj.reportType = reportTypeToJSON(message.report_type);
+    }
+    if (message.mode !== undefined) {
+      obj.mode = reportCardExportModeToJSON(message.mode);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetConfiguredSemesterReportCardExportRequest>, I>>(
+    base?: I,
+  ): GetConfiguredSemesterReportCardExportRequest {
+    return GetConfiguredSemesterReportCardExportRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetConfiguredSemesterReportCardExportRequest>, I>>(
+    object: I,
+  ): GetConfiguredSemesterReportCardExportRequest {
+    const message = createBaseGetConfiguredSemesterReportCardExportRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
+      ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.report_type = object.report_type ?? undefined;
+    message.mode = object.mode ?? undefined;
+    return message;
+  },
+};
+
 function createBaseReportTemplateResolvedCheckBoxes(): ReportTemplateResolvedCheckBoxes {
   return { definitions: [], values: [] };
 }
@@ -354,7 +503,7 @@ export const ReportTemplateResolvedCheckBoxes: MessageFns<ReportTemplateResolved
 };
 
 function createBaseReportTemplateResolvedSections(): ReportTemplateResolvedSections {
-  return { definitions: [], values: [] };
+  return { definitions: [], values: [], medians: [] };
 }
 
 export const ReportTemplateResolvedSections: MessageFns<ReportTemplateResolvedSections> = {
@@ -364,6 +513,9 @@ export const ReportTemplateResolvedSections: MessageFns<ReportTemplateResolvedSe
     }
     for (const v of message.values) {
       ReportEntrySection.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.medians) {
+      ReportEntrySectionMedian.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -389,6 +541,13 @@ export const ReportTemplateResolvedSections: MessageFns<ReportTemplateResolvedSe
 
           message.values.push(ReportEntrySection.decode(reader, reader.uint32()));
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.medians.push(ReportEntrySectionMedian.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -406,6 +565,9 @@ export const ReportTemplateResolvedSections: MessageFns<ReportTemplateResolvedSe
       values: globalThis.Array.isArray(object?.values)
         ? object.values.map((e: any) => ReportEntrySection.fromJSON(e))
         : [],
+      medians: globalThis.Array.isArray(object?.medians)
+        ? object.medians.map((e: any) => ReportEntrySectionMedian.fromJSON(e))
+        : [],
     };
   },
 
@@ -416,6 +578,9 @@ export const ReportTemplateResolvedSections: MessageFns<ReportTemplateResolvedSe
     }
     if (message.values?.length) {
       obj.values = message.values.map((e) => ReportEntrySection.toJSON(e));
+    }
+    if (message.medians?.length) {
+      obj.medians = message.medians.map((e) => ReportEntrySectionMedian.toJSON(e));
     }
     return obj;
   },
@@ -429,6 +594,7 @@ export const ReportTemplateResolvedSections: MessageFns<ReportTemplateResolvedSe
     const message = createBaseReportTemplateResolvedSections();
     message.definitions = object.definitions?.map((e) => ReportLayoutSection.fromPartial(e)) || [];
     message.values = object.values?.map((e) => ReportEntrySection.fromPartial(e)) || [];
+    message.medians = object.medians?.map((e) => ReportEntrySectionMedian.fromPartial(e)) || [];
     return message;
   },
 };
@@ -699,7 +865,7 @@ export const SignConfiguredReportCardRequest: MessageFns<SignConfiguredReportCar
 };
 
 function createBaseConfiguredReportCardCourse(): ConfiguredReportCardCourse {
-  return { course_id: undefined, values: [] };
+  return { course_id: undefined, values: [], sources: [] };
 }
 
 export const ConfiguredReportCardCourse: MessageFns<ConfiguredReportCardCourse> = {
@@ -709,6 +875,9 @@ export const ConfiguredReportCardCourse: MessageFns<ConfiguredReportCardCourse> 
     }
     for (const v of message.values) {
       ResolvedReportTemplateField.encode(v!, writer.uint32(18).fork()).join();
+    }
+    for (const v of message.sources) {
+      ConfiguredReportCardSource.encode(v!, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -734,6 +903,13 @@ export const ConfiguredReportCardCourse: MessageFns<ConfiguredReportCardCourse> 
 
           message.values.push(ResolvedReportTemplateField.decode(reader, reader.uint32()));
           continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.sources.push(ConfiguredReportCardSource.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -749,6 +925,9 @@ export const ConfiguredReportCardCourse: MessageFns<ConfiguredReportCardCourse> 
       values: globalThis.Array.isArray(object?.values)
         ? object.values.map((e: any) => ResolvedReportTemplateField.fromJSON(e))
         : [],
+      sources: globalThis.Array.isArray(object?.sources)
+        ? object.sources.map((e: any) => ConfiguredReportCardSource.fromJSON(e))
+        : [],
     };
   },
 
@@ -759,6 +938,9 @@ export const ConfiguredReportCardCourse: MessageFns<ConfiguredReportCardCourse> 
     }
     if (message.values?.length) {
       obj.values = message.values.map((e) => ResolvedReportTemplateField.toJSON(e));
+    }
+    if (message.sources?.length) {
+      obj.sources = message.sources.map((e) => ConfiguredReportCardSource.toJSON(e));
     }
     return obj;
   },
@@ -772,6 +954,83 @@ export const ConfiguredReportCardCourse: MessageFns<ConfiguredReportCardCourse> 
       ? ObjectId.fromPartial(object.course_id)
       : undefined;
     message.values = object.values?.map((e) => ResolvedReportTemplateField.fromPartial(e)) || [];
+    message.sources = object.sources?.map((e) => ConfiguredReportCardSource.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseConfiguredReportCardSource(): ConfiguredReportCardSource {
+  return { report_type: undefined, issuance: undefined };
+}
+
+export const ConfiguredReportCardSource: MessageFns<ConfiguredReportCardSource> = {
+  encode(message: ConfiguredReportCardSource, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.report_type !== undefined) {
+      writer.uint32(8).int32(reportTypeToNumber(message.report_type));
+    }
+    if (message.issuance !== undefined) {
+      ReportCardIssuanceMetadata.encode(message.issuance, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ConfiguredReportCardSource {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseConfiguredReportCardSource();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.report_type = reportTypeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.issuance = ReportCardIssuanceMetadata.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ConfiguredReportCardSource {
+    return {
+      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
+      issuance: isSet(object.issuance) ? ReportCardIssuanceMetadata.fromJSON(object.issuance) : undefined,
+    };
+  },
+
+  toJSON(message: ConfiguredReportCardSource): unknown {
+    const obj: any = {};
+    if (message.report_type !== undefined) {
+      obj.reportType = reportTypeToJSON(message.report_type);
+    }
+    if (message.issuance !== undefined) {
+      obj.issuance = ReportCardIssuanceMetadata.toJSON(message.issuance);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ConfiguredReportCardSource>, I>>(base?: I): ConfiguredReportCardSource {
+    return ConfiguredReportCardSource.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ConfiguredReportCardSource>, I>>(object: I): ConfiguredReportCardSource {
+    const message = createBaseConfiguredReportCardSource();
+    message.report_type = object.report_type ?? undefined;
+    message.issuance = (object.issuance !== undefined && object.issuance !== null)
+      ? ReportCardIssuanceMetadata.fromPartial(object.issuance)
+      : undefined;
     return message;
   },
 };

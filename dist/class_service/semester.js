@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/semester.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SemesterList = exports.ListSemester = exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.Semester = exports.protobufPackage = void 0;
+exports.SemesterList = exports.ListSemester = exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.SemesterReportSchedule = exports.Semester = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -22,6 +22,7 @@ function createBaseSemester() {
         report_layout: undefined,
         campus_id: undefined,
         school_year: undefined,
+        report_schedule: undefined,
     };
 }
 exports.Semester = {
@@ -49,6 +50,9 @@ exports.Semester = {
         }
         if (message.school_year !== undefined) {
             object_id_1.ObjectId.encode(message.school_year, writer.uint32(66).fork()).join();
+        }
+        if (message.report_schedule !== undefined) {
+            exports.SemesterReportSchedule.encode(message.report_schedule, writer.uint32(74).fork()).join();
         }
         return writer;
     },
@@ -107,6 +111,12 @@ exports.Semester = {
                     }
                     message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.report_schedule = exports.SemesterReportSchedule.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -125,6 +135,9 @@ exports.Semester = {
             report_layout: isSet(object.reportLayout) ? exports.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
             campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
             school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            report_schedule: isSet(object.reportSchedule)
+                ? exports.SemesterReportSchedule.fromJSON(object.reportSchedule)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -153,6 +166,9 @@ exports.Semester = {
         if (message.school_year !== undefined) {
             obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
         }
+        if (message.report_schedule !== undefined) {
+            obj.reportSchedule = exports.SemesterReportSchedule.toJSON(message.report_schedule);
+        }
         return obj;
     },
     create(base) {
@@ -174,6 +190,86 @@ exports.Semester = {
         message.school_year = (object.school_year !== undefined && object.school_year !== null)
             ? object_id_1.ObjectId.fromPartial(object.school_year)
             : undefined;
+        message.report_schedule = (object.report_schedule !== undefined && object.report_schedule !== null)
+            ? exports.SemesterReportSchedule.fromPartial(object.report_schedule)
+            : undefined;
+        return message;
+    },
+};
+function createBaseSemesterReportSchedule() {
+    return { dates: [], enabled_report_types: [] };
+}
+exports.SemesterReportSchedule = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.dates) {
+            exports.ReportDates.encode(v, writer.uint32(10).fork()).join();
+        }
+        writer.uint32(18).fork();
+        for (const v of message.enabled_report_types) {
+            writer.int32((0, report_layout_1.reportTypeToNumber)(v));
+        }
+        writer.join();
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSemesterReportSchedule();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.dates.push(exports.ReportDates.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag === 16) {
+                        message.enabled_report_types.push((0, report_layout_1.reportTypeFromJSON)(reader.int32()));
+                        continue;
+                    }
+                    if (tag === 18) {
+                        const end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2) {
+                            message.enabled_report_types.push((0, report_layout_1.reportTypeFromJSON)(reader.int32()));
+                        }
+                        continue;
+                    }
+                    break;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            dates: globalThis.Array.isArray(object?.dates) ? object.dates.map((e) => exports.ReportDates.fromJSON(e)) : [],
+            enabled_report_types: globalThis.Array.isArray(object?.enabledReportTypes)
+                ? object.enabledReportTypes.map((e) => (0, report_layout_1.reportTypeFromJSON)(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.dates?.length) {
+            obj.dates = message.dates.map((e) => exports.ReportDates.toJSON(e));
+        }
+        if (message.enabled_report_types?.length) {
+            obj.enabledReportTypes = message.enabled_report_types.map((e) => (0, report_layout_1.reportTypeToJSON)(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SemesterReportSchedule.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSemesterReportSchedule();
+        message.dates = object.dates?.map((e) => exports.ReportDates.fromPartial(e)) || [];
+        message.enabled_report_types = object.enabled_report_types?.map((e) => e) || [];
         return message;
     },
 };

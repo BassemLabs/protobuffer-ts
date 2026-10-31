@@ -46,6 +46,16 @@ export interface ReportTemplateStyle {
     border_radius?: number | undefined;
     column_gap?: number | undefined;
     vertical_alignment?: ReportTemplateVerticalAlignment | undefined;
+    /** Space after a block in PDF points. Absence preserves the existing 8 points. */
+    block_spacing?: number | undefined;
+    /**
+     * Sparse side overrides. Absence inherits; false removes that side while
+     * border_width/color/style continue to describe the enabled sides.
+     */
+    border_top?: boolean | undefined;
+    border_right?: boolean | undefined;
+    border_bottom?: boolean | undefined;
+    border_left?: boolean | undefined;
 }
 export interface ReportTemplateMargins {
     top?: number | undefined;

@@ -3,7 +3,7 @@ import { ObjectId } from "../../utils/object_id";
 import { RequestContext } from "../../utils/request_context";
 import { ClassRef } from "../class_ref";
 import { ReportCardExportMode, ReportCardSignature } from "../report_card_export_service";
-import { GuardianSignature, GuardianSignatureSessionMetadata, ReportEntryCheckBox, ReportEntrySection } from "../report_entry";
+import { GuardianSignature, GuardianSignatureSessionMetadata, ReportEntryCheckBox, ReportEntrySection, ReportEntrySectionMedian } from "../report_entry";
 import { ReportCheckBoxLayout, ReportLayoutSection, ReportType } from "../report_layout";
 import { ReportTemplate } from "./report_template";
 import { ReportTemplateAssignment } from "./report_template_assignment";
@@ -17,6 +17,13 @@ export interface GetConfiguredReportCardExportRequest {
     report_type?: ReportType | undefined;
     mode?: ReportCardExportMode | undefined;
 }
+export interface GetConfiguredSemesterReportCardExportRequest {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+    semester_id: ObjectId | undefined;
+    report_type?: ReportType | undefined;
+    mode?: ReportCardExportMode | undefined;
+}
 export interface ReportTemplateResolvedCheckBoxes {
     definitions: ReportCheckBoxLayout[];
     values: ReportEntryCheckBox[];
@@ -24,6 +31,7 @@ export interface ReportTemplateResolvedCheckBoxes {
 export interface ReportTemplateResolvedSections {
     definitions: ReportLayoutSection[];
     values: ReportEntrySection[];
+    medians: ReportEntrySectionMedian[];
 }
 export interface ResolvedReportTemplateField {
     field: ReportTemplateFieldReference | undefined;
@@ -49,6 +57,12 @@ export interface SignConfiguredReportCardRequest {
 export interface ConfiguredReportCardCourse {
     course_id: ObjectId | undefined;
     values: ResolvedReportTemplateField[];
+    /** Only actual published sources have identities, including in preview mode. */
+    sources: ConfiguredReportCardSource[];
+}
+export interface ConfiguredReportCardSource {
+    report_type?: ReportType | undefined;
+    issuance: ReportCardIssuanceMetadata | undefined;
 }
 export interface ConfiguredReportCardSignature {
     role?: ReportTemplateSignatureRole | undefined;
@@ -84,11 +98,13 @@ export interface ConfiguredReportCardExport {
     guardian_signature?: GuardianSignature | undefined;
 }
 export declare const GetConfiguredReportCardExportRequest: MessageFns<GetConfiguredReportCardExportRequest>;
+export declare const GetConfiguredSemesterReportCardExportRequest: MessageFns<GetConfiguredSemesterReportCardExportRequest>;
 export declare const ReportTemplateResolvedCheckBoxes: MessageFns<ReportTemplateResolvedCheckBoxes>;
 export declare const ReportTemplateResolvedSections: MessageFns<ReportTemplateResolvedSections>;
 export declare const ResolvedReportTemplateField: MessageFns<ResolvedReportTemplateField>;
 export declare const SignConfiguredReportCardRequest: MessageFns<SignConfiguredReportCardRequest>;
 export declare const ConfiguredReportCardCourse: MessageFns<ConfiguredReportCardCourse>;
+export declare const ConfiguredReportCardSource: MessageFns<ConfiguredReportCardSource>;
 export declare const ConfiguredReportCardSignature: MessageFns<ConfiguredReportCardSignature>;
 export declare const ReportCardIssuanceMetadata: MessageFns<ReportCardIssuanceMetadata>;
 export declare const ConfiguredReportCardAsset: MessageFns<ConfiguredReportCardAsset>;

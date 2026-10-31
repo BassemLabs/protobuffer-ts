@@ -3,7 +3,7 @@ import { StudentGrade } from "../../user_service/student";
 import { ObjectId } from "../../utils/object_id";
 import { ReportType } from "../report_layout";
 import { ReportTemplateMargins, ReportTemplateStyle } from "./report_template_style";
-import { ReportTemplatePageSize, ReportTemplateTheme } from "./report_template_theme";
+import { ReportTemplatePageOrientation, ReportTemplatePageSize, ReportTemplateTheme } from "./report_template_theme";
 export declare const protobufPackage = "class_service.report_template";
 export declare enum ReportBlockType {
     REPORT_BLOCK_TYPE_PAGE = "REPORT_BLOCK_TYPE_PAGE",
@@ -18,6 +18,7 @@ export declare enum ReportBlockType {
     REPORT_BLOCK_TYPE_LOGO = "REPORT_BLOCK_TYPE_LOGO",
     REPORT_BLOCK_TYPE_IMAGE = "REPORT_BLOCK_TYPE_IMAGE",
     REPORT_BLOCK_TYPE_PAGE_NUMBER = "REPORT_BLOCK_TYPE_PAGE_NUMBER",
+    REPORT_BLOCK_TYPE_TABLE = "REPORT_BLOCK_TYPE_TABLE",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function reportBlockTypeFromJSON(object: any): ReportBlockType;
@@ -68,6 +69,19 @@ export declare enum ReportTemplateSignatureRole {
 export declare function reportTemplateSignatureRoleFromJSON(object: any): ReportTemplateSignatureRole;
 export declare function reportTemplateSignatureRoleToJSON(object: ReportTemplateSignatureRole): string;
 export declare function reportTemplateSignatureRoleToNumber(object: ReportTemplateSignatureRole): number;
+export declare enum ReportTemplateFieldDisplay {
+    REPORT_TEMPLATE_FIELD_DISPLAY_DEFAULT = "REPORT_TEMPLATE_FIELD_DISPLAY_DEFAULT",
+    /**
+     * REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK - Explicit projections of the first frozen section, preserving the existing
+     * high-school data convention without interpreting a column's position/title.
+     */
+    REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK = "REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK",
+    REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MEDIAN = "REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MEDIAN",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function reportTemplateFieldDisplayFromJSON(object: any): ReportTemplateFieldDisplay;
+export declare function reportTemplateFieldDisplayToJSON(object: ReportTemplateFieldDisplay): string;
+export declare function reportTemplateFieldDisplayToNumber(object: ReportTemplateFieldDisplay): number;
 export interface ReportTemplateImage {
     asset_id?: ObjectId | undefined;
     logo_source?: ReportTemplateLogoSource | undefined;
@@ -110,6 +124,8 @@ export interface ReportTemplatePageLayout {
     footer?: ReportTemplatePageRegion | undefined;
     /** Absence inherits the report background; true explicitly removes its image. */
     hide_background_image?: boolean | undefined;
+    /** Absence inherits the report orientation. */
+    orientation?: ReportTemplatePageOrientation | undefined;
 }
 export interface ReportTemplateContentField {
     id?: string | undefined;
@@ -121,6 +137,11 @@ export interface ReportTemplateContentField {
     allowed_values: string[];
     text?: string | undefined;
     rich_text?: ReportTemplateRichText | undefined;
+    /**
+     * Optional printed labels for canonical single-select answers. Teacher inputs
+     * and stored answers continue to use allowed_values verbatim.
+     */
+    choice_display: ReportTemplateChoiceDisplay[];
 }
 export interface ReportTemplateContentArea {
     id?: string | undefined;
@@ -140,6 +161,47 @@ export interface ReportTemplateFieldReference {
     key?: string | undefined;
     custom_field_id?: ObjectId | undefined;
     report_field_id?: string | undefined;
+    /** Absence uses the selected report period. Explicit periods bind course values. */
+    report_type?: ReportType | undefined;
+}
+export interface ReportTemplateChoiceDisplay {
+    value?: string | undefined;
+    display?: string | undefined;
+}
+/**
+ * A layout row binds existing frozen values; it does not authorize a report
+ * period, change course inclusion, or create a publication/signing operation.
+ */
+export interface ReportTemplateTableRow {
+    report_type?: ReportType | undefined;
+    label?: string | undefined;
+    minimum_height?: number | undefined;
+}
+export interface ReportTemplateTableColumn {
+    id?: string | undefined;
+    title?: string | undefined;
+    /** Positive relative width for a leaf. A group derives width from its leaves. */
+    width?: number | undefined;
+    /** Groups have children; leaves have cell blocks or a row-label cell. */
+    children: ReportTemplateTableColumn[];
+    /** Reuse ordinary Field/Text/Heading/Section/Columns layout and field bindings. */
+    blocks: ReportTemplateBlock[];
+    /** One cell spans the configured rows and uses the selected report context. */
+    merge_rows?: boolean | undefined;
+    row_label?: boolean | undefined;
+    header_style?: ReportTemplateStyle | undefined;
+    style?: ReportTemplateStyle | undefined;
+    header_vertical?: boolean | undefined;
+    /** Minimum height of this header band; absence measures its styled content. */
+    header_height?: number | undefined;
+    vertical?: boolean | undefined;
+}
+export interface ReportTemplateTable {
+    columns: ReportTemplateTableColumn[];
+    rows: ReportTemplateTableRow[];
+    header_style?: ReportTemplateStyle | undefined;
+    /** Absence prints the authored header tree. */
+    show_header?: boolean | undefined;
 }
 export interface ReportTemplateBlock {
     id?: string | undefined;
@@ -165,6 +227,9 @@ export interface ReportTemplateBlock {
     image?: ReportTemplateImage | undefined;
     /** Field blocks only; absence keeps the label and value on the same line. */
     inline_label?: boolean | undefined;
+    table?: ReportTemplateTable | undefined;
+    /** Field blocks only; absence retains their ordinary structured display. */
+    field_display?: ReportTemplateFieldDisplay | undefined;
 }
 export interface ReportTemplateDesign {
     theme: ReportTemplateTheme | undefined;
@@ -186,6 +251,10 @@ export declare const ReportTemplateContentField: MessageFns<ReportTemplateConten
 export declare const ReportTemplateContentArea: MessageFns<ReportTemplateContentArea>;
 export declare const ReportTemplateContent: MessageFns<ReportTemplateContent>;
 export declare const ReportTemplateFieldReference: MessageFns<ReportTemplateFieldReference>;
+export declare const ReportTemplateChoiceDisplay: MessageFns<ReportTemplateChoiceDisplay>;
+export declare const ReportTemplateTableRow: MessageFns<ReportTemplateTableRow>;
+export declare const ReportTemplateTableColumn: MessageFns<ReportTemplateTableColumn>;
+export declare const ReportTemplateTable: MessageFns<ReportTemplateTable>;
 export declare const ReportTemplateBlock: MessageFns<ReportTemplateBlock>;
 export declare const ReportTemplateDesign: MessageFns<ReportTemplateDesign>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

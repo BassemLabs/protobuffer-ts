@@ -586,6 +586,7 @@ function createBaseUpdateRequest() {
         end_date: undefined,
         report_layout: undefined,
         campus_id: undefined,
+        report_schedule: undefined,
     };
 }
 exports.UpdateRequest = {
@@ -610,6 +611,9 @@ exports.UpdateRequest = {
         }
         if (message.campus_id !== undefined) {
             object_id_1.ObjectId.encode(message.campus_id, writer.uint32(58).fork()).join();
+        }
+        if (message.report_schedule !== undefined) {
+            semester_1.SemesterReportSchedule.encode(message.report_schedule, writer.uint32(66).fork()).join();
         }
         return writer;
     },
@@ -662,6 +666,12 @@ exports.UpdateRequest = {
                     }
                     message.campus_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.report_schedule = semester_1.SemesterReportSchedule.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -679,6 +689,9 @@ exports.UpdateRequest = {
             end_date: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
             report_layout: isSet(object.reportLayout) ? semester_1.SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
             campus_id: isSet(object.campusId) ? object_id_1.ObjectId.fromJSON(object.campusId) : undefined,
+            report_schedule: isSet(object.reportSchedule)
+                ? semester_1.SemesterReportSchedule.fromJSON(object.reportSchedule)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -704,6 +717,9 @@ exports.UpdateRequest = {
         if (message.campus_id !== undefined) {
             obj.campusId = object_id_1.ObjectId.toJSON(message.campus_id);
         }
+        if (message.report_schedule !== undefined) {
+            obj.reportSchedule = semester_1.SemesterReportSchedule.toJSON(message.report_schedule);
+        }
         return obj;
     },
     create(base) {
@@ -725,6 +741,9 @@ exports.UpdateRequest = {
             : undefined;
         message.campus_id = (object.campus_id !== undefined && object.campus_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.campus_id)
+            : undefined;
+        message.report_schedule = (object.report_schedule !== undefined && object.report_schedule !== null)
+            ? semester_1.SemesterReportSchedule.fromPartial(object.report_schedule)
             : undefined;
         return message;
     },

@@ -16,6 +16,10 @@ import { ObjectId } from "../../utils/object_id";
 import { ReportType, reportTypeFromJSON, reportTypeToJSON, reportTypeToNumber } from "../report_layout";
 import { ReportTemplateMargins, ReportTemplateStyle } from "./report_template_style";
 import {
+  ReportTemplatePageOrientation,
+  reportTemplatePageOrientationFromJSON,
+  reportTemplatePageOrientationToJSON,
+  reportTemplatePageOrientationToNumber,
   ReportTemplatePageSize,
   reportTemplatePageSizeFromJSON,
   reportTemplatePageSizeToJSON,
@@ -38,6 +42,7 @@ export enum ReportBlockType {
   REPORT_BLOCK_TYPE_LOGO = "REPORT_BLOCK_TYPE_LOGO",
   REPORT_BLOCK_TYPE_IMAGE = "REPORT_BLOCK_TYPE_IMAGE",
   REPORT_BLOCK_TYPE_PAGE_NUMBER = "REPORT_BLOCK_TYPE_PAGE_NUMBER",
+  REPORT_BLOCK_TYPE_TABLE = "REPORT_BLOCK_TYPE_TABLE",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -79,6 +84,9 @@ export function reportBlockTypeFromJSON(object: any): ReportBlockType {
     case 11:
     case "REPORT_BLOCK_TYPE_PAGE_NUMBER":
       return ReportBlockType.REPORT_BLOCK_TYPE_PAGE_NUMBER;
+    case 12:
+    case "REPORT_BLOCK_TYPE_TABLE":
+      return ReportBlockType.REPORT_BLOCK_TYPE_TABLE;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -112,6 +120,8 @@ export function reportBlockTypeToJSON(object: ReportBlockType): string {
       return "REPORT_BLOCK_TYPE_IMAGE";
     case ReportBlockType.REPORT_BLOCK_TYPE_PAGE_NUMBER:
       return "REPORT_BLOCK_TYPE_PAGE_NUMBER";
+    case ReportBlockType.REPORT_BLOCK_TYPE_TABLE:
+      return "REPORT_BLOCK_TYPE_TABLE";
     case ReportBlockType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -144,6 +154,8 @@ export function reportBlockTypeToNumber(object: ReportBlockType): number {
       return 10;
     case ReportBlockType.REPORT_BLOCK_TYPE_PAGE_NUMBER:
       return 11;
+    case ReportBlockType.REPORT_BLOCK_TYPE_TABLE:
+      return 12;
     case ReportBlockType.UNRECOGNIZED:
     default:
       return -1;
@@ -408,6 +420,63 @@ export function reportTemplateSignatureRoleToNumber(object: ReportTemplateSignat
   }
 }
 
+export enum ReportTemplateFieldDisplay {
+  REPORT_TEMPLATE_FIELD_DISPLAY_DEFAULT = "REPORT_TEMPLATE_FIELD_DISPLAY_DEFAULT",
+  /**
+   * REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK - Explicit projections of the first frozen section, preserving the existing
+   * high-school data convention without interpreting a column's position/title.
+   */
+  REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK = "REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK",
+  REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MEDIAN = "REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MEDIAN",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function reportTemplateFieldDisplayFromJSON(object: any): ReportTemplateFieldDisplay {
+  switch (object) {
+    case 0:
+    case "REPORT_TEMPLATE_FIELD_DISPLAY_DEFAULT":
+      return ReportTemplateFieldDisplay.REPORT_TEMPLATE_FIELD_DISPLAY_DEFAULT;
+    case 1:
+    case "REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK":
+      return ReportTemplateFieldDisplay.REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK;
+    case 2:
+    case "REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MEDIAN":
+      return ReportTemplateFieldDisplay.REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MEDIAN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ReportTemplateFieldDisplay.UNRECOGNIZED;
+  }
+}
+
+export function reportTemplateFieldDisplayToJSON(object: ReportTemplateFieldDisplay): string {
+  switch (object) {
+    case ReportTemplateFieldDisplay.REPORT_TEMPLATE_FIELD_DISPLAY_DEFAULT:
+      return "REPORT_TEMPLATE_FIELD_DISPLAY_DEFAULT";
+    case ReportTemplateFieldDisplay.REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK:
+      return "REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK";
+    case ReportTemplateFieldDisplay.REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MEDIAN:
+      return "REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MEDIAN";
+    case ReportTemplateFieldDisplay.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function reportTemplateFieldDisplayToNumber(object: ReportTemplateFieldDisplay): number {
+  switch (object) {
+    case ReportTemplateFieldDisplay.REPORT_TEMPLATE_FIELD_DISPLAY_DEFAULT:
+      return 0;
+    case ReportTemplateFieldDisplay.REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MARK:
+      return 1;
+    case ReportTemplateFieldDisplay.REPORT_TEMPLATE_FIELD_DISPLAY_FIRST_SECTION_MEDIAN:
+      return 2;
+    case ReportTemplateFieldDisplay.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface ReportTemplateImage {
   asset_id?: ObjectId | undefined;
   logo_source?:
@@ -459,7 +528,11 @@ export interface ReportTemplatePageLayout {
     | ReportTemplatePageRegion
     | undefined;
   /** Absence inherits the report background; true explicitly removes its image. */
-  hide_background_image?: boolean | undefined;
+  hide_background_image?:
+    | boolean
+    | undefined;
+  /** Absence inherits the report orientation. */
+  orientation?: ReportTemplatePageOrientation | undefined;
 }
 
 export interface ReportTemplateContentField {
@@ -471,7 +544,14 @@ export interface ReportTemplateContentField {
   required?: boolean | undefined;
   allowed_values: string[];
   text?: string | undefined;
-  rich_text?: ReportTemplateRichText | undefined;
+  rich_text?:
+    | ReportTemplateRichText
+    | undefined;
+  /**
+   * Optional printed labels for canonical single-select answers. Teacher inputs
+   * and stored answers continue to use allowed_values verbatim.
+   */
+  choice_display: ReportTemplateChoiceDisplay[];
 }
 
 export interface ReportTemplateContentArea {
@@ -495,7 +575,62 @@ export interface ReportTemplateFieldReference {
   /** A supported information key, not an arbitrary record path. */
   key?: string | undefined;
   custom_field_id?: ObjectId | undefined;
-  report_field_id?: string | undefined;
+  report_field_id?:
+    | string
+    | undefined;
+  /** Absence uses the selected report period. Explicit periods bind course values. */
+  report_type?: ReportType | undefined;
+}
+
+export interface ReportTemplateChoiceDisplay {
+  value?: string | undefined;
+  display?: string | undefined;
+}
+
+/**
+ * A layout row binds existing frozen values; it does not authorize a report
+ * period, change course inclusion, or create a publication/signing operation.
+ */
+export interface ReportTemplateTableRow {
+  report_type?: ReportType | undefined;
+  label?: string | undefined;
+  minimum_height?: number | undefined;
+}
+
+export interface ReportTemplateTableColumn {
+  id?: string | undefined;
+  title?:
+    | string
+    | undefined;
+  /** Positive relative width for a leaf. A group derives width from its leaves. */
+  width?:
+    | number
+    | undefined;
+  /** Groups have children; leaves have cell blocks or a row-label cell. */
+  children: ReportTemplateTableColumn[];
+  /** Reuse ordinary Field/Text/Heading/Section/Columns layout and field bindings. */
+  blocks: ReportTemplateBlock[];
+  /** One cell spans the configured rows and uses the selected report context. */
+  merge_rows?: boolean | undefined;
+  row_label?: boolean | undefined;
+  header_style?: ReportTemplateStyle | undefined;
+  style?: ReportTemplateStyle | undefined;
+  header_vertical?:
+    | boolean
+    | undefined;
+  /** Minimum height of this header band; absence measures its styled content. */
+  header_height?: number | undefined;
+  vertical?: boolean | undefined;
+}
+
+export interface ReportTemplateTable {
+  columns: ReportTemplateTableColumn[];
+  rows: ReportTemplateTableRow[];
+  header_style?:
+    | ReportTemplateStyle
+    | undefined;
+  /** Absence prints the authored header tree. */
+  show_header?: boolean | undefined;
 }
 
 export interface ReportTemplateBlock {
@@ -536,6 +671,11 @@ export interface ReportTemplateBlock {
     | undefined;
   /** Field blocks only; absence keeps the label and value on the same line. */
   inline_label?: boolean | undefined;
+  table?:
+    | ReportTemplateTable
+    | undefined;
+  /** Field blocks only; absence retains their ordinary structured display. */
+  field_display?: ReportTemplateFieldDisplay | undefined;
 }
 
 export interface ReportTemplateDesign {
@@ -1107,6 +1247,7 @@ function createBaseReportTemplatePageLayout(): ReportTemplatePageLayout {
     header: undefined,
     footer: undefined,
     hide_background_image: undefined,
+    orientation: undefined,
   };
 }
 
@@ -1138,6 +1279,9 @@ export const ReportTemplatePageLayout: MessageFns<ReportTemplatePageLayout> = {
     }
     if (message.hide_background_image !== undefined) {
       writer.uint32(72).bool(message.hide_background_image);
+    }
+    if (message.orientation !== undefined) {
+      writer.uint32(80).int32(reportTemplatePageOrientationToNumber(message.orientation));
     }
     return writer;
   },
@@ -1212,6 +1356,13 @@ export const ReportTemplatePageLayout: MessageFns<ReportTemplatePageLayout> = {
 
           message.hide_background_image = reader.bool();
           continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.orientation = reportTemplatePageOrientationFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1234,6 +1385,7 @@ export const ReportTemplatePageLayout: MessageFns<ReportTemplatePageLayout> = {
       hide_background_image: isSet(object.hideBackgroundImage)
         ? globalThis.Boolean(object.hideBackgroundImage)
         : undefined,
+      orientation: isSet(object.orientation) ? reportTemplatePageOrientationFromJSON(object.orientation) : undefined,
     };
   },
 
@@ -1266,6 +1418,9 @@ export const ReportTemplatePageLayout: MessageFns<ReportTemplatePageLayout> = {
     if (message.hide_background_image !== undefined) {
       obj.hideBackgroundImage = message.hide_background_image;
     }
+    if (message.orientation !== undefined) {
+      obj.orientation = reportTemplatePageOrientationToJSON(message.orientation);
+    }
     return obj;
   },
 
@@ -1291,6 +1446,7 @@ export const ReportTemplatePageLayout: MessageFns<ReportTemplatePageLayout> = {
       ? ReportTemplatePageRegion.fromPartial(object.footer)
       : undefined;
     message.hide_background_image = object.hide_background_image ?? undefined;
+    message.orientation = object.orientation ?? undefined;
     return message;
   },
 };
@@ -1306,6 +1462,7 @@ function createBaseReportTemplateContentField(): ReportTemplateContentField {
     allowed_values: [],
     text: undefined,
     rich_text: undefined,
+    choice_display: [],
   };
 }
 
@@ -1339,6 +1496,9 @@ export const ReportTemplateContentField: MessageFns<ReportTemplateContentField> 
     }
     if (message.rich_text !== undefined) {
       ReportTemplateRichText.encode(message.rich_text, writer.uint32(74).fork()).join();
+    }
+    for (const v of message.choice_display) {
+      ReportTemplateChoiceDisplay.encode(v!, writer.uint32(82).fork()).join();
     }
     return writer;
   },
@@ -1423,6 +1583,13 @@ export const ReportTemplateContentField: MessageFns<ReportTemplateContentField> 
 
           message.rich_text = ReportTemplateRichText.decode(reader, reader.uint32());
           continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.choice_display.push(ReportTemplateChoiceDisplay.decode(reader, reader.uint32()));
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1447,6 +1614,9 @@ export const ReportTemplateContentField: MessageFns<ReportTemplateContentField> 
         : [],
       text: isSet(object.text) ? globalThis.String(object.text) : undefined,
       rich_text: isSet(object.richText) ? ReportTemplateRichText.fromJSON(object.richText) : undefined,
+      choice_display: globalThis.Array.isArray(object?.choiceDisplay)
+        ? object.choiceDisplay.map((e: any) => ReportTemplateChoiceDisplay.fromJSON(e))
+        : [],
     };
   },
 
@@ -1479,6 +1649,9 @@ export const ReportTemplateContentField: MessageFns<ReportTemplateContentField> 
     if (message.rich_text !== undefined) {
       obj.richText = ReportTemplateRichText.toJSON(message.rich_text);
     }
+    if (message.choice_display?.length) {
+      obj.choiceDisplay = message.choice_display.map((e) => ReportTemplateChoiceDisplay.toJSON(e));
+    }
     return obj;
   },
 
@@ -1498,6 +1671,7 @@ export const ReportTemplateContentField: MessageFns<ReportTemplateContentField> 
     message.rich_text = (object.rich_text !== undefined && object.rich_text !== null)
       ? ReportTemplateRichText.fromPartial(object.rich_text)
       : undefined;
+    message.choice_display = object.choice_display?.map((e) => ReportTemplateChoiceDisplay.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1730,7 +1904,7 @@ export const ReportTemplateContent: MessageFns<ReportTemplateContent> = {
 };
 
 function createBaseReportTemplateFieldReference(): ReportTemplateFieldReference {
-  return { key: undefined, custom_field_id: undefined, report_field_id: undefined };
+  return { key: undefined, custom_field_id: undefined, report_field_id: undefined, report_type: undefined };
 }
 
 export const ReportTemplateFieldReference: MessageFns<ReportTemplateFieldReference> = {
@@ -1743,6 +1917,9 @@ export const ReportTemplateFieldReference: MessageFns<ReportTemplateFieldReferen
     }
     if (message.report_field_id !== undefined) {
       writer.uint32(26).string(message.report_field_id);
+    }
+    if (message.report_type !== undefined) {
+      writer.uint32(32).int32(reportTypeToNumber(message.report_type));
     }
     return writer;
   },
@@ -1775,6 +1952,13 @@ export const ReportTemplateFieldReference: MessageFns<ReportTemplateFieldReferen
 
           message.report_field_id = reader.string();
           continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.report_type = reportTypeFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1789,6 +1973,7 @@ export const ReportTemplateFieldReference: MessageFns<ReportTemplateFieldReferen
       key: isSet(object.key) ? globalThis.String(object.key) : undefined,
       custom_field_id: isSet(object.customFieldId) ? ObjectId.fromJSON(object.customFieldId) : undefined,
       report_field_id: isSet(object.reportFieldId) ? globalThis.String(object.reportFieldId) : undefined,
+      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
     };
   },
 
@@ -1803,6 +1988,9 @@ export const ReportTemplateFieldReference: MessageFns<ReportTemplateFieldReferen
     if (message.report_field_id !== undefined) {
       obj.reportFieldId = message.report_field_id;
     }
+    if (message.report_type !== undefined) {
+      obj.reportType = reportTypeToJSON(message.report_type);
+    }
     return obj;
   },
 
@@ -1816,6 +2004,525 @@ export const ReportTemplateFieldReference: MessageFns<ReportTemplateFieldReferen
       ? ObjectId.fromPartial(object.custom_field_id)
       : undefined;
     message.report_field_id = object.report_field_id ?? undefined;
+    message.report_type = object.report_type ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReportTemplateChoiceDisplay(): ReportTemplateChoiceDisplay {
+  return { value: undefined, display: undefined };
+}
+
+export const ReportTemplateChoiceDisplay: MessageFns<ReportTemplateChoiceDisplay> = {
+  encode(message: ReportTemplateChoiceDisplay, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.value !== undefined) {
+      writer.uint32(10).string(message.value);
+    }
+    if (message.display !== undefined) {
+      writer.uint32(18).string(message.display);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportTemplateChoiceDisplay {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportTemplateChoiceDisplay();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.display = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportTemplateChoiceDisplay {
+    return {
+      value: isSet(object.value) ? globalThis.String(object.value) : undefined,
+      display: isSet(object.display) ? globalThis.String(object.display) : undefined,
+    };
+  },
+
+  toJSON(message: ReportTemplateChoiceDisplay): unknown {
+    const obj: any = {};
+    if (message.value !== undefined) {
+      obj.value = message.value;
+    }
+    if (message.display !== undefined) {
+      obj.display = message.display;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportTemplateChoiceDisplay>, I>>(base?: I): ReportTemplateChoiceDisplay {
+    return ReportTemplateChoiceDisplay.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportTemplateChoiceDisplay>, I>>(object: I): ReportTemplateChoiceDisplay {
+    const message = createBaseReportTemplateChoiceDisplay();
+    message.value = object.value ?? undefined;
+    message.display = object.display ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReportTemplateTableRow(): ReportTemplateTableRow {
+  return { report_type: undefined, label: undefined, minimum_height: undefined };
+}
+
+export const ReportTemplateTableRow: MessageFns<ReportTemplateTableRow> = {
+  encode(message: ReportTemplateTableRow, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.report_type !== undefined) {
+      writer.uint32(8).int32(reportTypeToNumber(message.report_type));
+    }
+    if (message.label !== undefined) {
+      writer.uint32(18).string(message.label);
+    }
+    if (message.minimum_height !== undefined) {
+      writer.uint32(24).uint32(message.minimum_height);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportTemplateTableRow {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportTemplateTableRow();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.report_type = reportTypeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.label = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.minimum_height = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportTemplateTableRow {
+    return {
+      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
+      label: isSet(object.label) ? globalThis.String(object.label) : undefined,
+      minimum_height: isSet(object.minimumHeight) ? globalThis.Number(object.minimumHeight) : undefined,
+    };
+  },
+
+  toJSON(message: ReportTemplateTableRow): unknown {
+    const obj: any = {};
+    if (message.report_type !== undefined) {
+      obj.reportType = reportTypeToJSON(message.report_type);
+    }
+    if (message.label !== undefined) {
+      obj.label = message.label;
+    }
+    if (message.minimum_height !== undefined) {
+      obj.minimumHeight = Math.round(message.minimum_height);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportTemplateTableRow>, I>>(base?: I): ReportTemplateTableRow {
+    return ReportTemplateTableRow.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportTemplateTableRow>, I>>(object: I): ReportTemplateTableRow {
+    const message = createBaseReportTemplateTableRow();
+    message.report_type = object.report_type ?? undefined;
+    message.label = object.label ?? undefined;
+    message.minimum_height = object.minimum_height ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReportTemplateTableColumn(): ReportTemplateTableColumn {
+  return {
+    id: undefined,
+    title: undefined,
+    width: undefined,
+    children: [],
+    blocks: [],
+    merge_rows: undefined,
+    row_label: undefined,
+    header_style: undefined,
+    style: undefined,
+    header_vertical: undefined,
+    header_height: undefined,
+    vertical: undefined,
+  };
+}
+
+export const ReportTemplateTableColumn: MessageFns<ReportTemplateTableColumn> = {
+  encode(message: ReportTemplateTableColumn, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.title !== undefined) {
+      writer.uint32(18).string(message.title);
+    }
+    if (message.width !== undefined) {
+      writer.uint32(24).uint32(message.width);
+    }
+    for (const v of message.children) {
+      ReportTemplateTableColumn.encode(v!, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.blocks) {
+      ReportTemplateBlock.encode(v!, writer.uint32(42).fork()).join();
+    }
+    if (message.merge_rows !== undefined) {
+      writer.uint32(48).bool(message.merge_rows);
+    }
+    if (message.row_label !== undefined) {
+      writer.uint32(56).bool(message.row_label);
+    }
+    if (message.header_style !== undefined) {
+      ReportTemplateStyle.encode(message.header_style, writer.uint32(66).fork()).join();
+    }
+    if (message.style !== undefined) {
+      ReportTemplateStyle.encode(message.style, writer.uint32(74).fork()).join();
+    }
+    if (message.header_vertical !== undefined) {
+      writer.uint32(80).bool(message.header_vertical);
+    }
+    if (message.header_height !== undefined) {
+      writer.uint32(88).uint32(message.header_height);
+    }
+    if (message.vertical !== undefined) {
+      writer.uint32(96).bool(message.vertical);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportTemplateTableColumn {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportTemplateTableColumn();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.width = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.children.push(ReportTemplateTableColumn.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.blocks.push(ReportTemplateBlock.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.merge_rows = reader.bool();
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.row_label = reader.bool();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.header_style = ReportTemplateStyle.decode(reader, reader.uint32());
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.style = ReportTemplateStyle.decode(reader, reader.uint32());
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.header_vertical = reader.bool();
+          continue;
+        case 11:
+          if (tag !== 88) {
+            break;
+          }
+
+          message.header_height = reader.uint32();
+          continue;
+        case 12:
+          if (tag !== 96) {
+            break;
+          }
+
+          message.vertical = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportTemplateTableColumn {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : undefined,
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      width: isSet(object.width) ? globalThis.Number(object.width) : undefined,
+      children: globalThis.Array.isArray(object?.children)
+        ? object.children.map((e: any) => ReportTemplateTableColumn.fromJSON(e))
+        : [],
+      blocks: globalThis.Array.isArray(object?.blocks)
+        ? object.blocks.map((e: any) => ReportTemplateBlock.fromJSON(e))
+        : [],
+      merge_rows: isSet(object.mergeRows) ? globalThis.Boolean(object.mergeRows) : undefined,
+      row_label: isSet(object.rowLabel) ? globalThis.Boolean(object.rowLabel) : undefined,
+      header_style: isSet(object.headerStyle) ? ReportTemplateStyle.fromJSON(object.headerStyle) : undefined,
+      style: isSet(object.style) ? ReportTemplateStyle.fromJSON(object.style) : undefined,
+      header_vertical: isSet(object.headerVertical) ? globalThis.Boolean(object.headerVertical) : undefined,
+      header_height: isSet(object.headerHeight) ? globalThis.Number(object.headerHeight) : undefined,
+      vertical: isSet(object.vertical) ? globalThis.Boolean(object.vertical) : undefined,
+    };
+  },
+
+  toJSON(message: ReportTemplateTableColumn): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = message.id;
+    }
+    if (message.title !== undefined) {
+      obj.title = message.title;
+    }
+    if (message.width !== undefined) {
+      obj.width = Math.round(message.width);
+    }
+    if (message.children?.length) {
+      obj.children = message.children.map((e) => ReportTemplateTableColumn.toJSON(e));
+    }
+    if (message.blocks?.length) {
+      obj.blocks = message.blocks.map((e) => ReportTemplateBlock.toJSON(e));
+    }
+    if (message.merge_rows !== undefined) {
+      obj.mergeRows = message.merge_rows;
+    }
+    if (message.row_label !== undefined) {
+      obj.rowLabel = message.row_label;
+    }
+    if (message.header_style !== undefined) {
+      obj.headerStyle = ReportTemplateStyle.toJSON(message.header_style);
+    }
+    if (message.style !== undefined) {
+      obj.style = ReportTemplateStyle.toJSON(message.style);
+    }
+    if (message.header_vertical !== undefined) {
+      obj.headerVertical = message.header_vertical;
+    }
+    if (message.header_height !== undefined) {
+      obj.headerHeight = Math.round(message.header_height);
+    }
+    if (message.vertical !== undefined) {
+      obj.vertical = message.vertical;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportTemplateTableColumn>, I>>(base?: I): ReportTemplateTableColumn {
+    return ReportTemplateTableColumn.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportTemplateTableColumn>, I>>(object: I): ReportTemplateTableColumn {
+    const message = createBaseReportTemplateTableColumn();
+    message.id = object.id ?? undefined;
+    message.title = object.title ?? undefined;
+    message.width = object.width ?? undefined;
+    message.children = object.children?.map((e) => ReportTemplateTableColumn.fromPartial(e)) || [];
+    message.blocks = object.blocks?.map((e) => ReportTemplateBlock.fromPartial(e)) || [];
+    message.merge_rows = object.merge_rows ?? undefined;
+    message.row_label = object.row_label ?? undefined;
+    message.header_style = (object.header_style !== undefined && object.header_style !== null)
+      ? ReportTemplateStyle.fromPartial(object.header_style)
+      : undefined;
+    message.style = (object.style !== undefined && object.style !== null)
+      ? ReportTemplateStyle.fromPartial(object.style)
+      : undefined;
+    message.header_vertical = object.header_vertical ?? undefined;
+    message.header_height = object.header_height ?? undefined;
+    message.vertical = object.vertical ?? undefined;
+    return message;
+  },
+};
+
+function createBaseReportTemplateTable(): ReportTemplateTable {
+  return { columns: [], rows: [], header_style: undefined, show_header: undefined };
+}
+
+export const ReportTemplateTable: MessageFns<ReportTemplateTable> = {
+  encode(message: ReportTemplateTable, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.columns) {
+      ReportTemplateTableColumn.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.rows) {
+      ReportTemplateTableRow.encode(v!, writer.uint32(18).fork()).join();
+    }
+    if (message.header_style !== undefined) {
+      ReportTemplateStyle.encode(message.header_style, writer.uint32(26).fork()).join();
+    }
+    if (message.show_header !== undefined) {
+      writer.uint32(32).bool(message.show_header);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportTemplateTable {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportTemplateTable();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.columns.push(ReportTemplateTableColumn.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.rows.push(ReportTemplateTableRow.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.header_style = ReportTemplateStyle.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.show_header = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportTemplateTable {
+    return {
+      columns: globalThis.Array.isArray(object?.columns)
+        ? object.columns.map((e: any) => ReportTemplateTableColumn.fromJSON(e))
+        : [],
+      rows: globalThis.Array.isArray(object?.rows)
+        ? object.rows.map((e: any) => ReportTemplateTableRow.fromJSON(e))
+        : [],
+      header_style: isSet(object.headerStyle) ? ReportTemplateStyle.fromJSON(object.headerStyle) : undefined,
+      show_header: isSet(object.showHeader) ? globalThis.Boolean(object.showHeader) : undefined,
+    };
+  },
+
+  toJSON(message: ReportTemplateTable): unknown {
+    const obj: any = {};
+    if (message.columns?.length) {
+      obj.columns = message.columns.map((e) => ReportTemplateTableColumn.toJSON(e));
+    }
+    if (message.rows?.length) {
+      obj.rows = message.rows.map((e) => ReportTemplateTableRow.toJSON(e));
+    }
+    if (message.header_style !== undefined) {
+      obj.headerStyle = ReportTemplateStyle.toJSON(message.header_style);
+    }
+    if (message.show_header !== undefined) {
+      obj.showHeader = message.show_header;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportTemplateTable>, I>>(base?: I): ReportTemplateTable {
+    return ReportTemplateTable.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportTemplateTable>, I>>(object: I): ReportTemplateTable {
+    const message = createBaseReportTemplateTable();
+    message.columns = object.columns?.map((e) => ReportTemplateTableColumn.fromPartial(e)) || [];
+    message.rows = object.rows?.map((e) => ReportTemplateTableRow.fromPartial(e)) || [];
+    message.header_style = (object.header_style !== undefined && object.header_style !== null)
+      ? ReportTemplateStyle.fromPartial(object.header_style)
+      : undefined;
+    message.show_header = object.show_header ?? undefined;
     return message;
   },
 };
@@ -1838,6 +2545,8 @@ function createBaseReportTemplateBlock(): ReportTemplateBlock {
     page_layout: undefined,
     image: undefined,
     inline_label: undefined,
+    table: undefined,
+    field_display: undefined,
   };
 }
 
@@ -1894,6 +2603,12 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
     }
     if (message.inline_label !== undefined) {
       writer.uint32(136).bool(message.inline_label);
+    }
+    if (message.table !== undefined) {
+      ReportTemplateTable.encode(message.table, writer.uint32(146).fork()).join();
+    }
+    if (message.field_display !== undefined) {
+      writer.uint32(152).int32(reportTemplateFieldDisplayToNumber(message.field_display));
     }
     return writer;
   },
@@ -2037,6 +2752,20 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
 
           message.inline_label = reader.bool();
           continue;
+        case 18:
+          if (tag !== 146) {
+            break;
+          }
+
+          message.table = ReportTemplateTable.decode(reader, reader.uint32());
+          continue;
+        case 19:
+          if (tag !== 152) {
+            break;
+          }
+
+          message.field_display = reportTemplateFieldDisplayFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2070,6 +2799,8 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
       page_layout: isSet(object.pageLayout) ? ReportTemplatePageLayout.fromJSON(object.pageLayout) : undefined,
       image: isSet(object.image) ? ReportTemplateImage.fromJSON(object.image) : undefined,
       inline_label: isSet(object.inlineLabel) ? globalThis.Boolean(object.inlineLabel) : undefined,
+      table: isSet(object.table) ? ReportTemplateTable.fromJSON(object.table) : undefined,
+      field_display: isSet(object.fieldDisplay) ? reportTemplateFieldDisplayFromJSON(object.fieldDisplay) : undefined,
     };
   },
 
@@ -2123,6 +2854,12 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
     if (message.inline_label !== undefined) {
       obj.inlineLabel = message.inline_label;
     }
+    if (message.table !== undefined) {
+      obj.table = ReportTemplateTable.toJSON(message.table);
+    }
+    if (message.field_display !== undefined) {
+      obj.fieldDisplay = reportTemplateFieldDisplayToJSON(message.field_display);
+    }
     return obj;
   },
 
@@ -2161,6 +2898,10 @@ export const ReportTemplateBlock: MessageFns<ReportTemplateBlock> = {
       ? ReportTemplateImage.fromPartial(object.image)
       : undefined;
     message.inline_label = object.inline_label ?? undefined;
+    message.table = (object.table !== undefined && object.table !== null)
+      ? ReportTemplateTable.fromPartial(object.table)
+      : undefined;
+    message.field_display = object.field_display ?? undefined;
     return message;
   },
 };

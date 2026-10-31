@@ -11,6 +11,15 @@ export interface Semester {
     report_layout?: SemesterReportLayout | undefined;
     campus_id: ObjectId | undefined;
     school_year: ObjectId | undefined;
+    /**
+     * Operational dates and enabled periods, independent of report design.
+     * Absence preserves the existing report_layout scheduling contract.
+     */
+    report_schedule?: SemesterReportSchedule | undefined;
+}
+export interface SemesterReportSchedule {
+    dates: ReportDates[];
+    enabled_report_types: ReportType[];
 }
 export interface SemesterReportLayout {
     comment_char_limit?: number | undefined;
@@ -45,6 +54,7 @@ export interface SemesterList {
     semesters_count?: number | undefined;
 }
 export declare const Semester: MessageFns<Semester>;
+export declare const SemesterReportSchedule: MessageFns<SemesterReportSchedule>;
 export declare const SemesterReportLayout: MessageFns<SemesterReportLayout>;
 export declare const ReportDates: MessageFns<ReportDates>;
 export declare const SemesterLearningSkill: MessageFns<SemesterLearningSkill>;

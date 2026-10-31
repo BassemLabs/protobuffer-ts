@@ -26,7 +26,19 @@ export interface Semester {
   end_date: Date | undefined;
   report_layout?: SemesterReportLayout | undefined;
   campus_id: ObjectId | undefined;
-  school_year: ObjectId | undefined;
+  school_year:
+    | ObjectId
+    | undefined;
+  /**
+   * Operational dates and enabled periods, independent of report design.
+   * Absence preserves the existing report_layout scheduling contract.
+   */
+  report_schedule?: SemesterReportSchedule | undefined;
+}
+
+export interface SemesterReportSchedule {
+  dates: ReportDates[];
+  enabled_report_types: ReportType[];
 }
 
 export interface SemesterReportLayout {
@@ -76,6 +88,7 @@ function createBaseSemester(): Semester {
     report_layout: undefined,
     campus_id: undefined,
     school_year: undefined,
+    report_schedule: undefined,
   };
 }
 
@@ -104,6 +117,9 @@ export const Semester: MessageFns<Semester> = {
     }
     if (message.school_year !== undefined) {
       ObjectId.encode(message.school_year, writer.uint32(66).fork()).join();
+    }
+    if (message.report_schedule !== undefined) {
+      SemesterReportSchedule.encode(message.report_schedule, writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -171,6 +187,13 @@ export const Semester: MessageFns<Semester> = {
 
           message.school_year = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.report_schedule = SemesterReportSchedule.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -190,6 +213,9 @@ export const Semester: MessageFns<Semester> = {
       report_layout: isSet(object.reportLayout) ? SemesterReportLayout.fromJSON(object.reportLayout) : undefined,
       campus_id: isSet(object.campusId) ? ObjectId.fromJSON(object.campusId) : undefined,
       school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      report_schedule: isSet(object.reportSchedule)
+        ? SemesterReportSchedule.fromJSON(object.reportSchedule)
+        : undefined,
     };
   },
 
@@ -219,6 +245,9 @@ export const Semester: MessageFns<Semester> = {
     if (message.school_year !== undefined) {
       obj.schoolYear = ObjectId.toJSON(message.school_year);
     }
+    if (message.report_schedule !== undefined) {
+      obj.reportSchedule = SemesterReportSchedule.toJSON(message.report_schedule);
+    }
     return obj;
   },
 
@@ -241,6 +270,97 @@ export const Semester: MessageFns<Semester> = {
     message.school_year = (object.school_year !== undefined && object.school_year !== null)
       ? ObjectId.fromPartial(object.school_year)
       : undefined;
+    message.report_schedule = (object.report_schedule !== undefined && object.report_schedule !== null)
+      ? SemesterReportSchedule.fromPartial(object.report_schedule)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseSemesterReportSchedule(): SemesterReportSchedule {
+  return { dates: [], enabled_report_types: [] };
+}
+
+export const SemesterReportSchedule: MessageFns<SemesterReportSchedule> = {
+  encode(message: SemesterReportSchedule, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.dates) {
+      ReportDates.encode(v!, writer.uint32(10).fork()).join();
+    }
+    writer.uint32(18).fork();
+    for (const v of message.enabled_report_types) {
+      writer.int32(reportTypeToNumber(v));
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SemesterReportSchedule {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSemesterReportSchedule();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.dates.push(ReportDates.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag === 16) {
+            message.enabled_report_types.push(reportTypeFromJSON(reader.int32()));
+
+            continue;
+          }
+
+          if (tag === 18) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.enabled_report_types.push(reportTypeFromJSON(reader.int32()));
+            }
+
+            continue;
+          }
+
+          break;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SemesterReportSchedule {
+    return {
+      dates: globalThis.Array.isArray(object?.dates) ? object.dates.map((e: any) => ReportDates.fromJSON(e)) : [],
+      enabled_report_types: globalThis.Array.isArray(object?.enabledReportTypes)
+        ? object.enabledReportTypes.map((e: any) => reportTypeFromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SemesterReportSchedule): unknown {
+    const obj: any = {};
+    if (message.dates?.length) {
+      obj.dates = message.dates.map((e) => ReportDates.toJSON(e));
+    }
+    if (message.enabled_report_types?.length) {
+      obj.enabledReportTypes = message.enabled_report_types.map((e) => reportTypeToJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SemesterReportSchedule>, I>>(base?: I): SemesterReportSchedule {
+    return SemesterReportSchedule.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SemesterReportSchedule>, I>>(object: I): SemesterReportSchedule {
+    const message = createBaseSemesterReportSchedule();
+    message.dates = object.dates?.map((e) => ReportDates.fromPartial(e)) || [];
+    message.enabled_report_types = object.enabled_report_types?.map((e) => e) || [];
     return message;
   },
 };

@@ -186,7 +186,21 @@ export interface ReportTemplateStyle {
   border_style?: ReportTemplateBorderStyle | undefined;
   border_radius?: number | undefined;
   column_gap?: number | undefined;
-  vertical_alignment?: ReportTemplateVerticalAlignment | undefined;
+  vertical_alignment?:
+    | ReportTemplateVerticalAlignment
+    | undefined;
+  /** Space after a block in PDF points. Absence preserves the existing 8 points. */
+  block_spacing?:
+    | number
+    | undefined;
+  /**
+   * Sparse side overrides. Absence inherits; false removes that side while
+   * border_width/color/style continue to describe the enabled sides.
+   */
+  border_top?: boolean | undefined;
+  border_right?: boolean | undefined;
+  border_bottom?: boolean | undefined;
+  border_left?: boolean | undefined;
 }
 
 export interface ReportTemplateMargins {
@@ -215,6 +229,11 @@ function createBaseReportTemplateStyle(): ReportTemplateStyle {
     border_radius: undefined,
     column_gap: undefined,
     vertical_alignment: undefined,
+    block_spacing: undefined,
+    border_top: undefined,
+    border_right: undefined,
+    border_bottom: undefined,
+    border_left: undefined,
   };
 }
 
@@ -270,6 +289,21 @@ export const ReportTemplateStyle: MessageFns<ReportTemplateStyle> = {
     }
     if (message.vertical_alignment !== undefined) {
       writer.uint32(136).int32(reportTemplateVerticalAlignmentToNumber(message.vertical_alignment));
+    }
+    if (message.block_spacing !== undefined) {
+      writer.uint32(144).uint32(message.block_spacing);
+    }
+    if (message.border_top !== undefined) {
+      writer.uint32(152).bool(message.border_top);
+    }
+    if (message.border_right !== undefined) {
+      writer.uint32(160).bool(message.border_right);
+    }
+    if (message.border_bottom !== undefined) {
+      writer.uint32(168).bool(message.border_bottom);
+    }
+    if (message.border_left !== undefined) {
+      writer.uint32(176).bool(message.border_left);
     }
     return writer;
   },
@@ -400,6 +434,41 @@ export const ReportTemplateStyle: MessageFns<ReportTemplateStyle> = {
 
           message.vertical_alignment = reportTemplateVerticalAlignmentFromJSON(reader.int32());
           continue;
+        case 18:
+          if (tag !== 144) {
+            break;
+          }
+
+          message.block_spacing = reader.uint32();
+          continue;
+        case 19:
+          if (tag !== 152) {
+            break;
+          }
+
+          message.border_top = reader.bool();
+          continue;
+        case 20:
+          if (tag !== 160) {
+            break;
+          }
+
+          message.border_right = reader.bool();
+          continue;
+        case 21:
+          if (tag !== 168) {
+            break;
+          }
+
+          message.border_bottom = reader.bool();
+          continue;
+        case 22:
+          if (tag !== 176) {
+            break;
+          }
+
+          message.border_left = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -430,6 +499,11 @@ export const ReportTemplateStyle: MessageFns<ReportTemplateStyle> = {
       vertical_alignment: isSet(object.verticalAlignment)
         ? reportTemplateVerticalAlignmentFromJSON(object.verticalAlignment)
         : undefined,
+      block_spacing: isSet(object.blockSpacing) ? globalThis.Number(object.blockSpacing) : undefined,
+      border_top: isSet(object.borderTop) ? globalThis.Boolean(object.borderTop) : undefined,
+      border_right: isSet(object.borderRight) ? globalThis.Boolean(object.borderRight) : undefined,
+      border_bottom: isSet(object.borderBottom) ? globalThis.Boolean(object.borderBottom) : undefined,
+      border_left: isSet(object.borderLeft) ? globalThis.Boolean(object.borderLeft) : undefined,
     };
   },
 
@@ -486,6 +560,21 @@ export const ReportTemplateStyle: MessageFns<ReportTemplateStyle> = {
     if (message.vertical_alignment !== undefined) {
       obj.verticalAlignment = reportTemplateVerticalAlignmentToJSON(message.vertical_alignment);
     }
+    if (message.block_spacing !== undefined) {
+      obj.blockSpacing = Math.round(message.block_spacing);
+    }
+    if (message.border_top !== undefined) {
+      obj.borderTop = message.border_top;
+    }
+    if (message.border_right !== undefined) {
+      obj.borderRight = message.border_right;
+    }
+    if (message.border_bottom !== undefined) {
+      obj.borderBottom = message.border_bottom;
+    }
+    if (message.border_left !== undefined) {
+      obj.borderLeft = message.border_left;
+    }
     return obj;
   },
 
@@ -511,6 +600,11 @@ export const ReportTemplateStyle: MessageFns<ReportTemplateStyle> = {
     message.border_radius = object.border_radius ?? undefined;
     message.column_gap = object.column_gap ?? undefined;
     message.vertical_alignment = object.vertical_alignment ?? undefined;
+    message.block_spacing = object.block_spacing ?? undefined;
+    message.border_top = object.border_top ?? undefined;
+    message.border_right = object.border_right ?? undefined;
+    message.border_bottom = object.border_bottom ?? undefined;
+    message.border_left = object.border_left ?? undefined;
     return message;
   },
 };

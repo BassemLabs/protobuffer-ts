@@ -3,7 +3,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { Course } from "./course";
 import { Homeroom } from "./homeroom";
-import { Semester, SemesterReportLayout } from "./semester";
+import { Semester, SemesterReportLayout, SemesterReportSchedule } from "./semester";
 export declare const protobufPackage = "class_service.semester_service";
 export interface GetSemesterRequest {
     context: RequestContext | undefined;
@@ -49,6 +49,8 @@ export interface UpdateRequest {
     end_date: Date | undefined;
     report_layout?: SemesterReportLayout | undefined;
     campus_id: ObjectId | undefined;
+    /** Absence preserves the stored schedule; older clients retain report_layout. */
+    report_schedule?: SemesterReportSchedule | undefined;
 }
 export interface ArchiveRequest {
     /** Always include RequestContext as the first field */
