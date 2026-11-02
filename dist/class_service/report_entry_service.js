@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: class_service/report_entry_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GuardianSignReportCardsRequest = exports.UnpublishReportEntryRequest = exports.PublishClassReportTypeResponse = exports.PublishHomeroomReportTypeRequest = exports.PublishCourseReportTypeRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.GenerateReportEntrySmartCommentInput = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetClassReportEntriesByTypeRequest = exports.GetHomeroomPublishBreakdownResponse = exports.GetHomeroomPublishBreakdownRequest = exports.GetReportPublishQueueClassesResponse = exports.GetReportPublishQueueClassesRequest = exports.ReportPublishQueueClass = exports.ReportStatusCounters = exports.GetReportEntriesQueueRequest = exports.GetTeacherReportCardHomepageResponse = exports.TeacherReportCardHomepageRow = exports.GetTeacherReportCardHomepageRequest = exports.GetPrincipalDashboardTeacherActivitySummaryResponse = exports.PrincipalDashboardTeacherActivityRow = exports.PrincipalDashboardTeacherPendingClass = exports.GetPrincipalDashboardTeacherActivitySummaryRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.SendOwnerTeacherReportCardNudgeRequest = exports.GetCourseReportEntriesRequest = exports.ReportEntryUpdateMode = exports.SmartCommentLength = exports.SmartCommentNextStep = exports.SmartCommentTone = exports.SmartCommentStructure = exports.ReportPublishClassType = exports.TeacherReportCardHomepageUrgency = exports.protobufPackage = void 0;
-exports.SendOwnerTeacherReportCardRemindersForOrganizationRequest = void 0;
+exports.UnpublishReportEntryRequest = exports.PublishClassReportTypeResponse = exports.PublishHomeroomReportTypeRequest = exports.PublishCourseReportTypeRequest = exports.ApproveReportEntryRequest = exports.RequestChangesReportEntryRequest = exports.GetReportEntriesResponse = exports.GetReportEntryViewsResponse = exports.ReportEntryViewResponse = exports.UpdateReportEntryRequest = exports.GenerateReportEntrySmartCommentResponse = exports.GenerateReportEntrySmartCommentRequest = exports.ReportEntrySmartCommentDraftContext = exports.GenerateReportEntrySmartCommentInput = exports.GetReportEntryMedianResponse = exports.GetReportEntryMedianRequest = exports.GetReportEntryResponse = exports.GetReportEntryRequest = exports.GetClassReportEntriesByTypeRequest = exports.GetHomeroomPublishBreakdownResponse = exports.GetHomeroomPublishBreakdownRequest = exports.GetReportPublishQueueClassesResponse = exports.GetReportPublishQueueClassesRequest = exports.ReportPublishQueueClass = exports.ReportStatusCounters = exports.GetReportEntriesQueueRequest = exports.GetTeacherReportCardHomepageResponse = exports.TeacherReportCardHomepageRow = exports.GetTeacherReportCardHomepageRequest = exports.GetPrincipalDashboardTeacherActivitySummaryResponse = exports.PrincipalDashboardTeacherActivityRow = exports.PrincipalDashboardTeacherPendingClass = exports.GetPrincipalDashboardTeacherActivitySummaryRequest = exports.GetParentPublishedReportSummariesResponse = exports.GetParentPublishedReportSummariesRequest = exports.GetStudentPublishedReportEntriesRequest = exports.GetStudentReportEntriesForHomeroomRequest = exports.GetStudentReportEntriesForCourseRequest = exports.GetStudentReportEntriesRequest = exports.GetHomeroomReportEntriesRequest = exports.SendOwnerTeacherReportCardNudgeRequest = exports.GetCourseReportEntriesRequest = exports.ReportEntryUpdateMode = exports.SmartCommentLength = exports.SmartCommentNextStep = exports.SmartCommentTone = exports.SmartCommentStructure = exports.ReportPublishClassType = exports.TeacherReportCardHomepageUrgency = exports.protobufPackage = void 0;
+exports.SendOwnerTeacherReportCardRemindersForOrganizationRequest = exports.GuardianSignReportCardsRequest = void 0;
 exports.teacherReportCardHomepageUrgencyFromJSON = teacherReportCardHomepageUrgencyFromJSON;
 exports.teacherReportCardHomepageUrgencyToJSON = teacherReportCardHomepageUrgencyToJSON;
 exports.teacherReportCardHomepageUrgencyToNumber = teacherReportCardHomepageUrgencyToNumber;
@@ -3287,8 +3287,153 @@ exports.GenerateReportEntrySmartCommentInput = {
         return message;
     },
 };
+function createBaseReportEntrySmartCommentDraftContext() {
+    return {
+        student_id: undefined,
+        course_id: undefined,
+        homeroom_id: undefined,
+        report_type: undefined,
+        sections: [],
+        learning_skills: [],
+    };
+}
+exports.ReportEntrySmartCommentDraftContext = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.student_id !== undefined) {
+            object_id_1.ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+        }
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
+        }
+        if (message.homeroom_id !== undefined) {
+            object_id_1.ObjectId.encode(message.homeroom_id, writer.uint32(26).fork()).join();
+        }
+        if (message.report_type !== undefined) {
+            writer.uint32(32).int32((0, report_layout_1.reportTypeToNumber)(message.report_type));
+        }
+        for (const v of message.sections) {
+            report_entry_1.ReportEntrySection.encode(v, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.learning_skills) {
+            report_entry_1.ReportEntryLearningSkill.encode(v, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportEntrySmartCommentDraftContext();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.student_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.homeroom_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.report_type = (0, report_layout_1.reportTypeFromJSON)(reader.int32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.sections.push(report_entry_1.ReportEntrySection.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.learning_skills.push(report_entry_1.ReportEntryLearningSkill.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
+            homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
+            report_type: isSet(object.reportType) ? (0, report_layout_1.reportTypeFromJSON)(object.reportType) : undefined,
+            sections: globalThis.Array.isArray(object?.sections)
+                ? object.sections.map((e) => report_entry_1.ReportEntrySection.fromJSON(e))
+                : [],
+            learning_skills: globalThis.Array.isArray(object?.learningSkills)
+                ? object.learningSkills.map((e) => report_entry_1.ReportEntryLearningSkill.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.student_id !== undefined) {
+            obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
+        }
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
+        }
+        if (message.homeroom_id !== undefined) {
+            obj.homeroomId = object_id_1.ObjectId.toJSON(message.homeroom_id);
+        }
+        if (message.report_type !== undefined) {
+            obj.reportType = (0, report_layout_1.reportTypeToJSON)(message.report_type);
+        }
+        if (message.sections?.length) {
+            obj.sections = message.sections.map((e) => report_entry_1.ReportEntrySection.toJSON(e));
+        }
+        if (message.learning_skills?.length) {
+            obj.learningSkills = message.learning_skills.map((e) => report_entry_1.ReportEntryLearningSkill.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportEntrySmartCommentDraftContext.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportEntrySmartCommentDraftContext();
+        message.student_id = (object.student_id !== undefined && object.student_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.student_id)
+            : undefined;
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
+            : undefined;
+        message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.homeroom_id)
+            : undefined;
+        message.report_type = object.report_type ?? undefined;
+        message.sections = object.sections?.map((e) => report_entry_1.ReportEntrySection.fromPartial(e)) || [];
+        message.learning_skills = object.learning_skills?.map((e) => report_entry_1.ReportEntryLearningSkill.fromPartial(e)) || [];
+        return message;
+    },
+};
 function createBaseGenerateReportEntrySmartCommentRequest() {
-    return { context: undefined, report_entry_id: undefined, optional_prompt: undefined, smart_comment_input: undefined };
+    return {
+        context: undefined,
+        report_entry_id: undefined,
+        optional_prompt: undefined,
+        smart_comment_input: undefined,
+        draft_context: undefined,
+    };
 }
 exports.GenerateReportEntrySmartCommentRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -3303,6 +3448,9 @@ exports.GenerateReportEntrySmartCommentRequest = {
         }
         if (message.smart_comment_input !== undefined) {
             exports.GenerateReportEntrySmartCommentInput.encode(message.smart_comment_input, writer.uint32(34).fork()).join();
+        }
+        if (message.draft_context !== undefined) {
+            exports.ReportEntrySmartCommentDraftContext.encode(message.draft_context, writer.uint32(42).fork()).join();
         }
         return writer;
     },
@@ -3337,6 +3485,12 @@ exports.GenerateReportEntrySmartCommentRequest = {
                     }
                     message.smart_comment_input = exports.GenerateReportEntrySmartCommentInput.decode(reader, reader.uint32());
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.draft_context = exports.ReportEntrySmartCommentDraftContext.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -3352,6 +3506,9 @@ exports.GenerateReportEntrySmartCommentRequest = {
             optional_prompt: isSet(object.optionalPrompt) ? globalThis.String(object.optionalPrompt) : undefined,
             smart_comment_input: isSet(object.smartCommentInput)
                 ? exports.GenerateReportEntrySmartCommentInput.fromJSON(object.smartCommentInput)
+                : undefined,
+            draft_context: isSet(object.draftContext)
+                ? exports.ReportEntrySmartCommentDraftContext.fromJSON(object.draftContext)
                 : undefined,
         };
     },
@@ -3369,6 +3526,9 @@ exports.GenerateReportEntrySmartCommentRequest = {
         if (message.smart_comment_input !== undefined) {
             obj.smartCommentInput = exports.GenerateReportEntrySmartCommentInput.toJSON(message.smart_comment_input);
         }
+        if (message.draft_context !== undefined) {
+            obj.draftContext = exports.ReportEntrySmartCommentDraftContext.toJSON(message.draft_context);
+        }
         return obj;
     },
     create(base) {
@@ -3385,6 +3545,9 @@ exports.GenerateReportEntrySmartCommentRequest = {
         message.optional_prompt = object.optional_prompt ?? undefined;
         message.smart_comment_input = (object.smart_comment_input !== undefined && object.smart_comment_input !== null)
             ? exports.GenerateReportEntrySmartCommentInput.fromPartial(object.smart_comment_input)
+            : undefined;
+        message.draft_context = (object.draft_context !== undefined && object.draft_context !== null)
+            ? exports.ReportEntrySmartCommentDraftContext.fromPartial(object.draft_context)
             : undefined;
         return message;
     },

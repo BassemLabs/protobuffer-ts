@@ -681,11 +681,24 @@ export interface GenerateReportEntrySmartCommentInput {
   length?: SmartCommentLength | undefined;
 }
 
+export interface ReportEntrySmartCommentDraftContext {
+  student_id: ObjectId | undefined;
+  course_id?: ObjectId | undefined;
+  homeroom_id?: ObjectId | undefined;
+  report_type?: ReportType | undefined;
+  sections: ReportEntrySection[];
+  learning_skills: ReportEntryLearningSkill[];
+}
+
 export interface GenerateReportEntrySmartCommentRequest {
   context: RequestContext | undefined;
   report_entry_id: ObjectId | undefined;
   optional_prompt?: string | undefined;
-  smart_comment_input: GenerateReportEntrySmartCommentInput | undefined;
+  smart_comment_input:
+    | GenerateReportEntrySmartCommentInput
+    | undefined;
+  /** Optional current editor data, including reports whose entry ID is not yet saved. */
+  draft_context?: ReportEntrySmartCommentDraftContext | undefined;
 }
 
 export interface GenerateReportEntrySmartCommentResponse {
@@ -4081,8 +4094,169 @@ export const GenerateReportEntrySmartCommentInput: MessageFns<GenerateReportEntr
   },
 };
 
+function createBaseReportEntrySmartCommentDraftContext(): ReportEntrySmartCommentDraftContext {
+  return {
+    student_id: undefined,
+    course_id: undefined,
+    homeroom_id: undefined,
+    report_type: undefined,
+    sections: [],
+    learning_skills: [],
+  };
+}
+
+export const ReportEntrySmartCommentDraftContext: MessageFns<ReportEntrySmartCommentDraftContext> = {
+  encode(message: ReportEntrySmartCommentDraftContext, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(10).fork()).join();
+    }
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(18).fork()).join();
+    }
+    if (message.homeroom_id !== undefined) {
+      ObjectId.encode(message.homeroom_id, writer.uint32(26).fork()).join();
+    }
+    if (message.report_type !== undefined) {
+      writer.uint32(32).int32(reportTypeToNumber(message.report_type));
+    }
+    for (const v of message.sections) {
+      ReportEntrySection.encode(v!, writer.uint32(42).fork()).join();
+    }
+    for (const v of message.learning_skills) {
+      ReportEntryLearningSkill.encode(v!, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReportEntrySmartCommentDraftContext {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReportEntrySmartCommentDraftContext();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.homeroom_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.report_type = reportTypeFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.sections.push(ReportEntrySection.decode(reader, reader.uint32()));
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.learning_skills.push(ReportEntryLearningSkill.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReportEntrySmartCommentDraftContext {
+    return {
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
+      homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
+      report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
+      sections: globalThis.Array.isArray(object?.sections)
+        ? object.sections.map((e: any) => ReportEntrySection.fromJSON(e))
+        : [],
+      learning_skills: globalThis.Array.isArray(object?.learningSkills)
+        ? object.learningSkills.map((e: any) => ReportEntryLearningSkill.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ReportEntrySmartCommentDraftContext): unknown {
+    const obj: any = {};
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
+    }
+    if (message.homeroom_id !== undefined) {
+      obj.homeroomId = ObjectId.toJSON(message.homeroom_id);
+    }
+    if (message.report_type !== undefined) {
+      obj.reportType = reportTypeToJSON(message.report_type);
+    }
+    if (message.sections?.length) {
+      obj.sections = message.sections.map((e) => ReportEntrySection.toJSON(e));
+    }
+    if (message.learning_skills?.length) {
+      obj.learningSkills = message.learning_skills.map((e) => ReportEntryLearningSkill.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReportEntrySmartCommentDraftContext>, I>>(
+    base?: I,
+  ): ReportEntrySmartCommentDraftContext {
+    return ReportEntrySmartCommentDraftContext.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReportEntrySmartCommentDraftContext>, I>>(
+    object: I,
+  ): ReportEntrySmartCommentDraftContext {
+    const message = createBaseReportEntrySmartCommentDraftContext();
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
+      : undefined;
+    message.homeroom_id = (object.homeroom_id !== undefined && object.homeroom_id !== null)
+      ? ObjectId.fromPartial(object.homeroom_id)
+      : undefined;
+    message.report_type = object.report_type ?? undefined;
+    message.sections = object.sections?.map((e) => ReportEntrySection.fromPartial(e)) || [];
+    message.learning_skills = object.learning_skills?.map((e) => ReportEntryLearningSkill.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 function createBaseGenerateReportEntrySmartCommentRequest(): GenerateReportEntrySmartCommentRequest {
-  return { context: undefined, report_entry_id: undefined, optional_prompt: undefined, smart_comment_input: undefined };
+  return {
+    context: undefined,
+    report_entry_id: undefined,
+    optional_prompt: undefined,
+    smart_comment_input: undefined,
+    draft_context: undefined,
+  };
 }
 
 export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEntrySmartCommentRequest> = {
@@ -4098,6 +4272,9 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
     }
     if (message.smart_comment_input !== undefined) {
       GenerateReportEntrySmartCommentInput.encode(message.smart_comment_input, writer.uint32(34).fork()).join();
+    }
+    if (message.draft_context !== undefined) {
+      ReportEntrySmartCommentDraftContext.encode(message.draft_context, writer.uint32(42).fork()).join();
     }
     return writer;
   },
@@ -4137,6 +4314,13 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
 
           message.smart_comment_input = GenerateReportEntrySmartCommentInput.decode(reader, reader.uint32());
           continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.draft_context = ReportEntrySmartCommentDraftContext.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4154,6 +4338,9 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
       smart_comment_input: isSet(object.smartCommentInput)
         ? GenerateReportEntrySmartCommentInput.fromJSON(object.smartCommentInput)
         : undefined,
+      draft_context: isSet(object.draftContext)
+        ? ReportEntrySmartCommentDraftContext.fromJSON(object.draftContext)
+        : undefined,
     };
   },
 
@@ -4170,6 +4357,9 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
     }
     if (message.smart_comment_input !== undefined) {
       obj.smartCommentInput = GenerateReportEntrySmartCommentInput.toJSON(message.smart_comment_input);
+    }
+    if (message.draft_context !== undefined) {
+      obj.draftContext = ReportEntrySmartCommentDraftContext.toJSON(message.draft_context);
     }
     return obj;
   },
@@ -4192,6 +4382,9 @@ export const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEn
     message.optional_prompt = object.optional_prompt ?? undefined;
     message.smart_comment_input = (object.smart_comment_input !== undefined && object.smart_comment_input !== null)
       ? GenerateReportEntrySmartCommentInput.fromPartial(object.smart_comment_input)
+      : undefined;
+    message.draft_context = (object.draft_context !== undefined && object.draft_context !== null)
+      ? ReportEntrySmartCommentDraftContext.fromPartial(object.draft_context)
       : undefined;
     return message;
   },

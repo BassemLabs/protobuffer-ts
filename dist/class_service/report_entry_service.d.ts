@@ -274,11 +274,21 @@ export interface GenerateReportEntrySmartCommentInput {
     next_step?: SmartCommentNextStep | undefined;
     length?: SmartCommentLength | undefined;
 }
+export interface ReportEntrySmartCommentDraftContext {
+    student_id: ObjectId | undefined;
+    course_id?: ObjectId | undefined;
+    homeroom_id?: ObjectId | undefined;
+    report_type?: ReportType | undefined;
+    sections: ReportEntrySection[];
+    learning_skills: ReportEntryLearningSkill[];
+}
 export interface GenerateReportEntrySmartCommentRequest {
     context: RequestContext | undefined;
     report_entry_id: ObjectId | undefined;
     optional_prompt?: string | undefined;
     smart_comment_input: GenerateReportEntrySmartCommentInput | undefined;
+    /** Optional current editor data, including reports whose entry ID is not yet saved. */
+    draft_context?: ReportEntrySmartCommentDraftContext | undefined;
 }
 export interface GenerateReportEntrySmartCommentResponse {
     comment?: string | undefined;
@@ -392,6 +402,7 @@ export declare const GetReportEntryResponse: MessageFns<GetReportEntryResponse>;
 export declare const GetReportEntryMedianRequest: MessageFns<GetReportEntryMedianRequest>;
 export declare const GetReportEntryMedianResponse: MessageFns<GetReportEntryMedianResponse>;
 export declare const GenerateReportEntrySmartCommentInput: MessageFns<GenerateReportEntrySmartCommentInput>;
+export declare const ReportEntrySmartCommentDraftContext: MessageFns<ReportEntrySmartCommentDraftContext>;
 export declare const GenerateReportEntrySmartCommentRequest: MessageFns<GenerateReportEntrySmartCommentRequest>;
 export declare const GenerateReportEntrySmartCommentResponse: MessageFns<GenerateReportEntrySmartCommentResponse>;
 export declare const UpdateReportEntryRequest: MessageFns<UpdateReportEntryRequest>;
