@@ -84,8 +84,8 @@ export interface GetReportEntryTemplateContextRequest {
 }
 export interface ReportEntryTemplateContext {
     /**
-     * Both absent means legacy. Existing pinned entries retain their original
-     * selection; new entries resolve the current selection for their class scope.
+     * Both absent selects the preset report layout. Pinned entries retain their
+     * original selection; new entries resolve the current class selection.
      */
     assignment?: ReportTemplateAssignment | undefined;
     report_template?: ReportTemplate | undefined;

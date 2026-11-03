@@ -14,7 +14,9 @@ const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const student_1 = require("../user_service/student");
 const object_id_1 = require("../utils/object_id");
+const attendance_service_1 = require("./attendance_service");
 const report_layout_1 = require("./report_layout");
+const report_template_assignment_1 = require("./report_template/report_template_assignment");
 const semester_1 = require("./semester");
 exports.protobufPackage = "class_service";
 var ReportStatus;
@@ -1021,6 +1023,8 @@ function createBaseReportEntryView() {
         semester: undefined,
         semester_report_layout: undefined,
         signed_by_guardian_name: undefined,
+        attendance_counts: undefined,
+        template_context: undefined,
     };
 }
 exports.ReportEntryView = {
@@ -1039,6 +1043,12 @@ exports.ReportEntryView = {
         }
         if (message.signed_by_guardian_name !== undefined) {
             writer.uint32(42).string(message.signed_by_guardian_name);
+        }
+        if (message.attendance_counts !== undefined) {
+            attendance_service_1.AttendanceCounts.encode(message.attendance_counts, writer.uint32(50).fork()).join();
+        }
+        if (message.template_context !== undefined) {
+            report_template_assignment_1.ReportEntryTemplateContext.encode(message.template_context, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -1079,6 +1089,18 @@ exports.ReportEntryView = {
                     }
                     message.signed_by_guardian_name = reader.string();
                     continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.attendance_counts = attendance_service_1.AttendanceCounts.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.template_context = report_template_assignment_1.ReportEntryTemplateContext.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1097,6 +1119,12 @@ exports.ReportEntryView = {
                 : undefined,
             signed_by_guardian_name: isSet(object.signedByGuardianName)
                 ? globalThis.String(object.signedByGuardianName)
+                : undefined,
+            attendance_counts: isSet(object.attendanceCounts)
+                ? attendance_service_1.AttendanceCounts.fromJSON(object.attendanceCounts)
+                : undefined,
+            template_context: isSet(object.templateContext)
+                ? report_template_assignment_1.ReportEntryTemplateContext.fromJSON(object.templateContext)
                 : undefined,
         };
     },
@@ -1117,6 +1145,12 @@ exports.ReportEntryView = {
         if (message.signed_by_guardian_name !== undefined) {
             obj.signedByGuardianName = message.signed_by_guardian_name;
         }
+        if (message.attendance_counts !== undefined) {
+            obj.attendanceCounts = attendance_service_1.AttendanceCounts.toJSON(message.attendance_counts);
+        }
+        if (message.template_context !== undefined) {
+            obj.templateContext = report_template_assignment_1.ReportEntryTemplateContext.toJSON(message.template_context);
+        }
         return obj;
     },
     create(base) {
@@ -1136,6 +1170,12 @@ exports.ReportEntryView = {
                 ? semester_1.SemesterReportLayout.fromPartial(object.semester_report_layout)
                 : undefined;
         message.signed_by_guardian_name = object.signed_by_guardian_name ?? undefined;
+        message.attendance_counts = (object.attendance_counts !== undefined && object.attendance_counts !== null)
+            ? attendance_service_1.AttendanceCounts.fromPartial(object.attendance_counts)
+            : undefined;
+        message.template_context = (object.template_context !== undefined && object.template_context !== null)
+            ? report_template_assignment_1.ReportEntryTemplateContext.fromPartial(object.template_context)
+            : undefined;
         return message;
     },
 };

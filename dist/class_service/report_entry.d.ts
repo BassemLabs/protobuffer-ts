@@ -1,7 +1,9 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { Student } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
+import { AttendanceCounts } from "./attendance_service";
 import { ReportType } from "./report_layout";
+import { ReportEntryTemplateContext } from "./report_template/report_template_assignment";
 import { Semester, SemesterReportLayout } from "./semester";
 export declare const protobufPackage = "class_service";
 export declare enum ReportStatus {
@@ -82,6 +84,10 @@ export interface ReportEntryView {
     semester: Semester | undefined;
     semester_report_layout: SemesterReportLayout | undefined;
     signed_by_guardian_name?: string | undefined;
+    /** Absent when attendance is unavailable or report dates are not configured. */
+    attendance_counts?: AttendanceCounts | undefined;
+    /** Class lists resolve this in one batch; an empty context confirms preset use. */
+    template_context?: ReportEntryTemplateContext | undefined;
 }
 export interface ReportEntrySectionMedian {
     section_layout_id: ObjectId | undefined;
