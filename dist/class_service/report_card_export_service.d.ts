@@ -26,6 +26,7 @@ export interface GetStudentReportCardExportRequest {
     report_type?: ReportType | undefined;
     homeroom_id?: ObjectId | undefined;
     semester_id?: ObjectId | undefined;
+    course_id?: ObjectId | undefined;
     mode?: ReportCardExportMode | undefined;
 }
 export interface ReportCardSignature {
@@ -113,10 +114,6 @@ export interface SecondaryReportCardExport {
     principal_signature?: ReportCardSignature | undefined;
     supervisor_name?: string | undefined;
 }
-export interface GetStudentReportCardExportResponse {
-    elementary_export?: ElementaryReportCardExport | undefined;
-    secondary_export?: SecondaryReportCardExport | undefined;
-}
 export declare const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardExportRequest>;
 export declare const ReportCardSignature: MessageFns<ReportCardSignature>;
 export declare const ReportCardAttendanceSummary: MessageFns<ReportCardAttendanceSummary>;
@@ -129,7 +126,6 @@ export declare const ElementaryReportCardCourseRow: MessageFns<ElementaryReportC
 export declare const SecondaryReportCardCourseRow: MessageFns<SecondaryReportCardCourseRow>;
 export declare const ElementaryReportCardExport: MessageFns<ElementaryReportCardExport>;
 export declare const SecondaryReportCardExport: MessageFns<SecondaryReportCardExport>;
-export declare const GetStudentReportCardExportResponse: MessageFns<GetStudentReportCardExportResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

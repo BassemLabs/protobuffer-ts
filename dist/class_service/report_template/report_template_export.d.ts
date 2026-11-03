@@ -9,21 +9,6 @@ import { ReportTemplate } from "./report_template";
 import { ReportTemplateAssignment } from "./report_template_assignment";
 import { ReportTemplateFieldReference, ReportTemplateSignatureRole } from "./report_template_design";
 export declare const protobufPackage = "class_service.report_template";
-export interface GetConfiguredReportCardExportRequest {
-    context: RequestContext | undefined;
-    student_id: ObjectId | undefined;
-    /** An actual contribution. A persisted pin determines its original owning scope. */
-    class_ref: ClassRef | undefined;
-    report_type?: ReportType | undefined;
-    mode?: ReportCardExportMode | undefined;
-}
-export interface GetConfiguredSemesterReportCardExportRequest {
-    context: RequestContext | undefined;
-    student_id: ObjectId | undefined;
-    semester_id: ObjectId | undefined;
-    report_type?: ReportType | undefined;
-    mode?: ReportCardExportMode | undefined;
-}
 export interface ReportTemplateResolvedCheckBoxes {
     definitions: ReportCheckBoxLayout[];
     values: ReportEntryCheckBox[];
@@ -97,8 +82,6 @@ export interface ConfiguredReportCardExport {
     student_id: ObjectId | undefined;
     guardian_signature?: GuardianSignature | undefined;
 }
-export declare const GetConfiguredReportCardExportRequest: MessageFns<GetConfiguredReportCardExportRequest>;
-export declare const GetConfiguredSemesterReportCardExportRequest: MessageFns<GetConfiguredSemesterReportCardExportRequest>;
 export declare const ReportTemplateResolvedCheckBoxes: MessageFns<ReportTemplateResolvedCheckBoxes>;
 export declare const ReportTemplateResolvedSections: MessageFns<ReportTemplateResolvedSections>;
 export declare const ResolvedReportTemplateField: MessageFns<ResolvedReportTemplateField>;

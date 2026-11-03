@@ -84,6 +84,7 @@ export interface GetStudentReportCardExportRequest {
   report_type?: ReportType | undefined;
   homeroom_id?: ObjectId | undefined;
   semester_id?: ObjectId | undefined;
+  course_id?: ObjectId | undefined;
   mode?: ReportCardExportMode | undefined;
 }
 
@@ -183,11 +184,6 @@ export interface SecondaryReportCardExport {
   supervisor_name?: string | undefined;
 }
 
-export interface GetStudentReportCardExportResponse {
-  elementary_export?: ElementaryReportCardExport | undefined;
-  secondary_export?: SecondaryReportCardExport | undefined;
-}
-
 function createBaseGetStudentReportCardExportRequest(): GetStudentReportCardExportRequest {
   return {
     context: undefined,
@@ -195,6 +191,7 @@ function createBaseGetStudentReportCardExportRequest(): GetStudentReportCardExpo
     report_type: undefined,
     homeroom_id: undefined,
     semester_id: undefined,
+    course_id: undefined,
     mode: undefined,
   };
 }
@@ -215,6 +212,9 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
     }
     if (message.semester_id !== undefined) {
       ObjectId.encode(message.semester_id, writer.uint32(42).fork()).join();
+    }
+    if (message.course_id !== undefined) {
+      ObjectId.encode(message.course_id, writer.uint32(58).fork()).join();
     }
     if (message.mode !== undefined) {
       writer.uint32(48).int32(reportCardExportModeToNumber(message.mode));
@@ -264,6 +264,13 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
 
           message.semester_id = ObjectId.decode(reader, reader.uint32());
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.course_id = ObjectId.decode(reader, reader.uint32());
+          continue;
         case 6:
           if (tag !== 48) {
             break;
@@ -287,6 +294,7 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
       report_type: isSet(object.reportType) ? reportTypeFromJSON(object.reportType) : undefined,
       homeroom_id: isSet(object.homeroomId) ? ObjectId.fromJSON(object.homeroomId) : undefined,
       semester_id: isSet(object.semesterId) ? ObjectId.fromJSON(object.semesterId) : undefined,
+      course_id: isSet(object.courseId) ? ObjectId.fromJSON(object.courseId) : undefined,
       mode: isSet(object.mode) ? reportCardExportModeFromJSON(object.mode) : undefined,
     };
   },
@@ -307,6 +315,9 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
     }
     if (message.semester_id !== undefined) {
       obj.semesterId = ObjectId.toJSON(message.semester_id);
+    }
+    if (message.course_id !== undefined) {
+      obj.courseId = ObjectId.toJSON(message.course_id);
     }
     if (message.mode !== undefined) {
       obj.mode = reportCardExportModeToJSON(message.mode);
@@ -335,6 +346,9 @@ export const GetStudentReportCardExportRequest: MessageFns<GetStudentReportCardE
       : undefined;
     message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
       ? ObjectId.fromPartial(object.semester_id)
+      : undefined;
+    message.course_id = (object.course_id !== undefined && object.course_id !== null)
+      ? ObjectId.fromPartial(object.course_id)
       : undefined;
     message.mode = object.mode ?? undefined;
     return message;
@@ -1922,92 +1936,6 @@ export const SecondaryReportCardExport: MessageFns<SecondaryReportCardExport> = 
       ? ReportCardSignature.fromPartial(object.principal_signature)
       : undefined;
     message.supervisor_name = object.supervisor_name ?? undefined;
-    return message;
-  },
-};
-
-function createBaseGetStudentReportCardExportResponse(): GetStudentReportCardExportResponse {
-  return { elementary_export: undefined, secondary_export: undefined };
-}
-
-export const GetStudentReportCardExportResponse: MessageFns<GetStudentReportCardExportResponse> = {
-  encode(message: GetStudentReportCardExportResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.elementary_export !== undefined) {
-      ElementaryReportCardExport.encode(message.elementary_export, writer.uint32(10).fork()).join();
-    }
-    if (message.secondary_export !== undefined) {
-      SecondaryReportCardExport.encode(message.secondary_export, writer.uint32(18).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentReportCardExportResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetStudentReportCardExportResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.elementary_export = ElementaryReportCardExport.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.secondary_export = SecondaryReportCardExport.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): GetStudentReportCardExportResponse {
-    return {
-      elementary_export: isSet(object.elementaryExport)
-        ? ElementaryReportCardExport.fromJSON(object.elementaryExport)
-        : undefined,
-      secondary_export: isSet(object.secondaryExport)
-        ? SecondaryReportCardExport.fromJSON(object.secondaryExport)
-        : undefined,
-    };
-  },
-
-  toJSON(message: GetStudentReportCardExportResponse): unknown {
-    const obj: any = {};
-    if (message.elementary_export !== undefined) {
-      obj.elementaryExport = ElementaryReportCardExport.toJSON(message.elementary_export);
-    }
-    if (message.secondary_export !== undefined) {
-      obj.secondaryExport = SecondaryReportCardExport.toJSON(message.secondary_export);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<GetStudentReportCardExportResponse>, I>>(
-    base?: I,
-  ): GetStudentReportCardExportResponse {
-    return GetStudentReportCardExportResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<GetStudentReportCardExportResponse>, I>>(
-    object: I,
-  ): GetStudentReportCardExportResponse {
-    const message = createBaseGetStudentReportCardExportResponse();
-    message.elementary_export = (object.elementary_export !== undefined && object.elementary_export !== null)
-      ? ElementaryReportCardExport.fromPartial(object.elementary_export)
-      : undefined;
-    message.secondary_export = (object.secondary_export !== undefined && object.secondary_export !== null)
-      ? SecondaryReportCardExport.fromPartial(object.secondary_export)
-      : undefined;
     return message;
   },
 };

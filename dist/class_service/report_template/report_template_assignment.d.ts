@@ -9,8 +9,8 @@ export interface ReportTemplateAssignmentScope {
     organization_id: ObjectId | undefined;
     semester_id: ObjectId | undefined;
     /**
-     * Owning homeroom or standalone course in this semester. Linked courses
-     * inherit their homeroom's assignment and cannot be assigned independently.
+     * Owning homeroom or standalone course of the frozen report. Linked courses
+     * contribute to their homeroom's report.
      */
     class_ref: ClassRef | undefined;
     report_type?: ReportType | undefined;
@@ -22,8 +22,8 @@ export interface ReportTemplateContributionBinding {
 }
 export interface ReportTemplateAssignment {
     /**
-     * Immutable selection identity. Reassignment creates a new ID, including
-     * selecting a previously used version; exact retries retain the current ID.
+     * Immutable class snapshot resolved from the shared grade selection.
+     * Existing report entries retain their original snapshot identity.
      */
     id: ObjectId | undefined;
     scope: ReportTemplateAssignmentScope | undefined;
@@ -32,48 +32,6 @@ export interface ReportTemplateAssignment {
     version_id: ObjectId | undefined;
     /** Frozen with the selection. Every area has exactly one contribution owner. */
     contribution_bindings: ReportTemplateContributionBinding[];
-}
-export interface GetReportTemplateAssignmentRequest {
-    context: RequestContext | undefined;
-    scope: ReportTemplateAssignmentScope | undefined;
-}
-export interface ReportTemplateAssignmentResponse {
-    /** Absence preserves the existing preset report workflow. */
-    assignment?: ReportTemplateAssignment | undefined;
-    /**
-     * Applies even when assignment is absent: existing work stays on its
-     * original version or legacy workflow and cannot be silently reassigned.
-     */
-    work_started?: boolean | undefined;
-}
-/**
- * Repeating the exact assigned target is idempotent. A different target is
- * rejected after report work starts, even if the expectations still match.
- */
-export interface AssignReportTemplateRequest {
-    context: RequestContext | undefined;
-    scope: ReportTemplateAssignmentScope | undefined;
-    report_template_id: ObjectId | undefined;
-    version_id: ObjectId | undefined;
-    /**
-     * Absent creates an assignment; present compares the currently observed
-     * immutable assignment before replacing it.
-     */
-    expected_assignment_id?: ObjectId | undefined;
-    /**
-     * Included in selection identity and exact-retry comparison. When interactive
-     * areas exist, supply every contributor, including explicit empty area lists.
-     */
-    contribution_bindings: ReportTemplateContributionBinding[];
-}
-/**
- * Unassignment is allowed only before work starts. Retrying after removal
- * succeeds; a newer active assignment must never be removed by a stale retry.
- */
-export interface UnassignReportTemplateRequest {
-    context: RequestContext | undefined;
-    scope: ReportTemplateAssignmentScope | undefined;
-    expected_assignment_id: ObjectId | undefined;
 }
 export interface GetReportEntryTemplateContextRequest {
     context: RequestContext | undefined;
@@ -93,10 +51,6 @@ export interface ReportEntryTemplateContext {
 export declare const ReportTemplateAssignmentScope: MessageFns<ReportTemplateAssignmentScope>;
 export declare const ReportTemplateContributionBinding: MessageFns<ReportTemplateContributionBinding>;
 export declare const ReportTemplateAssignment: MessageFns<ReportTemplateAssignment>;
-export declare const GetReportTemplateAssignmentRequest: MessageFns<GetReportTemplateAssignmentRequest>;
-export declare const ReportTemplateAssignmentResponse: MessageFns<ReportTemplateAssignmentResponse>;
-export declare const AssignReportTemplateRequest: MessageFns<AssignReportTemplateRequest>;
-export declare const UnassignReportTemplateRequest: MessageFns<UnassignReportTemplateRequest>;
 export declare const GetReportEntryTemplateContextRequest: MessageFns<GetReportEntryTemplateContextRequest>;
 export declare const ReportEntryTemplateContext: MessageFns<ReportEntryTemplateContext>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

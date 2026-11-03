@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/report_card_export_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetStudentReportCardExportResponse = exports.SecondaryReportCardExport = exports.ElementaryReportCardExport = exports.SecondaryReportCardCourseRow = exports.ElementaryReportCardCourseRow = exports.ReportCardExportEntryView = exports.ReportCardExportEntry = exports.ReportCardExportEntryLearningSkill = exports.ReportCardExportEntrySection = exports.ReportCardExportEntryCheckBox = exports.ReportCardAttendanceSummary = exports.ReportCardSignature = exports.GetStudentReportCardExportRequest = exports.ReportCardExportMode = exports.protobufPackage = void 0;
+exports.SecondaryReportCardExport = exports.ElementaryReportCardExport = exports.SecondaryReportCardCourseRow = exports.ElementaryReportCardCourseRow = exports.ReportCardExportEntryView = exports.ReportCardExportEntry = exports.ReportCardExportEntryLearningSkill = exports.ReportCardExportEntrySection = exports.ReportCardExportEntryCheckBox = exports.ReportCardAttendanceSummary = exports.ReportCardSignature = exports.GetStudentReportCardExportRequest = exports.ReportCardExportMode = exports.protobufPackage = void 0;
 exports.reportCardExportModeFromJSON = reportCardExportModeFromJSON;
 exports.reportCardExportModeToJSON = reportCardExportModeToJSON;
 exports.reportCardExportModeToNumber = reportCardExportModeToNumber;
@@ -73,6 +73,7 @@ function createBaseGetStudentReportCardExportRequest() {
         report_type: undefined,
         homeroom_id: undefined,
         semester_id: undefined,
+        course_id: undefined,
         mode: undefined,
     };
 }
@@ -92,6 +93,9 @@ exports.GetStudentReportCardExportRequest = {
         }
         if (message.semester_id !== undefined) {
             object_id_1.ObjectId.encode(message.semester_id, writer.uint32(42).fork()).join();
+        }
+        if (message.course_id !== undefined) {
+            object_id_1.ObjectId.encode(message.course_id, writer.uint32(58).fork()).join();
         }
         if (message.mode !== undefined) {
             writer.uint32(48).int32(reportCardExportModeToNumber(message.mode));
@@ -135,6 +139,12 @@ exports.GetStudentReportCardExportRequest = {
                     }
                     message.semester_id = object_id_1.ObjectId.decode(reader, reader.uint32());
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.course_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
                 case 6:
                     if (tag !== 48) {
                         break;
@@ -156,6 +166,7 @@ exports.GetStudentReportCardExportRequest = {
             report_type: isSet(object.reportType) ? (0, report_layout_1.reportTypeFromJSON)(object.reportType) : undefined,
             homeroom_id: isSet(object.homeroomId) ? object_id_1.ObjectId.fromJSON(object.homeroomId) : undefined,
             semester_id: isSet(object.semesterId) ? object_id_1.ObjectId.fromJSON(object.semesterId) : undefined,
+            course_id: isSet(object.courseId) ? object_id_1.ObjectId.fromJSON(object.courseId) : undefined,
             mode: isSet(object.mode) ? reportCardExportModeFromJSON(object.mode) : undefined,
         };
     },
@@ -175,6 +186,9 @@ exports.GetStudentReportCardExportRequest = {
         }
         if (message.semester_id !== undefined) {
             obj.semesterId = object_id_1.ObjectId.toJSON(message.semester_id);
+        }
+        if (message.course_id !== undefined) {
+            obj.courseId = object_id_1.ObjectId.toJSON(message.course_id);
         }
         if (message.mode !== undefined) {
             obj.mode = reportCardExportModeToJSON(message.mode);
@@ -198,6 +212,9 @@ exports.GetStudentReportCardExportRequest = {
             : undefined;
         message.semester_id = (object.semester_id !== undefined && object.semester_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.semester_id)
+            : undefined;
+        message.course_id = (object.course_id !== undefined && object.course_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.course_id)
             : undefined;
         message.mode = object.mode ?? undefined;
         return message;
@@ -1648,80 +1665,6 @@ exports.SecondaryReportCardExport = {
             ? exports.ReportCardSignature.fromPartial(object.principal_signature)
             : undefined;
         message.supervisor_name = object.supervisor_name ?? undefined;
-        return message;
-    },
-};
-function createBaseGetStudentReportCardExportResponse() {
-    return { elementary_export: undefined, secondary_export: undefined };
-}
-exports.GetStudentReportCardExportResponse = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.elementary_export !== undefined) {
-            exports.ElementaryReportCardExport.encode(message.elementary_export, writer.uint32(10).fork()).join();
-        }
-        if (message.secondary_export !== undefined) {
-            exports.SecondaryReportCardExport.encode(message.secondary_export, writer.uint32(18).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetStudentReportCardExportResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.elementary_export = exports.ElementaryReportCardExport.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.secondary_export = exports.SecondaryReportCardExport.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            elementary_export: isSet(object.elementaryExport)
-                ? exports.ElementaryReportCardExport.fromJSON(object.elementaryExport)
-                : undefined,
-            secondary_export: isSet(object.secondaryExport)
-                ? exports.SecondaryReportCardExport.fromJSON(object.secondaryExport)
-                : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.elementary_export !== undefined) {
-            obj.elementaryExport = exports.ElementaryReportCardExport.toJSON(message.elementary_export);
-        }
-        if (message.secondary_export !== undefined) {
-            obj.secondaryExport = exports.SecondaryReportCardExport.toJSON(message.secondary_export);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.GetStudentReportCardExportResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseGetStudentReportCardExportResponse();
-        message.elementary_export = (object.elementary_export !== undefined && object.elementary_export !== null)
-            ? exports.ElementaryReportCardExport.fromPartial(object.elementary_export)
-            : undefined;
-        message.secondary_export = (object.secondary_export !== undefined && object.secondary_export !== null)
-            ? exports.SecondaryReportCardExport.fromPartial(object.secondary_export)
-            : undefined;
         return message;
     },
 };
