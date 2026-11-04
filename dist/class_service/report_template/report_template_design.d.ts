@@ -1,4 +1,5 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Empty } from "../../google/protobuf/empty";
 import { StudentGrade } from "../../user_service/student";
 import { ObjectId } from "../../utils/object_id";
 import { ReportType } from "../report_layout";
@@ -161,7 +162,7 @@ export interface ReportTemplateFieldReference {
     key?: string | undefined;
     custom_field_id?: ObjectId | undefined;
     report_field_id?: string | undefined;
-    /** Absence uses the selected report period. Explicit periods bind course values. */
+    /** Absence uses the selected report period. Explicit periods bind frozen report values. */
     report_type?: ReportType | undefined;
 }
 export interface ReportTemplateChoiceDisplay {
@@ -202,6 +203,15 @@ export interface ReportTemplateTable {
     header_style?: ReportTemplateStyle | undefined;
     /** Absence prints the authored header tree. */
     show_header?: boolean | undefined;
+    content_rows?: ReportTemplateContentRows | undefined;
+    /** Inside a repeated Courses block only: that course's frozen questions. */
+    course_sections?: Empty | undefined;
+    /** Default for every row; an explicit period-row height overrides it. */
+    minimum_row_height?: number | undefined;
+}
+export interface ReportTemplateContentRows {
+    /** Existing ReportTemplateContent.fields in display order, without copies. */
+    field_ids: string[];
 }
 export interface ReportTemplateBlock {
     id?: string | undefined;
@@ -230,6 +240,11 @@ export interface ReportTemplateBlock {
     table?: ReportTemplateTable | undefined;
     /** Field blocks only; absence retains their ordinary structured display. */
     field_display?: ReportTemplateFieldDisplay | undefined;
+    /**
+     * Field blocks only. Print a tick when this canonical choice is selected,
+     * including any matching frozen course section; absence keeps normal text.
+     */
+    tick_choice?: string | undefined;
 }
 export interface ReportTemplateDesign {
     theme: ReportTemplateTheme | undefined;
@@ -255,6 +270,7 @@ export declare const ReportTemplateChoiceDisplay: MessageFns<ReportTemplateChoic
 export declare const ReportTemplateTableRow: MessageFns<ReportTemplateTableRow>;
 export declare const ReportTemplateTableColumn: MessageFns<ReportTemplateTableColumn>;
 export declare const ReportTemplateTable: MessageFns<ReportTemplateTable>;
+export declare const ReportTemplateContentRows: MessageFns<ReportTemplateContentRows>;
 export declare const ReportTemplateBlock: MessageFns<ReportTemplateBlock>;
 export declare const ReportTemplateDesign: MessageFns<ReportTemplateDesign>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

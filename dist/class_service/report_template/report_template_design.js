@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/report_template/report_template_design.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReportTemplateDesign = exports.ReportTemplateBlock = exports.ReportTemplateTable = exports.ReportTemplateTableColumn = exports.ReportTemplateTableRow = exports.ReportTemplateChoiceDisplay = exports.ReportTemplateFieldReference = exports.ReportTemplateContent = exports.ReportTemplateContentArea = exports.ReportTemplateContentField = exports.ReportTemplatePageLayout = exports.ReportTemplatePageRegion = exports.ReportTemplateBlockStyle = exports.ReportTemplateRichText = exports.ReportTemplateParagraph = exports.ReportTemplateTextRun = exports.ReportTemplateImage = exports.ReportTemplateFieldDisplay = exports.ReportTemplateSignatureRole = exports.ReportTemplateContentScope = exports.ReportTemplateContentFieldType = exports.ReportTemplateListType = exports.ReportTemplateLogoSource = exports.ReportBlockType = exports.protobufPackage = void 0;
+exports.ReportTemplateDesign = exports.ReportTemplateBlock = exports.ReportTemplateContentRows = exports.ReportTemplateTable = exports.ReportTemplateTableColumn = exports.ReportTemplateTableRow = exports.ReportTemplateChoiceDisplay = exports.ReportTemplateFieldReference = exports.ReportTemplateContent = exports.ReportTemplateContentArea = exports.ReportTemplateContentField = exports.ReportTemplatePageLayout = exports.ReportTemplatePageRegion = exports.ReportTemplateBlockStyle = exports.ReportTemplateRichText = exports.ReportTemplateParagraph = exports.ReportTemplateTextRun = exports.ReportTemplateImage = exports.ReportTemplateFieldDisplay = exports.ReportTemplateSignatureRole = exports.ReportTemplateContentScope = exports.ReportTemplateContentFieldType = exports.ReportTemplateListType = exports.ReportTemplateLogoSource = exports.ReportBlockType = exports.protobufPackage = void 0;
 exports.reportBlockTypeFromJSON = reportBlockTypeFromJSON;
 exports.reportBlockTypeToJSON = reportBlockTypeToJSON;
 exports.reportBlockTypeToNumber = reportBlockTypeToNumber;
@@ -29,6 +29,7 @@ exports.reportTemplateFieldDisplayToJSON = reportTemplateFieldDisplayToJSON;
 exports.reportTemplateFieldDisplayToNumber = reportTemplateFieldDisplayToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const empty_1 = require("../../google/protobuf/empty");
 const student_1 = require("../../user_service/student");
 const object_id_1 = require("../../utils/object_id");
 const report_layout_1 = require("../report_layout");
@@ -2033,7 +2034,15 @@ exports.ReportTemplateTableColumn = {
     },
 };
 function createBaseReportTemplateTable() {
-    return { columns: [], rows: [], header_style: undefined, show_header: undefined };
+    return {
+        columns: [],
+        rows: [],
+        header_style: undefined,
+        show_header: undefined,
+        content_rows: undefined,
+        course_sections: undefined,
+        minimum_row_height: undefined,
+    };
 }
 exports.ReportTemplateTable = {
     encode(message, writer = new wire_1.BinaryWriter()) {
@@ -2048,6 +2057,15 @@ exports.ReportTemplateTable = {
         }
         if (message.show_header !== undefined) {
             writer.uint32(32).bool(message.show_header);
+        }
+        if (message.content_rows !== undefined) {
+            exports.ReportTemplateContentRows.encode(message.content_rows, writer.uint32(42).fork()).join();
+        }
+        if (message.course_sections !== undefined) {
+            empty_1.Empty.encode(message.course_sections, writer.uint32(50).fork()).join();
+        }
+        if (message.minimum_row_height !== undefined) {
+            writer.uint32(56).uint32(message.minimum_row_height);
         }
         return writer;
     },
@@ -2082,6 +2100,24 @@ exports.ReportTemplateTable = {
                     }
                     message.show_header = reader.bool();
                     continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.content_rows = exports.ReportTemplateContentRows.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.course_sections = empty_1.Empty.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.minimum_row_height = reader.uint32();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2100,6 +2136,9 @@ exports.ReportTemplateTable = {
                 : [],
             header_style: isSet(object.headerStyle) ? report_template_style_1.ReportTemplateStyle.fromJSON(object.headerStyle) : undefined,
             show_header: isSet(object.showHeader) ? globalThis.Boolean(object.showHeader) : undefined,
+            content_rows: isSet(object.contentRows) ? exports.ReportTemplateContentRows.fromJSON(object.contentRows) : undefined,
+            course_sections: isSet(object.courseSections) ? empty_1.Empty.fromJSON(object.courseSections) : undefined,
+            minimum_row_height: isSet(object.minimumRowHeight) ? globalThis.Number(object.minimumRowHeight) : undefined,
         };
     },
     toJSON(message) {
@@ -2116,6 +2155,15 @@ exports.ReportTemplateTable = {
         if (message.show_header !== undefined) {
             obj.showHeader = message.show_header;
         }
+        if (message.content_rows !== undefined) {
+            obj.contentRows = exports.ReportTemplateContentRows.toJSON(message.content_rows);
+        }
+        if (message.course_sections !== undefined) {
+            obj.courseSections = empty_1.Empty.toJSON(message.course_sections);
+        }
+        if (message.minimum_row_height !== undefined) {
+            obj.minimumRowHeight = Math.round(message.minimum_row_height);
+        }
         return obj;
     },
     create(base) {
@@ -2129,6 +2177,67 @@ exports.ReportTemplateTable = {
             ? report_template_style_1.ReportTemplateStyle.fromPartial(object.header_style)
             : undefined;
         message.show_header = object.show_header ?? undefined;
+        message.content_rows = (object.content_rows !== undefined && object.content_rows !== null)
+            ? exports.ReportTemplateContentRows.fromPartial(object.content_rows)
+            : undefined;
+        message.course_sections = (object.course_sections !== undefined && object.course_sections !== null)
+            ? empty_1.Empty.fromPartial(object.course_sections)
+            : undefined;
+        message.minimum_row_height = object.minimum_row_height ?? undefined;
+        return message;
+    },
+};
+function createBaseReportTemplateContentRows() {
+    return { field_ids: [] };
+}
+exports.ReportTemplateContentRows = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.field_ids) {
+            writer.uint32(10).string(v);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseReportTemplateContentRows();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.field_ids.push(reader.string());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            field_ids: globalThis.Array.isArray(object?.fieldIds)
+                ? object.fieldIds.map((e) => globalThis.String(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.field_ids?.length) {
+            obj.fieldIds = message.field_ids;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ReportTemplateContentRows.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseReportTemplateContentRows();
+        message.field_ids = object.field_ids?.map((e) => e) || [];
         return message;
     },
 };
@@ -2152,6 +2261,7 @@ function createBaseReportTemplateBlock() {
         inline_label: undefined,
         table: undefined,
         field_display: undefined,
+        tick_choice: undefined,
     };
 }
 exports.ReportTemplateBlock = {
@@ -2213,6 +2323,9 @@ exports.ReportTemplateBlock = {
         }
         if (message.field_display !== undefined) {
             writer.uint32(152).int32(reportTemplateFieldDisplayToNumber(message.field_display));
+        }
+        if (message.tick_choice !== undefined) {
+            writer.uint32(162).string(message.tick_choice);
         }
         return writer;
     },
@@ -2345,6 +2458,12 @@ exports.ReportTemplateBlock = {
                     }
                     message.field_display = reportTemplateFieldDisplayFromJSON(reader.int32());
                     continue;
+                case 20:
+                    if (tag !== 162) {
+                        break;
+                    }
+                    message.tick_choice = reader.string();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -2379,6 +2498,7 @@ exports.ReportTemplateBlock = {
             inline_label: isSet(object.inlineLabel) ? globalThis.Boolean(object.inlineLabel) : undefined,
             table: isSet(object.table) ? exports.ReportTemplateTable.fromJSON(object.table) : undefined,
             field_display: isSet(object.fieldDisplay) ? reportTemplateFieldDisplayFromJSON(object.fieldDisplay) : undefined,
+            tick_choice: isSet(object.tickChoice) ? globalThis.String(object.tickChoice) : undefined,
         };
     },
     toJSON(message) {
@@ -2437,6 +2557,9 @@ exports.ReportTemplateBlock = {
         if (message.field_display !== undefined) {
             obj.fieldDisplay = reportTemplateFieldDisplayToJSON(message.field_display);
         }
+        if (message.tick_choice !== undefined) {
+            obj.tickChoice = message.tick_choice;
+        }
         return obj;
     },
     create(base) {
@@ -2478,6 +2601,7 @@ exports.ReportTemplateBlock = {
             ? exports.ReportTemplateTable.fromPartial(object.table)
             : undefined;
         message.field_display = object.field_display ?? undefined;
+        message.tick_choice = object.tick_choice ?? undefined;
         return message;
     },
 };
