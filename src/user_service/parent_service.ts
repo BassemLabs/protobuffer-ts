@@ -14,6 +14,128 @@ import { Student, StudentSchoolYearInformation } from "./student";
 
 export const protobufPackage = "user_service";
 
+export enum ParentEmailChangeState {
+  EmailChangeNone = "EmailChangeNone",
+  EmailChangePending = "EmailChangePending",
+  EmailChangeCompleted = "EmailChangeCompleted",
+  EmailChangeCancelled = "EmailChangeCancelled",
+  EmailChangeExpired = "EmailChangeExpired",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function parentEmailChangeStateFromJSON(object: any): ParentEmailChangeState {
+  switch (object) {
+    case 0:
+    case "EmailChangeNone":
+      return ParentEmailChangeState.EmailChangeNone;
+    case 1:
+    case "EmailChangePending":
+      return ParentEmailChangeState.EmailChangePending;
+    case 2:
+    case "EmailChangeCompleted":
+      return ParentEmailChangeState.EmailChangeCompleted;
+    case 3:
+    case "EmailChangeCancelled":
+      return ParentEmailChangeState.EmailChangeCancelled;
+    case 4:
+    case "EmailChangeExpired":
+      return ParentEmailChangeState.EmailChangeExpired;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ParentEmailChangeState.UNRECOGNIZED;
+  }
+}
+
+export function parentEmailChangeStateToJSON(object: ParentEmailChangeState): string {
+  switch (object) {
+    case ParentEmailChangeState.EmailChangeNone:
+      return "EmailChangeNone";
+    case ParentEmailChangeState.EmailChangePending:
+      return "EmailChangePending";
+    case ParentEmailChangeState.EmailChangeCompleted:
+      return "EmailChangeCompleted";
+    case ParentEmailChangeState.EmailChangeCancelled:
+      return "EmailChangeCancelled";
+    case ParentEmailChangeState.EmailChangeExpired:
+      return "EmailChangeExpired";
+    case ParentEmailChangeState.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function parentEmailChangeStateToNumber(object: ParentEmailChangeState): number {
+  switch (object) {
+    case ParentEmailChangeState.EmailChangeNone:
+      return 0;
+    case ParentEmailChangeState.EmailChangePending:
+      return 1;
+    case ParentEmailChangeState.EmailChangeCompleted:
+      return 2;
+    case ParentEmailChangeState.EmailChangeCancelled:
+      return 3;
+    case ParentEmailChangeState.EmailChangeExpired:
+      return 4;
+    case ParentEmailChangeState.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum ParentEmailChangeLoginOutcome {
+  EmailChangeLoginUnchanged = "EmailChangeLoginUnchanged",
+  EmailChangeLoginCompleted = "EmailChangeLoginCompleted",
+  EmailChangeLoginExistingAccount = "EmailChangeLoginExistingAccount",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function parentEmailChangeLoginOutcomeFromJSON(object: any): ParentEmailChangeLoginOutcome {
+  switch (object) {
+    case 0:
+    case "EmailChangeLoginUnchanged":
+      return ParentEmailChangeLoginOutcome.EmailChangeLoginUnchanged;
+    case 1:
+    case "EmailChangeLoginCompleted":
+      return ParentEmailChangeLoginOutcome.EmailChangeLoginCompleted;
+    case 2:
+    case "EmailChangeLoginExistingAccount":
+      return ParentEmailChangeLoginOutcome.EmailChangeLoginExistingAccount;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ParentEmailChangeLoginOutcome.UNRECOGNIZED;
+  }
+}
+
+export function parentEmailChangeLoginOutcomeToJSON(object: ParentEmailChangeLoginOutcome): string {
+  switch (object) {
+    case ParentEmailChangeLoginOutcome.EmailChangeLoginUnchanged:
+      return "EmailChangeLoginUnchanged";
+    case ParentEmailChangeLoginOutcome.EmailChangeLoginCompleted:
+      return "EmailChangeLoginCompleted";
+    case ParentEmailChangeLoginOutcome.EmailChangeLoginExistingAccount:
+      return "EmailChangeLoginExistingAccount";
+    case ParentEmailChangeLoginOutcome.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function parentEmailChangeLoginOutcomeToNumber(object: ParentEmailChangeLoginOutcome): number {
+  switch (object) {
+    case ParentEmailChangeLoginOutcome.EmailChangeLoginUnchanged:
+      return 0;
+    case ParentEmailChangeLoginOutcome.EmailChangeLoginCompleted:
+      return 1;
+    case ParentEmailChangeLoginOutcome.EmailChangeLoginExistingAccount:
+      return 2;
+    case ParentEmailChangeLoginOutcome.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface GetParentRequest {
   context: RequestContext | undefined;
   parent_id: ObjectId | undefined;
@@ -118,6 +240,51 @@ export interface AuthenticateParentForOrgRequest {
   firebase_user_id?: string | undefined;
   display_name?: string | undefined;
   email?: string | undefined;
+}
+
+export interface ParentEmailChange {
+  state?: ParentEmailChangeState | undefined;
+  request_id?: string | undefined;
+  old_email?: string | undefined;
+  new_email?:
+    | string
+    | undefined;
+  /** Unix epoch seconds. */
+  expires_at?: number | undefined;
+  parent?: Parent | undefined;
+}
+
+export interface BeginParentEmailChangeRequest {
+  context: RequestContext | undefined;
+  id_token?: string | undefined;
+  new_email?: string | undefined;
+}
+
+export interface GetParentEmailChangeRequest {
+  context: RequestContext | undefined;
+}
+
+export interface ParentEmailChangeActionRequest {
+  context: RequestContext | undefined;
+  request_id?: string | undefined;
+}
+
+export interface ContinueParentEmailChangeRequest {
+  context:
+    | RequestContext
+    | undefined;
+  /** New account's normal Firebase sign-in. */
+  id_token?: string | undefined;
+  request_id?: string | undefined;
+  organization_id: ObjectId | undefined;
+}
+
+export interface ContinueParentEmailChangeResponse {
+  outcome?:
+    | ParentEmailChangeLoginOutcome
+    | undefined;
+  /** Completed/existing outcomes carry the authorized snapshot for token minting. */
+  parent_auth?: AuthenticateParentForOrgResponse | undefined;
 }
 
 export interface AuthenticateParentForOrgResponse {
@@ -1784,6 +1951,571 @@ export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOr
   },
 };
 
+function createBaseParentEmailChange(): ParentEmailChange {
+  return {
+    state: undefined,
+    request_id: undefined,
+    old_email: undefined,
+    new_email: undefined,
+    expires_at: undefined,
+    parent: undefined,
+  };
+}
+
+export const ParentEmailChange: MessageFns<ParentEmailChange> = {
+  encode(message: ParentEmailChange, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.state !== undefined) {
+      writer.uint32(8).int32(parentEmailChangeStateToNumber(message.state));
+    }
+    if (message.request_id !== undefined) {
+      writer.uint32(18).string(message.request_id);
+    }
+    if (message.old_email !== undefined) {
+      writer.uint32(26).string(message.old_email);
+    }
+    if (message.new_email !== undefined) {
+      writer.uint32(34).string(message.new_email);
+    }
+    if (message.expires_at !== undefined) {
+      writer.uint32(40).int64(message.expires_at);
+    }
+    if (message.parent !== undefined) {
+      Parent.encode(message.parent, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ParentEmailChange {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseParentEmailChange();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.state = parentEmailChangeStateFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.request_id = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.old_email = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.new_email = reader.string();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.expires_at = longToNumber(reader.int64());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.parent = Parent.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ParentEmailChange {
+    return {
+      state: isSet(object.state) ? parentEmailChangeStateFromJSON(object.state) : undefined,
+      request_id: isSet(object.requestId) ? globalThis.String(object.requestId) : undefined,
+      old_email: isSet(object.oldEmail) ? globalThis.String(object.oldEmail) : undefined,
+      new_email: isSet(object.newEmail) ? globalThis.String(object.newEmail) : undefined,
+      expires_at: isSet(object.expiresAt) ? globalThis.Number(object.expiresAt) : undefined,
+      parent: isSet(object.parent) ? Parent.fromJSON(object.parent) : undefined,
+    };
+  },
+
+  toJSON(message: ParentEmailChange): unknown {
+    const obj: any = {};
+    if (message.state !== undefined) {
+      obj.state = parentEmailChangeStateToJSON(message.state);
+    }
+    if (message.request_id !== undefined) {
+      obj.requestId = message.request_id;
+    }
+    if (message.old_email !== undefined) {
+      obj.oldEmail = message.old_email;
+    }
+    if (message.new_email !== undefined) {
+      obj.newEmail = message.new_email;
+    }
+    if (message.expires_at !== undefined) {
+      obj.expiresAt = Math.round(message.expires_at);
+    }
+    if (message.parent !== undefined) {
+      obj.parent = Parent.toJSON(message.parent);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ParentEmailChange>, I>>(base?: I): ParentEmailChange {
+    return ParentEmailChange.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ParentEmailChange>, I>>(object: I): ParentEmailChange {
+    const message = createBaseParentEmailChange();
+    message.state = object.state ?? undefined;
+    message.request_id = object.request_id ?? undefined;
+    message.old_email = object.old_email ?? undefined;
+    message.new_email = object.new_email ?? undefined;
+    message.expires_at = object.expires_at ?? undefined;
+    message.parent = (object.parent !== undefined && object.parent !== null)
+      ? Parent.fromPartial(object.parent)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseBeginParentEmailChangeRequest(): BeginParentEmailChangeRequest {
+  return { context: undefined, id_token: undefined, new_email: undefined };
+}
+
+export const BeginParentEmailChangeRequest: MessageFns<BeginParentEmailChangeRequest> = {
+  encode(message: BeginParentEmailChangeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.id_token !== undefined) {
+      writer.uint32(18).string(message.id_token);
+    }
+    if (message.new_email !== undefined) {
+      writer.uint32(26).string(message.new_email);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BeginParentEmailChangeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBeginParentEmailChangeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id_token = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.new_email = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BeginParentEmailChangeRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      id_token: isSet(object.idToken) ? globalThis.String(object.idToken) : undefined,
+      new_email: isSet(object.newEmail) ? globalThis.String(object.newEmail) : undefined,
+    };
+  },
+
+  toJSON(message: BeginParentEmailChangeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.id_token !== undefined) {
+      obj.idToken = message.id_token;
+    }
+    if (message.new_email !== undefined) {
+      obj.newEmail = message.new_email;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<BeginParentEmailChangeRequest>, I>>(base?: I): BeginParentEmailChangeRequest {
+    return BeginParentEmailChangeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<BeginParentEmailChangeRequest>, I>>(
+    object: I,
+  ): BeginParentEmailChangeRequest {
+    const message = createBaseBeginParentEmailChangeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.id_token = object.id_token ?? undefined;
+    message.new_email = object.new_email ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetParentEmailChangeRequest(): GetParentEmailChangeRequest {
+  return { context: undefined };
+}
+
+export const GetParentEmailChangeRequest: MessageFns<GetParentEmailChangeRequest> = {
+  encode(message: GetParentEmailChangeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetParentEmailChangeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetParentEmailChangeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetParentEmailChangeRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetParentEmailChangeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetParentEmailChangeRequest>, I>>(base?: I): GetParentEmailChangeRequest {
+    return GetParentEmailChangeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetParentEmailChangeRequest>, I>>(object: I): GetParentEmailChangeRequest {
+    const message = createBaseGetParentEmailChangeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseParentEmailChangeActionRequest(): ParentEmailChangeActionRequest {
+  return { context: undefined, request_id: undefined };
+}
+
+export const ParentEmailChangeActionRequest: MessageFns<ParentEmailChangeActionRequest> = {
+  encode(message: ParentEmailChangeActionRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.request_id !== undefined) {
+      writer.uint32(26).string(message.request_id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ParentEmailChangeActionRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseParentEmailChangeActionRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.request_id = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ParentEmailChangeActionRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      request_id: isSet(object.requestId) ? globalThis.String(object.requestId) : undefined,
+    };
+  },
+
+  toJSON(message: ParentEmailChangeActionRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.request_id !== undefined) {
+      obj.requestId = message.request_id;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ParentEmailChangeActionRequest>, I>>(base?: I): ParentEmailChangeActionRequest {
+    return ParentEmailChangeActionRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ParentEmailChangeActionRequest>, I>>(
+    object: I,
+  ): ParentEmailChangeActionRequest {
+    const message = createBaseParentEmailChangeActionRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.request_id = object.request_id ?? undefined;
+    return message;
+  },
+};
+
+function createBaseContinueParentEmailChangeRequest(): ContinueParentEmailChangeRequest {
+  return { context: undefined, id_token: undefined, request_id: undefined, organization_id: undefined };
+}
+
+export const ContinueParentEmailChangeRequest: MessageFns<ContinueParentEmailChangeRequest> = {
+  encode(message: ContinueParentEmailChangeRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.id_token !== undefined) {
+      writer.uint32(18).string(message.id_token);
+    }
+    if (message.request_id !== undefined) {
+      writer.uint32(26).string(message.request_id);
+    }
+    if (message.organization_id !== undefined) {
+      ObjectId.encode(message.organization_id, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ContinueParentEmailChangeRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseContinueParentEmailChangeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.id_token = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.request_id = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.organization_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ContinueParentEmailChangeRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      id_token: isSet(object.idToken) ? globalThis.String(object.idToken) : undefined,
+      request_id: isSet(object.requestId) ? globalThis.String(object.requestId) : undefined,
+      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
+    };
+  },
+
+  toJSON(message: ContinueParentEmailChangeRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.id_token !== undefined) {
+      obj.idToken = message.id_token;
+    }
+    if (message.request_id !== undefined) {
+      obj.requestId = message.request_id;
+    }
+    if (message.organization_id !== undefined) {
+      obj.organizationId = ObjectId.toJSON(message.organization_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ContinueParentEmailChangeRequest>, I>>(
+    base?: I,
+  ): ContinueParentEmailChangeRequest {
+    return ContinueParentEmailChangeRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ContinueParentEmailChangeRequest>, I>>(
+    object: I,
+  ): ContinueParentEmailChangeRequest {
+    const message = createBaseContinueParentEmailChangeRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.id_token = object.id_token ?? undefined;
+    message.request_id = object.request_id ?? undefined;
+    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+      ? ObjectId.fromPartial(object.organization_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseContinueParentEmailChangeResponse(): ContinueParentEmailChangeResponse {
+  return { outcome: undefined, parent_auth: undefined };
+}
+
+export const ContinueParentEmailChangeResponse: MessageFns<ContinueParentEmailChangeResponse> = {
+  encode(message: ContinueParentEmailChangeResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.outcome !== undefined) {
+      writer.uint32(8).int32(parentEmailChangeLoginOutcomeToNumber(message.outcome));
+    }
+    if (message.parent_auth !== undefined) {
+      AuthenticateParentForOrgResponse.encode(message.parent_auth, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ContinueParentEmailChangeResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseContinueParentEmailChangeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.outcome = parentEmailChangeLoginOutcomeFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.parent_auth = AuthenticateParentForOrgResponse.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ContinueParentEmailChangeResponse {
+    return {
+      outcome: isSet(object.outcome) ? parentEmailChangeLoginOutcomeFromJSON(object.outcome) : undefined,
+      parent_auth: isSet(object.parentAuth) ? AuthenticateParentForOrgResponse.fromJSON(object.parentAuth) : undefined,
+    };
+  },
+
+  toJSON(message: ContinueParentEmailChangeResponse): unknown {
+    const obj: any = {};
+    if (message.outcome !== undefined) {
+      obj.outcome = parentEmailChangeLoginOutcomeToJSON(message.outcome);
+    }
+    if (message.parent_auth !== undefined) {
+      obj.parentAuth = AuthenticateParentForOrgResponse.toJSON(message.parent_auth);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ContinueParentEmailChangeResponse>, I>>(
+    base?: I,
+  ): ContinueParentEmailChangeResponse {
+    return ContinueParentEmailChangeResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ContinueParentEmailChangeResponse>, I>>(
+    object: I,
+  ): ContinueParentEmailChangeResponse {
+    const message = createBaseContinueParentEmailChangeResponse();
+    message.outcome = object.outcome ?? undefined;
+    message.parent_auth = (object.parent_auth !== undefined && object.parent_auth !== null)
+      ? AuthenticateParentForOrgResponse.fromPartial(object.parent_auth)
+      : undefined;
+    return message;
+  },
+};
+
 function createBaseAuthenticateParentForOrgResponse(): AuthenticateParentForOrgResponse {
   return { parent: undefined, family_ids: [], student_ids: [] };
 }
@@ -2495,6 +3227,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

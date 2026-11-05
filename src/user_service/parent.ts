@@ -114,7 +114,11 @@ export interface Parent {
   email?: string | undefined;
   phone?: PhoneNumber | undefined;
   stripe_customer_id?: string | undefined;
-  payment_information: ParentPaymentInformation | undefined;
+  payment_information:
+    | ParentPaymentInformation
+    | undefined;
+  /** Explicit current version is required by gateways enforcing session revocation. */
+  auth_version?: number | undefined;
 }
 
 /** Parent profile data for updates */
@@ -356,6 +360,7 @@ function createBaseParent(): Parent {
     phone: undefined,
     stripe_customer_id: undefined,
     payment_information: undefined,
+    auth_version: undefined,
   };
 }
 
@@ -384,6 +389,9 @@ export const Parent: MessageFns<Parent> = {
     }
     if (message.payment_information !== undefined) {
       ParentPaymentInformation.encode(message.payment_information, writer.uint32(66).fork()).join();
+    }
+    if (message.auth_version !== undefined) {
+      writer.uint32(72).uint64(message.auth_version);
     }
     return writer;
   },
@@ -451,6 +459,13 @@ export const Parent: MessageFns<Parent> = {
 
           message.payment_information = ParentPaymentInformation.decode(reader, reader.uint32());
           continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.auth_version = longToNumber(reader.uint64());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -472,6 +487,7 @@ export const Parent: MessageFns<Parent> = {
       payment_information: isSet(object.paymentInformation)
         ? ParentPaymentInformation.fromJSON(object.paymentInformation)
         : undefined,
+      auth_version: isSet(object.authVersion) ? globalThis.Number(object.authVersion) : undefined,
     };
   },
 
@@ -501,6 +517,9 @@ export const Parent: MessageFns<Parent> = {
     if (message.payment_information !== undefined) {
       obj.paymentInformation = ParentPaymentInformation.toJSON(message.payment_information);
     }
+    if (message.auth_version !== undefined) {
+      obj.authVersion = Math.round(message.auth_version);
+    }
     return obj;
   },
 
@@ -523,6 +542,7 @@ export const Parent: MessageFns<Parent> = {
     message.payment_information = (object.payment_information !== undefined && object.payment_information !== null)
       ? ParentPaymentInformation.fromPartial(object.payment_information)
       : undefined;
+    message.auth_version = object.auth_version ?? undefined;
     return message;
   },
 };
@@ -940,6 +960,17 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

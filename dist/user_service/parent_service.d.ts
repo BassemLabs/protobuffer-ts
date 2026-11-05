@@ -5,6 +5,26 @@ import { RequestContext } from "../utils/request_context";
 import { Parent, ParentProfile } from "./parent";
 import { Student, StudentSchoolYearInformation } from "./student";
 export declare const protobufPackage = "user_service";
+export declare enum ParentEmailChangeState {
+    EmailChangeNone = "EmailChangeNone",
+    EmailChangePending = "EmailChangePending",
+    EmailChangeCompleted = "EmailChangeCompleted",
+    EmailChangeCancelled = "EmailChangeCancelled",
+    EmailChangeExpired = "EmailChangeExpired",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function parentEmailChangeStateFromJSON(object: any): ParentEmailChangeState;
+export declare function parentEmailChangeStateToJSON(object: ParentEmailChangeState): string;
+export declare function parentEmailChangeStateToNumber(object: ParentEmailChangeState): number;
+export declare enum ParentEmailChangeLoginOutcome {
+    EmailChangeLoginUnchanged = "EmailChangeLoginUnchanged",
+    EmailChangeLoginCompleted = "EmailChangeLoginCompleted",
+    EmailChangeLoginExistingAccount = "EmailChangeLoginExistingAccount",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function parentEmailChangeLoginOutcomeFromJSON(object: any): ParentEmailChangeLoginOutcome;
+export declare function parentEmailChangeLoginOutcomeToJSON(object: ParentEmailChangeLoginOutcome): string;
+export declare function parentEmailChangeLoginOutcomeToNumber(object: ParentEmailChangeLoginOutcome): number;
 export interface GetParentRequest {
     context: RequestContext | undefined;
     parent_id: ObjectId | undefined;
@@ -90,6 +110,39 @@ export interface AuthenticateParentForOrgRequest {
     display_name?: string | undefined;
     email?: string | undefined;
 }
+export interface ParentEmailChange {
+    state?: ParentEmailChangeState | undefined;
+    request_id?: string | undefined;
+    old_email?: string | undefined;
+    new_email?: string | undefined;
+    /** Unix epoch seconds. */
+    expires_at?: number | undefined;
+    parent?: Parent | undefined;
+}
+export interface BeginParentEmailChangeRequest {
+    context: RequestContext | undefined;
+    id_token?: string | undefined;
+    new_email?: string | undefined;
+}
+export interface GetParentEmailChangeRequest {
+    context: RequestContext | undefined;
+}
+export interface ParentEmailChangeActionRequest {
+    context: RequestContext | undefined;
+    request_id?: string | undefined;
+}
+export interface ContinueParentEmailChangeRequest {
+    context: RequestContext | undefined;
+    /** New account's normal Firebase sign-in. */
+    id_token?: string | undefined;
+    request_id?: string | undefined;
+    organization_id: ObjectId | undefined;
+}
+export interface ContinueParentEmailChangeResponse {
+    outcome?: ParentEmailChangeLoginOutcome | undefined;
+    /** Completed/existing outcomes carry the authorized snapshot for token minting. */
+    parent_auth?: AuthenticateParentForOrgResponse | undefined;
+}
 export interface AuthenticateParentForOrgResponse {
     parent: Parent | undefined;
     family_ids: ObjectId[];
@@ -147,6 +200,12 @@ export declare const GetParentProfileCompletionRequest: MessageFns<GetParentProf
 export declare const UpdateOwnParentNameRequest: MessageFns<UpdateOwnParentNameRequest>;
 export declare const UpdateOwnParentPhoneRequest: MessageFns<UpdateOwnParentPhoneRequest>;
 export declare const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOrgRequest>;
+export declare const ParentEmailChange: MessageFns<ParentEmailChange>;
+export declare const BeginParentEmailChangeRequest: MessageFns<BeginParentEmailChangeRequest>;
+export declare const GetParentEmailChangeRequest: MessageFns<GetParentEmailChangeRequest>;
+export declare const ParentEmailChangeActionRequest: MessageFns<ParentEmailChangeActionRequest>;
+export declare const ContinueParentEmailChangeRequest: MessageFns<ContinueParentEmailChangeRequest>;
+export declare const ContinueParentEmailChangeResponse: MessageFns<ContinueParentEmailChangeResponse>;
 export declare const AuthenticateParentForOrgResponse: MessageFns<AuthenticateParentForOrgResponse>;
 export declare const UpdateParentPaymentMethodFromSetupIntentRequest: MessageFns<UpdateParentPaymentMethodFromSetupIntentRequest>;
 export declare const SetParentSetupIntentRequiresActionRequest: MessageFns<SetParentSetupIntentRequiresActionRequest>;

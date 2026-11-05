@@ -1,4 +1,6 @@
 // Auto-generated index.ts
+import * as Authentication_service from './authentication_service/authentication_service';
+export { Authentication_service };
 import * as Request_context from './utils/request_context';
 export { Request_context };
 import * as Aws_file from './utils/aws_file';

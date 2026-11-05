@@ -268,6 +268,7 @@ function createBaseParent() {
         phone: undefined,
         stripe_customer_id: undefined,
         payment_information: undefined,
+        auth_version: undefined,
     };
 }
 exports.Parent = {
@@ -295,6 +296,9 @@ exports.Parent = {
         }
         if (message.payment_information !== undefined) {
             exports.ParentPaymentInformation.encode(message.payment_information, writer.uint32(66).fork()).join();
+        }
+        if (message.auth_version !== undefined) {
+            writer.uint32(72).uint64(message.auth_version);
         }
         return writer;
     },
@@ -353,6 +357,12 @@ exports.Parent = {
                     }
                     message.payment_information = exports.ParentPaymentInformation.decode(reader, reader.uint32());
                     continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.auth_version = longToNumber(reader.uint64());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -373,6 +383,7 @@ exports.Parent = {
             payment_information: isSet(object.paymentInformation)
                 ? exports.ParentPaymentInformation.fromJSON(object.paymentInformation)
                 : undefined,
+            auth_version: isSet(object.authVersion) ? globalThis.Number(object.authVersion) : undefined,
         };
     },
     toJSON(message) {
@@ -401,6 +412,9 @@ exports.Parent = {
         if (message.payment_information !== undefined) {
             obj.paymentInformation = exports.ParentPaymentInformation.toJSON(message.payment_information);
         }
+        if (message.auth_version !== undefined) {
+            obj.authVersion = Math.round(message.auth_version);
+        }
         return obj;
     },
     create(base) {
@@ -422,6 +436,7 @@ exports.Parent = {
         message.payment_information = (object.payment_information !== undefined && object.payment_information !== null)
             ? exports.ParentPaymentInformation.fromPartial(object.payment_information)
             : undefined;
+        message.auth_version = object.auth_version ?? undefined;
         return message;
     },
 };
@@ -791,6 +806,16 @@ exports.ParentProfileCompletionAction = {
         return message;
     },
 };
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

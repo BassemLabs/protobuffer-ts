@@ -5,7 +5,13 @@
 //   protoc               unknown
 // source: user_service/parent_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetAllParentsForStagingResponse = exports.GetAllParentsForStagingRequest = exports.SetParentStripeCustomerIdRequest = exports.SetParentSetupIntentFailureRequest = exports.SetParentSetupIntentRequiresActionRequest = exports.UpdateParentPaymentMethodFromSetupIntentRequest = exports.AuthenticateParentForOrgResponse = exports.AuthenticateParentForOrgRequest = exports.UpdateOwnParentPhoneRequest = exports.UpdateOwnParentNameRequest = exports.GetParentProfileCompletionRequest = exports.UpdateParentProfileRequest = exports.AddNewGuardianToFamilyRequest = exports.GetContextActiveSchoolYearEnrolledStudentIdsResponse = exports.GetContextActiveSchoolYearEnrolledStudentIdsRequest = exports.GetParentStudentIdsResponse = exports.GetParentStudentIdsRequest = exports.GetParentStudentsWithLatestSchoolYearInfoResponse = exports.ParentStudentWithSchoolYearInfo = exports.GetParentStudentsWithLatestSchoolYearInfoFromContextRequest = exports.GetParentStudentsFromContextRequest = exports.GetParentStudentsResponse = exports.GetParentStudentsRequest = exports.GetParentsByEmailResponse = exports.GetParentsByEmailRequest = exports.GetParentsByIdsResponse = exports.GetParentsByIdsRequest = exports.GetParentRequest = exports.protobufPackage = void 0;
+exports.GetAllParentsForStagingResponse = exports.GetAllParentsForStagingRequest = exports.SetParentStripeCustomerIdRequest = exports.SetParentSetupIntentFailureRequest = exports.SetParentSetupIntentRequiresActionRequest = exports.UpdateParentPaymentMethodFromSetupIntentRequest = exports.AuthenticateParentForOrgResponse = exports.ContinueParentEmailChangeResponse = exports.ContinueParentEmailChangeRequest = exports.ParentEmailChangeActionRequest = exports.GetParentEmailChangeRequest = exports.BeginParentEmailChangeRequest = exports.ParentEmailChange = exports.AuthenticateParentForOrgRequest = exports.UpdateOwnParentPhoneRequest = exports.UpdateOwnParentNameRequest = exports.GetParentProfileCompletionRequest = exports.UpdateParentProfileRequest = exports.AddNewGuardianToFamilyRequest = exports.GetContextActiveSchoolYearEnrolledStudentIdsResponse = exports.GetContextActiveSchoolYearEnrolledStudentIdsRequest = exports.GetParentStudentIdsResponse = exports.GetParentStudentIdsRequest = exports.GetParentStudentsWithLatestSchoolYearInfoResponse = exports.ParentStudentWithSchoolYearInfo = exports.GetParentStudentsWithLatestSchoolYearInfoFromContextRequest = exports.GetParentStudentsFromContextRequest = exports.GetParentStudentsResponse = exports.GetParentStudentsRequest = exports.GetParentsByEmailResponse = exports.GetParentsByEmailRequest = exports.GetParentsByIdsResponse = exports.GetParentsByIdsRequest = exports.GetParentRequest = exports.ParentEmailChangeLoginOutcome = exports.ParentEmailChangeState = exports.protobufPackage = void 0;
+exports.parentEmailChangeStateFromJSON = parentEmailChangeStateFromJSON;
+exports.parentEmailChangeStateToJSON = parentEmailChangeStateToJSON;
+exports.parentEmailChangeStateToNumber = parentEmailChangeStateToNumber;
+exports.parentEmailChangeLoginOutcomeFromJSON = parentEmailChangeLoginOutcomeFromJSON;
+exports.parentEmailChangeLoginOutcomeToJSON = parentEmailChangeLoginOutcomeToJSON;
+exports.parentEmailChangeLoginOutcomeToNumber = parentEmailChangeLoginOutcomeToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -14,6 +20,122 @@ const request_context_1 = require("../utils/request_context");
 const parent_1 = require("./parent");
 const student_1 = require("./student");
 exports.protobufPackage = "user_service";
+var ParentEmailChangeState;
+(function (ParentEmailChangeState) {
+    ParentEmailChangeState["EmailChangeNone"] = "EmailChangeNone";
+    ParentEmailChangeState["EmailChangePending"] = "EmailChangePending";
+    ParentEmailChangeState["EmailChangeCompleted"] = "EmailChangeCompleted";
+    ParentEmailChangeState["EmailChangeCancelled"] = "EmailChangeCancelled";
+    ParentEmailChangeState["EmailChangeExpired"] = "EmailChangeExpired";
+    ParentEmailChangeState["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ParentEmailChangeState || (exports.ParentEmailChangeState = ParentEmailChangeState = {}));
+function parentEmailChangeStateFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "EmailChangeNone":
+            return ParentEmailChangeState.EmailChangeNone;
+        case 1:
+        case "EmailChangePending":
+            return ParentEmailChangeState.EmailChangePending;
+        case 2:
+        case "EmailChangeCompleted":
+            return ParentEmailChangeState.EmailChangeCompleted;
+        case 3:
+        case "EmailChangeCancelled":
+            return ParentEmailChangeState.EmailChangeCancelled;
+        case 4:
+        case "EmailChangeExpired":
+            return ParentEmailChangeState.EmailChangeExpired;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ParentEmailChangeState.UNRECOGNIZED;
+    }
+}
+function parentEmailChangeStateToJSON(object) {
+    switch (object) {
+        case ParentEmailChangeState.EmailChangeNone:
+            return "EmailChangeNone";
+        case ParentEmailChangeState.EmailChangePending:
+            return "EmailChangePending";
+        case ParentEmailChangeState.EmailChangeCompleted:
+            return "EmailChangeCompleted";
+        case ParentEmailChangeState.EmailChangeCancelled:
+            return "EmailChangeCancelled";
+        case ParentEmailChangeState.EmailChangeExpired:
+            return "EmailChangeExpired";
+        case ParentEmailChangeState.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function parentEmailChangeStateToNumber(object) {
+    switch (object) {
+        case ParentEmailChangeState.EmailChangeNone:
+            return 0;
+        case ParentEmailChangeState.EmailChangePending:
+            return 1;
+        case ParentEmailChangeState.EmailChangeCompleted:
+            return 2;
+        case ParentEmailChangeState.EmailChangeCancelled:
+            return 3;
+        case ParentEmailChangeState.EmailChangeExpired:
+            return 4;
+        case ParentEmailChangeState.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var ParentEmailChangeLoginOutcome;
+(function (ParentEmailChangeLoginOutcome) {
+    ParentEmailChangeLoginOutcome["EmailChangeLoginUnchanged"] = "EmailChangeLoginUnchanged";
+    ParentEmailChangeLoginOutcome["EmailChangeLoginCompleted"] = "EmailChangeLoginCompleted";
+    ParentEmailChangeLoginOutcome["EmailChangeLoginExistingAccount"] = "EmailChangeLoginExistingAccount";
+    ParentEmailChangeLoginOutcome["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(ParentEmailChangeLoginOutcome || (exports.ParentEmailChangeLoginOutcome = ParentEmailChangeLoginOutcome = {}));
+function parentEmailChangeLoginOutcomeFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "EmailChangeLoginUnchanged":
+            return ParentEmailChangeLoginOutcome.EmailChangeLoginUnchanged;
+        case 1:
+        case "EmailChangeLoginCompleted":
+            return ParentEmailChangeLoginOutcome.EmailChangeLoginCompleted;
+        case 2:
+        case "EmailChangeLoginExistingAccount":
+            return ParentEmailChangeLoginOutcome.EmailChangeLoginExistingAccount;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return ParentEmailChangeLoginOutcome.UNRECOGNIZED;
+    }
+}
+function parentEmailChangeLoginOutcomeToJSON(object) {
+    switch (object) {
+        case ParentEmailChangeLoginOutcome.EmailChangeLoginUnchanged:
+            return "EmailChangeLoginUnchanged";
+        case ParentEmailChangeLoginOutcome.EmailChangeLoginCompleted:
+            return "EmailChangeLoginCompleted";
+        case ParentEmailChangeLoginOutcome.EmailChangeLoginExistingAccount:
+            return "EmailChangeLoginExistingAccount";
+        case ParentEmailChangeLoginOutcome.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function parentEmailChangeLoginOutcomeToNumber(object) {
+    switch (object) {
+        case ParentEmailChangeLoginOutcome.EmailChangeLoginUnchanged:
+            return 0;
+        case ParentEmailChangeLoginOutcome.EmailChangeLoginCompleted:
+            return 1;
+        case ParentEmailChangeLoginOutcome.EmailChangeLoginExistingAccount:
+            return 2;
+        case ParentEmailChangeLoginOutcome.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseGetParentRequest() {
     return { context: undefined, parent_id: undefined };
 }
@@ -1417,6 +1539,505 @@ exports.AuthenticateParentForOrgRequest = {
         return message;
     },
 };
+function createBaseParentEmailChange() {
+    return {
+        state: undefined,
+        request_id: undefined,
+        old_email: undefined,
+        new_email: undefined,
+        expires_at: undefined,
+        parent: undefined,
+    };
+}
+exports.ParentEmailChange = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.state !== undefined) {
+            writer.uint32(8).int32(parentEmailChangeStateToNumber(message.state));
+        }
+        if (message.request_id !== undefined) {
+            writer.uint32(18).string(message.request_id);
+        }
+        if (message.old_email !== undefined) {
+            writer.uint32(26).string(message.old_email);
+        }
+        if (message.new_email !== undefined) {
+            writer.uint32(34).string(message.new_email);
+        }
+        if (message.expires_at !== undefined) {
+            writer.uint32(40).int64(message.expires_at);
+        }
+        if (message.parent !== undefined) {
+            parent_1.Parent.encode(message.parent, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseParentEmailChange();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.state = parentEmailChangeStateFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.request_id = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.old_email = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.new_email = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.expires_at = longToNumber(reader.int64());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.parent = parent_1.Parent.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            state: isSet(object.state) ? parentEmailChangeStateFromJSON(object.state) : undefined,
+            request_id: isSet(object.requestId) ? globalThis.String(object.requestId) : undefined,
+            old_email: isSet(object.oldEmail) ? globalThis.String(object.oldEmail) : undefined,
+            new_email: isSet(object.newEmail) ? globalThis.String(object.newEmail) : undefined,
+            expires_at: isSet(object.expiresAt) ? globalThis.Number(object.expiresAt) : undefined,
+            parent: isSet(object.parent) ? parent_1.Parent.fromJSON(object.parent) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.state !== undefined) {
+            obj.state = parentEmailChangeStateToJSON(message.state);
+        }
+        if (message.request_id !== undefined) {
+            obj.requestId = message.request_id;
+        }
+        if (message.old_email !== undefined) {
+            obj.oldEmail = message.old_email;
+        }
+        if (message.new_email !== undefined) {
+            obj.newEmail = message.new_email;
+        }
+        if (message.expires_at !== undefined) {
+            obj.expiresAt = Math.round(message.expires_at);
+        }
+        if (message.parent !== undefined) {
+            obj.parent = parent_1.Parent.toJSON(message.parent);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ParentEmailChange.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseParentEmailChange();
+        message.state = object.state ?? undefined;
+        message.request_id = object.request_id ?? undefined;
+        message.old_email = object.old_email ?? undefined;
+        message.new_email = object.new_email ?? undefined;
+        message.expires_at = object.expires_at ?? undefined;
+        message.parent = (object.parent !== undefined && object.parent !== null)
+            ? parent_1.Parent.fromPartial(object.parent)
+            : undefined;
+        return message;
+    },
+};
+function createBaseBeginParentEmailChangeRequest() {
+    return { context: undefined, id_token: undefined, new_email: undefined };
+}
+exports.BeginParentEmailChangeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.id_token !== undefined) {
+            writer.uint32(18).string(message.id_token);
+        }
+        if (message.new_email !== undefined) {
+            writer.uint32(26).string(message.new_email);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseBeginParentEmailChangeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.id_token = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.new_email = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            id_token: isSet(object.idToken) ? globalThis.String(object.idToken) : undefined,
+            new_email: isSet(object.newEmail) ? globalThis.String(object.newEmail) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.id_token !== undefined) {
+            obj.idToken = message.id_token;
+        }
+        if (message.new_email !== undefined) {
+            obj.newEmail = message.new_email;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.BeginParentEmailChangeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseBeginParentEmailChangeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.id_token = object.id_token ?? undefined;
+        message.new_email = object.new_email ?? undefined;
+        return message;
+    },
+};
+function createBaseGetParentEmailChangeRequest() {
+    return { context: undefined };
+}
+exports.GetParentEmailChangeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetParentEmailChangeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetParentEmailChangeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetParentEmailChangeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseParentEmailChangeActionRequest() {
+    return { context: undefined, request_id: undefined };
+}
+exports.ParentEmailChangeActionRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.request_id !== undefined) {
+            writer.uint32(26).string(message.request_id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseParentEmailChangeActionRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.request_id = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            request_id: isSet(object.requestId) ? globalThis.String(object.requestId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.request_id !== undefined) {
+            obj.requestId = message.request_id;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ParentEmailChangeActionRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseParentEmailChangeActionRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.request_id = object.request_id ?? undefined;
+        return message;
+    },
+};
+function createBaseContinueParentEmailChangeRequest() {
+    return { context: undefined, id_token: undefined, request_id: undefined, organization_id: undefined };
+}
+exports.ContinueParentEmailChangeRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.id_token !== undefined) {
+            writer.uint32(18).string(message.id_token);
+        }
+        if (message.request_id !== undefined) {
+            writer.uint32(26).string(message.request_id);
+        }
+        if (message.organization_id !== undefined) {
+            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseContinueParentEmailChangeRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.id_token = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.request_id = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            id_token: isSet(object.idToken) ? globalThis.String(object.idToken) : undefined,
+            request_id: isSet(object.requestId) ? globalThis.String(object.requestId) : undefined,
+            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.id_token !== undefined) {
+            obj.idToken = message.id_token;
+        }
+        if (message.request_id !== undefined) {
+            obj.requestId = message.request_id;
+        }
+        if (message.organization_id !== undefined) {
+            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ContinueParentEmailChangeRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseContinueParentEmailChangeRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.id_token = object.id_token ?? undefined;
+        message.request_id = object.request_id ?? undefined;
+        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseContinueParentEmailChangeResponse() {
+    return { outcome: undefined, parent_auth: undefined };
+}
+exports.ContinueParentEmailChangeResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.outcome !== undefined) {
+            writer.uint32(8).int32(parentEmailChangeLoginOutcomeToNumber(message.outcome));
+        }
+        if (message.parent_auth !== undefined) {
+            exports.AuthenticateParentForOrgResponse.encode(message.parent_auth, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseContinueParentEmailChangeResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.outcome = parentEmailChangeLoginOutcomeFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.parent_auth = exports.AuthenticateParentForOrgResponse.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            outcome: isSet(object.outcome) ? parentEmailChangeLoginOutcomeFromJSON(object.outcome) : undefined,
+            parent_auth: isSet(object.parentAuth) ? exports.AuthenticateParentForOrgResponse.fromJSON(object.parentAuth) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.outcome !== undefined) {
+            obj.outcome = parentEmailChangeLoginOutcomeToJSON(message.outcome);
+        }
+        if (message.parent_auth !== undefined) {
+            obj.parentAuth = exports.AuthenticateParentForOrgResponse.toJSON(message.parent_auth);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ContinueParentEmailChangeResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseContinueParentEmailChangeResponse();
+        message.outcome = object.outcome ?? undefined;
+        message.parent_auth = (object.parent_auth !== undefined && object.parent_auth !== null)
+            ? exports.AuthenticateParentForOrgResponse.fromPartial(object.parent_auth)
+            : undefined;
+        return message;
+    },
+};
 function createBaseAuthenticateParentForOrgResponse() {
     return { parent: undefined, family_ids: [], student_ids: [] };
 }
@@ -2024,6 +2645,16 @@ exports.GetAllParentsForStagingResponse = {
         return message;
     },
 };
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

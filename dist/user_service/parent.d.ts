@@ -40,6 +40,8 @@ export interface Parent {
     phone?: PhoneNumber | undefined;
     stripe_customer_id?: string | undefined;
     payment_information: ParentPaymentInformation | undefined;
+    /** Explicit current version is required by gateways enforcing session revocation. */
+    auth_version?: number | undefined;
 }
 /** Parent profile data for updates */
 export interface ParentProfile {

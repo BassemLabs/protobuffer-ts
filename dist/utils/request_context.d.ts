@@ -73,6 +73,8 @@ export interface ParentContext {
     course_ids: ObjectId[];
     homeroom_ids: ObjectId[];
     teacher_basic_info_ids: ObjectId[];
+    /** Missing means version 0 for existing sessions. */
+    auth_version?: number | undefined;
 }
 export declare const RequestContext: MessageFns<RequestContext>;
 export declare const UserContext: MessageFns<UserContext>;

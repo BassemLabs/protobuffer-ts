@@ -163,6 +163,8 @@ export interface ParentContext {
   course_ids: ObjectId[];
   homeroom_ids: ObjectId[];
   teacher_basic_info_ids: ObjectId[];
+  /** Missing means version 0 for existing sessions. */
+  auth_version?: number | undefined;
 }
 
 function createBaseRequestContext(): RequestContext {
@@ -938,6 +940,7 @@ function createBaseParentContext(): ParentContext {
     course_ids: [],
     homeroom_ids: [],
     teacher_basic_info_ids: [],
+    auth_version: undefined,
   };
 }
 
@@ -963,6 +966,9 @@ export const ParentContext: MessageFns<ParentContext> = {
     }
     for (const v of message.teacher_basic_info_ids) {
       ObjectId.encode(v!, writer.uint32(58).fork()).join();
+    }
+    if (message.auth_version !== undefined) {
+      writer.uint32(64).uint64(message.auth_version);
     }
     return writer;
   },
@@ -1023,6 +1029,13 @@ export const ParentContext: MessageFns<ParentContext> = {
 
           message.teacher_basic_info_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.auth_version = longToNumber(reader.uint64());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1055,6 +1068,7 @@ export const ParentContext: MessageFns<ParentContext> = {
       teacher_basic_info_ids: globalThis.Array.isArray(object?.teacherBasicInfoIds)
         ? object.teacherBasicInfoIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
+      auth_version: isSet(object.authVersion) ? globalThis.Number(object.authVersion) : undefined,
     };
   },
 
@@ -1081,6 +1095,9 @@ export const ParentContext: MessageFns<ParentContext> = {
     if (message.teacher_basic_info_ids?.length) {
       obj.teacherBasicInfoIds = message.teacher_basic_info_ids.map((e) => ObjectId.toJSON(e));
     }
+    if (message.auth_version !== undefined) {
+      obj.authVersion = Math.round(message.auth_version);
+    }
     return obj;
   },
 
@@ -1099,6 +1116,7 @@ export const ParentContext: MessageFns<ParentContext> = {
     message.course_ids = object.course_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.homeroom_ids = object.homeroom_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.teacher_basic_info_ids = object.teacher_basic_info_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.auth_version = object.auth_version ?? undefined;
     return message;
   },
 };

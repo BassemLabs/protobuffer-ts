@@ -799,6 +799,7 @@ function createBaseParentContext() {
         course_ids: [],
         homeroom_ids: [],
         teacher_basic_info_ids: [],
+        auth_version: undefined,
     };
 }
 exports.ParentContext = {
@@ -823,6 +824,9 @@ exports.ParentContext = {
         }
         for (const v of message.teacher_basic_info_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.auth_version !== undefined) {
+            writer.uint32(64).uint64(message.auth_version);
         }
         return writer;
     },
@@ -875,6 +879,12 @@ exports.ParentContext = {
                     }
                     message.teacher_basic_info_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.auth_version = longToNumber(reader.uint64());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -906,6 +916,7 @@ exports.ParentContext = {
             teacher_basic_info_ids: globalThis.Array.isArray(object?.teacherBasicInfoIds)
                 ? object.teacherBasicInfoIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
+            auth_version: isSet(object.authVersion) ? globalThis.Number(object.authVersion) : undefined,
         };
     },
     toJSON(message) {
@@ -931,6 +942,9 @@ exports.ParentContext = {
         if (message.teacher_basic_info_ids?.length) {
             obj.teacherBasicInfoIds = message.teacher_basic_info_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
+        if (message.auth_version !== undefined) {
+            obj.authVersion = Math.round(message.auth_version);
+        }
         return obj;
     },
     create(base) {
@@ -948,6 +962,7 @@ exports.ParentContext = {
         message.course_ids = object.course_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.teacher_basic_info_ids = object.teacher_basic_info_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.auth_version = object.auth_version ?? undefined;
         return message;
     },
 };
