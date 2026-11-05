@@ -103,13 +103,6 @@ export interface UpdateOwnParentPhoneRequest {
     context: RequestContext | undefined;
     phone: PhoneNumber | undefined;
 }
-export interface AuthenticateParentForOrgRequest {
-    context: RequestContext | undefined;
-    organization_id: ObjectId | undefined;
-    firebase_user_id?: string | undefined;
-    display_name?: string | undefined;
-    email?: string | undefined;
-}
 export interface ParentEmailChange {
     state?: ParentEmailChangeState | undefined;
     request_id?: string | undefined;
@@ -143,6 +136,7 @@ export interface ContinueParentEmailChangeResponse {
     /** Completed/existing outcomes carry the authorized snapshot for token minting. */
     parent_auth?: AuthenticateParentForOrgResponse | undefined;
 }
+/** Shared parent login snapshot used by AuthenticationService and email-change continuation. */
 export interface AuthenticateParentForOrgResponse {
     parent: Parent | undefined;
     family_ids: ObjectId[];
@@ -199,7 +193,6 @@ export declare const UpdateParentProfileRequest: MessageFns<UpdateParentProfileR
 export declare const GetParentProfileCompletionRequest: MessageFns<GetParentProfileCompletionRequest>;
 export declare const UpdateOwnParentNameRequest: MessageFns<UpdateOwnParentNameRequest>;
 export declare const UpdateOwnParentPhoneRequest: MessageFns<UpdateOwnParentPhoneRequest>;
-export declare const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOrgRequest>;
 export declare const ParentEmailChange: MessageFns<ParentEmailChange>;
 export declare const BeginParentEmailChangeRequest: MessageFns<BeginParentEmailChangeRequest>;
 export declare const GetParentEmailChangeRequest: MessageFns<GetParentEmailChangeRequest>;

@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/parent_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetAllParentsForStagingResponse = exports.GetAllParentsForStagingRequest = exports.SetParentStripeCustomerIdRequest = exports.SetParentSetupIntentFailureRequest = exports.SetParentSetupIntentRequiresActionRequest = exports.UpdateParentPaymentMethodFromSetupIntentRequest = exports.AuthenticateParentForOrgResponse = exports.ContinueParentEmailChangeResponse = exports.ContinueParentEmailChangeRequest = exports.ParentEmailChangeActionRequest = exports.GetParentEmailChangeRequest = exports.BeginParentEmailChangeRequest = exports.ParentEmailChange = exports.AuthenticateParentForOrgRequest = exports.UpdateOwnParentPhoneRequest = exports.UpdateOwnParentNameRequest = exports.GetParentProfileCompletionRequest = exports.UpdateParentProfileRequest = exports.AddNewGuardianToFamilyRequest = exports.GetContextActiveSchoolYearEnrolledStudentIdsResponse = exports.GetContextActiveSchoolYearEnrolledStudentIdsRequest = exports.GetParentStudentIdsResponse = exports.GetParentStudentIdsRequest = exports.GetParentStudentsWithLatestSchoolYearInfoResponse = exports.ParentStudentWithSchoolYearInfo = exports.GetParentStudentsWithLatestSchoolYearInfoFromContextRequest = exports.GetParentStudentsFromContextRequest = exports.GetParentStudentsResponse = exports.GetParentStudentsRequest = exports.GetParentsByEmailResponse = exports.GetParentsByEmailRequest = exports.GetParentsByIdsResponse = exports.GetParentsByIdsRequest = exports.GetParentRequest = exports.ParentEmailChangeLoginOutcome = exports.ParentEmailChangeState = exports.protobufPackage = void 0;
+exports.GetAllParentsForStagingResponse = exports.GetAllParentsForStagingRequest = exports.SetParentStripeCustomerIdRequest = exports.SetParentSetupIntentFailureRequest = exports.SetParentSetupIntentRequiresActionRequest = exports.UpdateParentPaymentMethodFromSetupIntentRequest = exports.AuthenticateParentForOrgResponse = exports.ContinueParentEmailChangeResponse = exports.ContinueParentEmailChangeRequest = exports.ParentEmailChangeActionRequest = exports.GetParentEmailChangeRequest = exports.BeginParentEmailChangeRequest = exports.ParentEmailChange = exports.UpdateOwnParentPhoneRequest = exports.UpdateOwnParentNameRequest = exports.GetParentProfileCompletionRequest = exports.UpdateParentProfileRequest = exports.AddNewGuardianToFamilyRequest = exports.GetContextActiveSchoolYearEnrolledStudentIdsResponse = exports.GetContextActiveSchoolYearEnrolledStudentIdsRequest = exports.GetParentStudentIdsResponse = exports.GetParentStudentIdsRequest = exports.GetParentStudentsWithLatestSchoolYearInfoResponse = exports.ParentStudentWithSchoolYearInfo = exports.GetParentStudentsWithLatestSchoolYearInfoFromContextRequest = exports.GetParentStudentsFromContextRequest = exports.GetParentStudentsResponse = exports.GetParentStudentsRequest = exports.GetParentsByEmailResponse = exports.GetParentsByEmailRequest = exports.GetParentsByIdsResponse = exports.GetParentsByIdsRequest = exports.GetParentRequest = exports.ParentEmailChangeLoginOutcome = exports.ParentEmailChangeState = exports.protobufPackage = void 0;
 exports.parentEmailChangeStateFromJSON = parentEmailChangeStateFromJSON;
 exports.parentEmailChangeStateToJSON = parentEmailChangeStateToJSON;
 exports.parentEmailChangeStateToNumber = parentEmailChangeStateToNumber;
@@ -1418,124 +1418,6 @@ exports.UpdateOwnParentPhoneRequest = {
         message.phone = (object.phone !== undefined && object.phone !== null)
             ? phone_number_1.PhoneNumber.fromPartial(object.phone)
             : undefined;
-        return message;
-    },
-};
-function createBaseAuthenticateParentForOrgRequest() {
-    return {
-        context: undefined,
-        organization_id: undefined,
-        firebase_user_id: undefined,
-        display_name: undefined,
-        email: undefined,
-    };
-}
-exports.AuthenticateParentForOrgRequest = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.context !== undefined) {
-            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-        }
-        if (message.organization_id !== undefined) {
-            object_id_1.ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
-        }
-        if (message.firebase_user_id !== undefined) {
-            writer.uint32(26).string(message.firebase_user_id);
-        }
-        if (message.display_name !== undefined) {
-            writer.uint32(34).string(message.display_name);
-        }
-        if (message.email !== undefined) {
-            writer.uint32(42).string(message.email);
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseAuthenticateParentForOrgRequest();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
-                    continue;
-                case 2:
-                    if (tag !== 18) {
-                        break;
-                    }
-                    message.organization_id = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.firebase_user_id = reader.string();
-                    continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.display_name = reader.string();
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.email = reader.string();
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return {
-            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
-            organization_id: isSet(object.organizationId) ? object_id_1.ObjectId.fromJSON(object.organizationId) : undefined,
-            firebase_user_id: isSet(object.firebaseUserId) ? globalThis.String(object.firebaseUserId) : undefined,
-            display_name: isSet(object.displayName) ? globalThis.String(object.displayName) : undefined,
-            email: isSet(object.email) ? globalThis.String(object.email) : undefined,
-        };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.context !== undefined) {
-            obj.context = request_context_1.RequestContext.toJSON(message.context);
-        }
-        if (message.organization_id !== undefined) {
-            obj.organizationId = object_id_1.ObjectId.toJSON(message.organization_id);
-        }
-        if (message.firebase_user_id !== undefined) {
-            obj.firebaseUserId = message.firebase_user_id;
-        }
-        if (message.display_name !== undefined) {
-            obj.displayName = message.display_name;
-        }
-        if (message.email !== undefined) {
-            obj.email = message.email;
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.AuthenticateParentForOrgRequest.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseAuthenticateParentForOrgRequest();
-        message.context = (object.context !== undefined && object.context !== null)
-            ? request_context_1.RequestContext.fromPartial(object.context)
-            : undefined;
-        message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organization_id)
-            : undefined;
-        message.firebase_user_id = object.firebase_user_id ?? undefined;
-        message.display_name = object.display_name ?? undefined;
-        message.email = object.email ?? undefined;
         return message;
     },
 };

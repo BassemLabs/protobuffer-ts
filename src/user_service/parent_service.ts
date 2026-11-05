@@ -234,14 +234,6 @@ export interface UpdateOwnParentPhoneRequest {
   phone: PhoneNumber | undefined;
 }
 
-export interface AuthenticateParentForOrgRequest {
-  context: RequestContext | undefined;
-  organization_id: ObjectId | undefined;
-  firebase_user_id?: string | undefined;
-  display_name?: string | undefined;
-  email?: string | undefined;
-}
-
 export interface ParentEmailChange {
   state?: ParentEmailChangeState | undefined;
   request_id?: string | undefined;
@@ -287,6 +279,7 @@ export interface ContinueParentEmailChangeResponse {
   parent_auth?: AuthenticateParentForOrgResponse | undefined;
 }
 
+/** Shared parent login snapshot used by AuthenticationService and email-change continuation. */
 export interface AuthenticateParentForOrgResponse {
   parent: Parent | undefined;
   family_ids: ObjectId[];
@@ -1816,137 +1809,6 @@ export const UpdateOwnParentPhoneRequest: MessageFns<UpdateOwnParentPhoneRequest
     message.phone = (object.phone !== undefined && object.phone !== null)
       ? PhoneNumber.fromPartial(object.phone)
       : undefined;
-    return message;
-  },
-};
-
-function createBaseAuthenticateParentForOrgRequest(): AuthenticateParentForOrgRequest {
-  return {
-    context: undefined,
-    organization_id: undefined,
-    firebase_user_id: undefined,
-    display_name: undefined,
-    email: undefined,
-  };
-}
-
-export const AuthenticateParentForOrgRequest: MessageFns<AuthenticateParentForOrgRequest> = {
-  encode(message: AuthenticateParentForOrgRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.context !== undefined) {
-      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
-    }
-    if (message.organization_id !== undefined) {
-      ObjectId.encode(message.organization_id, writer.uint32(18).fork()).join();
-    }
-    if (message.firebase_user_id !== undefined) {
-      writer.uint32(26).string(message.firebase_user_id);
-    }
-    if (message.display_name !== undefined) {
-      writer.uint32(34).string(message.display_name);
-    }
-    if (message.email !== undefined) {
-      writer.uint32(42).string(message.email);
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): AuthenticateParentForOrgRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAuthenticateParentForOrgRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.context = RequestContext.decode(reader, reader.uint32());
-          continue;
-        case 2:
-          if (tag !== 18) {
-            break;
-          }
-
-          message.organization_id = ObjectId.decode(reader, reader.uint32());
-          continue;
-        case 3:
-          if (tag !== 26) {
-            break;
-          }
-
-          message.firebase_user_id = reader.string();
-          continue;
-        case 4:
-          if (tag !== 34) {
-            break;
-          }
-
-          message.display_name = reader.string();
-          continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
-          message.email = reader.string();
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): AuthenticateParentForOrgRequest {
-    return {
-      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
-      organization_id: isSet(object.organizationId) ? ObjectId.fromJSON(object.organizationId) : undefined,
-      firebase_user_id: isSet(object.firebaseUserId) ? globalThis.String(object.firebaseUserId) : undefined,
-      display_name: isSet(object.displayName) ? globalThis.String(object.displayName) : undefined,
-      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
-    };
-  },
-
-  toJSON(message: AuthenticateParentForOrgRequest): unknown {
-    const obj: any = {};
-    if (message.context !== undefined) {
-      obj.context = RequestContext.toJSON(message.context);
-    }
-    if (message.organization_id !== undefined) {
-      obj.organizationId = ObjectId.toJSON(message.organization_id);
-    }
-    if (message.firebase_user_id !== undefined) {
-      obj.firebaseUserId = message.firebase_user_id;
-    }
-    if (message.display_name !== undefined) {
-      obj.displayName = message.display_name;
-    }
-    if (message.email !== undefined) {
-      obj.email = message.email;
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<AuthenticateParentForOrgRequest>, I>>(base?: I): AuthenticateParentForOrgRequest {
-    return AuthenticateParentForOrgRequest.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<AuthenticateParentForOrgRequest>, I>>(
-    object: I,
-  ): AuthenticateParentForOrgRequest {
-    const message = createBaseAuthenticateParentForOrgRequest();
-    message.context = (object.context !== undefined && object.context !== null)
-      ? RequestContext.fromPartial(object.context)
-      : undefined;
-    message.organization_id = (object.organization_id !== undefined && object.organization_id !== null)
-      ? ObjectId.fromPartial(object.organization_id)
-      : undefined;
-    message.firebase_user_id = object.firebase_user_id ?? undefined;
-    message.display_name = object.display_name ?? undefined;
-    message.email = object.email ?? undefined;
     return message;
   },
 };

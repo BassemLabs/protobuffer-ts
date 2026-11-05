@@ -172,15 +172,6 @@ export interface ResolveTeacherOrStudentResponse {
     teacher?: Teacher | undefined;
     student?: Student | undefined;
 }
-export interface AuthenticateStudentForOrgRequest {
-    context: RequestContext | undefined;
-    organization_id: ObjectId | undefined;
-    username?: string | undefined;
-}
-export interface AuthenticateStudentForOrgResponse {
-    student: Student | undefined;
-    family_id: ObjectId | undefined;
-}
 export interface NoReregStudentForActiveSchoolYearRequest {
     context: RequestContext | undefined;
 }
@@ -415,8 +406,6 @@ export declare const GetStudentAllSchoolYearsInfoResponse: MessageFns<GetStudent
 export declare const GetLatestStudentSchoolYearInfoRequest: MessageFns<GetLatestStudentSchoolYearInfoRequest>;
 export declare const ResolveTeacherOrStudentRequest: MessageFns<ResolveTeacherOrStudentRequest>;
 export declare const ResolveTeacherOrStudentResponse: MessageFns<ResolveTeacherOrStudentResponse>;
-export declare const AuthenticateStudentForOrgRequest: MessageFns<AuthenticateStudentForOrgRequest>;
-export declare const AuthenticateStudentForOrgResponse: MessageFns<AuthenticateStudentForOrgResponse>;
 export declare const NoReregStudentForActiveSchoolYearRequest: MessageFns<NoReregStudentForActiveSchoolYearRequest>;
 export declare const NoReregStudentForActiveSchoolYearResponse: MessageFns<NoReregStudentForActiveSchoolYearResponse>;
 export declare const HasStudentsInInterviewStatusRequest: MessageFns<HasStudentsInInterviewStatusRequest>;
