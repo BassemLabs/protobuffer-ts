@@ -25,6 +25,8 @@ var ServiceContext;
     ServiceContext["AutoReportCardOwnerReminders"] = "AutoReportCardOwnerReminders";
     /** EmailPreparation - Reads data only for accepted email jobs in one organization. Never grants payment or business mutation authority. */
     ServiceContext["EmailPreparation"] = "EmailPreparation";
+    /** CommunicationBilling - Appends idempotent communication fees for its own school; no general invoice authority. */
+    ServiceContext["CommunicationBilling"] = "CommunicationBilling";
     ServiceContext["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ServiceContext || (exports.ServiceContext = ServiceContext = {}));
 function serviceContextFromJSON(object) {
@@ -50,6 +52,9 @@ function serviceContextFromJSON(object) {
         case 7:
         case "EmailPreparation":
             return ServiceContext.EmailPreparation;
+        case 8:
+        case "CommunicationBilling":
+            return ServiceContext.CommunicationBilling;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -72,6 +77,8 @@ function serviceContextToJSON(object) {
             return "AutoReportCardOwnerReminders";
         case ServiceContext.EmailPreparation:
             return "EmailPreparation";
+        case ServiceContext.CommunicationBilling:
+            return "CommunicationBilling";
         case ServiceContext.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -93,6 +100,8 @@ function serviceContextToNumber(object) {
             return 6;
         case ServiceContext.EmailPreparation:
             return 7;
+        case ServiceContext.CommunicationBilling:
+            return 8;
         case ServiceContext.UNRECOGNIZED:
         default:
             return -1;

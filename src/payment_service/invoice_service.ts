@@ -30,6 +30,14 @@ import { InvoiceActivityEntry, InvoiceManagerFilter, InvoiceReminderResult } fro
 
 export const protobufPackage = "payment_service";
 
+export interface AppendCommunicationBroadcastFeesRequest {
+  context: RequestContext | undefined;
+  broadcast_id: ObjectId | undefined;
+  subject?: string | undefined;
+  sms_recipients?: number | undefined;
+  phone_call_recipients?: number | undefined;
+}
+
 /** Invoice messages */
 export interface Invoices {
   invoices: Invoice[];
@@ -373,6 +381,141 @@ export interface ResetAutoPaymentForRetryRequest {
   context: RequestContext | undefined;
   invoice_id: ObjectId | undefined;
 }
+
+function createBaseAppendCommunicationBroadcastFeesRequest(): AppendCommunicationBroadcastFeesRequest {
+  return {
+    context: undefined,
+    broadcast_id: undefined,
+    subject: undefined,
+    sms_recipients: undefined,
+    phone_call_recipients: undefined,
+  };
+}
+
+export const AppendCommunicationBroadcastFeesRequest: MessageFns<AppendCommunicationBroadcastFeesRequest> = {
+  encode(message: AppendCommunicationBroadcastFeesRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.broadcast_id !== undefined) {
+      ObjectId.encode(message.broadcast_id, writer.uint32(18).fork()).join();
+    }
+    if (message.subject !== undefined) {
+      writer.uint32(26).string(message.subject);
+    }
+    if (message.sms_recipients !== undefined) {
+      writer.uint32(32).uint32(message.sms_recipients);
+    }
+    if (message.phone_call_recipients !== undefined) {
+      writer.uint32(40).uint32(message.phone_call_recipients);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AppendCommunicationBroadcastFeesRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAppendCommunicationBroadcastFeesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.broadcast_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.subject = reader.string();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.sms_recipients = reader.uint32();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.phone_call_recipients = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AppendCommunicationBroadcastFeesRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      broadcast_id: isSet(object.broadcastId) ? ObjectId.fromJSON(object.broadcastId) : undefined,
+      subject: isSet(object.subject) ? globalThis.String(object.subject) : undefined,
+      sms_recipients: isSet(object.smsRecipients) ? globalThis.Number(object.smsRecipients) : undefined,
+      phone_call_recipients: isSet(object.phoneCallRecipients)
+        ? globalThis.Number(object.phoneCallRecipients)
+        : undefined,
+    };
+  },
+
+  toJSON(message: AppendCommunicationBroadcastFeesRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.broadcast_id !== undefined) {
+      obj.broadcastId = ObjectId.toJSON(message.broadcast_id);
+    }
+    if (message.subject !== undefined) {
+      obj.subject = message.subject;
+    }
+    if (message.sms_recipients !== undefined) {
+      obj.smsRecipients = Math.round(message.sms_recipients);
+    }
+    if (message.phone_call_recipients !== undefined) {
+      obj.phoneCallRecipients = Math.round(message.phone_call_recipients);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AppendCommunicationBroadcastFeesRequest>, I>>(
+    base?: I,
+  ): AppendCommunicationBroadcastFeesRequest {
+    return AppendCommunicationBroadcastFeesRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AppendCommunicationBroadcastFeesRequest>, I>>(
+    object: I,
+  ): AppendCommunicationBroadcastFeesRequest {
+    const message = createBaseAppendCommunicationBroadcastFeesRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.broadcast_id = (object.broadcast_id !== undefined && object.broadcast_id !== null)
+      ? ObjectId.fromPartial(object.broadcast_id)
+      : undefined;
+    message.subject = object.subject ?? undefined;
+    message.sms_recipients = object.sms_recipients ?? undefined;
+    message.phone_call_recipients = object.phone_call_recipients ?? undefined;
+    return message;
+  },
+};
 
 function createBaseInvoices(): Invoices {
   return { invoices: [] };

@@ -26,6 +26,8 @@ export enum ServiceContext {
   AutoReportCardOwnerReminders = "AutoReportCardOwnerReminders",
   /** EmailPreparation - Reads data only for accepted email jobs in one organization. Never grants payment or business mutation authority. */
   EmailPreparation = "EmailPreparation",
+  /** CommunicationBilling - Appends idempotent communication fees for its own school; no general invoice authority. */
+  CommunicationBilling = "CommunicationBilling",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -52,6 +54,9 @@ export function serviceContextFromJSON(object: any): ServiceContext {
     case 7:
     case "EmailPreparation":
       return ServiceContext.EmailPreparation;
+    case 8:
+    case "CommunicationBilling":
+      return ServiceContext.CommunicationBilling;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -75,6 +80,8 @@ export function serviceContextToJSON(object: ServiceContext): string {
       return "AutoReportCardOwnerReminders";
     case ServiceContext.EmailPreparation:
       return "EmailPreparation";
+    case ServiceContext.CommunicationBilling:
+      return "CommunicationBilling";
     case ServiceContext.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -97,6 +104,8 @@ export function serviceContextToNumber(object: ServiceContext): number {
       return 6;
     case ServiceContext.EmailPreparation:
       return 7;
+    case ServiceContext.CommunicationBilling:
+      return 8;
     case ServiceContext.UNRECOGNIZED:
     default:
       return -1;

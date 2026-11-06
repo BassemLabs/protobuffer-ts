@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetOrganizationInvoicesRequest = exports.GetLatestOrganizationInvoiceRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.StudentInvoices = exports.GetNonPaidOnboardingInvoicesForStudentsResponse = exports.GetNonPaidOnboardingInvoicesForStudentsRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.AggregationResponse = exports.ArchiveInvoicesRequest = exports.CancelInvoicesRequest = exports.SendInvoiceRemindersResponse = exports.SendInvoiceRemindersRequest = exports.MarkInvoiceViewedRequest = exports.ListInvoiceActivityResponse = exports.ListInvoiceActivityRequest = exports.ListInvoiceManagerRequest = exports.DeleteStudentWaitlistInvoicesRequest = exports.ValidateStudentDeletionFinancialEligibilityRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.protobufPackage = void 0;
-exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetPrincipalDashboardFinanceSummaryResponse = exports.GetPrincipalDashboardFinanceSummaryRequest = exports.GetAllOrganizationInvoicesRequest = void 0;
+exports.GetLatestOrganizationInvoiceRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.StudentInvoices = exports.GetNonPaidOnboardingInvoicesForStudentsResponse = exports.GetNonPaidOnboardingInvoicesForStudentsRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.AggregationResponse = exports.ArchiveInvoicesRequest = exports.CancelInvoicesRequest = exports.SendInvoiceRemindersResponse = exports.SendInvoiceRemindersRequest = exports.MarkInvoiceViewedRequest = exports.ListInvoiceActivityResponse = exports.ListInvoiceActivityRequest = exports.ListInvoiceManagerRequest = exports.DeleteStudentWaitlistInvoicesRequest = exports.ValidateStudentDeletionFinancialEligibilityRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.AppendCommunicationBroadcastFeesRequest = exports.protobufPackage = void 0;
+exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetPrincipalDashboardFinanceSummaryResponse = exports.GetPrincipalDashboardFinanceSummaryRequest = exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -16,6 +16,126 @@ const request_context_1 = require("../utils/request_context");
 const invoice_1 = require("./invoice");
 const invoice_manager_1 = require("./invoice_manager");
 exports.protobufPackage = "payment_service";
+function createBaseAppendCommunicationBroadcastFeesRequest() {
+    return {
+        context: undefined,
+        broadcast_id: undefined,
+        subject: undefined,
+        sms_recipients: undefined,
+        phone_call_recipients: undefined,
+    };
+}
+exports.AppendCommunicationBroadcastFeesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.broadcast_id !== undefined) {
+            object_id_1.ObjectId.encode(message.broadcast_id, writer.uint32(18).fork()).join();
+        }
+        if (message.subject !== undefined) {
+            writer.uint32(26).string(message.subject);
+        }
+        if (message.sms_recipients !== undefined) {
+            writer.uint32(32).uint32(message.sms_recipients);
+        }
+        if (message.phone_call_recipients !== undefined) {
+            writer.uint32(40).uint32(message.phone_call_recipients);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseAppendCommunicationBroadcastFeesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.broadcast_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.subject = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.sms_recipients = reader.uint32();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.phone_call_recipients = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            broadcast_id: isSet(object.broadcastId) ? object_id_1.ObjectId.fromJSON(object.broadcastId) : undefined,
+            subject: isSet(object.subject) ? globalThis.String(object.subject) : undefined,
+            sms_recipients: isSet(object.smsRecipients) ? globalThis.Number(object.smsRecipients) : undefined,
+            phone_call_recipients: isSet(object.phoneCallRecipients)
+                ? globalThis.Number(object.phoneCallRecipients)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.broadcast_id !== undefined) {
+            obj.broadcastId = object_id_1.ObjectId.toJSON(message.broadcast_id);
+        }
+        if (message.subject !== undefined) {
+            obj.subject = message.subject;
+        }
+        if (message.sms_recipients !== undefined) {
+            obj.smsRecipients = Math.round(message.sms_recipients);
+        }
+        if (message.phone_call_recipients !== undefined) {
+            obj.phoneCallRecipients = Math.round(message.phone_call_recipients);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.AppendCommunicationBroadcastFeesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseAppendCommunicationBroadcastFeesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.broadcast_id = (object.broadcast_id !== undefined && object.broadcast_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.broadcast_id)
+            : undefined;
+        message.subject = object.subject ?? undefined;
+        message.sms_recipients = object.sms_recipients ?? undefined;
+        message.phone_call_recipients = object.phone_call_recipients ?? undefined;
+        return message;
+    },
+};
 function createBaseInvoices() {
     return { invoices: [] };
 }

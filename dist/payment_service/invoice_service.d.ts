@@ -5,6 +5,13 @@ import { RequestContext } from "../utils/request_context";
 import { AutoPaymentAttempt, AutoPaymentStatus, Coupon, Invoice, InvoiceItem, InvoiceResponse } from "./invoice";
 import { InvoiceActivityEntry, InvoiceManagerFilter, InvoiceReminderResult } from "./invoice_manager";
 export declare const protobufPackage = "payment_service";
+export interface AppendCommunicationBroadcastFeesRequest {
+    context: RequestContext | undefined;
+    broadcast_id: ObjectId | undefined;
+    subject?: string | undefined;
+    sms_recipients?: number | undefined;
+    phone_call_recipients?: number | undefined;
+}
 /** Invoice messages */
 export interface Invoices {
     invoices: Invoice[];
@@ -291,6 +298,7 @@ export interface ResetAutoPaymentForRetryRequest {
     context: RequestContext | undefined;
     invoice_id: ObjectId | undefined;
 }
+export declare const AppendCommunicationBroadcastFeesRequest: MessageFns<AppendCommunicationBroadcastFeesRequest>;
 export declare const Invoices: MessageFns<Invoices>;
 export declare const GetInvoiceRequest: MessageFns<GetInvoiceRequest>;
 export declare const GetInvoiceByNumberRequest: MessageFns<GetInvoiceByNumberRequest>;
