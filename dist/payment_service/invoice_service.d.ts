@@ -4,6 +4,7 @@ import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { AutoPaymentAttempt, AutoPaymentStatus, Coupon, Invoice, InvoiceItem, InvoiceResponse } from "./invoice";
 import { InvoiceActivityEntry, InvoiceManagerFilter, InvoiceReminderResult } from "./invoice_manager";
+import { PaymentReminderTemplate } from "./payment_reminder";
 export declare const protobufPackage = "payment_service";
 export interface AppendCommunicationBroadcastFeesRequest {
     context: RequestContext | undefined;
@@ -298,6 +299,16 @@ export interface ResetAutoPaymentForRetryRequest {
     context: RequestContext | undefined;
     invoice_id: ObjectId | undefined;
 }
+export interface QueueInvoiceRemindersRequest {
+    context: RequestContext | undefined;
+    submission_key?: string | undefined;
+    invoice_ids: ObjectId[];
+    template: PaymentReminderTemplate | undefined;
+}
+export interface GetPaymentReminderRunRequest {
+    context: RequestContext | undefined;
+    run_id: ObjectId | undefined;
+}
 export declare const AppendCommunicationBroadcastFeesRequest: MessageFns<AppendCommunicationBroadcastFeesRequest>;
 export declare const Invoices: MessageFns<Invoices>;
 export declare const GetInvoiceRequest: MessageFns<GetInvoiceRequest>;
@@ -355,6 +366,8 @@ export declare const GetFailedAutoPayInvoicesRequest: MessageFns<GetFailedAutoPa
 export declare const GetAutoPaymentAttemptsRequest: MessageFns<GetAutoPaymentAttemptsRequest>;
 export declare const GetAutoPaymentAttemptsResponse: MessageFns<GetAutoPaymentAttemptsResponse>;
 export declare const ResetAutoPaymentForRetryRequest: MessageFns<ResetAutoPaymentForRetryRequest>;
+export declare const QueueInvoiceRemindersRequest: MessageFns<QueueInvoiceRemindersRequest>;
+export declare const GetPaymentReminderRunRequest: MessageFns<GetPaymentReminderRunRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

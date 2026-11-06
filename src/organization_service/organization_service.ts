@@ -785,7 +785,11 @@ export interface OrganizationEmailContext {
   timezone?: string | undefined;
   active_school_year: ObjectId | undefined;
   logo_url?: string | undefined;
-  branding: OrganizationEmailBranding | undefined;
+  branding:
+    | OrganizationEmailBranding
+    | undefined;
+  /** Currency label for payment reminder amounts; no account or provider credentials. */
+  account_currency?: Currency | undefined;
 }
 
 export interface UpdateOrganizationEmailBrandingRequest {
@@ -5695,6 +5699,7 @@ function createBaseOrganizationEmailContext(): OrganizationEmailContext {
     active_school_year: undefined,
     logo_url: undefined,
     branding: undefined,
+    account_currency: undefined,
   };
 }
 
@@ -5720,6 +5725,9 @@ export const OrganizationEmailContext: MessageFns<OrganizationEmailContext> = {
     }
     if (message.branding !== undefined) {
       OrganizationEmailBranding.encode(message.branding, writer.uint32(58).fork()).join();
+    }
+    if (message.account_currency !== undefined) {
+      writer.uint32(64).int32(currencyToNumber(message.account_currency));
     }
     return writer;
   },
@@ -5780,6 +5788,13 @@ export const OrganizationEmailContext: MessageFns<OrganizationEmailContext> = {
 
           message.branding = OrganizationEmailBranding.decode(reader, reader.uint32());
           continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.account_currency = currencyFromJSON(reader.int32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -5798,6 +5813,7 @@ export const OrganizationEmailContext: MessageFns<OrganizationEmailContext> = {
       active_school_year: isSet(object.activeSchoolYear) ? ObjectId.fromJSON(object.activeSchoolYear) : undefined,
       logo_url: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : undefined,
       branding: isSet(object.branding) ? OrganizationEmailBranding.fromJSON(object.branding) : undefined,
+      account_currency: isSet(object.accountCurrency) ? currencyFromJSON(object.accountCurrency) : undefined,
     };
   },
 
@@ -5824,6 +5840,9 @@ export const OrganizationEmailContext: MessageFns<OrganizationEmailContext> = {
     if (message.branding !== undefined) {
       obj.branding = OrganizationEmailBranding.toJSON(message.branding);
     }
+    if (message.account_currency !== undefined) {
+      obj.accountCurrency = currencyToJSON(message.account_currency);
+    }
     return obj;
   },
 
@@ -5845,6 +5864,7 @@ export const OrganizationEmailContext: MessageFns<OrganizationEmailContext> = {
     message.branding = (object.branding !== undefined && object.branding !== null)
       ? OrganizationEmailBranding.fromPartial(object.branding)
       : undefined;
+    message.account_currency = object.account_currency ?? undefined;
     return message;
   },
 };

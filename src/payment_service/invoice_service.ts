@@ -27,6 +27,7 @@ import {
   InvoiceResponse,
 } from "./invoice";
 import { InvoiceActivityEntry, InvoiceManagerFilter, InvoiceReminderResult } from "./invoice_manager";
+import { PaymentReminderTemplate } from "./payment_reminder";
 
 export const protobufPackage = "payment_service";
 
@@ -380,6 +381,18 @@ export interface GetAutoPaymentAttemptsResponse {
 export interface ResetAutoPaymentForRetryRequest {
   context: RequestContext | undefined;
   invoice_id: ObjectId | undefined;
+}
+
+export interface QueueInvoiceRemindersRequest {
+  context: RequestContext | undefined;
+  submission_key?: string | undefined;
+  invoice_ids: ObjectId[];
+  template: PaymentReminderTemplate | undefined;
+}
+
+export interface GetPaymentReminderRunRequest {
+  context: RequestContext | undefined;
+  run_id: ObjectId | undefined;
 }
 
 function createBaseAppendCommunicationBroadcastFeesRequest(): AppendCommunicationBroadcastFeesRequest {
@@ -5986,6 +5999,194 @@ export const ResetAutoPaymentForRetryRequest: MessageFns<ResetAutoPaymentForRetr
       : undefined;
     message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
       ? ObjectId.fromPartial(object.invoice_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueueInvoiceRemindersRequest(): QueueInvoiceRemindersRequest {
+  return { context: undefined, submission_key: undefined, invoice_ids: [], template: undefined };
+}
+
+export const QueueInvoiceRemindersRequest: MessageFns<QueueInvoiceRemindersRequest> = {
+  encode(message: QueueInvoiceRemindersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.submission_key !== undefined) {
+      writer.uint32(18).string(message.submission_key);
+    }
+    for (const v of message.invoice_ids) {
+      ObjectId.encode(v!, writer.uint32(26).fork()).join();
+    }
+    if (message.template !== undefined) {
+      PaymentReminderTemplate.encode(message.template, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): QueueInvoiceRemindersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueueInvoiceRemindersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.submission_key = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.invoice_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.template = PaymentReminderTemplate.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueueInvoiceRemindersRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      submission_key: isSet(object.submissionKey) ? globalThis.String(object.submissionKey) : undefined,
+      invoice_ids: globalThis.Array.isArray(object?.invoiceIds)
+        ? object.invoiceIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+      template: isSet(object.template) ? PaymentReminderTemplate.fromJSON(object.template) : undefined,
+    };
+  },
+
+  toJSON(message: QueueInvoiceRemindersRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.submission_key !== undefined) {
+      obj.submissionKey = message.submission_key;
+    }
+    if (message.invoice_ids?.length) {
+      obj.invoiceIds = message.invoice_ids.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.template !== undefined) {
+      obj.template = PaymentReminderTemplate.toJSON(message.template);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueueInvoiceRemindersRequest>, I>>(base?: I): QueueInvoiceRemindersRequest {
+    return QueueInvoiceRemindersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueueInvoiceRemindersRequest>, I>>(object: I): QueueInvoiceRemindersRequest {
+    const message = createBaseQueueInvoiceRemindersRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.submission_key = object.submission_key ?? undefined;
+    message.invoice_ids = object.invoice_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.template = (object.template !== undefined && object.template !== null)
+      ? PaymentReminderTemplate.fromPartial(object.template)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetPaymentReminderRunRequest(): GetPaymentReminderRunRequest {
+  return { context: undefined, run_id: undefined };
+}
+
+export const GetPaymentReminderRunRequest: MessageFns<GetPaymentReminderRunRequest> = {
+  encode(message: GetPaymentReminderRunRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.run_id !== undefined) {
+      ObjectId.encode(message.run_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetPaymentReminderRunRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPaymentReminderRunRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.run_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPaymentReminderRunRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      run_id: isSet(object.runId) ? ObjectId.fromJSON(object.runId) : undefined,
+    };
+  },
+
+  toJSON(message: GetPaymentReminderRunRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.run_id !== undefined) {
+      obj.runId = ObjectId.toJSON(message.run_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPaymentReminderRunRequest>, I>>(base?: I): GetPaymentReminderRunRequest {
+    return GetPaymentReminderRunRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetPaymentReminderRunRequest>, I>>(object: I): GetPaymentReminderRunRequest {
+    const message = createBaseGetPaymentReminderRunRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.run_id = (object.run_id !== undefined && object.run_id !== null)
+      ? ObjectId.fromPartial(object.run_id)
       : undefined;
     return message;
   },

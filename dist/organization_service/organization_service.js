@@ -4721,6 +4721,7 @@ function createBaseOrganizationEmailContext() {
         active_school_year: undefined,
         logo_url: undefined,
         branding: undefined,
+        account_currency: undefined,
     };
 }
 exports.OrganizationEmailContext = {
@@ -4745,6 +4746,9 @@ exports.OrganizationEmailContext = {
         }
         if (message.branding !== undefined) {
             organization_1.OrganizationEmailBranding.encode(message.branding, writer.uint32(58).fork()).join();
+        }
+        if (message.account_currency !== undefined) {
+            writer.uint32(64).int32((0, organization_1.currencyToNumber)(message.account_currency));
         }
         return writer;
     },
@@ -4797,6 +4801,12 @@ exports.OrganizationEmailContext = {
                     }
                     message.branding = organization_1.OrganizationEmailBranding.decode(reader, reader.uint32());
                     continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.account_currency = (0, organization_1.currencyFromJSON)(reader.int32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -4814,6 +4824,7 @@ exports.OrganizationEmailContext = {
             active_school_year: isSet(object.activeSchoolYear) ? object_id_1.ObjectId.fromJSON(object.activeSchoolYear) : undefined,
             logo_url: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : undefined,
             branding: isSet(object.branding) ? organization_1.OrganizationEmailBranding.fromJSON(object.branding) : undefined,
+            account_currency: isSet(object.accountCurrency) ? (0, organization_1.currencyFromJSON)(object.accountCurrency) : undefined,
         };
     },
     toJSON(message) {
@@ -4839,6 +4850,9 @@ exports.OrganizationEmailContext = {
         if (message.branding !== undefined) {
             obj.branding = organization_1.OrganizationEmailBranding.toJSON(message.branding);
         }
+        if (message.account_currency !== undefined) {
+            obj.accountCurrency = (0, organization_1.currencyToJSON)(message.account_currency);
+        }
         return obj;
     },
     create(base) {
@@ -4859,6 +4873,7 @@ exports.OrganizationEmailContext = {
         message.branding = (object.branding !== undefined && object.branding !== null)
             ? organization_1.OrganizationEmailBranding.fromPartial(object.branding)
             : undefined;
+        message.account_currency = object.account_currency ?? undefined;
         return message;
     },
 };

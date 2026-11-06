@@ -346,6 +346,8 @@ export interface OrganizationEmailContext {
     active_school_year: ObjectId | undefined;
     logo_url?: string | undefined;
     branding: OrganizationEmailBranding | undefined;
+    /** Currency label for payment reminder amounts; no account or provider credentials. */
+    account_currency?: Currency | undefined;
 }
 export interface UpdateOrganizationEmailBrandingRequest {
     context: RequestContext | undefined;

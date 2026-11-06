@@ -3,6 +3,7 @@ import { Family } from "../user_service/family";
 import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
+import { PaymentReminderTemplate } from "./payment_reminder";
 import { TuitionInvoice, TuitionInvoiceStatus } from "./tuition_invoice";
 import { TuitionAdjustmentEntry, TuitionFamilyNote, TuitionReminder } from "./tuition_manager";
 export declare const protobufPackage = "payment_service";
@@ -125,6 +126,13 @@ export interface CheckFamilyTuitionInvoiceStatusResponse {
     tuition_invoice_exists?: boolean | undefined;
     missing_student_ids: ObjectId[];
 }
+export interface QueueTuitionRemindersRequest {
+    context: RequestContext | undefined;
+    submission_key?: string | undefined;
+    school_year: ObjectId | undefined;
+    families: ObjectId[];
+    template: PaymentReminderTemplate | undefined;
+}
 export declare const StudentObj: MessageFns<StudentObj>;
 export declare const GetFamilyTuitionInvoiceRequest: MessageFns<GetFamilyTuitionInvoiceRequest>;
 export declare const GenerateTuitionInvoiceRequest: MessageFns<GenerateTuitionInvoiceRequest>;
@@ -145,6 +153,7 @@ export declare const ListFamilyTuitionAdjustmentsRequest: MessageFns<ListFamilyT
 export declare const ListFamilyTuitionAdjustmentsResponse: MessageFns<ListFamilyTuitionAdjustmentsResponse>;
 export declare const CheckFamilyTuitionInvoiceStatusRequest: MessageFns<CheckFamilyTuitionInvoiceStatusRequest>;
 export declare const CheckFamilyTuitionInvoiceStatusResponse: MessageFns<CheckFamilyTuitionInvoiceStatusResponse>;
+export declare const QueueTuitionRemindersRequest: MessageFns<QueueTuitionRemindersRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

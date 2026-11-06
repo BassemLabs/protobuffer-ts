@@ -11,6 +11,7 @@ import { Family } from "../user_service/family";
 import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
+import { PaymentReminderTemplate } from "./payment_reminder";
 import {
   TuitionInvoice,
   TuitionInvoiceStatus,
@@ -171,6 +172,14 @@ export interface CheckFamilyTuitionInvoiceStatusRequest {
 export interface CheckFamilyTuitionInvoiceStatusResponse {
   tuition_invoice_exists?: boolean | undefined;
   missing_student_ids: ObjectId[];
+}
+
+export interface QueueTuitionRemindersRequest {
+  context: RequestContext | undefined;
+  submission_key?: string | undefined;
+  school_year: ObjectId | undefined;
+  families: ObjectId[];
+  template: PaymentReminderTemplate | undefined;
 }
 
 function createBaseStudentObj(): StudentObj {
@@ -2312,6 +2321,131 @@ export const CheckFamilyTuitionInvoiceStatusResponse: MessageFns<CheckFamilyTuit
     const message = createBaseCheckFamilyTuitionInvoiceStatusResponse();
     message.tuition_invoice_exists = object.tuition_invoice_exists ?? undefined;
     message.missing_student_ids = object.missing_student_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseQueueTuitionRemindersRequest(): QueueTuitionRemindersRequest {
+  return { context: undefined, submission_key: undefined, school_year: undefined, families: [], template: undefined };
+}
+
+export const QueueTuitionRemindersRequest: MessageFns<QueueTuitionRemindersRequest> = {
+  encode(message: QueueTuitionRemindersRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.submission_key !== undefined) {
+      writer.uint32(18).string(message.submission_key);
+    }
+    if (message.school_year !== undefined) {
+      ObjectId.encode(message.school_year, writer.uint32(26).fork()).join();
+    }
+    for (const v of message.families) {
+      ObjectId.encode(v!, writer.uint32(34).fork()).join();
+    }
+    if (message.template !== undefined) {
+      PaymentReminderTemplate.encode(message.template, writer.uint32(42).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): QueueTuitionRemindersRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueueTuitionRemindersRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.submission_key = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.families.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.template = PaymentReminderTemplate.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueueTuitionRemindersRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      submission_key: isSet(object.submissionKey) ? globalThis.String(object.submissionKey) : undefined,
+      school_year: isSet(object.schoolYear) ? ObjectId.fromJSON(object.schoolYear) : undefined,
+      families: globalThis.Array.isArray(object?.families) ? object.families.map((e: any) => ObjectId.fromJSON(e)) : [],
+      template: isSet(object.template) ? PaymentReminderTemplate.fromJSON(object.template) : undefined,
+    };
+  },
+
+  toJSON(message: QueueTuitionRemindersRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.submission_key !== undefined) {
+      obj.submissionKey = message.submission_key;
+    }
+    if (message.school_year !== undefined) {
+      obj.schoolYear = ObjectId.toJSON(message.school_year);
+    }
+    if (message.families?.length) {
+      obj.families = message.families.map((e) => ObjectId.toJSON(e));
+    }
+    if (message.template !== undefined) {
+      obj.template = PaymentReminderTemplate.toJSON(message.template);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<QueueTuitionRemindersRequest>, I>>(base?: I): QueueTuitionRemindersRequest {
+    return QueueTuitionRemindersRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<QueueTuitionRemindersRequest>, I>>(object: I): QueueTuitionRemindersRequest {
+    const message = createBaseQueueTuitionRemindersRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.submission_key = object.submission_key ?? undefined;
+    message.school_year = (object.school_year !== undefined && object.school_year !== null)
+      ? ObjectId.fromPartial(object.school_year)
+      : undefined;
+    message.families = object.families?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.template = (object.template !== undefined && object.template !== null)
+      ? PaymentReminderTemplate.fromPartial(object.template)
+      : undefined;
     return message;
   },
 };

@@ -5,11 +5,73 @@
 //   protoc               unknown
 // source: payment_service/payment_reminder.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PaymentReminderSnapshot = exports.PaymentReminderRecipient = exports.protobufPackage = void 0;
+exports.PaymentReminderRun = exports.PaymentReminderRunItem = exports.PaymentReminderTemplate = exports.PaymentReminderSnapshot = exports.PaymentReminderRecipient = exports.PaymentReminderPreparationStatus = exports.protobufPackage = void 0;
+exports.paymentReminderPreparationStatusFromJSON = paymentReminderPreparationStatusFromJSON;
+exports.paymentReminderPreparationStatusToJSON = paymentReminderPreparationStatusToJSON;
+exports.paymentReminderPreparationStatusToNumber = paymentReminderPreparationStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
+const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "payment_service";
+var PaymentReminderPreparationStatus;
+(function (PaymentReminderPreparationStatus) {
+    PaymentReminderPreparationStatus["PAYMENT_REMINDER_PENDING"] = "PAYMENT_REMINDER_PENDING";
+    PaymentReminderPreparationStatus["PAYMENT_REMINDER_PREPARED"] = "PAYMENT_REMINDER_PREPARED";
+    PaymentReminderPreparationStatus["PAYMENT_REMINDER_SKIPPED"] = "PAYMENT_REMINDER_SKIPPED";
+    PaymentReminderPreparationStatus["PAYMENT_REMINDER_FAILED"] = "PAYMENT_REMINDER_FAILED";
+    PaymentReminderPreparationStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(PaymentReminderPreparationStatus || (exports.PaymentReminderPreparationStatus = PaymentReminderPreparationStatus = {}));
+function paymentReminderPreparationStatusFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "PAYMENT_REMINDER_PENDING":
+            return PaymentReminderPreparationStatus.PAYMENT_REMINDER_PENDING;
+        case 1:
+        case "PAYMENT_REMINDER_PREPARED":
+            return PaymentReminderPreparationStatus.PAYMENT_REMINDER_PREPARED;
+        case 2:
+        case "PAYMENT_REMINDER_SKIPPED":
+            return PaymentReminderPreparationStatus.PAYMENT_REMINDER_SKIPPED;
+        case 3:
+        case "PAYMENT_REMINDER_FAILED":
+            return PaymentReminderPreparationStatus.PAYMENT_REMINDER_FAILED;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return PaymentReminderPreparationStatus.UNRECOGNIZED;
+    }
+}
+function paymentReminderPreparationStatusToJSON(object) {
+    switch (object) {
+        case PaymentReminderPreparationStatus.PAYMENT_REMINDER_PENDING:
+            return "PAYMENT_REMINDER_PENDING";
+        case PaymentReminderPreparationStatus.PAYMENT_REMINDER_PREPARED:
+            return "PAYMENT_REMINDER_PREPARED";
+        case PaymentReminderPreparationStatus.PAYMENT_REMINDER_SKIPPED:
+            return "PAYMENT_REMINDER_SKIPPED";
+        case PaymentReminderPreparationStatus.PAYMENT_REMINDER_FAILED:
+            return "PAYMENT_REMINDER_FAILED";
+        case PaymentReminderPreparationStatus.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function paymentReminderPreparationStatusToNumber(object) {
+    switch (object) {
+        case PaymentReminderPreparationStatus.PAYMENT_REMINDER_PENDING:
+            return 0;
+        case PaymentReminderPreparationStatus.PAYMENT_REMINDER_PREPARED:
+            return 1;
+        case PaymentReminderPreparationStatus.PAYMENT_REMINDER_SKIPPED:
+            return 2;
+        case PaymentReminderPreparationStatus.PAYMENT_REMINDER_FAILED:
+            return 3;
+        case PaymentReminderPreparationStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBasePaymentReminderRecipient() {
     return {
         parent_id: undefined,
@@ -302,6 +364,301 @@ exports.PaymentReminderSnapshot = {
         return message;
     },
 };
+function createBasePaymentReminderTemplate() {
+    return { title: undefined, header: undefined, body: undefined, footer: undefined };
+}
+exports.PaymentReminderTemplate = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.title !== undefined) {
+            writer.uint32(10).string(message.title);
+        }
+        if (message.header !== undefined) {
+            writer.uint32(18).string(message.header);
+        }
+        if (message.body !== undefined) {
+            writer.uint32(26).string(message.body);
+        }
+        if (message.footer !== undefined) {
+            writer.uint32(34).string(message.footer);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePaymentReminderTemplate();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.header = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.body = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.footer = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            header: isSet(object.header) ? globalThis.String(object.header) : undefined,
+            body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+            footer: isSet(object.footer) ? globalThis.String(object.footer) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.header !== undefined) {
+            obj.header = message.header;
+        }
+        if (message.body !== undefined) {
+            obj.body = message.body;
+        }
+        if (message.footer !== undefined) {
+            obj.footer = message.footer;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PaymentReminderTemplate.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePaymentReminderTemplate();
+        message.title = object.title ?? undefined;
+        message.header = object.header ?? undefined;
+        message.body = object.body ?? undefined;
+        message.footer = object.footer ?? undefined;
+        return message;
+    },
+};
+function createBasePaymentReminderRunItem() {
+    return { target_id: undefined, status: undefined, explanation: undefined, snapshot: undefined };
+}
+exports.PaymentReminderRunItem = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.target_id !== undefined) {
+            object_id_1.ObjectId.encode(message.target_id, writer.uint32(10).fork()).join();
+        }
+        if (message.status !== undefined) {
+            writer.uint32(16).int32(paymentReminderPreparationStatusToNumber(message.status));
+        }
+        if (message.explanation !== undefined) {
+            writer.uint32(26).string(message.explanation);
+        }
+        if (message.snapshot !== undefined) {
+            exports.PaymentReminderSnapshot.encode(message.snapshot, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePaymentReminderRunItem();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.target_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.status = paymentReminderPreparationStatusFromJSON(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.explanation = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.snapshot = exports.PaymentReminderSnapshot.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            target_id: isSet(object.targetId) ? object_id_1.ObjectId.fromJSON(object.targetId) : undefined,
+            status: isSet(object.status) ? paymentReminderPreparationStatusFromJSON(object.status) : undefined,
+            explanation: isSet(object.explanation) ? globalThis.String(object.explanation) : undefined,
+            snapshot: isSet(object.snapshot) ? exports.PaymentReminderSnapshot.fromJSON(object.snapshot) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.target_id !== undefined) {
+            obj.targetId = object_id_1.ObjectId.toJSON(message.target_id);
+        }
+        if (message.status !== undefined) {
+            obj.status = paymentReminderPreparationStatusToJSON(message.status);
+        }
+        if (message.explanation !== undefined) {
+            obj.explanation = message.explanation;
+        }
+        if (message.snapshot !== undefined) {
+            obj.snapshot = exports.PaymentReminderSnapshot.toJSON(message.snapshot);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PaymentReminderRunItem.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePaymentReminderRunItem();
+        message.target_id = (object.target_id !== undefined && object.target_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.target_id)
+            : undefined;
+        message.status = object.status ?? undefined;
+        message.explanation = object.explanation ?? undefined;
+        message.snapshot = (object.snapshot !== undefined && object.snapshot !== null)
+            ? exports.PaymentReminderSnapshot.fromPartial(object.snapshot)
+            : undefined;
+        return message;
+    },
+};
+function createBasePaymentReminderRun() {
+    return { id: undefined, created_at: undefined, items: [] };
+}
+exports.PaymentReminderRun = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.created_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.created_at), writer.uint32(18).fork()).join();
+        }
+        for (const v of message.items) {
+            exports.PaymentReminderRunItem.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBasePaymentReminderRun();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.created_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.items.push(exports.PaymentReminderRunItem.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+            items: globalThis.Array.isArray(object?.items)
+                ? object.items.map((e) => exports.PaymentReminderRunItem.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.created_at !== undefined) {
+            obj.createdAt = message.created_at.toISOString();
+        }
+        if (message.items?.length) {
+            obj.items = message.items.map((e) => exports.PaymentReminderRunItem.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.PaymentReminderRun.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBasePaymentReminderRun();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.created_at = object.created_at ?? undefined;
+        message.items = object.items?.map((e) => exports.PaymentReminderRunItem.fromPartial(e)) || [];
+        return message;
+    },
+};
+function toTimestamp(date) {
+    const seconds = Math.trunc(date.getTime() / 1_000);
+    const nanos = (date.getTime() % 1_000) * 1_000_000;
+    return { seconds, nanos };
+}
+function fromTimestamp(t) {
+    let millis = (t.seconds || 0) * 1_000;
+    millis += (t.nanos || 0) / 1_000_000;
+    return new globalThis.Date(millis);
+}
+function fromJsonTimestamp(o) {
+    if (o instanceof globalThis.Date) {
+        return o;
+    }
+    else if (typeof o === "string") {
+        return new globalThis.Date(o);
+    }
+    else {
+        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
+    }
+}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

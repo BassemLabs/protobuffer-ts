@@ -6,7 +6,7 @@
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetLatestOrganizationInvoiceRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.StudentInvoices = exports.GetNonPaidOnboardingInvoicesForStudentsResponse = exports.GetNonPaidOnboardingInvoicesForStudentsRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.AggregationResponse = exports.ArchiveInvoicesRequest = exports.CancelInvoicesRequest = exports.SendInvoiceRemindersResponse = exports.SendInvoiceRemindersRequest = exports.MarkInvoiceViewedRequest = exports.ListInvoiceActivityResponse = exports.ListInvoiceActivityRequest = exports.ListInvoiceManagerRequest = exports.DeleteStudentWaitlistInvoicesRequest = exports.ValidateStudentDeletionFinancialEligibilityRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.AppendCommunicationBroadcastFeesRequest = exports.protobufPackage = void 0;
-exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetPrincipalDashboardFinanceSummaryResponse = exports.GetPrincipalDashboardFinanceSummaryRequest = exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = void 0;
+exports.GetPaymentReminderRunRequest = exports.QueueInvoiceRemindersRequest = exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetPrincipalDashboardFinanceSummaryResponse = exports.GetPrincipalDashboardFinanceSummaryRequest = exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -15,6 +15,7 @@ const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const invoice_1 = require("./invoice");
 const invoice_manager_1 = require("./invoice_manager");
+const payment_reminder_1 = require("./payment_reminder");
 exports.protobufPackage = "payment_service";
 function createBaseAppendCommunicationBroadcastFeesRequest() {
     return {
@@ -4966,6 +4967,176 @@ exports.ResetAutoPaymentForRetryRequest = {
             : undefined;
         message.invoice_id = (object.invoice_id !== undefined && object.invoice_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.invoice_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseQueueInvoiceRemindersRequest() {
+    return { context: undefined, submission_key: undefined, invoice_ids: [], template: undefined };
+}
+exports.QueueInvoiceRemindersRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.submission_key !== undefined) {
+            writer.uint32(18).string(message.submission_key);
+        }
+        for (const v of message.invoice_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(26).fork()).join();
+        }
+        if (message.template !== undefined) {
+            payment_reminder_1.PaymentReminderTemplate.encode(message.template, writer.uint32(34).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseQueueInvoiceRemindersRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.submission_key = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.invoice_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.template = payment_reminder_1.PaymentReminderTemplate.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            submission_key: isSet(object.submissionKey) ? globalThis.String(object.submissionKey) : undefined,
+            invoice_ids: globalThis.Array.isArray(object?.invoiceIds)
+                ? object.invoiceIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            template: isSet(object.template) ? payment_reminder_1.PaymentReminderTemplate.fromJSON(object.template) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.submission_key !== undefined) {
+            obj.submissionKey = message.submission_key;
+        }
+        if (message.invoice_ids?.length) {
+            obj.invoiceIds = message.invoice_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.template !== undefined) {
+            obj.template = payment_reminder_1.PaymentReminderTemplate.toJSON(message.template);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.QueueInvoiceRemindersRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseQueueInvoiceRemindersRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.submission_key = object.submission_key ?? undefined;
+        message.invoice_ids = object.invoice_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.template = (object.template !== undefined && object.template !== null)
+            ? payment_reminder_1.PaymentReminderTemplate.fromPartial(object.template)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetPaymentReminderRunRequest() {
+    return { context: undefined, run_id: undefined };
+}
+exports.GetPaymentReminderRunRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.run_id !== undefined) {
+            object_id_1.ObjectId.encode(message.run_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetPaymentReminderRunRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.run_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            run_id: isSet(object.runId) ? object_id_1.ObjectId.fromJSON(object.runId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.run_id !== undefined) {
+            obj.runId = object_id_1.ObjectId.toJSON(message.run_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetPaymentReminderRunRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetPaymentReminderRunRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.run_id = (object.run_id !== undefined && object.run_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.run_id)
             : undefined;
         return message;
     },

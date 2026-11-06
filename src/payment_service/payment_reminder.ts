@@ -6,9 +6,71 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
+import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 
 export const protobufPackage = "payment_service";
+
+export enum PaymentReminderPreparationStatus {
+  PAYMENT_REMINDER_PENDING = "PAYMENT_REMINDER_PENDING",
+  PAYMENT_REMINDER_PREPARED = "PAYMENT_REMINDER_PREPARED",
+  PAYMENT_REMINDER_SKIPPED = "PAYMENT_REMINDER_SKIPPED",
+  PAYMENT_REMINDER_FAILED = "PAYMENT_REMINDER_FAILED",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function paymentReminderPreparationStatusFromJSON(object: any): PaymentReminderPreparationStatus {
+  switch (object) {
+    case 0:
+    case "PAYMENT_REMINDER_PENDING":
+      return PaymentReminderPreparationStatus.PAYMENT_REMINDER_PENDING;
+    case 1:
+    case "PAYMENT_REMINDER_PREPARED":
+      return PaymentReminderPreparationStatus.PAYMENT_REMINDER_PREPARED;
+    case 2:
+    case "PAYMENT_REMINDER_SKIPPED":
+      return PaymentReminderPreparationStatus.PAYMENT_REMINDER_SKIPPED;
+    case 3:
+    case "PAYMENT_REMINDER_FAILED":
+      return PaymentReminderPreparationStatus.PAYMENT_REMINDER_FAILED;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return PaymentReminderPreparationStatus.UNRECOGNIZED;
+  }
+}
+
+export function paymentReminderPreparationStatusToJSON(object: PaymentReminderPreparationStatus): string {
+  switch (object) {
+    case PaymentReminderPreparationStatus.PAYMENT_REMINDER_PENDING:
+      return "PAYMENT_REMINDER_PENDING";
+    case PaymentReminderPreparationStatus.PAYMENT_REMINDER_PREPARED:
+      return "PAYMENT_REMINDER_PREPARED";
+    case PaymentReminderPreparationStatus.PAYMENT_REMINDER_SKIPPED:
+      return "PAYMENT_REMINDER_SKIPPED";
+    case PaymentReminderPreparationStatus.PAYMENT_REMINDER_FAILED:
+      return "PAYMENT_REMINDER_FAILED";
+    case PaymentReminderPreparationStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function paymentReminderPreparationStatusToNumber(object: PaymentReminderPreparationStatus): number {
+  switch (object) {
+    case PaymentReminderPreparationStatus.PAYMENT_REMINDER_PENDING:
+      return 0;
+    case PaymentReminderPreparationStatus.PAYMENT_REMINDER_PREPARED:
+      return 1;
+    case PaymentReminderPreparationStatus.PAYMENT_REMINDER_SKIPPED:
+      return 2;
+    case PaymentReminderPreparationStatus.PAYMENT_REMINDER_FAILED:
+      return 3;
+    case PaymentReminderPreparationStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
 
 export interface PaymentReminderRecipient {
   parent_id: ObjectId | undefined;
@@ -28,6 +90,27 @@ export interface PaymentReminderSnapshot {
   remaining_amount?: number | undefined;
   overdue_amount?: number | undefined;
   recipients: PaymentReminderRecipient[];
+}
+
+export interface PaymentReminderTemplate {
+  title?: string | undefined;
+  header?: string | undefined;
+  body?: string | undefined;
+  footer?: string | undefined;
+}
+
+export interface PaymentReminderRunItem {
+  target_id: ObjectId | undefined;
+  status?: PaymentReminderPreparationStatus | undefined;
+  explanation?: string | undefined;
+  snapshot?: PaymentReminderSnapshot | undefined;
+}
+
+/** Prepared means immutable emails were queued, not that a provider delivered them. */
+export interface PaymentReminderRun {
+  id: ObjectId | undefined;
+  created_at: Date | undefined;
+  items: PaymentReminderRunItem[];
 }
 
 function createBasePaymentReminderRecipient(): PaymentReminderRecipient {
@@ -348,6 +431,309 @@ export const PaymentReminderSnapshot: MessageFns<PaymentReminderSnapshot> = {
   },
 };
 
+function createBasePaymentReminderTemplate(): PaymentReminderTemplate {
+  return { title: undefined, header: undefined, body: undefined, footer: undefined };
+}
+
+export const PaymentReminderTemplate: MessageFns<PaymentReminderTemplate> = {
+  encode(message: PaymentReminderTemplate, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.title !== undefined) {
+      writer.uint32(10).string(message.title);
+    }
+    if (message.header !== undefined) {
+      writer.uint32(18).string(message.header);
+    }
+    if (message.body !== undefined) {
+      writer.uint32(26).string(message.body);
+    }
+    if (message.footer !== undefined) {
+      writer.uint32(34).string(message.footer);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PaymentReminderTemplate {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePaymentReminderTemplate();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.title = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.header = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.body = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.footer = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PaymentReminderTemplate {
+    return {
+      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+      header: isSet(object.header) ? globalThis.String(object.header) : undefined,
+      body: isSet(object.body) ? globalThis.String(object.body) : undefined,
+      footer: isSet(object.footer) ? globalThis.String(object.footer) : undefined,
+    };
+  },
+
+  toJSON(message: PaymentReminderTemplate): unknown {
+    const obj: any = {};
+    if (message.title !== undefined) {
+      obj.title = message.title;
+    }
+    if (message.header !== undefined) {
+      obj.header = message.header;
+    }
+    if (message.body !== undefined) {
+      obj.body = message.body;
+    }
+    if (message.footer !== undefined) {
+      obj.footer = message.footer;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PaymentReminderTemplate>, I>>(base?: I): PaymentReminderTemplate {
+    return PaymentReminderTemplate.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PaymentReminderTemplate>, I>>(object: I): PaymentReminderTemplate {
+    const message = createBasePaymentReminderTemplate();
+    message.title = object.title ?? undefined;
+    message.header = object.header ?? undefined;
+    message.body = object.body ?? undefined;
+    message.footer = object.footer ?? undefined;
+    return message;
+  },
+};
+
+function createBasePaymentReminderRunItem(): PaymentReminderRunItem {
+  return { target_id: undefined, status: undefined, explanation: undefined, snapshot: undefined };
+}
+
+export const PaymentReminderRunItem: MessageFns<PaymentReminderRunItem> = {
+  encode(message: PaymentReminderRunItem, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.target_id !== undefined) {
+      ObjectId.encode(message.target_id, writer.uint32(10).fork()).join();
+    }
+    if (message.status !== undefined) {
+      writer.uint32(16).int32(paymentReminderPreparationStatusToNumber(message.status));
+    }
+    if (message.explanation !== undefined) {
+      writer.uint32(26).string(message.explanation);
+    }
+    if (message.snapshot !== undefined) {
+      PaymentReminderSnapshot.encode(message.snapshot, writer.uint32(34).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PaymentReminderRunItem {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePaymentReminderRunItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.target_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.status = paymentReminderPreparationStatusFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.explanation = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.snapshot = PaymentReminderSnapshot.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PaymentReminderRunItem {
+    return {
+      target_id: isSet(object.targetId) ? ObjectId.fromJSON(object.targetId) : undefined,
+      status: isSet(object.status) ? paymentReminderPreparationStatusFromJSON(object.status) : undefined,
+      explanation: isSet(object.explanation) ? globalThis.String(object.explanation) : undefined,
+      snapshot: isSet(object.snapshot) ? PaymentReminderSnapshot.fromJSON(object.snapshot) : undefined,
+    };
+  },
+
+  toJSON(message: PaymentReminderRunItem): unknown {
+    const obj: any = {};
+    if (message.target_id !== undefined) {
+      obj.targetId = ObjectId.toJSON(message.target_id);
+    }
+    if (message.status !== undefined) {
+      obj.status = paymentReminderPreparationStatusToJSON(message.status);
+    }
+    if (message.explanation !== undefined) {
+      obj.explanation = message.explanation;
+    }
+    if (message.snapshot !== undefined) {
+      obj.snapshot = PaymentReminderSnapshot.toJSON(message.snapshot);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PaymentReminderRunItem>, I>>(base?: I): PaymentReminderRunItem {
+    return PaymentReminderRunItem.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PaymentReminderRunItem>, I>>(object: I): PaymentReminderRunItem {
+    const message = createBasePaymentReminderRunItem();
+    message.target_id = (object.target_id !== undefined && object.target_id !== null)
+      ? ObjectId.fromPartial(object.target_id)
+      : undefined;
+    message.status = object.status ?? undefined;
+    message.explanation = object.explanation ?? undefined;
+    message.snapshot = (object.snapshot !== undefined && object.snapshot !== null)
+      ? PaymentReminderSnapshot.fromPartial(object.snapshot)
+      : undefined;
+    return message;
+  },
+};
+
+function createBasePaymentReminderRun(): PaymentReminderRun {
+  return { id: undefined, created_at: undefined, items: [] };
+}
+
+export const PaymentReminderRun: MessageFns<PaymentReminderRun> = {
+  encode(message: PaymentReminderRun, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.created_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.created_at), writer.uint32(18).fork()).join();
+    }
+    for (const v of message.items) {
+      PaymentReminderRunItem.encode(v!, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): PaymentReminderRun {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePaymentReminderRun();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.created_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.items.push(PaymentReminderRunItem.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PaymentReminderRun {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      created_at: isSet(object.createdAt) ? fromJsonTimestamp(object.createdAt) : undefined,
+      items: globalThis.Array.isArray(object?.items)
+        ? object.items.map((e: any) => PaymentReminderRunItem.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: PaymentReminderRun): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.created_at !== undefined) {
+      obj.createdAt = message.created_at.toISOString();
+    }
+    if (message.items?.length) {
+      obj.items = message.items.map((e) => PaymentReminderRunItem.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PaymentReminderRun>, I>>(base?: I): PaymentReminderRun {
+    return PaymentReminderRun.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<PaymentReminderRun>, I>>(object: I): PaymentReminderRun {
+    const message = createBasePaymentReminderRun();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.created_at = object.created_at ?? undefined;
+    message.items = object.items?.map((e) => PaymentReminderRunItem.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -359,6 +745,28 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function toTimestamp(date: Date): Timestamp {
+  const seconds = Math.trunc(date.getTime() / 1_000);
+  const nanos = (date.getTime() % 1_000) * 1_000_000;
+  return { seconds, nanos };
+}
+
+function fromTimestamp(t: Timestamp): Date {
+  let millis = (t.seconds || 0) * 1_000;
+  millis += (t.nanos || 0) / 1_000_000;
+  return new globalThis.Date(millis);
+}
+
+function fromJsonTimestamp(o: any): Date {
+  if (o instanceof globalThis.Date) {
+    return o;
+  } else if (typeof o === "string") {
+    return new globalThis.Date(o);
+  } else {
+    return fromTimestamp(Timestamp.fromJSON(o));
+  }
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
