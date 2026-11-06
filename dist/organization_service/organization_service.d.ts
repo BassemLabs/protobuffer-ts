@@ -4,7 +4,7 @@ import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
 import { OnboardingStepName, OnboardingStepsStatus } from "./onboarding_steps";
-import { Currency, DirectoryProviderType, Organization, SchoolYear } from "./organization";
+import { Currency, DirectoryProviderType, Organization, OrganizationEmailBranding, SchoolYear } from "./organization";
 export declare const protobufPackage = "organization_service";
 export declare enum ReregistrationPhase {
     REREGISTRATION_PHASE_SETUP_STUDENTS = "REREGISTRATION_PHASE_SETUP_STUDENTS",
@@ -337,6 +337,16 @@ export interface StartCurrentStartSchoolYearPhaseRequest {
 export interface GetOrganizationEmailBrandingRequest {
     context: RequestContext | undefined;
 }
+/** Read-only preparation data scoped to the caller's organization; excludes fees and directory credentials. */
+export interface OrganizationEmailContext {
+    organization: ObjectId | undefined;
+    name?: string | undefined;
+    login_id?: string | undefined;
+    timezone?: string | undefined;
+    active_school_year: ObjectId | undefined;
+    logo_url?: string | undefined;
+    branding: OrganizationEmailBranding | undefined;
+}
 export interface UpdateOrganizationEmailBrandingRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
@@ -431,6 +441,7 @@ export declare const GetCurrentStartSchoolYearRunRequest: MessageFns<GetCurrentS
 export declare const GetCurrentStartSchoolYearRunResponse: MessageFns<GetCurrentStartSchoolYearRunResponse>;
 export declare const StartCurrentStartSchoolYearPhaseRequest: MessageFns<StartCurrentStartSchoolYearPhaseRequest>;
 export declare const GetOrganizationEmailBrandingRequest: MessageFns<GetOrganizationEmailBrandingRequest>;
+export declare const OrganizationEmailContext: MessageFns<OrganizationEmailContext>;
 export declare const UpdateOrganizationEmailBrandingRequest: MessageFns<UpdateOrganizationEmailBrandingRequest>;
 export declare const FirstOrganizationAdminInput: MessageFns<FirstOrganizationAdminInput>;
 export declare const OrganizationProvisioning: MessageFns<OrganizationProvisioning>;

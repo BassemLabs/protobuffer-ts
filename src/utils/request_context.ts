@@ -24,6 +24,8 @@ export enum ServiceContext {
   StagingDataSyncJob = "StagingDataSyncJob",
   NotificationService = "NotificationService",
   AutoReportCardOwnerReminders = "AutoReportCardOwnerReminders",
+  /** EmailPreparation - Reads data only for accepted email jobs in one organization. Never grants payment or business mutation authority. */
+  EmailPreparation = "EmailPreparation",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -47,6 +49,9 @@ export function serviceContextFromJSON(object: any): ServiceContext {
     case 6:
     case "AutoReportCardOwnerReminders":
       return ServiceContext.AutoReportCardOwnerReminders;
+    case 7:
+    case "EmailPreparation":
+      return ServiceContext.EmailPreparation;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -68,6 +73,8 @@ export function serviceContextToJSON(object: ServiceContext): string {
       return "NotificationService";
     case ServiceContext.AutoReportCardOwnerReminders:
       return "AutoReportCardOwnerReminders";
+    case ServiceContext.EmailPreparation:
+      return "EmailPreparation";
     case ServiceContext.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -88,6 +95,8 @@ export function serviceContextToNumber(object: ServiceContext): number {
       return 5;
     case ServiceContext.AutoReportCardOwnerReminders:
       return 6;
+    case ServiceContext.EmailPreparation:
+      return 7;
     case ServiceContext.UNRECOGNIZED:
     default:
       return -1;

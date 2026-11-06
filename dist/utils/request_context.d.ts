@@ -10,6 +10,8 @@ export declare enum ServiceContext {
     StagingDataSyncJob = "StagingDataSyncJob",
     NotificationService = "NotificationService",
     AutoReportCardOwnerReminders = "AutoReportCardOwnerReminders",
+    /** EmailPreparation - Reads data only for accepted email jobs in one organization. Never grants payment or business mutation authority. */
+    EmailPreparation = "EmailPreparation",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function serviceContextFromJSON(object: any): ServiceContext;

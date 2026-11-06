@@ -6,7 +6,7 @@
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CompleteReregistrationPreparationStepRequest = exports.GetCurrentReregistrationPreparationRequest = exports.ReregistrationPreparation = exports.ReregistrationPreparationStepState = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.DisableStudentDirectoryAccountsRequest = exports.DeleteOrganizationLogoRequest = exports.UpdateOrganizationLogoRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.OrganizationSetupInvitationState = exports.OrganizationProvisioningPhase = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPreparationStep = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.protobufPackage = void 0;
-exports.SendOrganizationSetupInvitationRequest = exports.GetOrganizationProvisioningRequest = exports.ProvisionOrganizationRequest = exports.OrganizationProvisioning = exports.FirstOrganizationAdminInput = exports.UpdateOrganizationEmailBrandingRequest = exports.GetOrganizationEmailBrandingRequest = exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = void 0;
+exports.SendOrganizationSetupInvitationRequest = exports.GetOrganizationProvisioningRequest = exports.ProvisionOrganizationRequest = exports.OrganizationProvisioning = exports.FirstOrganizationAdminInput = exports.UpdateOrganizationEmailBrandingRequest = exports.OrganizationEmailContext = exports.GetOrganizationEmailBrandingRequest = exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = void 0;
 exports.reregistrationPhaseFromJSON = reregistrationPhaseFromJSON;
 exports.reregistrationPhaseToJSON = reregistrationPhaseToJSON;
 exports.reregistrationPhaseToNumber = reregistrationPhaseToNumber;
@@ -4708,6 +4708,156 @@ exports.GetOrganizationEmailBrandingRequest = {
         const message = createBaseGetOrganizationEmailBrandingRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseOrganizationEmailContext() {
+    return {
+        organization: undefined,
+        name: undefined,
+        login_id: undefined,
+        timezone: undefined,
+        active_school_year: undefined,
+        logo_url: undefined,
+        branding: undefined,
+    };
+}
+exports.OrganizationEmailContext = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.organization !== undefined) {
+            object_id_1.ObjectId.encode(message.organization, writer.uint32(10).fork()).join();
+        }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.login_id !== undefined) {
+            writer.uint32(26).string(message.login_id);
+        }
+        if (message.timezone !== undefined) {
+            writer.uint32(34).string(message.timezone);
+        }
+        if (message.active_school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.active_school_year, writer.uint32(42).fork()).join();
+        }
+        if (message.logo_url !== undefined) {
+            writer.uint32(50).string(message.logo_url);
+        }
+        if (message.branding !== undefined) {
+            organization_1.OrganizationEmailBranding.encode(message.branding, writer.uint32(58).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseOrganizationEmailContext();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.organization = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.login_id = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.timezone = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.active_school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.logo_url = reader.string();
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.branding = organization_1.OrganizationEmailBranding.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined,
+            timezone: isSet(object.timezone) ? globalThis.String(object.timezone) : undefined,
+            active_school_year: isSet(object.activeSchoolYear) ? object_id_1.ObjectId.fromJSON(object.activeSchoolYear) : undefined,
+            logo_url: isSet(object.logoUrl) ? globalThis.String(object.logoUrl) : undefined,
+            branding: isSet(object.branding) ? organization_1.OrganizationEmailBranding.fromJSON(object.branding) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.organization !== undefined) {
+            obj.organization = object_id_1.ObjectId.toJSON(message.organization);
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.login_id !== undefined) {
+            obj.loginId = message.login_id;
+        }
+        if (message.timezone !== undefined) {
+            obj.timezone = message.timezone;
+        }
+        if (message.active_school_year !== undefined) {
+            obj.activeSchoolYear = object_id_1.ObjectId.toJSON(message.active_school_year);
+        }
+        if (message.logo_url !== undefined) {
+            obj.logoUrl = message.logo_url;
+        }
+        if (message.branding !== undefined) {
+            obj.branding = organization_1.OrganizationEmailBranding.toJSON(message.branding);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.OrganizationEmailContext.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseOrganizationEmailContext();
+        message.organization = (object.organization !== undefined && object.organization !== null)
+            ? object_id_1.ObjectId.fromPartial(object.organization)
+            : undefined;
+        message.name = object.name ?? undefined;
+        message.login_id = object.login_id ?? undefined;
+        message.timezone = object.timezone ?? undefined;
+        message.active_school_year = (object.active_school_year !== undefined && object.active_school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.active_school_year)
+            : undefined;
+        message.logo_url = object.logo_url ?? undefined;
+        message.branding = (object.branding !== undefined && object.branding !== null)
+            ? organization_1.OrganizationEmailBranding.fromPartial(object.branding)
             : undefined;
         return message;
     },

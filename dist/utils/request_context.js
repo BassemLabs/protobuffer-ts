@@ -23,6 +23,8 @@ var ServiceContext;
     ServiceContext["StagingDataSyncJob"] = "StagingDataSyncJob";
     ServiceContext["NotificationService"] = "NotificationService";
     ServiceContext["AutoReportCardOwnerReminders"] = "AutoReportCardOwnerReminders";
+    /** EmailPreparation - Reads data only for accepted email jobs in one organization. Never grants payment or business mutation authority. */
+    ServiceContext["EmailPreparation"] = "EmailPreparation";
     ServiceContext["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ServiceContext || (exports.ServiceContext = ServiceContext = {}));
 function serviceContextFromJSON(object) {
@@ -45,6 +47,9 @@ function serviceContextFromJSON(object) {
         case 6:
         case "AutoReportCardOwnerReminders":
             return ServiceContext.AutoReportCardOwnerReminders;
+        case 7:
+        case "EmailPreparation":
+            return ServiceContext.EmailPreparation;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -65,6 +70,8 @@ function serviceContextToJSON(object) {
             return "NotificationService";
         case ServiceContext.AutoReportCardOwnerReminders:
             return "AutoReportCardOwnerReminders";
+        case ServiceContext.EmailPreparation:
+            return "EmailPreparation";
         case ServiceContext.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -84,6 +91,8 @@ function serviceContextToNumber(object) {
             return 5;
         case ServiceContext.AutoReportCardOwnerReminders:
             return 6;
+        case ServiceContext.EmailPreparation:
+            return 7;
         case ServiceContext.UNRECOGNIZED:
         default:
             return -1;
