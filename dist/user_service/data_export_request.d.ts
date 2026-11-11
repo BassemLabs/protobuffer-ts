@@ -117,6 +117,29 @@ export interface GetApprovedDataExportPageRequest {
     attempt_id?: string | undefined;
     after_cursor?: string | undefined;
 }
+export interface GetStaffUsageRequest {
+    context: RequestContext | undefined;
+    organization_ids: string[];
+    as_of: Date | undefined;
+}
+/**
+ * Nondeleted parent, teacher and student organization accounts. Not unique people.
+ * Activity means successful recorded audit activity, not a complete session log.
+ */
+export interface OrganizationUsageCounts {
+    organization_id?: string | undefined;
+    account_count?: number | undefined;
+    active_7d_count?: number | undefined;
+    active_30d_count?: number | undefined;
+    parent_count?: number | undefined;
+    linked_parent_count?: number | undefined;
+    observed_parent_count?: number | undefined;
+    active_parent_7d_count?: number | undefined;
+    active_parent_30d_count?: number | undefined;
+}
+export interface StaffUsageCounts {
+    organizations: OrganizationUsageCounts[];
+}
 export declare const DataExportReviewer: MessageFns<DataExportReviewer>;
 export declare const ListDataExportReviewersRequest: MessageFns<ListDataExportReviewersRequest>;
 export declare const ListDataExportReviewersResponse: MessageFns<ListDataExportReviewersResponse>;
@@ -129,6 +152,9 @@ export declare const GetDataExportRequestRequest: MessageFns<GetDataExportReques
 export declare const DecideDataExportRequestRequest: MessageFns<DecideDataExportRequestRequest>;
 export declare const ClaimDataExportDownloadResponse: MessageFns<ClaimDataExportDownloadResponse>;
 export declare const GetApprovedDataExportPageRequest: MessageFns<GetApprovedDataExportPageRequest>;
+export declare const GetStaffUsageRequest: MessageFns<GetStaffUsageRequest>;
+export declare const OrganizationUsageCounts: MessageFns<OrganizationUsageCounts>;
+export declare const StaffUsageCounts: MessageFns<StaffUsageCounts>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

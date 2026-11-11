@@ -5,7 +5,16 @@
 //   protoc               unknown
 // source: organization_service/bassem_labs_staff_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetUsersResponse = exports.GetUsersRequest = exports.GetUserByEmailRequest = exports.GetUserByIdRequest = exports.UpdateStatusRequest = exports.UpdateProfileRequest = exports.CreateUserRequest = exports.protobufPackage = void 0;
+exports.RefreshStaffStoreDownloadReportsRequest = exports.StaffStoreDownloadSummary = exports.StaffStoreDownloadProvider = exports.StaffStoreDownloadTotal = exports.StaffStoreReportCoverage = exports.StaffUsageSummary = exports.StaffOrganizationUsage = exports.CompleteStaffGooglePlayConsentRequest = exports.StaffGooglePlayConsent = exports.StaffStoreReportingState = exports.StaffStoreReportingRequest = exports.GetUsersResponse = exports.GetUsersRequest = exports.GetUserByEmailRequest = exports.GetUserByIdRequest = exports.UpdateStatusRequest = exports.UpdateProfileRequest = exports.CreateUserRequest = exports.StaffStoreDownloadStatus = exports.StaffStoreDownloadMetric = exports.StaffStoreReportProvider = exports.protobufPackage = void 0;
+exports.staffStoreReportProviderFromJSON = staffStoreReportProviderFromJSON;
+exports.staffStoreReportProviderToJSON = staffStoreReportProviderToJSON;
+exports.staffStoreReportProviderToNumber = staffStoreReportProviderToNumber;
+exports.staffStoreDownloadMetricFromJSON = staffStoreDownloadMetricFromJSON;
+exports.staffStoreDownloadMetricToJSON = staffStoreDownloadMetricToJSON;
+exports.staffStoreDownloadMetricToNumber = staffStoreDownloadMetricToNumber;
+exports.staffStoreDownloadStatusFromJSON = staffStoreDownloadStatusFromJSON;
+exports.staffStoreDownloadStatusToJSON = staffStoreDownloadStatusToJSON;
+exports.staffStoreDownloadStatusToNumber = staffStoreDownloadStatusToNumber;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -14,6 +23,164 @@ const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const bassem_labs_staff_1 = require("./bassem_labs_staff");
 exports.protobufPackage = "organization_service";
+var StaffStoreReportProvider;
+(function (StaffStoreReportProvider) {
+    StaffStoreReportProvider["GOOGLE_PLAY"] = "GOOGLE_PLAY";
+    StaffStoreReportProvider["APP_STORE_CONNECT"] = "APP_STORE_CONNECT";
+    StaffStoreReportProvider["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(StaffStoreReportProvider || (exports.StaffStoreReportProvider = StaffStoreReportProvider = {}));
+function staffStoreReportProviderFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "GOOGLE_PLAY":
+            return StaffStoreReportProvider.GOOGLE_PLAY;
+        case 1:
+        case "APP_STORE_CONNECT":
+            return StaffStoreReportProvider.APP_STORE_CONNECT;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return StaffStoreReportProvider.UNRECOGNIZED;
+    }
+}
+function staffStoreReportProviderToJSON(object) {
+    switch (object) {
+        case StaffStoreReportProvider.GOOGLE_PLAY:
+            return "GOOGLE_PLAY";
+        case StaffStoreReportProvider.APP_STORE_CONNECT:
+            return "APP_STORE_CONNECT";
+        case StaffStoreReportProvider.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function staffStoreReportProviderToNumber(object) {
+    switch (object) {
+        case StaffStoreReportProvider.GOOGLE_PLAY:
+            return 0;
+        case StaffStoreReportProvider.APP_STORE_CONNECT:
+            return 1;
+        case StaffStoreReportProvider.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var StaffStoreDownloadMetric;
+(function (StaffStoreDownloadMetric) {
+    StaffStoreDownloadMetric["GOOGLE_INSTALL_EVENTS"] = "GOOGLE_INSTALL_EVENTS";
+    StaffStoreDownloadMetric["APPLE_FIRST_TIME_UNITS"] = "APPLE_FIRST_TIME_UNITS";
+    StaffStoreDownloadMetric["APPLE_REDOWNLOADS_RESTORES"] = "APPLE_REDOWNLOADS_RESTORES";
+    StaffStoreDownloadMetric["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(StaffStoreDownloadMetric || (exports.StaffStoreDownloadMetric = StaffStoreDownloadMetric = {}));
+function staffStoreDownloadMetricFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "GOOGLE_INSTALL_EVENTS":
+            return StaffStoreDownloadMetric.GOOGLE_INSTALL_EVENTS;
+        case 1:
+        case "APPLE_FIRST_TIME_UNITS":
+            return StaffStoreDownloadMetric.APPLE_FIRST_TIME_UNITS;
+        case 2:
+        case "APPLE_REDOWNLOADS_RESTORES":
+            return StaffStoreDownloadMetric.APPLE_REDOWNLOADS_RESTORES;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return StaffStoreDownloadMetric.UNRECOGNIZED;
+    }
+}
+function staffStoreDownloadMetricToJSON(object) {
+    switch (object) {
+        case StaffStoreDownloadMetric.GOOGLE_INSTALL_EVENTS:
+            return "GOOGLE_INSTALL_EVENTS";
+        case StaffStoreDownloadMetric.APPLE_FIRST_TIME_UNITS:
+            return "APPLE_FIRST_TIME_UNITS";
+        case StaffStoreDownloadMetric.APPLE_REDOWNLOADS_RESTORES:
+            return "APPLE_REDOWNLOADS_RESTORES";
+        case StaffStoreDownloadMetric.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function staffStoreDownloadMetricToNumber(object) {
+    switch (object) {
+        case StaffStoreDownloadMetric.GOOGLE_INSTALL_EVENTS:
+            return 0;
+        case StaffStoreDownloadMetric.APPLE_FIRST_TIME_UNITS:
+            return 1;
+        case StaffStoreDownloadMetric.APPLE_REDOWNLOADS_RESTORES:
+            return 2;
+        case StaffStoreDownloadMetric.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
+var StaffStoreDownloadStatus;
+(function (StaffStoreDownloadStatus) {
+    StaffStoreDownloadStatus["STORE_DOWNLOAD_EMPTY"] = "STORE_DOWNLOAD_EMPTY";
+    StaffStoreDownloadStatus["STORE_DOWNLOAD_READY"] = "STORE_DOWNLOAD_READY";
+    StaffStoreDownloadStatus["STORE_DOWNLOAD_REFRESHING"] = "STORE_DOWNLOAD_REFRESHING";
+    StaffStoreDownloadStatus["STORE_DOWNLOAD_FAILED"] = "STORE_DOWNLOAD_FAILED";
+    StaffStoreDownloadStatus["STORE_DOWNLOAD_PARTIAL"] = "STORE_DOWNLOAD_PARTIAL";
+    StaffStoreDownloadStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(StaffStoreDownloadStatus || (exports.StaffStoreDownloadStatus = StaffStoreDownloadStatus = {}));
+function staffStoreDownloadStatusFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "STORE_DOWNLOAD_EMPTY":
+            return StaffStoreDownloadStatus.STORE_DOWNLOAD_EMPTY;
+        case 1:
+        case "STORE_DOWNLOAD_READY":
+            return StaffStoreDownloadStatus.STORE_DOWNLOAD_READY;
+        case 2:
+        case "STORE_DOWNLOAD_REFRESHING":
+            return StaffStoreDownloadStatus.STORE_DOWNLOAD_REFRESHING;
+        case 3:
+        case "STORE_DOWNLOAD_FAILED":
+            return StaffStoreDownloadStatus.STORE_DOWNLOAD_FAILED;
+        case 4:
+        case "STORE_DOWNLOAD_PARTIAL":
+            return StaffStoreDownloadStatus.STORE_DOWNLOAD_PARTIAL;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return StaffStoreDownloadStatus.UNRECOGNIZED;
+    }
+}
+function staffStoreDownloadStatusToJSON(object) {
+    switch (object) {
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_EMPTY:
+            return "STORE_DOWNLOAD_EMPTY";
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_READY:
+            return "STORE_DOWNLOAD_READY";
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_REFRESHING:
+            return "STORE_DOWNLOAD_REFRESHING";
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_FAILED:
+            return "STORE_DOWNLOAD_FAILED";
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_PARTIAL:
+            return "STORE_DOWNLOAD_PARTIAL";
+        case StaffStoreDownloadStatus.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function staffStoreDownloadStatusToNumber(object) {
+    switch (object) {
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_EMPTY:
+            return 0;
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_READY:
+            return 1;
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_REFRESHING:
+            return 2;
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_FAILED:
+            return 3;
+        case StaffStoreDownloadStatus.STORE_DOWNLOAD_PARTIAL:
+            return 4;
+        case StaffStoreDownloadStatus.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 function createBaseCreateUserRequest() {
     return {
         context: undefined,
@@ -682,6 +849,938 @@ exports.GetUsersResponse = {
         return message;
     },
 };
+function createBaseStaffStoreReportingRequest() {
+    return { context: undefined };
+}
+exports.StaffStoreReportingRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffStoreReportingRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffStoreReportingRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffStoreReportingRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseStaffStoreReportingState() {
+    return { google_oauth_configured: undefined, google_account_email: undefined, apple_configured: undefined };
+}
+exports.StaffStoreReportingState = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.google_oauth_configured !== undefined) {
+            writer.uint32(8).bool(message.google_oauth_configured);
+        }
+        if (message.google_account_email !== undefined) {
+            writer.uint32(18).string(message.google_account_email);
+        }
+        if (message.apple_configured !== undefined) {
+            writer.uint32(24).bool(message.apple_configured);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffStoreReportingState();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.google_oauth_configured = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.google_account_email = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.apple_configured = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            google_oauth_configured: isSet(object.googleOauthConfigured)
+                ? globalThis.Boolean(object.googleOauthConfigured)
+                : undefined,
+            google_account_email: isSet(object.googleAccountEmail) ? globalThis.String(object.googleAccountEmail) : undefined,
+            apple_configured: isSet(object.appleConfigured) ? globalThis.Boolean(object.appleConfigured) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.google_oauth_configured !== undefined) {
+            obj.googleOauthConfigured = message.google_oauth_configured;
+        }
+        if (message.google_account_email !== undefined) {
+            obj.googleAccountEmail = message.google_account_email;
+        }
+        if (message.apple_configured !== undefined) {
+            obj.appleConfigured = message.apple_configured;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffStoreReportingState.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffStoreReportingState();
+        message.google_oauth_configured = object.google_oauth_configured ?? undefined;
+        message.google_account_email = object.google_account_email ?? undefined;
+        message.apple_configured = object.apple_configured ?? undefined;
+        return message;
+    },
+};
+function createBaseStaffGooglePlayConsent() {
+    return { authorization_url: undefined };
+}
+exports.StaffGooglePlayConsent = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.authorization_url !== undefined) {
+            writer.uint32(10).string(message.authorization_url);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffGooglePlayConsent();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.authorization_url = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            authorization_url: isSet(object.authorizationUrl) ? globalThis.String(object.authorizationUrl) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.authorization_url !== undefined) {
+            obj.authorizationUrl = message.authorization_url;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffGooglePlayConsent.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffGooglePlayConsent();
+        message.authorization_url = object.authorization_url ?? undefined;
+        return message;
+    },
+};
+function createBaseCompleteStaffGooglePlayConsentRequest() {
+    return { context: undefined, code: undefined, state: undefined };
+}
+exports.CompleteStaffGooglePlayConsentRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.code !== undefined) {
+            writer.uint32(18).string(message.code);
+        }
+        if (message.state !== undefined) {
+            writer.uint32(26).string(message.state);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCompleteStaffGooglePlayConsentRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.code = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.state = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+            state: isSet(object.state) ? globalThis.String(object.state) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.code !== undefined) {
+            obj.code = message.code;
+        }
+        if (message.state !== undefined) {
+            obj.state = message.state;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CompleteStaffGooglePlayConsentRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCompleteStaffGooglePlayConsentRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.code = object.code ?? undefined;
+        message.state = object.state ?? undefined;
+        return message;
+    },
+};
+function createBaseStaffOrganizationUsage() {
+    return {
+        organization_name: undefined,
+        login_id: undefined,
+        account_count: undefined,
+        active_7d_count: undefined,
+        active_30d_count: undefined,
+        parent_count: undefined,
+        linked_parent_count: undefined,
+        observed_parent_count: undefined,
+        active_parent_7d_count: undefined,
+        active_parent_30d_count: undefined,
+    };
+}
+exports.StaffOrganizationUsage = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.organization_name !== undefined) {
+            writer.uint32(10).string(message.organization_name);
+        }
+        if (message.login_id !== undefined) {
+            writer.uint32(18).string(message.login_id);
+        }
+        if (message.account_count !== undefined) {
+            writer.uint32(24).uint64(message.account_count);
+        }
+        if (message.active_7d_count !== undefined) {
+            writer.uint32(32).uint64(message.active_7d_count);
+        }
+        if (message.active_30d_count !== undefined) {
+            writer.uint32(40).uint64(message.active_30d_count);
+        }
+        if (message.parent_count !== undefined) {
+            writer.uint32(48).uint64(message.parent_count);
+        }
+        if (message.linked_parent_count !== undefined) {
+            writer.uint32(56).uint64(message.linked_parent_count);
+        }
+        if (message.observed_parent_count !== undefined) {
+            writer.uint32(64).uint64(message.observed_parent_count);
+        }
+        if (message.active_parent_7d_count !== undefined) {
+            writer.uint32(72).uint64(message.active_parent_7d_count);
+        }
+        if (message.active_parent_30d_count !== undefined) {
+            writer.uint32(80).uint64(message.active_parent_30d_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffOrganizationUsage();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.organization_name = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.login_id = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.account_count = longToNumber(reader.uint64());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.active_7d_count = longToNumber(reader.uint64());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.active_30d_count = longToNumber(reader.uint64());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.parent_count = longToNumber(reader.uint64());
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.linked_parent_count = longToNumber(reader.uint64());
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.observed_parent_count = longToNumber(reader.uint64());
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.active_parent_7d_count = longToNumber(reader.uint64());
+                    continue;
+                case 10:
+                    if (tag !== 80) {
+                        break;
+                    }
+                    message.active_parent_30d_count = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            organization_name: isSet(object.organizationName) ? globalThis.String(object.organizationName) : undefined,
+            login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined,
+            account_count: isSet(object.accountCount) ? globalThis.Number(object.accountCount) : undefined,
+            active_7d_count: isSet(object.active7dCount) ? globalThis.Number(object.active7dCount) : undefined,
+            active_30d_count: isSet(object.active30dCount) ? globalThis.Number(object.active30dCount) : undefined,
+            parent_count: isSet(object.parentCount) ? globalThis.Number(object.parentCount) : undefined,
+            linked_parent_count: isSet(object.linkedParentCount) ? globalThis.Number(object.linkedParentCount) : undefined,
+            observed_parent_count: isSet(object.observedParentCount)
+                ? globalThis.Number(object.observedParentCount)
+                : undefined,
+            active_parent_7d_count: isSet(object.activeParent7dCount)
+                ? globalThis.Number(object.activeParent7dCount)
+                : undefined,
+            active_parent_30d_count: isSet(object.activeParent30dCount)
+                ? globalThis.Number(object.activeParent30dCount)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.organization_name !== undefined) {
+            obj.organizationName = message.organization_name;
+        }
+        if (message.login_id !== undefined) {
+            obj.loginId = message.login_id;
+        }
+        if (message.account_count !== undefined) {
+            obj.accountCount = Math.round(message.account_count);
+        }
+        if (message.active_7d_count !== undefined) {
+            obj.active7dCount = Math.round(message.active_7d_count);
+        }
+        if (message.active_30d_count !== undefined) {
+            obj.active30dCount = Math.round(message.active_30d_count);
+        }
+        if (message.parent_count !== undefined) {
+            obj.parentCount = Math.round(message.parent_count);
+        }
+        if (message.linked_parent_count !== undefined) {
+            obj.linkedParentCount = Math.round(message.linked_parent_count);
+        }
+        if (message.observed_parent_count !== undefined) {
+            obj.observedParentCount = Math.round(message.observed_parent_count);
+        }
+        if (message.active_parent_7d_count !== undefined) {
+            obj.activeParent7dCount = Math.round(message.active_parent_7d_count);
+        }
+        if (message.active_parent_30d_count !== undefined) {
+            obj.activeParent30dCount = Math.round(message.active_parent_30d_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffOrganizationUsage.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffOrganizationUsage();
+        message.organization_name = object.organization_name ?? undefined;
+        message.login_id = object.login_id ?? undefined;
+        message.account_count = object.account_count ?? undefined;
+        message.active_7d_count = object.active_7d_count ?? undefined;
+        message.active_30d_count = object.active_30d_count ?? undefined;
+        message.parent_count = object.parent_count ?? undefined;
+        message.linked_parent_count = object.linked_parent_count ?? undefined;
+        message.observed_parent_count = object.observed_parent_count ?? undefined;
+        message.active_parent_7d_count = object.active_parent_7d_count ?? undefined;
+        message.active_parent_30d_count = object.active_parent_30d_count ?? undefined;
+        return message;
+    },
+};
+function createBaseStaffUsageSummary() {
+    return { as_of: undefined, organizations: [] };
+}
+exports.StaffUsageSummary = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.as_of !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.as_of), writer.uint32(10).fork()).join();
+        }
+        for (const v of message.organizations) {
+            exports.StaffOrganizationUsage.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffUsageSummary();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.as_of = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organizations.push(exports.StaffOrganizationUsage.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            as_of: isSet(object.asOf) ? fromJsonTimestamp(object.asOf) : undefined,
+            organizations: globalThis.Array.isArray(object?.organizations)
+                ? object.organizations.map((e) => exports.StaffOrganizationUsage.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.as_of !== undefined) {
+            obj.asOf = message.as_of.toISOString();
+        }
+        if (message.organizations?.length) {
+            obj.organizations = message.organizations.map((e) => exports.StaffOrganizationUsage.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffUsageSummary.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffUsageSummary();
+        message.as_of = object.as_of ?? undefined;
+        message.organizations = object.organizations?.map((e) => exports.StaffOrganizationUsage.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseStaffStoreReportCoverage() {
+    return { start_date: undefined, end_date: undefined };
+}
+exports.StaffStoreReportCoverage = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.start_date !== undefined) {
+            writer.uint32(10).string(message.start_date);
+        }
+        if (message.end_date !== undefined) {
+            writer.uint32(18).string(message.end_date);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffStoreReportCoverage();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.start_date = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.end_date = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
+            end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.start_date !== undefined) {
+            obj.startDate = message.start_date;
+        }
+        if (message.end_date !== undefined) {
+            obj.endDate = message.end_date;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffStoreReportCoverage.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffStoreReportCoverage();
+        message.start_date = object.start_date ?? undefined;
+        message.end_date = object.end_date ?? undefined;
+        return message;
+    },
+};
+function createBaseStaffStoreDownloadTotal() {
+    return { metric: undefined, total: undefined, coverage: [] };
+}
+exports.StaffStoreDownloadTotal = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.metric !== undefined) {
+            writer.uint32(8).int32(staffStoreDownloadMetricToNumber(message.metric));
+        }
+        if (message.total !== undefined) {
+            writer.uint32(16).int64(message.total);
+        }
+        for (const v of message.coverage) {
+            exports.StaffStoreReportCoverage.encode(v, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffStoreDownloadTotal();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.metric = staffStoreDownloadMetricFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.total = longToNumber(reader.int64());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.coverage.push(exports.StaffStoreReportCoverage.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            metric: isSet(object.metric) ? staffStoreDownloadMetricFromJSON(object.metric) : undefined,
+            total: isSet(object.total) ? globalThis.Number(object.total) : undefined,
+            coverage: globalThis.Array.isArray(object?.coverage)
+                ? object.coverage.map((e) => exports.StaffStoreReportCoverage.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.metric !== undefined) {
+            obj.metric = staffStoreDownloadMetricToJSON(message.metric);
+        }
+        if (message.total !== undefined) {
+            obj.total = Math.round(message.total);
+        }
+        if (message.coverage?.length) {
+            obj.coverage = message.coverage.map((e) => exports.StaffStoreReportCoverage.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffStoreDownloadTotal.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffStoreDownloadTotal();
+        message.metric = object.metric ?? undefined;
+        message.total = object.total ?? undefined;
+        message.coverage = object.coverage?.map((e) => exports.StaffStoreReportCoverage.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseStaffStoreDownloadProvider() {
+    return {
+        provider: undefined,
+        status: undefined,
+        last_attempt_at: undefined,
+        last_success_at: undefined,
+        error_message: undefined,
+        metrics: [],
+    };
+}
+exports.StaffStoreDownloadProvider = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.provider !== undefined) {
+            writer.uint32(8).int32(staffStoreReportProviderToNumber(message.provider));
+        }
+        if (message.status !== undefined) {
+            writer.uint32(16).int32(staffStoreDownloadStatusToNumber(message.status));
+        }
+        if (message.last_attempt_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.last_attempt_at), writer.uint32(26).fork()).join();
+        }
+        if (message.last_success_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.last_success_at), writer.uint32(34).fork()).join();
+        }
+        if (message.error_message !== undefined) {
+            writer.uint32(42).string(message.error_message);
+        }
+        for (const v of message.metrics) {
+            exports.StaffStoreDownloadTotal.encode(v, writer.uint32(50).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffStoreDownloadProvider();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.provider = staffStoreReportProviderFromJSON(reader.int32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.status = staffStoreDownloadStatusFromJSON(reader.int32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.last_attempt_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.last_success_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.error_message = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.metrics.push(exports.StaffStoreDownloadTotal.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            provider: isSet(object.provider) ? staffStoreReportProviderFromJSON(object.provider) : undefined,
+            status: isSet(object.status) ? staffStoreDownloadStatusFromJSON(object.status) : undefined,
+            last_attempt_at: isSet(object.lastAttemptAt) ? fromJsonTimestamp(object.lastAttemptAt) : undefined,
+            last_success_at: isSet(object.lastSuccessAt) ? fromJsonTimestamp(object.lastSuccessAt) : undefined,
+            error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : undefined,
+            metrics: globalThis.Array.isArray(object?.metrics)
+                ? object.metrics.map((e) => exports.StaffStoreDownloadTotal.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.provider !== undefined) {
+            obj.provider = staffStoreReportProviderToJSON(message.provider);
+        }
+        if (message.status !== undefined) {
+            obj.status = staffStoreDownloadStatusToJSON(message.status);
+        }
+        if (message.last_attempt_at !== undefined) {
+            obj.lastAttemptAt = message.last_attempt_at.toISOString();
+        }
+        if (message.last_success_at !== undefined) {
+            obj.lastSuccessAt = message.last_success_at.toISOString();
+        }
+        if (message.error_message !== undefined) {
+            obj.errorMessage = message.error_message;
+        }
+        if (message.metrics?.length) {
+            obj.metrics = message.metrics.map((e) => exports.StaffStoreDownloadTotal.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffStoreDownloadProvider.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffStoreDownloadProvider();
+        message.provider = object.provider ?? undefined;
+        message.status = object.status ?? undefined;
+        message.last_attempt_at = object.last_attempt_at ?? undefined;
+        message.last_success_at = object.last_success_at ?? undefined;
+        message.error_message = object.error_message ?? undefined;
+        message.metrics = object.metrics?.map((e) => exports.StaffStoreDownloadTotal.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseStaffStoreDownloadSummary() {
+    return { providers: [] };
+}
+exports.StaffStoreDownloadSummary = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.providers) {
+            exports.StaffStoreDownloadProvider.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffStoreDownloadSummary();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.providers.push(exports.StaffStoreDownloadProvider.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            providers: globalThis.Array.isArray(object?.providers)
+                ? object.providers.map((e) => exports.StaffStoreDownloadProvider.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.providers?.length) {
+            obj.providers = message.providers.map((e) => exports.StaffStoreDownloadProvider.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffStoreDownloadSummary.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffStoreDownloadSummary();
+        message.providers = object.providers?.map((e) => exports.StaffStoreDownloadProvider.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseRefreshStaffStoreDownloadReportsRequest() {
+    return { context: undefined, provider: undefined };
+}
+exports.RefreshStaffStoreDownloadReportsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.provider !== undefined) {
+            writer.uint32(16).int32(staffStoreReportProviderToNumber(message.provider));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseRefreshStaffStoreDownloadReportsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.provider = staffStoreReportProviderFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            provider: isSet(object.provider) ? staffStoreReportProviderFromJSON(object.provider) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.provider !== undefined) {
+            obj.provider = staffStoreReportProviderToJSON(message.provider);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.RefreshStaffStoreDownloadReportsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseRefreshStaffStoreDownloadReportsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.provider = object.provider ?? undefined;
+        return message;
+    },
+};
 function toTimestamp(date) {
     const seconds = Math.trunc(date.getTime() / 1_000);
     const nanos = (date.getTime() % 1_000) * 1_000_000;
@@ -702,6 +1801,16 @@ function fromJsonTimestamp(o) {
     else {
         return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
     }
+}
+function longToNumber(int64) {
+    const num = globalThis.Number(int64.toString());
+    if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    }
+    if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+        throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+    }
+    return num;
 }
 function isSet(value) {
     return value !== null && value !== undefined;

@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/data_export_request.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetApprovedDataExportPageRequest = exports.ClaimDataExportDownloadResponse = exports.DecideDataExportRequestRequest = exports.GetDataExportRequestRequest = exports.ListDataExportRequestsResponse = exports.ListDataExportRequestsRequest = exports.CreateDataExportRequestRequest = exports.DataExportRequestDetail = exports.DataExportRequestSummary = exports.ListDataExportReviewersResponse = exports.ListDataExportReviewersRequest = exports.DataExportReviewer = exports.DataExportRequestDecision = exports.DataExportRequestView = exports.DataExportRequestStatus = exports.protobufPackage = void 0;
+exports.StaffUsageCounts = exports.OrganizationUsageCounts = exports.GetStaffUsageRequest = exports.GetApprovedDataExportPageRequest = exports.ClaimDataExportDownloadResponse = exports.DecideDataExportRequestRequest = exports.GetDataExportRequestRequest = exports.ListDataExportRequestsResponse = exports.ListDataExportRequestsRequest = exports.CreateDataExportRequestRequest = exports.DataExportRequestDetail = exports.DataExportRequestSummary = exports.ListDataExportReviewersResponse = exports.ListDataExportReviewersRequest = exports.DataExportReviewer = exports.DataExportRequestDecision = exports.DataExportRequestView = exports.DataExportRequestStatus = exports.protobufPackage = void 0;
 exports.dataExportRequestStatusFromJSON = dataExportRequestStatusFromJSON;
 exports.dataExportRequestStatusToJSON = dataExportRequestStatusToJSON;
 exports.dataExportRequestStatusToNumber = dataExportRequestStatusToNumber;
@@ -1511,6 +1511,324 @@ exports.GetApprovedDataExportPageRequest = {
             : undefined;
         message.attempt_id = object.attempt_id ?? undefined;
         message.after_cursor = object.after_cursor ?? undefined;
+        return message;
+    },
+};
+function createBaseGetStaffUsageRequest() {
+    return { context: undefined, organization_ids: [], as_of: undefined };
+}
+exports.GetStaffUsageRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.organization_ids) {
+            writer.uint32(18).string(v);
+        }
+        if (message.as_of !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.as_of), writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetStaffUsageRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.organization_ids.push(reader.string());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.as_of = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            organization_ids: globalThis.Array.isArray(object?.organizationIds)
+                ? object.organizationIds.map((e) => globalThis.String(e))
+                : [],
+            as_of: isSet(object.asOf) ? fromJsonTimestamp(object.asOf) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.organization_ids?.length) {
+            obj.organizationIds = message.organization_ids;
+        }
+        if (message.as_of !== undefined) {
+            obj.asOf = message.as_of.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetStaffUsageRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetStaffUsageRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.organization_ids = object.organization_ids?.map((e) => e) || [];
+        message.as_of = object.as_of ?? undefined;
+        return message;
+    },
+};
+function createBaseOrganizationUsageCounts() {
+    return {
+        organization_id: undefined,
+        account_count: undefined,
+        active_7d_count: undefined,
+        active_30d_count: undefined,
+        parent_count: undefined,
+        linked_parent_count: undefined,
+        observed_parent_count: undefined,
+        active_parent_7d_count: undefined,
+        active_parent_30d_count: undefined,
+    };
+}
+exports.OrganizationUsageCounts = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.organization_id !== undefined) {
+            writer.uint32(10).string(message.organization_id);
+        }
+        if (message.account_count !== undefined) {
+            writer.uint32(16).uint64(message.account_count);
+        }
+        if (message.active_7d_count !== undefined) {
+            writer.uint32(24).uint64(message.active_7d_count);
+        }
+        if (message.active_30d_count !== undefined) {
+            writer.uint32(32).uint64(message.active_30d_count);
+        }
+        if (message.parent_count !== undefined) {
+            writer.uint32(40).uint64(message.parent_count);
+        }
+        if (message.linked_parent_count !== undefined) {
+            writer.uint32(48).uint64(message.linked_parent_count);
+        }
+        if (message.observed_parent_count !== undefined) {
+            writer.uint32(56).uint64(message.observed_parent_count);
+        }
+        if (message.active_parent_7d_count !== undefined) {
+            writer.uint32(64).uint64(message.active_parent_7d_count);
+        }
+        if (message.active_parent_30d_count !== undefined) {
+            writer.uint32(72).uint64(message.active_parent_30d_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseOrganizationUsageCounts();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.organization_id = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.account_count = longToNumber(reader.uint64());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.active_7d_count = longToNumber(reader.uint64());
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.active_30d_count = longToNumber(reader.uint64());
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.parent_count = longToNumber(reader.uint64());
+                    continue;
+                case 6:
+                    if (tag !== 48) {
+                        break;
+                    }
+                    message.linked_parent_count = longToNumber(reader.uint64());
+                    continue;
+                case 7:
+                    if (tag !== 56) {
+                        break;
+                    }
+                    message.observed_parent_count = longToNumber(reader.uint64());
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.active_parent_7d_count = longToNumber(reader.uint64());
+                    continue;
+                case 9:
+                    if (tag !== 72) {
+                        break;
+                    }
+                    message.active_parent_30d_count = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            organization_id: isSet(object.organizationId) ? globalThis.String(object.organizationId) : undefined,
+            account_count: isSet(object.accountCount) ? globalThis.Number(object.accountCount) : undefined,
+            active_7d_count: isSet(object.active7dCount) ? globalThis.Number(object.active7dCount) : undefined,
+            active_30d_count: isSet(object.active30dCount) ? globalThis.Number(object.active30dCount) : undefined,
+            parent_count: isSet(object.parentCount) ? globalThis.Number(object.parentCount) : undefined,
+            linked_parent_count: isSet(object.linkedParentCount) ? globalThis.Number(object.linkedParentCount) : undefined,
+            observed_parent_count: isSet(object.observedParentCount)
+                ? globalThis.Number(object.observedParentCount)
+                : undefined,
+            active_parent_7d_count: isSet(object.activeParent7dCount)
+                ? globalThis.Number(object.activeParent7dCount)
+                : undefined,
+            active_parent_30d_count: isSet(object.activeParent30dCount)
+                ? globalThis.Number(object.activeParent30dCount)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.organization_id !== undefined) {
+            obj.organizationId = message.organization_id;
+        }
+        if (message.account_count !== undefined) {
+            obj.accountCount = Math.round(message.account_count);
+        }
+        if (message.active_7d_count !== undefined) {
+            obj.active7dCount = Math.round(message.active_7d_count);
+        }
+        if (message.active_30d_count !== undefined) {
+            obj.active30dCount = Math.round(message.active_30d_count);
+        }
+        if (message.parent_count !== undefined) {
+            obj.parentCount = Math.round(message.parent_count);
+        }
+        if (message.linked_parent_count !== undefined) {
+            obj.linkedParentCount = Math.round(message.linked_parent_count);
+        }
+        if (message.observed_parent_count !== undefined) {
+            obj.observedParentCount = Math.round(message.observed_parent_count);
+        }
+        if (message.active_parent_7d_count !== undefined) {
+            obj.activeParent7dCount = Math.round(message.active_parent_7d_count);
+        }
+        if (message.active_parent_30d_count !== undefined) {
+            obj.activeParent30dCount = Math.round(message.active_parent_30d_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.OrganizationUsageCounts.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseOrganizationUsageCounts();
+        message.organization_id = object.organization_id ?? undefined;
+        message.account_count = object.account_count ?? undefined;
+        message.active_7d_count = object.active_7d_count ?? undefined;
+        message.active_30d_count = object.active_30d_count ?? undefined;
+        message.parent_count = object.parent_count ?? undefined;
+        message.linked_parent_count = object.linked_parent_count ?? undefined;
+        message.observed_parent_count = object.observed_parent_count ?? undefined;
+        message.active_parent_7d_count = object.active_parent_7d_count ?? undefined;
+        message.active_parent_30d_count = object.active_parent_30d_count ?? undefined;
+        return message;
+    },
+};
+function createBaseStaffUsageCounts() {
+    return { organizations: [] };
+}
+exports.StaffUsageCounts = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.organizations) {
+            exports.OrganizationUsageCounts.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseStaffUsageCounts();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.organizations.push(exports.OrganizationUsageCounts.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            organizations: globalThis.Array.isArray(object?.organizations)
+                ? object.organizations.map((e) => exports.OrganizationUsageCounts.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.organizations?.length) {
+            obj.organizations = message.organizations.map((e) => exports.OrganizationUsageCounts.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.StaffUsageCounts.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseStaffUsageCounts();
+        message.organizations = object.organizations?.map((e) => exports.OrganizationUsageCounts.fromPartial(e)) || [];
         return message;
     },
 };

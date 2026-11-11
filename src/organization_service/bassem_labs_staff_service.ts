@@ -25,6 +25,173 @@ import {
 
 export const protobufPackage = "organization_service";
 
+export enum StaffStoreReportProvider {
+  GOOGLE_PLAY = "GOOGLE_PLAY",
+  APP_STORE_CONNECT = "APP_STORE_CONNECT",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function staffStoreReportProviderFromJSON(object: any): StaffStoreReportProvider {
+  switch (object) {
+    case 0:
+    case "GOOGLE_PLAY":
+      return StaffStoreReportProvider.GOOGLE_PLAY;
+    case 1:
+    case "APP_STORE_CONNECT":
+      return StaffStoreReportProvider.APP_STORE_CONNECT;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StaffStoreReportProvider.UNRECOGNIZED;
+  }
+}
+
+export function staffStoreReportProviderToJSON(object: StaffStoreReportProvider): string {
+  switch (object) {
+    case StaffStoreReportProvider.GOOGLE_PLAY:
+      return "GOOGLE_PLAY";
+    case StaffStoreReportProvider.APP_STORE_CONNECT:
+      return "APP_STORE_CONNECT";
+    case StaffStoreReportProvider.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function staffStoreReportProviderToNumber(object: StaffStoreReportProvider): number {
+  switch (object) {
+    case StaffStoreReportProvider.GOOGLE_PLAY:
+      return 0;
+    case StaffStoreReportProvider.APP_STORE_CONNECT:
+      return 1;
+    case StaffStoreReportProvider.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum StaffStoreDownloadMetric {
+  GOOGLE_INSTALL_EVENTS = "GOOGLE_INSTALL_EVENTS",
+  APPLE_FIRST_TIME_UNITS = "APPLE_FIRST_TIME_UNITS",
+  APPLE_REDOWNLOADS_RESTORES = "APPLE_REDOWNLOADS_RESTORES",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function staffStoreDownloadMetricFromJSON(object: any): StaffStoreDownloadMetric {
+  switch (object) {
+    case 0:
+    case "GOOGLE_INSTALL_EVENTS":
+      return StaffStoreDownloadMetric.GOOGLE_INSTALL_EVENTS;
+    case 1:
+    case "APPLE_FIRST_TIME_UNITS":
+      return StaffStoreDownloadMetric.APPLE_FIRST_TIME_UNITS;
+    case 2:
+    case "APPLE_REDOWNLOADS_RESTORES":
+      return StaffStoreDownloadMetric.APPLE_REDOWNLOADS_RESTORES;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StaffStoreDownloadMetric.UNRECOGNIZED;
+  }
+}
+
+export function staffStoreDownloadMetricToJSON(object: StaffStoreDownloadMetric): string {
+  switch (object) {
+    case StaffStoreDownloadMetric.GOOGLE_INSTALL_EVENTS:
+      return "GOOGLE_INSTALL_EVENTS";
+    case StaffStoreDownloadMetric.APPLE_FIRST_TIME_UNITS:
+      return "APPLE_FIRST_TIME_UNITS";
+    case StaffStoreDownloadMetric.APPLE_REDOWNLOADS_RESTORES:
+      return "APPLE_REDOWNLOADS_RESTORES";
+    case StaffStoreDownloadMetric.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function staffStoreDownloadMetricToNumber(object: StaffStoreDownloadMetric): number {
+  switch (object) {
+    case StaffStoreDownloadMetric.GOOGLE_INSTALL_EVENTS:
+      return 0;
+    case StaffStoreDownloadMetric.APPLE_FIRST_TIME_UNITS:
+      return 1;
+    case StaffStoreDownloadMetric.APPLE_REDOWNLOADS_RESTORES:
+      return 2;
+    case StaffStoreDownloadMetric.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
+export enum StaffStoreDownloadStatus {
+  STORE_DOWNLOAD_EMPTY = "STORE_DOWNLOAD_EMPTY",
+  STORE_DOWNLOAD_READY = "STORE_DOWNLOAD_READY",
+  STORE_DOWNLOAD_REFRESHING = "STORE_DOWNLOAD_REFRESHING",
+  STORE_DOWNLOAD_FAILED = "STORE_DOWNLOAD_FAILED",
+  STORE_DOWNLOAD_PARTIAL = "STORE_DOWNLOAD_PARTIAL",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function staffStoreDownloadStatusFromJSON(object: any): StaffStoreDownloadStatus {
+  switch (object) {
+    case 0:
+    case "STORE_DOWNLOAD_EMPTY":
+      return StaffStoreDownloadStatus.STORE_DOWNLOAD_EMPTY;
+    case 1:
+    case "STORE_DOWNLOAD_READY":
+      return StaffStoreDownloadStatus.STORE_DOWNLOAD_READY;
+    case 2:
+    case "STORE_DOWNLOAD_REFRESHING":
+      return StaffStoreDownloadStatus.STORE_DOWNLOAD_REFRESHING;
+    case 3:
+    case "STORE_DOWNLOAD_FAILED":
+      return StaffStoreDownloadStatus.STORE_DOWNLOAD_FAILED;
+    case 4:
+    case "STORE_DOWNLOAD_PARTIAL":
+      return StaffStoreDownloadStatus.STORE_DOWNLOAD_PARTIAL;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return StaffStoreDownloadStatus.UNRECOGNIZED;
+  }
+}
+
+export function staffStoreDownloadStatusToJSON(object: StaffStoreDownloadStatus): string {
+  switch (object) {
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_EMPTY:
+      return "STORE_DOWNLOAD_EMPTY";
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_READY:
+      return "STORE_DOWNLOAD_READY";
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_REFRESHING:
+      return "STORE_DOWNLOAD_REFRESHING";
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_FAILED:
+      return "STORE_DOWNLOAD_FAILED";
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_PARTIAL:
+      return "STORE_DOWNLOAD_PARTIAL";
+    case StaffStoreDownloadStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function staffStoreDownloadStatusToNumber(object: StaffStoreDownloadStatus): number {
+  switch (object) {
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_EMPTY:
+      return 0;
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_READY:
+      return 1;
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_REFRESHING:
+      return 2;
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_FAILED:
+      return 3;
+    case StaffStoreDownloadStatus.STORE_DOWNLOAD_PARTIAL:
+      return 4;
+    case StaffStoreDownloadStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface CreateUserRequest {
   /** Context of the request */
   context:
@@ -134,6 +301,81 @@ export interface GetUsersRequest {
 export interface GetUsersResponse {
   /** List of BassemLabsStaff users */
   users: BassemLabsStaff[];
+}
+
+export interface StaffStoreReportingRequest {
+  context: RequestContext | undefined;
+}
+
+export interface StaffStoreReportingState {
+  google_oauth_configured?:
+    | boolean
+    | undefined;
+  /** Present only for a usable saved Google connection. */
+  google_account_email?: string | undefined;
+  apple_configured?: boolean | undefined;
+}
+
+export interface StaffGooglePlayConsent {
+  authorization_url?: string | undefined;
+}
+
+export interface CompleteStaffGooglePlayConsentRequest {
+  context: RequestContext | undefined;
+  code?: string | undefined;
+  state?: string | undefined;
+}
+
+/** Public staff summary projection, independent of the User Service response. */
+export interface StaffOrganizationUsage {
+  organization_name?: string | undefined;
+  login_id?: string | undefined;
+  account_count?: number | undefined;
+  active_7d_count?: number | undefined;
+  active_30d_count?: number | undefined;
+  parent_count?: number | undefined;
+  linked_parent_count?: number | undefined;
+  observed_parent_count?: number | undefined;
+  active_parent_7d_count?: number | undefined;
+  active_parent_30d_count?: number | undefined;
+}
+
+export interface StaffUsageSummary {
+  as_of: Date | undefined;
+  organizations: StaffOrganizationUsage[];
+}
+
+export interface StaffStoreReportCoverage {
+  /** Inclusive provider calendar dates, ISO 8601 YYYY-MM-DD. */
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+}
+
+export interface StaffStoreDownloadTotal {
+  metric?:
+    | StaffStoreDownloadMetric
+    | undefined;
+  /** Sales and Trends units retain signed adjustments/refunds. */
+  total?: number | undefined;
+  coverage: StaffStoreReportCoverage[];
+}
+
+export interface StaffStoreDownloadProvider {
+  provider?: StaffStoreReportProvider | undefined;
+  status?: StaffStoreDownloadStatus | undefined;
+  last_attempt_at?: Date | undefined;
+  last_success_at?: Date | undefined;
+  error_message?: string | undefined;
+  metrics: StaffStoreDownloadTotal[];
+}
+
+export interface StaffStoreDownloadSummary {
+  providers: StaffStoreDownloadProvider[];
+}
+
+export interface RefreshStaffStoreDownloadReportsRequest {
+  context: RequestContext | undefined;
+  provider?: StaffStoreReportProvider | undefined;
 }
 
 function createBaseCreateUserRequest(): CreateUserRequest {
@@ -875,6 +1117,1046 @@ export const GetUsersResponse: MessageFns<GetUsersResponse> = {
   },
 };
 
+function createBaseStaffStoreReportingRequest(): StaffStoreReportingRequest {
+  return { context: undefined };
+}
+
+export const StaffStoreReportingRequest: MessageFns<StaffStoreReportingRequest> = {
+  encode(message: StaffStoreReportingRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StaffStoreReportingRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStaffStoreReportingRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StaffStoreReportingRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: StaffStoreReportingRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StaffStoreReportingRequest>, I>>(base?: I): StaffStoreReportingRequest {
+    return StaffStoreReportingRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StaffStoreReportingRequest>, I>>(object: I): StaffStoreReportingRequest {
+    const message = createBaseStaffStoreReportingRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseStaffStoreReportingState(): StaffStoreReportingState {
+  return { google_oauth_configured: undefined, google_account_email: undefined, apple_configured: undefined };
+}
+
+export const StaffStoreReportingState: MessageFns<StaffStoreReportingState> = {
+  encode(message: StaffStoreReportingState, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.google_oauth_configured !== undefined) {
+      writer.uint32(8).bool(message.google_oauth_configured);
+    }
+    if (message.google_account_email !== undefined) {
+      writer.uint32(18).string(message.google_account_email);
+    }
+    if (message.apple_configured !== undefined) {
+      writer.uint32(24).bool(message.apple_configured);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StaffStoreReportingState {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStaffStoreReportingState();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.google_oauth_configured = reader.bool();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.google_account_email = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.apple_configured = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StaffStoreReportingState {
+    return {
+      google_oauth_configured: isSet(object.googleOauthConfigured)
+        ? globalThis.Boolean(object.googleOauthConfigured)
+        : undefined,
+      google_account_email: isSet(object.googleAccountEmail) ? globalThis.String(object.googleAccountEmail) : undefined,
+      apple_configured: isSet(object.appleConfigured) ? globalThis.Boolean(object.appleConfigured) : undefined,
+    };
+  },
+
+  toJSON(message: StaffStoreReportingState): unknown {
+    const obj: any = {};
+    if (message.google_oauth_configured !== undefined) {
+      obj.googleOauthConfigured = message.google_oauth_configured;
+    }
+    if (message.google_account_email !== undefined) {
+      obj.googleAccountEmail = message.google_account_email;
+    }
+    if (message.apple_configured !== undefined) {
+      obj.appleConfigured = message.apple_configured;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StaffStoreReportingState>, I>>(base?: I): StaffStoreReportingState {
+    return StaffStoreReportingState.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StaffStoreReportingState>, I>>(object: I): StaffStoreReportingState {
+    const message = createBaseStaffStoreReportingState();
+    message.google_oauth_configured = object.google_oauth_configured ?? undefined;
+    message.google_account_email = object.google_account_email ?? undefined;
+    message.apple_configured = object.apple_configured ?? undefined;
+    return message;
+  },
+};
+
+function createBaseStaffGooglePlayConsent(): StaffGooglePlayConsent {
+  return { authorization_url: undefined };
+}
+
+export const StaffGooglePlayConsent: MessageFns<StaffGooglePlayConsent> = {
+  encode(message: StaffGooglePlayConsent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.authorization_url !== undefined) {
+      writer.uint32(10).string(message.authorization_url);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StaffGooglePlayConsent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStaffGooglePlayConsent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.authorization_url = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StaffGooglePlayConsent {
+    return {
+      authorization_url: isSet(object.authorizationUrl) ? globalThis.String(object.authorizationUrl) : undefined,
+    };
+  },
+
+  toJSON(message: StaffGooglePlayConsent): unknown {
+    const obj: any = {};
+    if (message.authorization_url !== undefined) {
+      obj.authorizationUrl = message.authorization_url;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StaffGooglePlayConsent>, I>>(base?: I): StaffGooglePlayConsent {
+    return StaffGooglePlayConsent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StaffGooglePlayConsent>, I>>(object: I): StaffGooglePlayConsent {
+    const message = createBaseStaffGooglePlayConsent();
+    message.authorization_url = object.authorization_url ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCompleteStaffGooglePlayConsentRequest(): CompleteStaffGooglePlayConsentRequest {
+  return { context: undefined, code: undefined, state: undefined };
+}
+
+export const CompleteStaffGooglePlayConsentRequest: MessageFns<CompleteStaffGooglePlayConsentRequest> = {
+  encode(message: CompleteStaffGooglePlayConsentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.code !== undefined) {
+      writer.uint32(18).string(message.code);
+    }
+    if (message.state !== undefined) {
+      writer.uint32(26).string(message.state);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CompleteStaffGooglePlayConsentRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCompleteStaffGooglePlayConsentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.code = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.state = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CompleteStaffGooglePlayConsentRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      code: isSet(object.code) ? globalThis.String(object.code) : undefined,
+      state: isSet(object.state) ? globalThis.String(object.state) : undefined,
+    };
+  },
+
+  toJSON(message: CompleteStaffGooglePlayConsentRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.code !== undefined) {
+      obj.code = message.code;
+    }
+    if (message.state !== undefined) {
+      obj.state = message.state;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CompleteStaffGooglePlayConsentRequest>, I>>(
+    base?: I,
+  ): CompleteStaffGooglePlayConsentRequest {
+    return CompleteStaffGooglePlayConsentRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CompleteStaffGooglePlayConsentRequest>, I>>(
+    object: I,
+  ): CompleteStaffGooglePlayConsentRequest {
+    const message = createBaseCompleteStaffGooglePlayConsentRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.code = object.code ?? undefined;
+    message.state = object.state ?? undefined;
+    return message;
+  },
+};
+
+function createBaseStaffOrganizationUsage(): StaffOrganizationUsage {
+  return {
+    organization_name: undefined,
+    login_id: undefined,
+    account_count: undefined,
+    active_7d_count: undefined,
+    active_30d_count: undefined,
+    parent_count: undefined,
+    linked_parent_count: undefined,
+    observed_parent_count: undefined,
+    active_parent_7d_count: undefined,
+    active_parent_30d_count: undefined,
+  };
+}
+
+export const StaffOrganizationUsage: MessageFns<StaffOrganizationUsage> = {
+  encode(message: StaffOrganizationUsage, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.organization_name !== undefined) {
+      writer.uint32(10).string(message.organization_name);
+    }
+    if (message.login_id !== undefined) {
+      writer.uint32(18).string(message.login_id);
+    }
+    if (message.account_count !== undefined) {
+      writer.uint32(24).uint64(message.account_count);
+    }
+    if (message.active_7d_count !== undefined) {
+      writer.uint32(32).uint64(message.active_7d_count);
+    }
+    if (message.active_30d_count !== undefined) {
+      writer.uint32(40).uint64(message.active_30d_count);
+    }
+    if (message.parent_count !== undefined) {
+      writer.uint32(48).uint64(message.parent_count);
+    }
+    if (message.linked_parent_count !== undefined) {
+      writer.uint32(56).uint64(message.linked_parent_count);
+    }
+    if (message.observed_parent_count !== undefined) {
+      writer.uint32(64).uint64(message.observed_parent_count);
+    }
+    if (message.active_parent_7d_count !== undefined) {
+      writer.uint32(72).uint64(message.active_parent_7d_count);
+    }
+    if (message.active_parent_30d_count !== undefined) {
+      writer.uint32(80).uint64(message.active_parent_30d_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StaffOrganizationUsage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStaffOrganizationUsage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.organization_name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.login_id = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.account_count = longToNumber(reader.uint64());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.active_7d_count = longToNumber(reader.uint64());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.active_30d_count = longToNumber(reader.uint64());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.parent_count = longToNumber(reader.uint64());
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.linked_parent_count = longToNumber(reader.uint64());
+          continue;
+        case 8:
+          if (tag !== 64) {
+            break;
+          }
+
+          message.observed_parent_count = longToNumber(reader.uint64());
+          continue;
+        case 9:
+          if (tag !== 72) {
+            break;
+          }
+
+          message.active_parent_7d_count = longToNumber(reader.uint64());
+          continue;
+        case 10:
+          if (tag !== 80) {
+            break;
+          }
+
+          message.active_parent_30d_count = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StaffOrganizationUsage {
+    return {
+      organization_name: isSet(object.organizationName) ? globalThis.String(object.organizationName) : undefined,
+      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined,
+      account_count: isSet(object.accountCount) ? globalThis.Number(object.accountCount) : undefined,
+      active_7d_count: isSet(object.active7dCount) ? globalThis.Number(object.active7dCount) : undefined,
+      active_30d_count: isSet(object.active30dCount) ? globalThis.Number(object.active30dCount) : undefined,
+      parent_count: isSet(object.parentCount) ? globalThis.Number(object.parentCount) : undefined,
+      linked_parent_count: isSet(object.linkedParentCount) ? globalThis.Number(object.linkedParentCount) : undefined,
+      observed_parent_count: isSet(object.observedParentCount)
+        ? globalThis.Number(object.observedParentCount)
+        : undefined,
+      active_parent_7d_count: isSet(object.activeParent7dCount)
+        ? globalThis.Number(object.activeParent7dCount)
+        : undefined,
+      active_parent_30d_count: isSet(object.activeParent30dCount)
+        ? globalThis.Number(object.activeParent30dCount)
+        : undefined,
+    };
+  },
+
+  toJSON(message: StaffOrganizationUsage): unknown {
+    const obj: any = {};
+    if (message.organization_name !== undefined) {
+      obj.organizationName = message.organization_name;
+    }
+    if (message.login_id !== undefined) {
+      obj.loginId = message.login_id;
+    }
+    if (message.account_count !== undefined) {
+      obj.accountCount = Math.round(message.account_count);
+    }
+    if (message.active_7d_count !== undefined) {
+      obj.active7dCount = Math.round(message.active_7d_count);
+    }
+    if (message.active_30d_count !== undefined) {
+      obj.active30dCount = Math.round(message.active_30d_count);
+    }
+    if (message.parent_count !== undefined) {
+      obj.parentCount = Math.round(message.parent_count);
+    }
+    if (message.linked_parent_count !== undefined) {
+      obj.linkedParentCount = Math.round(message.linked_parent_count);
+    }
+    if (message.observed_parent_count !== undefined) {
+      obj.observedParentCount = Math.round(message.observed_parent_count);
+    }
+    if (message.active_parent_7d_count !== undefined) {
+      obj.activeParent7dCount = Math.round(message.active_parent_7d_count);
+    }
+    if (message.active_parent_30d_count !== undefined) {
+      obj.activeParent30dCount = Math.round(message.active_parent_30d_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StaffOrganizationUsage>, I>>(base?: I): StaffOrganizationUsage {
+    return StaffOrganizationUsage.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StaffOrganizationUsage>, I>>(object: I): StaffOrganizationUsage {
+    const message = createBaseStaffOrganizationUsage();
+    message.organization_name = object.organization_name ?? undefined;
+    message.login_id = object.login_id ?? undefined;
+    message.account_count = object.account_count ?? undefined;
+    message.active_7d_count = object.active_7d_count ?? undefined;
+    message.active_30d_count = object.active_30d_count ?? undefined;
+    message.parent_count = object.parent_count ?? undefined;
+    message.linked_parent_count = object.linked_parent_count ?? undefined;
+    message.observed_parent_count = object.observed_parent_count ?? undefined;
+    message.active_parent_7d_count = object.active_parent_7d_count ?? undefined;
+    message.active_parent_30d_count = object.active_parent_30d_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseStaffUsageSummary(): StaffUsageSummary {
+  return { as_of: undefined, organizations: [] };
+}
+
+export const StaffUsageSummary: MessageFns<StaffUsageSummary> = {
+  encode(message: StaffUsageSummary, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.as_of !== undefined) {
+      Timestamp.encode(toTimestamp(message.as_of), writer.uint32(10).fork()).join();
+    }
+    for (const v of message.organizations) {
+      StaffOrganizationUsage.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StaffUsageSummary {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStaffUsageSummary();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.as_of = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.organizations.push(StaffOrganizationUsage.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StaffUsageSummary {
+    return {
+      as_of: isSet(object.asOf) ? fromJsonTimestamp(object.asOf) : undefined,
+      organizations: globalThis.Array.isArray(object?.organizations)
+        ? object.organizations.map((e: any) => StaffOrganizationUsage.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: StaffUsageSummary): unknown {
+    const obj: any = {};
+    if (message.as_of !== undefined) {
+      obj.asOf = message.as_of.toISOString();
+    }
+    if (message.organizations?.length) {
+      obj.organizations = message.organizations.map((e) => StaffOrganizationUsage.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StaffUsageSummary>, I>>(base?: I): StaffUsageSummary {
+    return StaffUsageSummary.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StaffUsageSummary>, I>>(object: I): StaffUsageSummary {
+    const message = createBaseStaffUsageSummary();
+    message.as_of = object.as_of ?? undefined;
+    message.organizations = object.organizations?.map((e) => StaffOrganizationUsage.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseStaffStoreReportCoverage(): StaffStoreReportCoverage {
+  return { start_date: undefined, end_date: undefined };
+}
+
+export const StaffStoreReportCoverage: MessageFns<StaffStoreReportCoverage> = {
+  encode(message: StaffStoreReportCoverage, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.start_date !== undefined) {
+      writer.uint32(10).string(message.start_date);
+    }
+    if (message.end_date !== undefined) {
+      writer.uint32(18).string(message.end_date);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StaffStoreReportCoverage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStaffStoreReportCoverage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.start_date = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.end_date = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StaffStoreReportCoverage {
+    return {
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
+    };
+  },
+
+  toJSON(message: StaffStoreReportCoverage): unknown {
+    const obj: any = {};
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date;
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StaffStoreReportCoverage>, I>>(base?: I): StaffStoreReportCoverage {
+    return StaffStoreReportCoverage.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StaffStoreReportCoverage>, I>>(object: I): StaffStoreReportCoverage {
+    const message = createBaseStaffStoreReportCoverage();
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    return message;
+  },
+};
+
+function createBaseStaffStoreDownloadTotal(): StaffStoreDownloadTotal {
+  return { metric: undefined, total: undefined, coverage: [] };
+}
+
+export const StaffStoreDownloadTotal: MessageFns<StaffStoreDownloadTotal> = {
+  encode(message: StaffStoreDownloadTotal, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.metric !== undefined) {
+      writer.uint32(8).int32(staffStoreDownloadMetricToNumber(message.metric));
+    }
+    if (message.total !== undefined) {
+      writer.uint32(16).int64(message.total);
+    }
+    for (const v of message.coverage) {
+      StaffStoreReportCoverage.encode(v!, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StaffStoreDownloadTotal {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStaffStoreDownloadTotal();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.metric = staffStoreDownloadMetricFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.total = longToNumber(reader.int64());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.coverage.push(StaffStoreReportCoverage.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StaffStoreDownloadTotal {
+    return {
+      metric: isSet(object.metric) ? staffStoreDownloadMetricFromJSON(object.metric) : undefined,
+      total: isSet(object.total) ? globalThis.Number(object.total) : undefined,
+      coverage: globalThis.Array.isArray(object?.coverage)
+        ? object.coverage.map((e: any) => StaffStoreReportCoverage.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: StaffStoreDownloadTotal): unknown {
+    const obj: any = {};
+    if (message.metric !== undefined) {
+      obj.metric = staffStoreDownloadMetricToJSON(message.metric);
+    }
+    if (message.total !== undefined) {
+      obj.total = Math.round(message.total);
+    }
+    if (message.coverage?.length) {
+      obj.coverage = message.coverage.map((e) => StaffStoreReportCoverage.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StaffStoreDownloadTotal>, I>>(base?: I): StaffStoreDownloadTotal {
+    return StaffStoreDownloadTotal.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StaffStoreDownloadTotal>, I>>(object: I): StaffStoreDownloadTotal {
+    const message = createBaseStaffStoreDownloadTotal();
+    message.metric = object.metric ?? undefined;
+    message.total = object.total ?? undefined;
+    message.coverage = object.coverage?.map((e) => StaffStoreReportCoverage.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseStaffStoreDownloadProvider(): StaffStoreDownloadProvider {
+  return {
+    provider: undefined,
+    status: undefined,
+    last_attempt_at: undefined,
+    last_success_at: undefined,
+    error_message: undefined,
+    metrics: [],
+  };
+}
+
+export const StaffStoreDownloadProvider: MessageFns<StaffStoreDownloadProvider> = {
+  encode(message: StaffStoreDownloadProvider, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.provider !== undefined) {
+      writer.uint32(8).int32(staffStoreReportProviderToNumber(message.provider));
+    }
+    if (message.status !== undefined) {
+      writer.uint32(16).int32(staffStoreDownloadStatusToNumber(message.status));
+    }
+    if (message.last_attempt_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.last_attempt_at), writer.uint32(26).fork()).join();
+    }
+    if (message.last_success_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.last_success_at), writer.uint32(34).fork()).join();
+    }
+    if (message.error_message !== undefined) {
+      writer.uint32(42).string(message.error_message);
+    }
+    for (const v of message.metrics) {
+      StaffStoreDownloadTotal.encode(v!, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StaffStoreDownloadProvider {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStaffStoreDownloadProvider();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.provider = staffStoreReportProviderFromJSON(reader.int32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.status = staffStoreDownloadStatusFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.last_attempt_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.last_success_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.error_message = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.metrics.push(StaffStoreDownloadTotal.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StaffStoreDownloadProvider {
+    return {
+      provider: isSet(object.provider) ? staffStoreReportProviderFromJSON(object.provider) : undefined,
+      status: isSet(object.status) ? staffStoreDownloadStatusFromJSON(object.status) : undefined,
+      last_attempt_at: isSet(object.lastAttemptAt) ? fromJsonTimestamp(object.lastAttemptAt) : undefined,
+      last_success_at: isSet(object.lastSuccessAt) ? fromJsonTimestamp(object.lastSuccessAt) : undefined,
+      error_message: isSet(object.errorMessage) ? globalThis.String(object.errorMessage) : undefined,
+      metrics: globalThis.Array.isArray(object?.metrics)
+        ? object.metrics.map((e: any) => StaffStoreDownloadTotal.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: StaffStoreDownloadProvider): unknown {
+    const obj: any = {};
+    if (message.provider !== undefined) {
+      obj.provider = staffStoreReportProviderToJSON(message.provider);
+    }
+    if (message.status !== undefined) {
+      obj.status = staffStoreDownloadStatusToJSON(message.status);
+    }
+    if (message.last_attempt_at !== undefined) {
+      obj.lastAttemptAt = message.last_attempt_at.toISOString();
+    }
+    if (message.last_success_at !== undefined) {
+      obj.lastSuccessAt = message.last_success_at.toISOString();
+    }
+    if (message.error_message !== undefined) {
+      obj.errorMessage = message.error_message;
+    }
+    if (message.metrics?.length) {
+      obj.metrics = message.metrics.map((e) => StaffStoreDownloadTotal.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StaffStoreDownloadProvider>, I>>(base?: I): StaffStoreDownloadProvider {
+    return StaffStoreDownloadProvider.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StaffStoreDownloadProvider>, I>>(object: I): StaffStoreDownloadProvider {
+    const message = createBaseStaffStoreDownloadProvider();
+    message.provider = object.provider ?? undefined;
+    message.status = object.status ?? undefined;
+    message.last_attempt_at = object.last_attempt_at ?? undefined;
+    message.last_success_at = object.last_success_at ?? undefined;
+    message.error_message = object.error_message ?? undefined;
+    message.metrics = object.metrics?.map((e) => StaffStoreDownloadTotal.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseStaffStoreDownloadSummary(): StaffStoreDownloadSummary {
+  return { providers: [] };
+}
+
+export const StaffStoreDownloadSummary: MessageFns<StaffStoreDownloadSummary> = {
+  encode(message: StaffStoreDownloadSummary, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.providers) {
+      StaffStoreDownloadProvider.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): StaffStoreDownloadSummary {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseStaffStoreDownloadSummary();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.providers.push(StaffStoreDownloadProvider.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): StaffStoreDownloadSummary {
+    return {
+      providers: globalThis.Array.isArray(object?.providers)
+        ? object.providers.map((e: any) => StaffStoreDownloadProvider.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: StaffStoreDownloadSummary): unknown {
+    const obj: any = {};
+    if (message.providers?.length) {
+      obj.providers = message.providers.map((e) => StaffStoreDownloadProvider.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StaffStoreDownloadSummary>, I>>(base?: I): StaffStoreDownloadSummary {
+    return StaffStoreDownloadSummary.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<StaffStoreDownloadSummary>, I>>(object: I): StaffStoreDownloadSummary {
+    const message = createBaseStaffStoreDownloadSummary();
+    message.providers = object.providers?.map((e) => StaffStoreDownloadProvider.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseRefreshStaffStoreDownloadReportsRequest(): RefreshStaffStoreDownloadReportsRequest {
+  return { context: undefined, provider: undefined };
+}
+
+export const RefreshStaffStoreDownloadReportsRequest: MessageFns<RefreshStaffStoreDownloadReportsRequest> = {
+  encode(message: RefreshStaffStoreDownloadReportsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.provider !== undefined) {
+      writer.uint32(16).int32(staffStoreReportProviderToNumber(message.provider));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RefreshStaffStoreDownloadReportsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRefreshStaffStoreDownloadReportsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.provider = staffStoreReportProviderFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RefreshStaffStoreDownloadReportsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      provider: isSet(object.provider) ? staffStoreReportProviderFromJSON(object.provider) : undefined,
+    };
+  },
+
+  toJSON(message: RefreshStaffStoreDownloadReportsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.provider !== undefined) {
+      obj.provider = staffStoreReportProviderToJSON(message.provider);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RefreshStaffStoreDownloadReportsRequest>, I>>(
+    base?: I,
+  ): RefreshStaffStoreDownloadReportsRequest {
+    return RefreshStaffStoreDownloadReportsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<RefreshStaffStoreDownloadReportsRequest>, I>>(
+    object: I,
+  ): RefreshStaffStoreDownloadReportsRequest {
+    const message = createBaseRefreshStaffStoreDownloadReportsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.provider = object.provider ?? undefined;
+    return message;
+  },
+};
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -907,6 +2189,17 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(int64: { toString(): string }): number {
+  const num = globalThis.Number(int64.toString());
+  if (num > globalThis.Number.MAX_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  if (num < globalThis.Number.MIN_SAFE_INTEGER) {
+    throw new globalThis.Error("Value is smaller than Number.MIN_SAFE_INTEGER");
+  }
+  return num;
 }
 
 function isSet(value: any): boolean {
