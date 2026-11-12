@@ -304,7 +304,11 @@ export interface LmsCourseWork {
     | LmsProviderType
     | undefined;
   /** Store original LMS JSON */
-  raw_json?: string | undefined;
+  raw_json?:
+    | string
+    | undefined;
+  /** Grading eligibility is separate from submission state; absent preserves prior behavior. */
+  not_graded?: boolean | undefined;
 }
 
 export interface Attachment {
@@ -386,6 +390,7 @@ export interface LmsCalendarItem {
     | undefined;
   /** Existing linked abstract-course color (#RRGGBB); absent for unlinked classes. */
   course_color?: string | undefined;
+  not_graded?: boolean | undefined;
 }
 
 export interface LmsHistory {
@@ -537,6 +542,7 @@ function createBaseLmsCourseWork(): LmsCourseWork {
     work_type: undefined,
     provider: undefined,
     raw_json: undefined,
+    not_graded: undefined,
   };
 }
 
@@ -577,6 +583,9 @@ export const LmsCourseWork: MessageFns<LmsCourseWork> = {
     }
     if (message.raw_json !== undefined) {
       writer.uint32(98).string(message.raw_json);
+    }
+    if (message.not_graded !== undefined) {
+      writer.uint32(104).bool(message.not_graded);
     }
     return writer;
   },
@@ -672,6 +681,13 @@ export const LmsCourseWork: MessageFns<LmsCourseWork> = {
 
           message.raw_json = reader.string();
           continue;
+        case 13:
+          if (tag !== 104) {
+            break;
+          }
+
+          message.not_graded = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -697,6 +713,7 @@ export const LmsCourseWork: MessageFns<LmsCourseWork> = {
       work_type: isSet(object.workType) ? lmsWorkTypeFromJSON(object.workType) : undefined,
       provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
       raw_json: isSet(object.rawJson) ? globalThis.String(object.rawJson) : undefined,
+      not_graded: isSet(object.notGraded) ? globalThis.Boolean(object.notGraded) : undefined,
     };
   },
 
@@ -738,6 +755,9 @@ export const LmsCourseWork: MessageFns<LmsCourseWork> = {
     if (message.raw_json !== undefined) {
       obj.rawJson = message.raw_json;
     }
+    if (message.not_graded !== undefined) {
+      obj.notGraded = message.not_graded;
+    }
     return obj;
   },
 
@@ -758,6 +778,7 @@ export const LmsCourseWork: MessageFns<LmsCourseWork> = {
     message.work_type = object.work_type ?? undefined;
     message.provider = object.provider ?? undefined;
     message.raw_json = object.raw_json ?? undefined;
+    message.not_graded = object.not_graded ?? undefined;
     return message;
   },
 };
@@ -1082,6 +1103,7 @@ function createBaseLmsCalendarItem(): LmsCalendarItem {
     late: undefined,
     grade: undefined,
     course_color: undefined,
+    not_graded: undefined,
   };
 }
 
@@ -1152,6 +1174,9 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
     }
     if (message.course_color !== undefined) {
       writer.uint32(178).string(message.course_color);
+    }
+    if (message.not_graded !== undefined) {
+      writer.uint32(184).bool(message.not_graded);
     }
     return writer;
   },
@@ -1317,6 +1342,13 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
 
           message.course_color = reader.string();
           continue;
+        case 23:
+          if (tag !== 184) {
+            break;
+          }
+
+          message.not_graded = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1352,6 +1384,7 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
       late: isSet(object.late) ? globalThis.Boolean(object.late) : undefined,
       grade: isSet(object.grade) ? globalThis.Number(object.grade) : undefined,
       course_color: isSet(object.courseColor) ? globalThis.String(object.courseColor) : undefined,
+      not_graded: isSet(object.notGraded) ? globalThis.Boolean(object.notGraded) : undefined,
     };
   },
 
@@ -1423,6 +1456,9 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
     if (message.course_color !== undefined) {
       obj.courseColor = message.course_color;
     }
+    if (message.not_graded !== undefined) {
+      obj.notGraded = message.not_graded;
+    }
     return obj;
   },
 
@@ -1455,6 +1491,7 @@ export const LmsCalendarItem: MessageFns<LmsCalendarItem> = {
     message.late = object.late ?? undefined;
     message.grade = object.grade ?? undefined;
     message.course_color = object.course_color ?? undefined;
+    message.not_graded = object.not_graded ?? undefined;
     return message;
   },
 };

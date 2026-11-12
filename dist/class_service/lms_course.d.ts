@@ -84,6 +84,8 @@ export interface LmsCourseWork {
     provider?: LmsProviderType | undefined;
     /** Store original LMS JSON */
     raw_json?: string | undefined;
+    /** Grading eligibility is separate from submission state; absent preserves prior behavior. */
+    not_graded?: boolean | undefined;
 }
 export interface Attachment {
     url?: string | undefined;
@@ -148,6 +150,7 @@ export interface LmsCalendarItem {
     grade?: number | undefined;
     /** Existing linked abstract-course color (#RRGGBB); absent for unlinked classes. */
     course_color?: string | undefined;
+    not_graded?: boolean | undefined;
 }
 export interface LmsHistory {
     /** Who made the change (provider user id) */

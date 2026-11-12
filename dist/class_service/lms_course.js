@@ -397,6 +397,7 @@ function createBaseLmsCourseWork() {
         work_type: undefined,
         provider: undefined,
         raw_json: undefined,
+        not_graded: undefined,
     };
 }
 exports.LmsCourseWork = {
@@ -436,6 +437,9 @@ exports.LmsCourseWork = {
         }
         if (message.raw_json !== undefined) {
             writer.uint32(98).string(message.raw_json);
+        }
+        if (message.not_graded !== undefined) {
+            writer.uint32(104).bool(message.not_graded);
         }
         return writer;
     },
@@ -518,6 +522,12 @@ exports.LmsCourseWork = {
                     }
                     message.raw_json = reader.string();
                     continue;
+                case 13:
+                    if (tag !== 104) {
+                        break;
+                    }
+                    message.not_graded = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -542,6 +552,7 @@ exports.LmsCourseWork = {
             work_type: isSet(object.workType) ? lmsWorkTypeFromJSON(object.workType) : undefined,
             provider: isSet(object.provider) ? lmsProviderTypeFromJSON(object.provider) : undefined,
             raw_json: isSet(object.rawJson) ? globalThis.String(object.rawJson) : undefined,
+            not_graded: isSet(object.notGraded) ? globalThis.Boolean(object.notGraded) : undefined,
         };
     },
     toJSON(message) {
@@ -582,6 +593,9 @@ exports.LmsCourseWork = {
         if (message.raw_json !== undefined) {
             obj.rawJson = message.raw_json;
         }
+        if (message.not_graded !== undefined) {
+            obj.notGraded = message.not_graded;
+        }
         return obj;
     },
     create(base) {
@@ -601,6 +615,7 @@ exports.LmsCourseWork = {
         message.work_type = object.work_type ?? undefined;
         message.provider = object.provider ?? undefined;
         message.raw_json = object.raw_json ?? undefined;
+        message.not_graded = object.not_graded ?? undefined;
         return message;
     },
 };
@@ -899,6 +914,7 @@ function createBaseLmsCalendarItem() {
         late: undefined,
         grade: undefined,
         course_color: undefined,
+        not_graded: undefined,
     };
 }
 exports.LmsCalendarItem = {
@@ -968,6 +984,9 @@ exports.LmsCalendarItem = {
         }
         if (message.course_color !== undefined) {
             writer.uint32(178).string(message.course_color);
+        }
+        if (message.not_graded !== undefined) {
+            writer.uint32(184).bool(message.not_graded);
         }
         return writer;
     },
@@ -1110,6 +1129,12 @@ exports.LmsCalendarItem = {
                     }
                     message.course_color = reader.string();
                     continue;
+                case 23:
+                    if (tag !== 184) {
+                        break;
+                    }
+                    message.not_graded = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1144,6 +1169,7 @@ exports.LmsCalendarItem = {
             late: isSet(object.late) ? globalThis.Boolean(object.late) : undefined,
             grade: isSet(object.grade) ? globalThis.Number(object.grade) : undefined,
             course_color: isSet(object.courseColor) ? globalThis.String(object.courseColor) : undefined,
+            not_graded: isSet(object.notGraded) ? globalThis.Boolean(object.notGraded) : undefined,
         };
     },
     toJSON(message) {
@@ -1214,6 +1240,9 @@ exports.LmsCalendarItem = {
         if (message.course_color !== undefined) {
             obj.courseColor = message.course_color;
         }
+        if (message.not_graded !== undefined) {
+            obj.notGraded = message.not_graded;
+        }
         return obj;
     },
     create(base) {
@@ -1245,6 +1274,7 @@ exports.LmsCalendarItem = {
         message.late = object.late ?? undefined;
         message.grade = object.grade ?? undefined;
         message.course_color = object.course_color ?? undefined;
+        message.not_graded = object.not_graded ?? undefined;
         return message;
     },
 };
