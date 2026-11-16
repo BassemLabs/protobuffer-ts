@@ -6,7 +6,7 @@
 // source: payment_service/invoice_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetLatestOrganizationInvoiceRequest = exports.UpsertOrganizationInvoiceRequest = exports.GetOrgPaidBassemLabsFeesInPeriodResponse = exports.GetOrgPaidBassemLabsFeesInPeriodRequest = exports.StudentInvoices = exports.GetNonPaidOnboardingInvoicesForStudentsResponse = exports.GetNonPaidOnboardingInvoicesForStudentsRequest = exports.GetStudentsWithReregistrationInvoicesResponse = exports.GetStudentsWithReregistrationInvoicesRequest = exports.GetStudentsWithUnpaidInvoicesResponse = exports.GetStudentsWithUnpaidInvoicesRequest = exports.GetFamilyTuitionInvoicesRequest = exports.SetAutoPayInvoiceStatusRequest = exports.GetAutoPayInvoicesReadyToChargeRequest = exports.UnarchiveInvoiceRequest = exports.ArchiveInvoiceRequest = exports.UpdateInvoiceAutoPaymentRequest = exports.UpdateInvoiceRequest = exports.CreateInvoiceForClassResponse = exports.GenerateRegistrationFeesInvoiceRequest = exports.GenerateWaitlistFeeInvoiceRequest = exports.GenerateInterviewFeeInvoiceRequest = exports.CreateInvoiceForClassRequest = exports.CreateInvoicesResponse = exports.CreateInvoiceRequest = exports.IsInvoicePaidResponse = exports.IsInvoicePaidRequest = exports.ListInvoicesResponse = exports.AggregationResponse = exports.ArchiveInvoicesRequest = exports.CancelInvoicesRequest = exports.SendInvoiceRemindersResponse = exports.SendInvoiceRemindersRequest = exports.MarkInvoiceViewedRequest = exports.ListInvoiceActivityResponse = exports.ListInvoiceActivityRequest = exports.ListInvoiceManagerRequest = exports.DeleteStudentWaitlistInvoicesRequest = exports.ValidateStudentDeletionFinancialEligibilityRequest = exports.StudentHasNoUnpaidInvoicesResponse = exports.StudentHasNoUnpaidInvoicesRequest = exports.GetParentInvoicesRequest = exports.GetFamilyInvoicesRequest = exports.GetUserInvoicesResponse = exports.GetUserInvoicesRequest = exports.GetInvoiceByNumberRequest = exports.GetInvoiceRequest = exports.Invoices = exports.AppendCommunicationBroadcastFeesRequest = exports.protobufPackage = void 0;
-exports.GetPaymentReminderRunRequest = exports.QueueInvoiceRemindersRequest = exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetPrincipalDashboardFinanceSummaryResponse = exports.GetPrincipalDashboardFinanceSummaryRequest = exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = void 0;
+exports.CreateInvoiceForClassFromTemplateRequest = exports.CreateInvoiceFromTemplateRequest = exports.InvoiceTemplateDueDateRule = exports.UpdateInvoiceTemplateRequest = exports.CreateInvoiceTemplateRequest = exports.ListInvoiceTemplatesResponse = exports.ListInvoiceTemplatesRequest = exports.InvoiceTemplateIdRequest = exports.InvoiceTemplate = exports.InvoiceTemplateData = exports.GetPaymentReminderRunRequest = exports.QueueInvoiceRemindersRequest = exports.ResetAutoPaymentForRetryRequest = exports.GetAutoPaymentAttemptsResponse = exports.GetAutoPaymentAttemptsRequest = exports.GetFailedAutoPayInvoicesRequest = exports.GetPrincipalDashboardFinanceSummaryResponse = exports.GetPrincipalDashboardFinanceSummaryRequest = exports.GetAllOrganizationInvoicesRequest = exports.GetOrganizationInvoicesRequest = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -5138,6 +5138,1142 @@ exports.GetPaymentReminderRunRequest = {
         message.run_id = (object.run_id !== undefined && object.run_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.run_id)
             : undefined;
+        return message;
+    },
+};
+function createBaseInvoiceTemplateData() {
+    return { name: undefined, title: undefined, description: undefined, items: [], coupons: [], due_in_days: undefined };
+}
+exports.InvoiceTemplateData = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.name !== undefined) {
+            writer.uint32(10).string(message.name);
+        }
+        if (message.title !== undefined) {
+            writer.uint32(18).string(message.title);
+        }
+        if (message.description !== undefined) {
+            writer.uint32(26).string(message.description);
+        }
+        for (const v of message.items) {
+            invoice_1.InvoiceItem.encode(v, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.coupons) {
+            invoice_1.Coupon.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.due_in_days !== undefined) {
+            writer.uint32(64).uint32(message.due_in_days);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseInvoiceTemplateData();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.description = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.items.push(invoice_1.InvoiceItem.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.coupons.push(invoice_1.Coupon.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 64) {
+                        break;
+                    }
+                    message.due_in_days = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => invoice_1.InvoiceItem.fromJSON(e)) : [],
+            coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
+            due_in_days: isSet(object.dueInDays) ? globalThis.Number(object.dueInDays) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.description !== undefined) {
+            obj.description = message.description;
+        }
+        if (message.items?.length) {
+            obj.items = message.items.map((e) => invoice_1.InvoiceItem.toJSON(e));
+        }
+        if (message.coupons?.length) {
+            obj.coupons = message.coupons.map((e) => invoice_1.Coupon.toJSON(e));
+        }
+        if (message.due_in_days !== undefined) {
+            obj.dueInDays = Math.round(message.due_in_days);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.InvoiceTemplateData.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseInvoiceTemplateData();
+        message.name = object.name ?? undefined;
+        message.title = object.title ?? undefined;
+        message.description = object.description ?? undefined;
+        message.items = object.items?.map((e) => invoice_1.InvoiceItem.fromPartial(e)) || [];
+        message.coupons = object.coupons?.map((e) => invoice_1.Coupon.fromPartial(e)) || [];
+        message.due_in_days = object.due_in_days ?? undefined;
+        return message;
+    },
+};
+function createBaseInvoiceTemplate() {
+    return { id: undefined, data: undefined, deleted: undefined };
+}
+exports.InvoiceTemplate = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.data !== undefined) {
+            exports.InvoiceTemplateData.encode(message.data, writer.uint32(18).fork()).join();
+        }
+        if (message.deleted !== undefined) {
+            writer.uint32(24).bool(message.deleted);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseInvoiceTemplate();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.data = exports.InvoiceTemplateData.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.deleted = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            data: isSet(object.data) ? exports.InvoiceTemplateData.fromJSON(object.data) : undefined,
+            deleted: isSet(object.deleted) ? globalThis.Boolean(object.deleted) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.data !== undefined) {
+            obj.data = exports.InvoiceTemplateData.toJSON(message.data);
+        }
+        if (message.deleted !== undefined) {
+            obj.deleted = message.deleted;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.InvoiceTemplate.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseInvoiceTemplate();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.data = (object.data !== undefined && object.data !== null)
+            ? exports.InvoiceTemplateData.fromPartial(object.data)
+            : undefined;
+        message.deleted = object.deleted ?? undefined;
+        return message;
+    },
+};
+function createBaseInvoiceTemplateIdRequest() {
+    return { context: undefined, template_id: undefined };
+}
+exports.InvoiceTemplateIdRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.template_id !== undefined) {
+            object_id_1.ObjectId.encode(message.template_id, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseInvoiceTemplateIdRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.template_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.template_id !== undefined) {
+            obj.templateId = object_id_1.ObjectId.toJSON(message.template_id);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.InvoiceTemplateIdRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseInvoiceTemplateIdRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.template_id = (object.template_id !== undefined && object.template_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.template_id)
+            : undefined;
+        return message;
+    },
+};
+function createBaseListInvoiceTemplatesRequest() {
+    return { context: undefined, per_page: undefined, page: undefined, include_deleted: undefined };
+}
+exports.ListInvoiceTemplatesRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.per_page !== undefined) {
+            writer.uint32(16).uint32(message.per_page);
+        }
+        if (message.page !== undefined) {
+            writer.uint32(24).uint32(message.page);
+        }
+        if (message.include_deleted !== undefined) {
+            writer.uint32(32).bool(message.include_deleted);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListInvoiceTemplatesRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.per_page = reader.uint32();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.page = reader.uint32();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.include_deleted = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            per_page: isSet(object.perPage) ? globalThis.Number(object.perPage) : undefined,
+            page: isSet(object.page) ? globalThis.Number(object.page) : undefined,
+            include_deleted: isSet(object.includeDeleted) ? globalThis.Boolean(object.includeDeleted) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.per_page !== undefined) {
+            obj.perPage = Math.round(message.per_page);
+        }
+        if (message.page !== undefined) {
+            obj.page = Math.round(message.page);
+        }
+        if (message.include_deleted !== undefined) {
+            obj.includeDeleted = message.include_deleted;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListInvoiceTemplatesRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListInvoiceTemplatesRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.per_page = object.per_page ?? undefined;
+        message.page = object.page ?? undefined;
+        message.include_deleted = object.include_deleted ?? undefined;
+        return message;
+    },
+};
+function createBaseListInvoiceTemplatesResponse() {
+    return { templates: [], templates_count: undefined };
+}
+exports.ListInvoiceTemplatesResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.templates) {
+            exports.InvoiceTemplate.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.templates_count !== undefined) {
+            writer.uint32(16).uint32(message.templates_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseListInvoiceTemplatesResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.templates.push(exports.InvoiceTemplate.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.templates_count = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            templates: globalThis.Array.isArray(object?.templates)
+                ? object.templates.map((e) => exports.InvoiceTemplate.fromJSON(e))
+                : [],
+            templates_count: isSet(object.templatesCount) ? globalThis.Number(object.templatesCount) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.templates?.length) {
+            obj.templates = message.templates.map((e) => exports.InvoiceTemplate.toJSON(e));
+        }
+        if (message.templates_count !== undefined) {
+            obj.templatesCount = Math.round(message.templates_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ListInvoiceTemplatesResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseListInvoiceTemplatesResponse();
+        message.templates = object.templates?.map((e) => exports.InvoiceTemplate.fromPartial(e)) || [];
+        message.templates_count = object.templates_count ?? undefined;
+        return message;
+    },
+};
+function createBaseCreateInvoiceTemplateRequest() {
+    return { context: undefined, data: undefined };
+}
+exports.CreateInvoiceTemplateRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.data !== undefined) {
+            exports.InvoiceTemplateData.encode(message.data, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateInvoiceTemplateRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.data = exports.InvoiceTemplateData.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            data: isSet(object.data) ? exports.InvoiceTemplateData.fromJSON(object.data) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.data !== undefined) {
+            obj.data = exports.InvoiceTemplateData.toJSON(message.data);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateInvoiceTemplateRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateInvoiceTemplateRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.data = (object.data !== undefined && object.data !== null)
+            ? exports.InvoiceTemplateData.fromPartial(object.data)
+            : undefined;
+        return message;
+    },
+};
+function createBaseUpdateInvoiceTemplateRequest() {
+    return { context: undefined, template_id: undefined, data: undefined };
+}
+exports.UpdateInvoiceTemplateRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.template_id !== undefined) {
+            object_id_1.ObjectId.encode(message.template_id, writer.uint32(18).fork()).join();
+        }
+        if (message.data !== undefined) {
+            exports.InvoiceTemplateData.encode(message.data, writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseUpdateInvoiceTemplateRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.template_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.data = exports.InvoiceTemplateData.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
+            data: isSet(object.data) ? exports.InvoiceTemplateData.fromJSON(object.data) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.template_id !== undefined) {
+            obj.templateId = object_id_1.ObjectId.toJSON(message.template_id);
+        }
+        if (message.data !== undefined) {
+            obj.data = exports.InvoiceTemplateData.toJSON(message.data);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.UpdateInvoiceTemplateRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseUpdateInvoiceTemplateRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.template_id = (object.template_id !== undefined && object.template_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.template_id)
+            : undefined;
+        message.data = (object.data !== undefined && object.data !== null)
+            ? exports.InvoiceTemplateData.fromPartial(object.data)
+            : undefined;
+        return message;
+    },
+};
+function createBaseInvoiceTemplateDueDateRule() {
+    return { due_in_days: undefined };
+}
+exports.InvoiceTemplateDueDateRule = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.due_in_days !== undefined) {
+            writer.uint32(8).uint32(message.due_in_days);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseInvoiceTemplateDueDateRule();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.due_in_days = reader.uint32();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { due_in_days: isSet(object.dueInDays) ? globalThis.Number(object.dueInDays) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.due_in_days !== undefined) {
+            obj.dueInDays = Math.round(message.due_in_days);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.InvoiceTemplateDueDateRule.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseInvoiceTemplateDueDateRule();
+        message.due_in_days = object.due_in_days ?? undefined;
+        return message;
+    },
+};
+function createBaseCreateInvoiceFromTemplateRequest() {
+    return {
+        context: undefined,
+        title: undefined,
+        description: undefined,
+        show_hst: undefined,
+        disable_tax: undefined,
+        users: [],
+        families: [],
+        items: [],
+        coupons: [],
+        due_date: undefined,
+        school_year: undefined,
+        template_id: undefined,
+        template_due_date_rule: undefined,
+    };
+}
+exports.CreateInvoiceFromTemplateRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.title !== undefined) {
+            writer.uint32(18).string(message.title);
+        }
+        if (message.description !== undefined) {
+            writer.uint32(26).string(message.description);
+        }
+        if (message.show_hst !== undefined) {
+            writer.uint32(32).bool(message.show_hst);
+        }
+        if (message.disable_tax !== undefined) {
+            writer.uint32(40).bool(message.disable_tax);
+        }
+        for (const v of message.users) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.families) {
+            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
+        for (const v of message.items) {
+            invoice_1.InvoiceItem.encode(v, writer.uint32(66).fork()).join();
+        }
+        for (const v of message.coupons) {
+            invoice_1.Coupon.encode(v, writer.uint32(74).fork()).join();
+        }
+        if (message.due_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.due_date), writer.uint32(82).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(90).fork()).join();
+        }
+        if (message.template_id !== undefined) {
+            object_id_1.ObjectId.encode(message.template_id, writer.uint32(98).fork()).join();
+        }
+        if (message.template_due_date_rule !== undefined) {
+            exports.InvoiceTemplateDueDateRule.encode(message.template_due_date_rule, writer.uint32(106).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateInvoiceFromTemplateRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.description = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.show_hst = reader.bool();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.disable_tax = reader.bool();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.users.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.families.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.items.push(invoice_1.InvoiceItem.decode(reader, reader.uint32()));
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.coupons.push(invoice_1.Coupon.decode(reader, reader.uint32()));
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.due_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.template_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.template_due_date_rule = exports.InvoiceTemplateDueDateRule.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : undefined,
+            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : undefined,
+            users: globalThis.Array.isArray(object?.users) ? object.users.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+            families: globalThis.Array.isArray(object?.families) ? object.families.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+            items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => invoice_1.InvoiceItem.fromJSON(e)) : [],
+            coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
+            due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
+            template_due_date_rule: isSet(object.templateDueDateRule)
+                ? exports.InvoiceTemplateDueDateRule.fromJSON(object.templateDueDateRule)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.description !== undefined) {
+            obj.description = message.description;
+        }
+        if (message.show_hst !== undefined) {
+            obj.showHst = message.show_hst;
+        }
+        if (message.disable_tax !== undefined) {
+            obj.disableTax = message.disable_tax;
+        }
+        if (message.users?.length) {
+            obj.users = message.users.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.families?.length) {
+            obj.families = message.families.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.items?.length) {
+            obj.items = message.items.map((e) => invoice_1.InvoiceItem.toJSON(e));
+        }
+        if (message.coupons?.length) {
+            obj.coupons = message.coupons.map((e) => invoice_1.Coupon.toJSON(e));
+        }
+        if (message.due_date !== undefined) {
+            obj.dueDate = message.due_date.toISOString();
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.template_id !== undefined) {
+            obj.templateId = object_id_1.ObjectId.toJSON(message.template_id);
+        }
+        if (message.template_due_date_rule !== undefined) {
+            obj.templateDueDateRule = exports.InvoiceTemplateDueDateRule.toJSON(message.template_due_date_rule);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateInvoiceFromTemplateRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateInvoiceFromTemplateRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.title = object.title ?? undefined;
+        message.description = object.description ?? undefined;
+        message.show_hst = object.show_hst ?? undefined;
+        message.disable_tax = object.disable_tax ?? undefined;
+        message.users = object.users?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.families = object.families?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.items = object.items?.map((e) => invoice_1.InvoiceItem.fromPartial(e)) || [];
+        message.coupons = object.coupons?.map((e) => invoice_1.Coupon.fromPartial(e)) || [];
+        message.due_date = object.due_date ?? undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        message.template_id = (object.template_id !== undefined && object.template_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.template_id)
+            : undefined;
+        message.template_due_date_rule =
+            (object.template_due_date_rule !== undefined && object.template_due_date_rule !== null)
+                ? exports.InvoiceTemplateDueDateRule.fromPartial(object.template_due_date_rule)
+                : undefined;
+        return message;
+    },
+};
+function createBaseCreateInvoiceForClassFromTemplateRequest() {
+    return {
+        context: undefined,
+        title: undefined,
+        description: undefined,
+        show_hst: undefined,
+        disable_tax: undefined,
+        homerooms: [],
+        courses: [],
+        items: [],
+        coupons: [],
+        due_date: undefined,
+        school_year: undefined,
+        template_id: undefined,
+        template_due_date_rule: undefined,
+    };
+}
+exports.CreateInvoiceForClassFromTemplateRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        if (message.title !== undefined) {
+            writer.uint32(18).string(message.title);
+        }
+        if (message.description !== undefined) {
+            writer.uint32(26).string(message.description);
+        }
+        if (message.show_hst !== undefined) {
+            writer.uint32(32).bool(message.show_hst);
+        }
+        if (message.disable_tax !== undefined) {
+            writer.uint32(40).bool(message.disable_tax);
+        }
+        for (const v of message.homerooms) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.courses) {
+            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
+        for (const v of message.items) {
+            invoice_1.InvoiceItem.encode(v, writer.uint32(66).fork()).join();
+        }
+        for (const v of message.coupons) {
+            invoice_1.Coupon.encode(v, writer.uint32(74).fork()).join();
+        }
+        if (message.due_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.due_date), writer.uint32(82).fork()).join();
+        }
+        if (message.school_year !== undefined) {
+            object_id_1.ObjectId.encode(message.school_year, writer.uint32(90).fork()).join();
+        }
+        if (message.template_id !== undefined) {
+            object_id_1.ObjectId.encode(message.template_id, writer.uint32(98).fork()).join();
+        }
+        if (message.template_due_date_rule !== undefined) {
+            exports.InvoiceTemplateDueDateRule.encode(message.template_due_date_rule, writer.uint32(106).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCreateInvoiceForClassFromTemplateRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.title = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.description = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 32) {
+                        break;
+                    }
+                    message.show_hst = reader.bool();
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.disable_tax = reader.bool();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.homerooms.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.courses.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.items.push(invoice_1.InvoiceItem.decode(reader, reader.uint32()));
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.coupons.push(invoice_1.Coupon.decode(reader, reader.uint32()));
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.due_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.school_year = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 12:
+                    if (tag !== 98) {
+                        break;
+                    }
+                    message.template_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 13:
+                    if (tag !== 106) {
+                        break;
+                    }
+                    message.template_due_date_rule = exports.InvoiceTemplateDueDateRule.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
+            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
+            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
+            show_hst: isSet(object.showHst) ? globalThis.Boolean(object.showHst) : undefined,
+            disable_tax: isSet(object.disableTax) ? globalThis.Boolean(object.disableTax) : undefined,
+            homerooms: globalThis.Array.isArray(object?.homerooms)
+                ? object.homerooms.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+            items: globalThis.Array.isArray(object?.items) ? object.items.map((e) => invoice_1.InvoiceItem.fromJSON(e)) : [],
+            coupons: globalThis.Array.isArray(object?.coupons) ? object.coupons.map((e) => invoice_1.Coupon.fromJSON(e)) : [],
+            due_date: isSet(object.dueDate) ? fromJsonTimestamp(object.dueDate) : undefined,
+            school_year: isSet(object.schoolYear) ? object_id_1.ObjectId.fromJSON(object.schoolYear) : undefined,
+            template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
+            template_due_date_rule: isSet(object.templateDueDateRule)
+                ? exports.InvoiceTemplateDueDateRule.fromJSON(object.templateDueDateRule)
+                : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        if (message.title !== undefined) {
+            obj.title = message.title;
+        }
+        if (message.description !== undefined) {
+            obj.description = message.description;
+        }
+        if (message.show_hst !== undefined) {
+            obj.showHst = message.show_hst;
+        }
+        if (message.disable_tax !== undefined) {
+            obj.disableTax = message.disable_tax;
+        }
+        if (message.homerooms?.length) {
+            obj.homerooms = message.homerooms.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.courses?.length) {
+            obj.courses = message.courses.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.items?.length) {
+            obj.items = message.items.map((e) => invoice_1.InvoiceItem.toJSON(e));
+        }
+        if (message.coupons?.length) {
+            obj.coupons = message.coupons.map((e) => invoice_1.Coupon.toJSON(e));
+        }
+        if (message.due_date !== undefined) {
+            obj.dueDate = message.due_date.toISOString();
+        }
+        if (message.school_year !== undefined) {
+            obj.schoolYear = object_id_1.ObjectId.toJSON(message.school_year);
+        }
+        if (message.template_id !== undefined) {
+            obj.templateId = object_id_1.ObjectId.toJSON(message.template_id);
+        }
+        if (message.template_due_date_rule !== undefined) {
+            obj.templateDueDateRule = exports.InvoiceTemplateDueDateRule.toJSON(message.template_due_date_rule);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CreateInvoiceForClassFromTemplateRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCreateInvoiceForClassFromTemplateRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.title = object.title ?? undefined;
+        message.description = object.description ?? undefined;
+        message.show_hst = object.show_hst ?? undefined;
+        message.disable_tax = object.disable_tax ?? undefined;
+        message.homerooms = object.homerooms?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.courses = object.courses?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.items = object.items?.map((e) => invoice_1.InvoiceItem.fromPartial(e)) || [];
+        message.coupons = object.coupons?.map((e) => invoice_1.Coupon.fromPartial(e)) || [];
+        message.due_date = object.due_date ?? undefined;
+        message.school_year = (object.school_year !== undefined && object.school_year !== null)
+            ? object_id_1.ObjectId.fromPartial(object.school_year)
+            : undefined;
+        message.template_id = (object.template_id !== undefined && object.template_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.template_id)
+            : undefined;
+        message.template_due_date_rule =
+            (object.template_due_date_rule !== undefined && object.template_due_date_rule !== null)
+                ? exports.InvoiceTemplateDueDateRule.fromPartial(object.template_due_date_rule)
+                : undefined;
         return message;
     },
 };

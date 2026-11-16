@@ -133,6 +133,8 @@ export interface Invoice {
     lifecycle_status?: InvoiceLifecycleStatus | undefined;
     /** Payments received for this invoice become family balance credit. */
     adds_to_family_balance?: boolean | undefined;
+    /** Immutable creation origin. Invoice content remains independent of the template. */
+    template_id?: ObjectId | undefined;
 }
 export interface InvoiceResponse {
     invoice: Invoice | undefined;

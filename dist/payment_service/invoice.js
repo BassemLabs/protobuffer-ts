@@ -834,6 +834,7 @@ function createBaseInvoice() {
         created_at: undefined,
         lifecycle_status: undefined,
         adds_to_family_balance: undefined,
+        template_id: undefined,
     };
 }
 exports.Invoice = {
@@ -915,6 +916,9 @@ exports.Invoice = {
         }
         if (message.adds_to_family_balance !== undefined) {
             writer.uint32(208).bool(message.adds_to_family_balance);
+        }
+        if (message.template_id !== undefined) {
+            object_id_1.ObjectId.encode(message.template_id, writer.uint32(218).fork()).join();
         }
         return writer;
     },
@@ -1081,6 +1085,12 @@ exports.Invoice = {
                     }
                     message.adds_to_family_balance = reader.bool();
                     continue;
+                case 27:
+                    if (tag !== 218) {
+                        break;
+                    }
+                    message.template_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -1133,6 +1143,7 @@ exports.Invoice = {
             adds_to_family_balance: isSet(object.addsToFamilyBalance)
                 ? globalThis.Boolean(object.addsToFamilyBalance)
                 : undefined,
+            template_id: isSet(object.templateId) ? object_id_1.ObjectId.fromJSON(object.templateId) : undefined,
         };
     },
     toJSON(message) {
@@ -1215,6 +1226,9 @@ exports.Invoice = {
         if (message.adds_to_family_balance !== undefined) {
             obj.addsToFamilyBalance = message.adds_to_family_balance;
         }
+        if (message.template_id !== undefined) {
+            obj.templateId = object_id_1.ObjectId.toJSON(message.template_id);
+        }
         return obj;
     },
     create(base) {
@@ -1259,6 +1273,9 @@ exports.Invoice = {
         message.created_at = object.created_at ?? undefined;
         message.lifecycle_status = object.lifecycle_status ?? undefined;
         message.adds_to_family_balance = object.adds_to_family_balance ?? undefined;
+        message.template_id = (object.template_id !== undefined && object.template_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.template_id)
+            : undefined;
         return message;
     },
 };

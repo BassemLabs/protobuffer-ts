@@ -133,6 +133,8 @@ export interface InvoiceManagerFilter {
   statuses: InvoiceManagerStatus[];
   due_from?: Date | undefined;
   due_to?: Date | undefined;
+  template_id?: ObjectId | undefined;
+  without_template?: Empty | undefined;
 }
 
 export interface InvoiceManagerSummary {
@@ -227,6 +229,8 @@ function createBaseInvoiceManagerFilter(): InvoiceManagerFilter {
     statuses: [],
     due_from: undefined,
     due_to: undefined,
+    template_id: undefined,
+    without_template: undefined,
   };
 }
 
@@ -254,6 +258,12 @@ export const InvoiceManagerFilter: MessageFns<InvoiceManagerFilter> = {
     }
     if (message.due_to !== undefined) {
       Timestamp.encode(toTimestamp(message.due_to), writer.uint32(58).fork()).join();
+    }
+    if (message.template_id !== undefined) {
+      ObjectId.encode(message.template_id, writer.uint32(66).fork()).join();
+    }
+    if (message.without_template !== undefined) {
+      Empty.encode(message.without_template, writer.uint32(74).fork()).join();
     }
     return writer;
   },
@@ -324,6 +334,20 @@ export const InvoiceManagerFilter: MessageFns<InvoiceManagerFilter> = {
 
           message.due_to = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.template_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.without_template = Empty.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -344,6 +368,8 @@ export const InvoiceManagerFilter: MessageFns<InvoiceManagerFilter> = {
         : [],
       due_from: isSet(object.dueFrom) ? fromJsonTimestamp(object.dueFrom) : undefined,
       due_to: isSet(object.dueTo) ? fromJsonTimestamp(object.dueTo) : undefined,
+      template_id: isSet(object.templateId) ? ObjectId.fromJSON(object.templateId) : undefined,
+      without_template: isSet(object.withoutTemplate) ? Empty.fromJSON(object.withoutTemplate) : undefined,
     };
   },
 
@@ -370,6 +396,12 @@ export const InvoiceManagerFilter: MessageFns<InvoiceManagerFilter> = {
     if (message.due_to !== undefined) {
       obj.dueTo = message.due_to.toISOString();
     }
+    if (message.template_id !== undefined) {
+      obj.templateId = ObjectId.toJSON(message.template_id);
+    }
+    if (message.without_template !== undefined) {
+      obj.withoutTemplate = Empty.toJSON(message.without_template);
+    }
     return obj;
   },
 
@@ -387,6 +419,12 @@ export const InvoiceManagerFilter: MessageFns<InvoiceManagerFilter> = {
     message.statuses = object.statuses?.map((e) => e) || [];
     message.due_from = object.due_from ?? undefined;
     message.due_to = object.due_to ?? undefined;
+    message.template_id = (object.template_id !== undefined && object.template_id !== null)
+      ? ObjectId.fromPartial(object.template_id)
+      : undefined;
+    message.without_template = (object.without_template !== undefined && object.without_template !== null)
+      ? Empty.fromPartial(object.without_template)
+      : undefined;
     return message;
   },
 };

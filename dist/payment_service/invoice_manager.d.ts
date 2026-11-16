@@ -30,6 +30,8 @@ export interface InvoiceManagerFilter {
     statuses: InvoiceManagerStatus[];
     due_from?: Date | undefined;
     due_to?: Date | undefined;
+    template_id?: ObjectId | undefined;
+    without_template?: Empty | undefined;
 }
 export interface InvoiceManagerSummary {
     open_invoice_count?: number | undefined;

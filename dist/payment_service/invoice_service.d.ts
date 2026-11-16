@@ -309,6 +309,81 @@ export interface GetPaymentReminderRunRequest {
     context: RequestContext | undefined;
     run_id: ObjectId | undefined;
 }
+/** Reusable manual invoice content. Recipients, payments and absolute dates are excluded. */
+export interface InvoiceTemplateData {
+    name?: string | undefined;
+    title?: string | undefined;
+    description?: string | undefined;
+    items: InvoiceItem[];
+    coupons: Coupon[];
+    /** Absent means no due date. Zero means due on the school's local creation date. */
+    due_in_days?: number | undefined;
+}
+export interface InvoiceTemplate {
+    id: ObjectId | undefined;
+    data: InvoiceTemplateData | undefined;
+    /** Archived identities remain available to historical invoice filters. */
+    deleted?: boolean | undefined;
+}
+export interface InvoiceTemplateIdRequest {
+    context: RequestContext | undefined;
+    template_id: ObjectId | undefined;
+}
+export interface ListInvoiceTemplatesRequest {
+    context: RequestContext | undefined;
+    per_page?: number | undefined;
+    page?: number | undefined;
+    include_deleted?: boolean | undefined;
+}
+export interface ListInvoiceTemplatesResponse {
+    templates: InvoiceTemplate[];
+    templates_count?: number | undefined;
+}
+export interface CreateInvoiceTemplateRequest {
+    context: RequestContext | undefined;
+    data: InvoiceTemplateData | undefined;
+}
+export interface UpdateInvoiceTemplateRequest {
+    context: RequestContext | undefined;
+    template_id: ObjectId | undefined;
+    data: InvoiceTemplateData | undefined;
+}
+/** A present rule with no days means no due date; zero means the local creation day. */
+export interface InvoiceTemplateDueDateRule {
+    due_in_days?: number | undefined;
+}
+export interface CreateInvoiceFromTemplateRequest {
+    context: RequestContext | undefined;
+    title?: string | undefined;
+    description?: string | undefined;
+    show_hst?: boolean | undefined;
+    disable_tax?: boolean | undefined;
+    users: ObjectId[];
+    families: ObjectId[];
+    items: InvoiceItem[];
+    coupons: Coupon[];
+    due_date?: Date | undefined;
+    school_year: ObjectId | undefined;
+    template_id: ObjectId | undefined;
+    /** Absent uses the explicit due_date. Presence confirms the template rule shown to the user. */
+    template_due_date_rule?: InvoiceTemplateDueDateRule | undefined;
+}
+export interface CreateInvoiceForClassFromTemplateRequest {
+    context: RequestContext | undefined;
+    title?: string | undefined;
+    description?: string | undefined;
+    show_hst?: boolean | undefined;
+    disable_tax?: boolean | undefined;
+    homerooms: ObjectId[];
+    courses: ObjectId[];
+    items: InvoiceItem[];
+    coupons: Coupon[];
+    due_date?: Date | undefined;
+    school_year: ObjectId | undefined;
+    template_id: ObjectId | undefined;
+    /** Absent uses the explicit due_date. Presence confirms the template rule shown to the user. */
+    template_due_date_rule?: InvoiceTemplateDueDateRule | undefined;
+}
 export declare const AppendCommunicationBroadcastFeesRequest: MessageFns<AppendCommunicationBroadcastFeesRequest>;
 export declare const Invoices: MessageFns<Invoices>;
 export declare const GetInvoiceRequest: MessageFns<GetInvoiceRequest>;
@@ -368,6 +443,16 @@ export declare const GetAutoPaymentAttemptsResponse: MessageFns<GetAutoPaymentAt
 export declare const ResetAutoPaymentForRetryRequest: MessageFns<ResetAutoPaymentForRetryRequest>;
 export declare const QueueInvoiceRemindersRequest: MessageFns<QueueInvoiceRemindersRequest>;
 export declare const GetPaymentReminderRunRequest: MessageFns<GetPaymentReminderRunRequest>;
+export declare const InvoiceTemplateData: MessageFns<InvoiceTemplateData>;
+export declare const InvoiceTemplate: MessageFns<InvoiceTemplate>;
+export declare const InvoiceTemplateIdRequest: MessageFns<InvoiceTemplateIdRequest>;
+export declare const ListInvoiceTemplatesRequest: MessageFns<ListInvoiceTemplatesRequest>;
+export declare const ListInvoiceTemplatesResponse: MessageFns<ListInvoiceTemplatesResponse>;
+export declare const CreateInvoiceTemplateRequest: MessageFns<CreateInvoiceTemplateRequest>;
+export declare const UpdateInvoiceTemplateRequest: MessageFns<UpdateInvoiceTemplateRequest>;
+export declare const InvoiceTemplateDueDateRule: MessageFns<InvoiceTemplateDueDateRule>;
+export declare const CreateInvoiceFromTemplateRequest: MessageFns<CreateInvoiceFromTemplateRequest>;
+export declare const CreateInvoiceForClassFromTemplateRequest: MessageFns<CreateInvoiceForClassFromTemplateRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
