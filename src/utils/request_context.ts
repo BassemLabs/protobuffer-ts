@@ -28,6 +28,7 @@ export enum ServiceContext {
   EmailPreparation = "EmailPreparation",
   /** CommunicationBilling - Appends idempotent communication fees for its own school; no general invoice authority. */
   CommunicationBilling = "CommunicationBilling",
+  SupportTicketWorker = "SupportTicketWorker",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -57,6 +58,9 @@ export function serviceContextFromJSON(object: any): ServiceContext {
     case 8:
     case "CommunicationBilling":
       return ServiceContext.CommunicationBilling;
+    case 9:
+    case "SupportTicketWorker":
+      return ServiceContext.SupportTicketWorker;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -82,6 +86,8 @@ export function serviceContextToJSON(object: ServiceContext): string {
       return "EmailPreparation";
     case ServiceContext.CommunicationBilling:
       return "CommunicationBilling";
+    case ServiceContext.SupportTicketWorker:
+      return "SupportTicketWorker";
     case ServiceContext.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -106,6 +112,8 @@ export function serviceContextToNumber(object: ServiceContext): number {
       return 7;
     case ServiceContext.CommunicationBilling:
       return 8;
+    case ServiceContext.SupportTicketWorker:
+      return 9;
     case ServiceContext.UNRECOGNIZED:
     default:
       return -1;

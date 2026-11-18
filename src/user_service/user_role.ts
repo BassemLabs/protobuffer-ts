@@ -66,6 +66,7 @@ export enum StaffPermission {
   TRANSACTIONS_ISSUE_REFUND = "TRANSACTIONS_ISSUE_REFUND",
   TRANSACTIONS_CREATE_MANUAL_TRANSACTION = "TRANSACTIONS_CREATE_MANUAL_TRANSACTION",
   SCHEDULING_MANAGER = "SCHEDULING_MANAGER",
+  SUPPORT_READ_SCHOOL = "SUPPORT_READ_SCHOOL",
   UNRECOGNIZED = "UNRECOGNIZED",
 }
 
@@ -242,6 +243,9 @@ export function staffPermissionFromJSON(object: any): StaffPermission {
     case 74:
     case "SCHEDULING_MANAGER":
       return StaffPermission.SCHEDULING_MANAGER;
+    case 75:
+    case "SUPPORT_READ_SCHOOL":
+      return StaffPermission.SUPPORT_READ_SCHOOL;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -365,6 +369,8 @@ export function staffPermissionToJSON(object: StaffPermission): string {
       return "TRANSACTIONS_CREATE_MANUAL_TRANSACTION";
     case StaffPermission.SCHEDULING_MANAGER:
       return "SCHEDULING_MANAGER";
+    case StaffPermission.SUPPORT_READ_SCHOOL:
+      return "SUPPORT_READ_SCHOOL";
     case StaffPermission.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -487,6 +493,8 @@ export function staffPermissionToNumber(object: StaffPermission): number {
       return 73;
     case StaffPermission.SCHEDULING_MANAGER:
       return 74;
+    case StaffPermission.SUPPORT_READ_SCHOOL:
+      return 75;
     case StaffPermission.UNRECOGNIZED:
     default:
       return -1;

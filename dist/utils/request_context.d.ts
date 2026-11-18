@@ -14,6 +14,7 @@ export declare enum ServiceContext {
     EmailPreparation = "EmailPreparation",
     /** CommunicationBilling - Appends idempotent communication fees for its own school; no general invoice authority. */
     CommunicationBilling = "CommunicationBilling",
+    SupportTicketWorker = "SupportTicketWorker",
     UNRECOGNIZED = "UNRECOGNIZED"
 }
 export declare function serviceContextFromJSON(object: any): ServiceContext;

@@ -27,6 +27,7 @@ var ServiceContext;
     ServiceContext["EmailPreparation"] = "EmailPreparation";
     /** CommunicationBilling - Appends idempotent communication fees for its own school; no general invoice authority. */
     ServiceContext["CommunicationBilling"] = "CommunicationBilling";
+    ServiceContext["SupportTicketWorker"] = "SupportTicketWorker";
     ServiceContext["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(ServiceContext || (exports.ServiceContext = ServiceContext = {}));
 function serviceContextFromJSON(object) {
@@ -55,6 +56,9 @@ function serviceContextFromJSON(object) {
         case 8:
         case "CommunicationBilling":
             return ServiceContext.CommunicationBilling;
+        case 9:
+        case "SupportTicketWorker":
+            return ServiceContext.SupportTicketWorker;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -79,6 +83,8 @@ function serviceContextToJSON(object) {
             return "EmailPreparation";
         case ServiceContext.CommunicationBilling:
             return "CommunicationBilling";
+        case ServiceContext.SupportTicketWorker:
+            return "SupportTicketWorker";
         case ServiceContext.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -102,6 +108,8 @@ function serviceContextToNumber(object) {
             return 7;
         case ServiceContext.CommunicationBilling:
             return 8;
+        case ServiceContext.SupportTicketWorker:
+            return 9;
         case ServiceContext.UNRECOGNIZED:
         default:
             return -1;
