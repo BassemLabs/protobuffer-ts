@@ -19,6 +19,7 @@ export interface SendCommunicationRequest {
     subject?: string | undefined;
     body?: string | undefined;
     attachment_ids: ObjectId[];
+    request_id?: ObjectId | undefined;
 }
 export interface PreviewCommunicationContentResponse {
     /** Sanitized message HTML fragment for notification details. */

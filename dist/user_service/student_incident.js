@@ -5,186 +5,29 @@
 //   protoc               unknown
 // source: user_service/student_incident.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StudentIncident = exports.StudentIncidentSeverity = exports.StudentIncidentStatus = exports.protobufPackage = void 0;
-exports.studentIncidentStatusFromJSON = studentIncidentStatusFromJSON;
-exports.studentIncidentStatusToJSON = studentIncidentStatusToJSON;
-exports.studentIncidentStatusToNumber = studentIncidentStatusToNumber;
-exports.studentIncidentSeverityFromJSON = studentIncidentSeverityFromJSON;
-exports.studentIncidentSeverityToJSON = studentIncidentSeverityToJSON;
-exports.studentIncidentSeverityToNumber = studentIncidentSeverityToNumber;
+exports.IncidentParentEmail = exports.IncidentReport = exports.IncidentReportInput = exports.IncidentPerson = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 exports.protobufPackage = "user_service";
-var StudentIncidentStatus;
-(function (StudentIncidentStatus) {
-    StudentIncidentStatus["IN_PROGRESS"] = "IN_PROGRESS";
-    StudentIncidentStatus["FILLED"] = "FILLED";
-    StudentIncidentStatus["UNRECOGNIZED"] = "UNRECOGNIZED";
-})(StudentIncidentStatus || (exports.StudentIncidentStatus = StudentIncidentStatus = {}));
-function studentIncidentStatusFromJSON(object) {
-    switch (object) {
-        case 0:
-        case "IN_PROGRESS":
-            return StudentIncidentStatus.IN_PROGRESS;
-        case 1:
-        case "FILLED":
-            return StudentIncidentStatus.FILLED;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return StudentIncidentStatus.UNRECOGNIZED;
-    }
+function createBaseIncidentPerson() {
+    return { id: undefined, display_name: undefined };
 }
-function studentIncidentStatusToJSON(object) {
-    switch (object) {
-        case StudentIncidentStatus.IN_PROGRESS:
-            return "IN_PROGRESS";
-        case StudentIncidentStatus.FILLED:
-            return "FILLED";
-        case StudentIncidentStatus.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
-function studentIncidentStatusToNumber(object) {
-    switch (object) {
-        case StudentIncidentStatus.IN_PROGRESS:
-            return 0;
-        case StudentIncidentStatus.FILLED:
-            return 1;
-        case StudentIncidentStatus.UNRECOGNIZED:
-        default:
-            return -1;
-    }
-}
-var StudentIncidentSeverity;
-(function (StudentIncidentSeverity) {
-    StudentIncidentSeverity["LOW"] = "LOW";
-    StudentIncidentSeverity["MEDIUM"] = "MEDIUM";
-    StudentIncidentSeverity["HIGH"] = "HIGH";
-    StudentIncidentSeverity["SEVERE"] = "SEVERE";
-    StudentIncidentSeverity["UNRECOGNIZED"] = "UNRECOGNIZED";
-})(StudentIncidentSeverity || (exports.StudentIncidentSeverity = StudentIncidentSeverity = {}));
-function studentIncidentSeverityFromJSON(object) {
-    switch (object) {
-        case 0:
-        case "LOW":
-            return StudentIncidentSeverity.LOW;
-        case 1:
-        case "MEDIUM":
-            return StudentIncidentSeverity.MEDIUM;
-        case 2:
-        case "HIGH":
-            return StudentIncidentSeverity.HIGH;
-        case 3:
-        case "SEVERE":
-            return StudentIncidentSeverity.SEVERE;
-        case -1:
-        case "UNRECOGNIZED":
-        default:
-            return StudentIncidentSeverity.UNRECOGNIZED;
-    }
-}
-function studentIncidentSeverityToJSON(object) {
-    switch (object) {
-        case StudentIncidentSeverity.LOW:
-            return "LOW";
-        case StudentIncidentSeverity.MEDIUM:
-            return "MEDIUM";
-        case StudentIncidentSeverity.HIGH:
-            return "HIGH";
-        case StudentIncidentSeverity.SEVERE:
-            return "SEVERE";
-        case StudentIncidentSeverity.UNRECOGNIZED:
-        default:
-            return "UNRECOGNIZED";
-    }
-}
-function studentIncidentSeverityToNumber(object) {
-    switch (object) {
-        case StudentIncidentSeverity.LOW:
-            return 0;
-        case StudentIncidentSeverity.MEDIUM:
-            return 1;
-        case StudentIncidentSeverity.HIGH:
-            return 2;
-        case StudentIncidentSeverity.SEVERE:
-            return 3;
-        case StudentIncidentSeverity.UNRECOGNIZED:
-        default:
-            return -1;
-    }
-}
-function createBaseStudentIncident() {
-    return {
-        id: undefined,
-        organization: undefined,
-        student: undefined,
-        created_by_teacher: undefined,
-        title: undefined,
-        date: undefined,
-        description: undefined,
-        status: undefined,
-        severity: undefined,
-        police_date_contact: undefined,
-        police_date_investigation: undefined,
-        police_officer_name: undefined,
-        police_case_id: undefined,
-        action_taken: undefined,
-    };
-}
-exports.StudentIncident = {
+exports.IncidentPerson = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.id !== undefined) {
             object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
         }
-        if (message.organization !== undefined) {
-            object_id_1.ObjectId.encode(message.organization, writer.uint32(18).fork()).join();
-        }
-        if (message.student !== undefined) {
-            object_id_1.ObjectId.encode(message.student, writer.uint32(26).fork()).join();
-        }
-        if (message.created_by_teacher !== undefined) {
-            object_id_1.ObjectId.encode(message.created_by_teacher, writer.uint32(34).fork()).join();
-        }
-        if (message.title !== undefined) {
-            writer.uint32(42).string(message.title);
-        }
-        if (message.date !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date), writer.uint32(50).fork()).join();
-        }
-        if (message.description !== undefined) {
-            writer.uint32(58).string(message.description);
-        }
-        if (message.status !== undefined) {
-            writer.uint32(64).int32(studentIncidentStatusToNumber(message.status));
-        }
-        if (message.severity !== undefined) {
-            writer.uint32(72).int32(studentIncidentSeverityToNumber(message.severity));
-        }
-        if (message.police_date_contact !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.police_date_contact), writer.uint32(82).fork()).join();
-        }
-        if (message.police_date_investigation !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.police_date_investigation), writer.uint32(90).fork()).join();
-        }
-        if (message.police_officer_name !== undefined) {
-            writer.uint32(98).string(message.police_officer_name);
-        }
-        if (message.police_case_id !== undefined) {
-            writer.uint32(106).string(message.police_case_id);
-        }
-        if (message.action_taken !== undefined) {
-            writer.uint32(114).string(message.action_taken);
+        if (message.display_name !== undefined) {
+            writer.uint32(18).string(message.display_name);
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseStudentIncident();
+        const message = createBaseIncidentPerson();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -198,79 +41,7 @@ exports.StudentIncident = {
                     if (tag !== 18) {
                         break;
                     }
-                    message.organization = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 3:
-                    if (tag !== 26) {
-                        break;
-                    }
-                    message.student = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.created_by_teacher = object_id_1.ObjectId.decode(reader, reader.uint32());
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.title = reader.string();
-                    continue;
-                case 6:
-                    if (tag !== 50) {
-                        break;
-                    }
-                    message.date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
-                    continue;
-                case 7:
-                    if (tag !== 58) {
-                        break;
-                    }
-                    message.description = reader.string();
-                    continue;
-                case 8:
-                    if (tag !== 64) {
-                        break;
-                    }
-                    message.status = studentIncidentStatusFromJSON(reader.int32());
-                    continue;
-                case 9:
-                    if (tag !== 72) {
-                        break;
-                    }
-                    message.severity = studentIncidentSeverityFromJSON(reader.int32());
-                    continue;
-                case 10:
-                    if (tag !== 82) {
-                        break;
-                    }
-                    message.police_date_contact = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
-                    continue;
-                case 11:
-                    if (tag !== 90) {
-                        break;
-                    }
-                    message.police_date_investigation = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
-                    continue;
-                case 12:
-                    if (tag !== 98) {
-                        break;
-                    }
-                    message.police_officer_name = reader.string();
-                    continue;
-                case 13:
-                    if (tag !== 106) {
-                        break;
-                    }
-                    message.police_case_id = reader.string();
-                    continue;
-                case 14:
-                    if (tag !== 114) {
-                        break;
-                    }
-                    message.action_taken = reader.string();
+                    message.display_name = reader.string();
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -283,21 +54,7 @@ exports.StudentIncident = {
     fromJSON(object) {
         return {
             id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
-            organization: isSet(object.organization) ? object_id_1.ObjectId.fromJSON(object.organization) : undefined,
-            student: isSet(object.student) ? object_id_1.ObjectId.fromJSON(object.student) : undefined,
-            created_by_teacher: isSet(object.createdByTeacher) ? object_id_1.ObjectId.fromJSON(object.createdByTeacher) : undefined,
-            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
-            date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
-            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
-            status: isSet(object.status) ? studentIncidentStatusFromJSON(object.status) : undefined,
-            severity: isSet(object.severity) ? studentIncidentSeverityFromJSON(object.severity) : undefined,
-            police_date_contact: isSet(object.policeDateContact) ? fromJsonTimestamp(object.policeDateContact) : undefined,
-            police_date_investigation: isSet(object.policeDateInvestigation)
-                ? fromJsonTimestamp(object.policeDateInvestigation)
-                : undefined,
-            police_officer_name: isSet(object.policeOfficerName) ? globalThis.String(object.policeOfficerName) : undefined,
-            police_case_id: isSet(object.policeCaseId) ? globalThis.String(object.policeCaseId) : undefined,
-            action_taken: isSet(object.actionTaken) ? globalThis.String(object.actionTaken) : undefined,
+            display_name: isSet(object.displayName) ? globalThis.String(object.displayName) : undefined,
         };
     },
     toJSON(message) {
@@ -305,72 +62,549 @@ exports.StudentIncident = {
         if (message.id !== undefined) {
             obj.id = object_id_1.ObjectId.toJSON(message.id);
         }
-        if (message.organization !== undefined) {
-            obj.organization = object_id_1.ObjectId.toJSON(message.organization);
-        }
-        if (message.student !== undefined) {
-            obj.student = object_id_1.ObjectId.toJSON(message.student);
-        }
-        if (message.created_by_teacher !== undefined) {
-            obj.createdByTeacher = object_id_1.ObjectId.toJSON(message.created_by_teacher);
-        }
-        if (message.title !== undefined) {
-            obj.title = message.title;
-        }
-        if (message.date !== undefined) {
-            obj.date = message.date.toISOString();
-        }
-        if (message.description !== undefined) {
-            obj.description = message.description;
-        }
-        if (message.status !== undefined) {
-            obj.status = studentIncidentStatusToJSON(message.status);
-        }
-        if (message.severity !== undefined) {
-            obj.severity = studentIncidentSeverityToJSON(message.severity);
-        }
-        if (message.police_date_contact !== undefined) {
-            obj.policeDateContact = message.police_date_contact.toISOString();
-        }
-        if (message.police_date_investigation !== undefined) {
-            obj.policeDateInvestigation = message.police_date_investigation.toISOString();
-        }
-        if (message.police_officer_name !== undefined) {
-            obj.policeOfficerName = message.police_officer_name;
-        }
-        if (message.police_case_id !== undefined) {
-            obj.policeCaseId = message.police_case_id;
-        }
-        if (message.action_taken !== undefined) {
-            obj.actionTaken = message.action_taken;
+        if (message.display_name !== undefined) {
+            obj.displayName = message.display_name;
         }
         return obj;
     },
     create(base) {
-        return exports.StudentIncident.fromPartial(base ?? {});
+        return exports.IncidentPerson.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseStudentIncident();
+        const message = createBaseIncidentPerson();
         message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
-        message.organization = (object.organization !== undefined && object.organization !== null)
-            ? object_id_1.ObjectId.fromPartial(object.organization)
+        message.display_name = object.display_name ?? undefined;
+        return message;
+    },
+};
+function createBaseIncidentReportInput() {
+    return {
+        occurred_at: undefined,
+        location: undefined,
+        incident_type: undefined,
+        detailed_description: undefined,
+        other_student_ids: [],
+        student_witness_ids: [],
+        teacher_witness_ids: [],
+        immediate_action_notes: undefined,
+        injury_description: undefined,
+        property_damaged: undefined,
+        additional_comments: undefined,
+    };
+}
+exports.IncidentReportInput = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.occurred_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.occurred_at), writer.uint32(10).fork()).join();
+        }
+        if (message.location !== undefined) {
+            writer.uint32(18).string(message.location);
+        }
+        if (message.incident_type !== undefined) {
+            writer.uint32(26).string(message.incident_type);
+        }
+        if (message.detailed_description !== undefined) {
+            writer.uint32(34).string(message.detailed_description);
+        }
+        for (const v of message.other_student_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(42).fork()).join();
+        }
+        for (const v of message.student_witness_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.teacher_witness_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(58).fork()).join();
+        }
+        if (message.immediate_action_notes !== undefined) {
+            writer.uint32(66).string(message.immediate_action_notes);
+        }
+        if (message.injury_description !== undefined) {
+            writer.uint32(74).string(message.injury_description);
+        }
+        if (message.property_damaged !== undefined) {
+            writer.uint32(80).bool(message.property_damaged);
+        }
+        if (message.additional_comments !== undefined) {
+            writer.uint32(90).string(message.additional_comments);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseIncidentReportInput();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.occurred_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.location = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.incident_type = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.detailed_description = reader.string();
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.other_student_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.student_witness_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.teacher_witness_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.immediate_action_notes = reader.string();
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.injury_description = reader.string();
+                    continue;
+                case 10:
+                    if (tag !== 80) {
+                        break;
+                    }
+                    message.property_damaged = reader.bool();
+                    continue;
+                case 11:
+                    if (tag !== 90) {
+                        break;
+                    }
+                    message.additional_comments = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            occurred_at: isSet(object.occurredAt) ? fromJsonTimestamp(object.occurredAt) : undefined,
+            location: isSet(object.location) ? globalThis.String(object.location) : undefined,
+            incident_type: isSet(object.incidentType) ? globalThis.String(object.incidentType) : undefined,
+            detailed_description: isSet(object.detailedDescription)
+                ? globalThis.String(object.detailedDescription)
+                : undefined,
+            other_student_ids: globalThis.Array.isArray(object?.otherStudentIds)
+                ? object.otherStudentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            student_witness_ids: globalThis.Array.isArray(object?.studentWitnessIds)
+                ? object.studentWitnessIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            teacher_witness_ids: globalThis.Array.isArray(object?.teacherWitnessIds)
+                ? object.teacherWitnessIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+            immediate_action_notes: isSet(object.immediateActionNotes)
+                ? globalThis.String(object.immediateActionNotes)
+                : undefined,
+            injury_description: isSet(object.injuryDescription) ? globalThis.String(object.injuryDescription) : undefined,
+            property_damaged: isSet(object.propertyDamaged) ? globalThis.Boolean(object.propertyDamaged) : undefined,
+            additional_comments: isSet(object.additionalComments) ? globalThis.String(object.additionalComments) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.occurred_at !== undefined) {
+            obj.occurredAt = message.occurred_at.toISOString();
+        }
+        if (message.location !== undefined) {
+            obj.location = message.location;
+        }
+        if (message.incident_type !== undefined) {
+            obj.incidentType = message.incident_type;
+        }
+        if (message.detailed_description !== undefined) {
+            obj.detailedDescription = message.detailed_description;
+        }
+        if (message.other_student_ids?.length) {
+            obj.otherStudentIds = message.other_student_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.student_witness_ids?.length) {
+            obj.studentWitnessIds = message.student_witness_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.teacher_witness_ids?.length) {
+            obj.teacherWitnessIds = message.teacher_witness_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        if (message.immediate_action_notes !== undefined) {
+            obj.immediateActionNotes = message.immediate_action_notes;
+        }
+        if (message.injury_description !== undefined) {
+            obj.injuryDescription = message.injury_description;
+        }
+        if (message.property_damaged !== undefined) {
+            obj.propertyDamaged = message.property_damaged;
+        }
+        if (message.additional_comments !== undefined) {
+            obj.additionalComments = message.additional_comments;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.IncidentReportInput.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseIncidentReportInput();
+        message.occurred_at = object.occurred_at ?? undefined;
+        message.location = object.location ?? undefined;
+        message.incident_type = object.incident_type ?? undefined;
+        message.detailed_description = object.detailed_description ?? undefined;
+        message.other_student_ids = object.other_student_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.student_witness_ids = object.student_witness_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.teacher_witness_ids = object.teacher_witness_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.immediate_action_notes = object.immediate_action_notes ?? undefined;
+        message.injury_description = object.injury_description ?? undefined;
+        message.property_damaged = object.property_damaged ?? undefined;
+        message.additional_comments = object.additional_comments ?? undefined;
+        return message;
+    },
+};
+function createBaseIncidentReport() {
+    return {
+        id: undefined,
+        assigned_student: undefined,
+        reporter: undefined,
+        occurred_at: undefined,
+        can_edit: undefined,
+        report: undefined,
+        other_students: [],
+        student_witnesses: [],
+        teacher_witnesses: [],
+        parent_emails: [],
+    };
+}
+exports.IncidentReport = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.assigned_student !== undefined) {
+            exports.IncidentPerson.encode(message.assigned_student, writer.uint32(18).fork()).join();
+        }
+        if (message.reporter !== undefined) {
+            exports.IncidentPerson.encode(message.reporter, writer.uint32(26).fork()).join();
+        }
+        if (message.occurred_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.occurred_at), writer.uint32(34).fork()).join();
+        }
+        if (message.can_edit !== undefined) {
+            writer.uint32(40).bool(message.can_edit);
+        }
+        if (message.report !== undefined) {
+            exports.IncidentReportInput.encode(message.report, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.other_students) {
+            exports.IncidentPerson.encode(v, writer.uint32(58).fork()).join();
+        }
+        for (const v of message.student_witnesses) {
+            exports.IncidentPerson.encode(v, writer.uint32(66).fork()).join();
+        }
+        for (const v of message.teacher_witnesses) {
+            exports.IncidentPerson.encode(v, writer.uint32(74).fork()).join();
+        }
+        for (const v of message.parent_emails) {
+            exports.IncidentParentEmail.encode(v, writer.uint32(82).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseIncidentReport();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.assigned_student = exports.IncidentPerson.decode(reader, reader.uint32());
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.reporter = exports.IncidentPerson.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.occurred_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.can_edit = reader.bool();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.report = exports.IncidentReportInput.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.other_students.push(exports.IncidentPerson.decode(reader, reader.uint32()));
+                    continue;
+                case 8:
+                    if (tag !== 66) {
+                        break;
+                    }
+                    message.student_witnesses.push(exports.IncidentPerson.decode(reader, reader.uint32()));
+                    continue;
+                case 9:
+                    if (tag !== 74) {
+                        break;
+                    }
+                    message.teacher_witnesses.push(exports.IncidentPerson.decode(reader, reader.uint32()));
+                    continue;
+                case 10:
+                    if (tag !== 82) {
+                        break;
+                    }
+                    message.parent_emails.push(exports.IncidentParentEmail.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            assigned_student: isSet(object.assignedStudent) ? exports.IncidentPerson.fromJSON(object.assignedStudent) : undefined,
+            reporter: isSet(object.reporter) ? exports.IncidentPerson.fromJSON(object.reporter) : undefined,
+            occurred_at: isSet(object.occurredAt) ? fromJsonTimestamp(object.occurredAt) : undefined,
+            can_edit: isSet(object.canEdit) ? globalThis.Boolean(object.canEdit) : undefined,
+            report: isSet(object.report) ? exports.IncidentReportInput.fromJSON(object.report) : undefined,
+            other_students: globalThis.Array.isArray(object?.otherStudents)
+                ? object.otherStudents.map((e) => exports.IncidentPerson.fromJSON(e))
+                : [],
+            student_witnesses: globalThis.Array.isArray(object?.studentWitnesses)
+                ? object.studentWitnesses.map((e) => exports.IncidentPerson.fromJSON(e))
+                : [],
+            teacher_witnesses: globalThis.Array.isArray(object?.teacherWitnesses)
+                ? object.teacherWitnesses.map((e) => exports.IncidentPerson.fromJSON(e))
+                : [],
+            parent_emails: globalThis.Array.isArray(object?.parentEmails)
+                ? object.parentEmails.map((e) => exports.IncidentParentEmail.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.assigned_student !== undefined) {
+            obj.assignedStudent = exports.IncidentPerson.toJSON(message.assigned_student);
+        }
+        if (message.reporter !== undefined) {
+            obj.reporter = exports.IncidentPerson.toJSON(message.reporter);
+        }
+        if (message.occurred_at !== undefined) {
+            obj.occurredAt = message.occurred_at.toISOString();
+        }
+        if (message.can_edit !== undefined) {
+            obj.canEdit = message.can_edit;
+        }
+        if (message.report !== undefined) {
+            obj.report = exports.IncidentReportInput.toJSON(message.report);
+        }
+        if (message.other_students?.length) {
+            obj.otherStudents = message.other_students.map((e) => exports.IncidentPerson.toJSON(e));
+        }
+        if (message.student_witnesses?.length) {
+            obj.studentWitnesses = message.student_witnesses.map((e) => exports.IncidentPerson.toJSON(e));
+        }
+        if (message.teacher_witnesses?.length) {
+            obj.teacherWitnesses = message.teacher_witnesses.map((e) => exports.IncidentPerson.toJSON(e));
+        }
+        if (message.parent_emails?.length) {
+            obj.parentEmails = message.parent_emails.map((e) => exports.IncidentParentEmail.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.IncidentReport.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseIncidentReport();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.assigned_student = (object.assigned_student !== undefined && object.assigned_student !== null)
+            ? exports.IncidentPerson.fromPartial(object.assigned_student)
             : undefined;
-        message.student = (object.student !== undefined && object.student !== null)
-            ? object_id_1.ObjectId.fromPartial(object.student)
+        message.reporter = (object.reporter !== undefined && object.reporter !== null)
+            ? exports.IncidentPerson.fromPartial(object.reporter)
             : undefined;
-        message.created_by_teacher = (object.created_by_teacher !== undefined && object.created_by_teacher !== null)
-            ? object_id_1.ObjectId.fromPartial(object.created_by_teacher)
+        message.occurred_at = object.occurred_at ?? undefined;
+        message.can_edit = object.can_edit ?? undefined;
+        message.report = (object.report !== undefined && object.report !== null)
+            ? exports.IncidentReportInput.fromPartial(object.report)
             : undefined;
-        message.title = object.title ?? undefined;
-        message.date = object.date ?? undefined;
-        message.description = object.description ?? undefined;
-        message.status = object.status ?? undefined;
-        message.severity = object.severity ?? undefined;
-        message.police_date_contact = object.police_date_contact ?? undefined;
-        message.police_date_investigation = object.police_date_investigation ?? undefined;
-        message.police_officer_name = object.police_officer_name ?? undefined;
-        message.police_case_id = object.police_case_id ?? undefined;
-        message.action_taken = object.action_taken ?? undefined;
+        message.other_students = object.other_students?.map((e) => exports.IncidentPerson.fromPartial(e)) || [];
+        message.student_witnesses = object.student_witnesses?.map((e) => exports.IncidentPerson.fromPartial(e)) || [];
+        message.teacher_witnesses = object.teacher_witnesses?.map((e) => exports.IncidentPerson.fromPartial(e)) || [];
+        message.parent_emails = object.parent_emails?.map((e) => exports.IncidentParentEmail.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseIncidentParentEmail() {
+    return { broadcast_id: undefined, queued_at: undefined, queued_by: undefined, recipients: [], failed: undefined };
+}
+exports.IncidentParentEmail = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.broadcast_id !== undefined) {
+            object_id_1.ObjectId.encode(message.broadcast_id, writer.uint32(10).fork()).join();
+        }
+        if (message.queued_at !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.queued_at), writer.uint32(18).fork()).join();
+        }
+        if (message.queued_by !== undefined) {
+            exports.IncidentPerson.encode(message.queued_by, writer.uint32(26).fork()).join();
+        }
+        for (const v of message.recipients) {
+            exports.IncidentPerson.encode(v, writer.uint32(34).fork()).join();
+        }
+        if (message.failed !== undefined) {
+            writer.uint32(40).bool(message.failed);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseIncidentParentEmail();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.broadcast_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.queued_at = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.queued_by = exports.IncidentPerson.decode(reader, reader.uint32());
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.recipients.push(exports.IncidentPerson.decode(reader, reader.uint32()));
+                    continue;
+                case 5:
+                    if (tag !== 40) {
+                        break;
+                    }
+                    message.failed = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            broadcast_id: isSet(object.broadcastId) ? object_id_1.ObjectId.fromJSON(object.broadcastId) : undefined,
+            queued_at: isSet(object.queuedAt) ? fromJsonTimestamp(object.queuedAt) : undefined,
+            queued_by: isSet(object.queuedBy) ? exports.IncidentPerson.fromJSON(object.queuedBy) : undefined,
+            recipients: globalThis.Array.isArray(object?.recipients)
+                ? object.recipients.map((e) => exports.IncidentPerson.fromJSON(e))
+                : [],
+            failed: isSet(object.failed) ? globalThis.Boolean(object.failed) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.broadcast_id !== undefined) {
+            obj.broadcastId = object_id_1.ObjectId.toJSON(message.broadcast_id);
+        }
+        if (message.queued_at !== undefined) {
+            obj.queuedAt = message.queued_at.toISOString();
+        }
+        if (message.queued_by !== undefined) {
+            obj.queuedBy = exports.IncidentPerson.toJSON(message.queued_by);
+        }
+        if (message.recipients?.length) {
+            obj.recipients = message.recipients.map((e) => exports.IncidentPerson.toJSON(e));
+        }
+        if (message.failed !== undefined) {
+            obj.failed = message.failed;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.IncidentParentEmail.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseIncidentParentEmail();
+        message.broadcast_id = (object.broadcast_id !== undefined && object.broadcast_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.broadcast_id)
+            : undefined;
+        message.queued_at = object.queued_at ?? undefined;
+        message.queued_by = (object.queued_by !== undefined && object.queued_by !== null)
+            ? exports.IncidentPerson.fromPartial(object.queued_by)
+            : undefined;
+        message.recipients = object.recipients?.map((e) => exports.IncidentPerson.fromPartial(e)) || [];
+        message.failed = object.failed ?? undefined;
         return message;
     },
 };

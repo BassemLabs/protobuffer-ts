@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: user_service/communication.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CommunicationRecipientPreview = exports.PreviewCommunicationResponse = exports.RecipientList = exports.BroadcastList = exports.CommunicationChannelCounts = exports.CommunicationTarget = exports.CommunicationAttachment = exports.CommunicationBroadcast = exports.CommunicationFilters = exports.BroadcastListScope = exports.protobufPackage = void 0;
+exports.CommunicationRecipientPreview = exports.PreviewCommunicationResponse = exports.RecipientList = exports.BroadcastList = exports.CommunicationChannelCounts = exports.CommunicationTarget = exports.CommunicationAttachment = exports.CommunicationBroadcast = exports.IncidentParentAudience = exports.CommunicationFilters = exports.BroadcastListScope = exports.protobufPackage = void 0;
 exports.broadcastListScopeFromJSON = broadcastListScopeFromJSON;
 exports.broadcastListScopeToJSON = broadcastListScopeToJSON;
 exports.broadcastListScopeToNumber = broadcastListScopeToNumber;
@@ -68,6 +68,7 @@ function createBaseCommunicationFilters() {
         semester_ids: [],
         school_year_id: undefined,
         audience_user_types: [],
+        incident_parents: undefined,
     };
 }
 exports.CommunicationFilters = {
@@ -92,6 +93,9 @@ exports.CommunicationFilters = {
             writer.int32((0, user_type_1.userTypeToNumber)(v));
         }
         writer.join();
+        if (message.incident_parents !== undefined) {
+            exports.IncidentParentAudience.encode(message.incident_parents, writer.uint32(58).fork()).join();
+        }
         return writer;
     },
     decode(input, length) {
@@ -144,6 +148,12 @@ exports.CommunicationFilters = {
                         continue;
                     }
                     break;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.incident_parents = exports.IncidentParentAudience.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -170,6 +180,9 @@ exports.CommunicationFilters = {
             audience_user_types: globalThis.Array.isArray(object?.audienceUserTypes)
                 ? object.audienceUserTypes.map((e) => (0, user_type_1.userTypeFromJSON)(e))
                 : [],
+            incident_parents: isSet(object.incidentParents)
+                ? exports.IncidentParentAudience.fromJSON(object.incidentParents)
+                : undefined,
         };
     },
     toJSON(message) {
@@ -192,6 +205,9 @@ exports.CommunicationFilters = {
         if (message.audience_user_types?.length) {
             obj.audienceUserTypes = message.audience_user_types.map((e) => (0, user_type_1.userTypeToJSON)(e));
         }
+        if (message.incident_parents !== undefined) {
+            obj.incidentParents = exports.IncidentParentAudience.toJSON(message.incident_parents);
+        }
         return obj;
     },
     create(base) {
@@ -207,6 +223,79 @@ exports.CommunicationFilters = {
             ? object_id_1.ObjectId.fromPartial(object.school_year_id)
             : undefined;
         message.audience_user_types = object.audience_user_types?.map((e) => e) || [];
+        message.incident_parents = (object.incident_parents !== undefined && object.incident_parents !== null)
+            ? exports.IncidentParentAudience.fromPartial(object.incident_parents)
+            : undefined;
+        return message;
+    },
+};
+function createBaseIncidentParentAudience() {
+    return { incident_id: undefined, parent_ids: [] };
+}
+exports.IncidentParentAudience = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.incident_id !== undefined) {
+            object_id_1.ObjectId.encode(message.incident_id, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.parent_ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseIncidentParentAudience();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.incident_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.parent_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            incident_id: isSet(object.incidentId) ? object_id_1.ObjectId.fromJSON(object.incidentId) : undefined,
+            parent_ids: globalThis.Array.isArray(object?.parentIds)
+                ? object.parentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.incident_id !== undefined) {
+            obj.incidentId = object_id_1.ObjectId.toJSON(message.incident_id);
+        }
+        if (message.parent_ids?.length) {
+            obj.parentIds = message.parent_ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.IncidentParentAudience.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseIncidentParentAudience();
+        message.incident_id = (object.incident_id !== undefined && object.incident_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.incident_id)
+            : undefined;
+        message.parent_ids = object.parent_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

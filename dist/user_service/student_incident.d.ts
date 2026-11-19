@@ -1,41 +1,46 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 export declare const protobufPackage = "user_service";
-export declare enum StudentIncidentStatus {
-    IN_PROGRESS = "IN_PROGRESS",
-    FILLED = "FILLED",
-    UNRECOGNIZED = "UNRECOGNIZED"
-}
-export declare function studentIncidentStatusFromJSON(object: any): StudentIncidentStatus;
-export declare function studentIncidentStatusToJSON(object: StudentIncidentStatus): string;
-export declare function studentIncidentStatusToNumber(object: StudentIncidentStatus): number;
-export declare enum StudentIncidentSeverity {
-    LOW = "LOW",
-    MEDIUM = "MEDIUM",
-    HIGH = "HIGH",
-    SEVERE = "SEVERE",
-    UNRECOGNIZED = "UNRECOGNIZED"
-}
-export declare function studentIncidentSeverityFromJSON(object: any): StudentIncidentSeverity;
-export declare function studentIncidentSeverityToJSON(object: StudentIncidentSeverity): string;
-export declare function studentIncidentSeverityToNumber(object: StudentIncidentSeverity): number;
-export interface StudentIncident {
+export interface IncidentPerson {
     id: ObjectId | undefined;
-    organization: ObjectId | undefined;
-    student: ObjectId | undefined;
-    created_by_teacher: ObjectId | undefined;
-    title?: string | undefined;
-    date: Date | undefined;
-    description?: string | undefined;
-    status?: StudentIncidentStatus | undefined;
-    severity?: StudentIncidentSeverity | undefined;
-    police_date_contact?: Date | undefined;
-    police_date_investigation?: Date | undefined;
-    police_officer_name?: string | undefined;
-    police_case_id?: string | undefined;
-    action_taken?: string | undefined;
+    display_name?: string | undefined;
 }
-export declare const StudentIncident: MessageFns<StudentIncident>;
+export interface IncidentReportInput {
+    occurred_at: Date | undefined;
+    location?: string | undefined;
+    incident_type?: string | undefined;
+    detailed_description?: string | undefined;
+    other_student_ids: ObjectId[];
+    student_witness_ids: ObjectId[];
+    teacher_witness_ids: ObjectId[];
+    immediate_action_notes?: string | undefined;
+    injury_description?: string | undefined;
+    property_damaged?: boolean | undefined;
+    additional_comments?: string | undefined;
+}
+export interface IncidentReport {
+    id: ObjectId | undefined;
+    assigned_student: IncidentPerson | undefined;
+    reporter: IncidentPerson | undefined;
+    occurred_at: Date | undefined;
+    can_edit?: boolean | undefined;
+    report: IncidentReportInput | undefined;
+    other_students: IncidentPerson[];
+    student_witnesses: IncidentPerson[];
+    teacher_witnesses: IncidentPerson[];
+    parent_emails: IncidentParentEmail[];
+}
+export interface IncidentParentEmail {
+    broadcast_id: ObjectId | undefined;
+    queued_at: Date | undefined;
+    queued_by: IncidentPerson | undefined;
+    recipients: IncidentPerson[];
+    failed?: boolean | undefined;
+}
+export declare const IncidentPerson: MessageFns<IncidentPerson>;
+export declare const IncidentReportInput: MessageFns<IncidentReportInput>;
+export declare const IncidentReport: MessageFns<IncidentReport>;
+export declare const IncidentParentEmail: MessageFns<IncidentParentEmail>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

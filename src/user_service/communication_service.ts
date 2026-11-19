@@ -41,6 +41,7 @@ export interface SendCommunicationRequest {
   subject?: string | undefined;
   body?: string | undefined;
   attachment_ids: ObjectId[];
+  request_id?: ObjectId | undefined;
 }
 
 export interface PreviewCommunicationContentResponse {
@@ -270,6 +271,7 @@ function createBaseSendCommunicationRequest(): SendCommunicationRequest {
     subject: undefined,
     body: undefined,
     attachment_ids: [],
+    request_id: undefined,
   };
 }
 
@@ -294,6 +296,9 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
     }
     for (const v of message.attachment_ids) {
       ObjectId.encode(v!, writer.uint32(50).fork()).join();
+    }
+    if (message.request_id !== undefined) {
+      ObjectId.encode(message.request_id, writer.uint32(58).fork()).join();
     }
     return writer;
   },
@@ -357,6 +362,13 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
 
           message.attachment_ids.push(ObjectId.decode(reader, reader.uint32()));
           continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.request_id = ObjectId.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -378,6 +390,7 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
       attachment_ids: globalThis.Array.isArray(object?.attachmentIds)
         ? object.attachmentIds.map((e: any) => ObjectId.fromJSON(e))
         : [],
+      request_id: isSet(object.requestId) ? ObjectId.fromJSON(object.requestId) : undefined,
     };
   },
 
@@ -401,6 +414,9 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
     if (message.attachment_ids?.length) {
       obj.attachmentIds = message.attachment_ids.map((e) => ObjectId.toJSON(e));
     }
+    if (message.request_id !== undefined) {
+      obj.requestId = ObjectId.toJSON(message.request_id);
+    }
     return obj;
   },
 
@@ -419,6 +435,9 @@ export const SendCommunicationRequest: MessageFns<SendCommunicationRequest> = {
     message.subject = object.subject ?? undefined;
     message.body = object.body ?? undefined;
     message.attachment_ids = object.attachment_ids?.map((e) => ObjectId.fromPartial(e)) || [];
+    message.request_id = (object.request_id !== undefined && object.request_id !== null)
+      ? ObjectId.fromPartial(object.request_id)
+      : undefined;
     return message;
   },
 };

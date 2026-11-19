@@ -5,18 +5,17 @@
 //   protoc               unknown
 // source: user_service/student_incident_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetStudentIncidentsResponse = exports.StudentIncidentResponse = exports.GetStudentIncidentsRequest = exports.UpdateStudentIncidentRequest = exports.CreateStudentIncidentRequest = exports.protobufPackage = void 0;
+exports.ListIncidentReportsResponse = exports.ListIncidentReportsRequest = exports.UpdateIncidentReportRequest = exports.CreateIncidentReportRequest = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
-const timestamp_1 = require("../google/protobuf/timestamp");
 const object_id_1 = require("../utils/object_id");
 const request_context_1 = require("../utils/request_context");
 const student_incident_1 = require("./student_incident");
 exports.protobufPackage = "user_service";
-function createBaseCreateStudentIncidentRequest() {
-    return { context: undefined, student_id: undefined, title: undefined, date: undefined };
+function createBaseCreateIncidentReportRequest() {
+    return { context: undefined, student_id: undefined, report: undefined };
 }
-exports.CreateStudentIncidentRequest = {
+exports.CreateIncidentReportRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
@@ -24,18 +23,15 @@ exports.CreateStudentIncidentRequest = {
         if (message.student_id !== undefined) {
             object_id_1.ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
         }
-        if (message.title !== undefined) {
-            writer.uint32(26).string(message.title);
-        }
-        if (message.date !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date), writer.uint32(34).fork()).join();
+        if (message.report !== undefined) {
+            student_incident_1.IncidentReportInput.encode(message.report, writer.uint32(26).fork()).join();
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseCreateStudentIncidentRequest();
+        const message = createBaseCreateIncidentReportRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -55,13 +51,7 @@ exports.CreateStudentIncidentRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.title = reader.string();
-                    continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.report = student_incident_1.IncidentReportInput.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -75,8 +65,7 @@ exports.CreateStudentIncidentRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             student_id: isSet(object.studentId) ? object_id_1.ObjectId.fromJSON(object.studentId) : undefined,
-            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
-            date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
+            report: isSet(object.report) ? student_incident_1.IncidentReportInput.fromJSON(object.report) : undefined,
         };
     },
     toJSON(message) {
@@ -87,47 +76,32 @@ exports.CreateStudentIncidentRequest = {
         if (message.student_id !== undefined) {
             obj.studentId = object_id_1.ObjectId.toJSON(message.student_id);
         }
-        if (message.title !== undefined) {
-            obj.title = message.title;
-        }
-        if (message.date !== undefined) {
-            obj.date = message.date.toISOString();
+        if (message.report !== undefined) {
+            obj.report = student_incident_1.IncidentReportInput.toJSON(message.report);
         }
         return obj;
     },
     create(base) {
-        return exports.CreateStudentIncidentRequest.fromPartial(base ?? {});
+        return exports.CreateIncidentReportRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseCreateStudentIncidentRequest();
+        const message = createBaseCreateIncidentReportRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.student_id = (object.student_id !== undefined && object.student_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.student_id)
             : undefined;
-        message.title = object.title ?? undefined;
-        message.date = object.date ?? undefined;
+        message.report = (object.report !== undefined && object.report !== null)
+            ? student_incident_1.IncidentReportInput.fromPartial(object.report)
+            : undefined;
         return message;
     },
 };
-function createBaseUpdateStudentIncidentRequest() {
-    return {
-        context: undefined,
-        incident_id: undefined,
-        title: undefined,
-        date: undefined,
-        description: undefined,
-        status: undefined,
-        severity: undefined,
-        police_officer_name: undefined,
-        police_case_id: undefined,
-        action_taken: undefined,
-        police_date_contact: undefined,
-        police_date_investigation: undefined,
-    };
+function createBaseUpdateIncidentReportRequest() {
+    return { context: undefined, incident_id: undefined, report: undefined };
 }
-exports.UpdateStudentIncidentRequest = {
+exports.UpdateIncidentReportRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
@@ -135,42 +109,15 @@ exports.UpdateStudentIncidentRequest = {
         if (message.incident_id !== undefined) {
             object_id_1.ObjectId.encode(message.incident_id, writer.uint32(18).fork()).join();
         }
-        if (message.title !== undefined) {
-            writer.uint32(26).string(message.title);
-        }
-        if (message.date !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.date), writer.uint32(34).fork()).join();
-        }
-        if (message.description !== undefined) {
-            writer.uint32(42).string(message.description);
-        }
-        if (message.status !== undefined) {
-            writer.uint32(48).int32((0, student_incident_1.studentIncidentStatusToNumber)(message.status));
-        }
-        if (message.severity !== undefined) {
-            writer.uint32(56).int32((0, student_incident_1.studentIncidentSeverityToNumber)(message.severity));
-        }
-        if (message.police_officer_name !== undefined) {
-            writer.uint32(66).string(message.police_officer_name);
-        }
-        if (message.police_case_id !== undefined) {
-            writer.uint32(74).string(message.police_case_id);
-        }
-        if (message.action_taken !== undefined) {
-            writer.uint32(82).string(message.action_taken);
-        }
-        if (message.police_date_contact !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.police_date_contact), writer.uint32(90).fork()).join();
-        }
-        if (message.police_date_investigation !== undefined) {
-            timestamp_1.Timestamp.encode(toTimestamp(message.police_date_investigation), writer.uint32(98).fork()).join();
+        if (message.report !== undefined) {
+            student_incident_1.IncidentReportInput.encode(message.report, writer.uint32(26).fork()).join();
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseUpdateStudentIncidentRequest();
+        const message = createBaseUpdateIncidentReportRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -190,61 +137,7 @@ exports.UpdateStudentIncidentRequest = {
                     if (tag !== 26) {
                         break;
                     }
-                    message.title = reader.string();
-                    continue;
-                case 4:
-                    if (tag !== 34) {
-                        break;
-                    }
-                    message.date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
-                    continue;
-                case 5:
-                    if (tag !== 42) {
-                        break;
-                    }
-                    message.description = reader.string();
-                    continue;
-                case 6:
-                    if (tag !== 48) {
-                        break;
-                    }
-                    message.status = (0, student_incident_1.studentIncidentStatusFromJSON)(reader.int32());
-                    continue;
-                case 7:
-                    if (tag !== 56) {
-                        break;
-                    }
-                    message.severity = (0, student_incident_1.studentIncidentSeverityFromJSON)(reader.int32());
-                    continue;
-                case 8:
-                    if (tag !== 66) {
-                        break;
-                    }
-                    message.police_officer_name = reader.string();
-                    continue;
-                case 9:
-                    if (tag !== 74) {
-                        break;
-                    }
-                    message.police_case_id = reader.string();
-                    continue;
-                case 10:
-                    if (tag !== 82) {
-                        break;
-                    }
-                    message.action_taken = reader.string();
-                    continue;
-                case 11:
-                    if (tag !== 90) {
-                        break;
-                    }
-                    message.police_date_contact = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
-                    continue;
-                case 12:
-                    if (tag !== 98) {
-                        break;
-                    }
-                    message.police_date_investigation = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    message.report = student_incident_1.IncidentReportInput.decode(reader, reader.uint32());
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -258,18 +151,7 @@ exports.UpdateStudentIncidentRequest = {
         return {
             context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined,
             incident_id: isSet(object.incidentId) ? object_id_1.ObjectId.fromJSON(object.incidentId) : undefined,
-            title: isSet(object.title) ? globalThis.String(object.title) : undefined,
-            date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
-            description: isSet(object.description) ? globalThis.String(object.description) : undefined,
-            status: isSet(object.status) ? (0, student_incident_1.studentIncidentStatusFromJSON)(object.status) : undefined,
-            severity: isSet(object.severity) ? (0, student_incident_1.studentIncidentSeverityFromJSON)(object.severity) : undefined,
-            police_officer_name: isSet(object.policeOfficerName) ? globalThis.String(object.policeOfficerName) : undefined,
-            police_case_id: isSet(object.policeCaseId) ? globalThis.String(object.policeCaseId) : undefined,
-            action_taken: isSet(object.actionTaken) ? globalThis.String(object.actionTaken) : undefined,
-            police_date_contact: isSet(object.policeDateContact) ? fromJsonTimestamp(object.policeDateContact) : undefined,
-            police_date_investigation: isSet(object.policeDateInvestigation)
-                ? fromJsonTimestamp(object.policeDateInvestigation)
-                : undefined,
+            report: isSet(object.report) ? student_incident_1.IncidentReportInput.fromJSON(object.report) : undefined,
         };
     },
     toJSON(message) {
@@ -280,66 +162,32 @@ exports.UpdateStudentIncidentRequest = {
         if (message.incident_id !== undefined) {
             obj.incidentId = object_id_1.ObjectId.toJSON(message.incident_id);
         }
-        if (message.title !== undefined) {
-            obj.title = message.title;
-        }
-        if (message.date !== undefined) {
-            obj.date = message.date.toISOString();
-        }
-        if (message.description !== undefined) {
-            obj.description = message.description;
-        }
-        if (message.status !== undefined) {
-            obj.status = (0, student_incident_1.studentIncidentStatusToJSON)(message.status);
-        }
-        if (message.severity !== undefined) {
-            obj.severity = (0, student_incident_1.studentIncidentSeverityToJSON)(message.severity);
-        }
-        if (message.police_officer_name !== undefined) {
-            obj.policeOfficerName = message.police_officer_name;
-        }
-        if (message.police_case_id !== undefined) {
-            obj.policeCaseId = message.police_case_id;
-        }
-        if (message.action_taken !== undefined) {
-            obj.actionTaken = message.action_taken;
-        }
-        if (message.police_date_contact !== undefined) {
-            obj.policeDateContact = message.police_date_contact.toISOString();
-        }
-        if (message.police_date_investigation !== undefined) {
-            obj.policeDateInvestigation = message.police_date_investigation.toISOString();
+        if (message.report !== undefined) {
+            obj.report = student_incident_1.IncidentReportInput.toJSON(message.report);
         }
         return obj;
     },
     create(base) {
-        return exports.UpdateStudentIncidentRequest.fromPartial(base ?? {});
+        return exports.UpdateIncidentReportRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseUpdateStudentIncidentRequest();
+        const message = createBaseUpdateIncidentReportRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.incident_id = (object.incident_id !== undefined && object.incident_id !== null)
             ? object_id_1.ObjectId.fromPartial(object.incident_id)
             : undefined;
-        message.title = object.title ?? undefined;
-        message.date = object.date ?? undefined;
-        message.description = object.description ?? undefined;
-        message.status = object.status ?? undefined;
-        message.severity = object.severity ?? undefined;
-        message.police_officer_name = object.police_officer_name ?? undefined;
-        message.police_case_id = object.police_case_id ?? undefined;
-        message.action_taken = object.action_taken ?? undefined;
-        message.police_date_contact = object.police_date_contact ?? undefined;
-        message.police_date_investigation = object.police_date_investigation ?? undefined;
+        message.report = (object.report !== undefined && object.report !== null)
+            ? student_incident_1.IncidentReportInput.fromPartial(object.report)
+            : undefined;
         return message;
     },
 };
-function createBaseGetStudentIncidentsRequest() {
+function createBaseListIncidentReportsRequest() {
     return { context: undefined, student_id: undefined };
 }
-exports.GetStudentIncidentsRequest = {
+exports.ListIncidentReportsRequest = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         if (message.context !== undefined) {
             request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
@@ -352,7 +200,7 @@ exports.GetStudentIncidentsRequest = {
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetStudentIncidentsRequest();
+        const message = createBaseListIncidentReportsRequest();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -393,10 +241,10 @@ exports.GetStudentIncidentsRequest = {
         return obj;
     },
     create(base) {
-        return exports.GetStudentIncidentsRequest.fromPartial(base ?? {});
+        return exports.ListIncidentReportsRequest.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseGetStudentIncidentsRequest();
+        const message = createBaseListIncidentReportsRequest();
         message.context = (object.context !== undefined && object.context !== null)
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
@@ -406,72 +254,20 @@ exports.GetStudentIncidentsRequest = {
         return message;
     },
 };
-function createBaseStudentIncidentResponse() {
-    return { incident: undefined };
-}
-exports.StudentIncidentResponse = {
-    encode(message, writer = new wire_1.BinaryWriter()) {
-        if (message.incident !== undefined) {
-            student_incident_1.StudentIncident.encode(message.incident, writer.uint32(10).fork()).join();
-        }
-        return writer;
-    },
-    decode(input, length) {
-        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
-        let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseStudentIncidentResponse();
-        while (reader.pos < end) {
-            const tag = reader.uint32();
-            switch (tag >>> 3) {
-                case 1:
-                    if (tag !== 10) {
-                        break;
-                    }
-                    message.incident = student_incident_1.StudentIncident.decode(reader, reader.uint32());
-                    continue;
-            }
-            if ((tag & 7) === 4 || tag === 0) {
-                break;
-            }
-            reader.skip(tag & 7);
-        }
-        return message;
-    },
-    fromJSON(object) {
-        return { incident: isSet(object.incident) ? student_incident_1.StudentIncident.fromJSON(object.incident) : undefined };
-    },
-    toJSON(message) {
-        const obj = {};
-        if (message.incident !== undefined) {
-            obj.incident = student_incident_1.StudentIncident.toJSON(message.incident);
-        }
-        return obj;
-    },
-    create(base) {
-        return exports.StudentIncidentResponse.fromPartial(base ?? {});
-    },
-    fromPartial(object) {
-        const message = createBaseStudentIncidentResponse();
-        message.incident = (object.incident !== undefined && object.incident !== null)
-            ? student_incident_1.StudentIncident.fromPartial(object.incident)
-            : undefined;
-        return message;
-    },
-};
-function createBaseGetStudentIncidentsResponse() {
+function createBaseListIncidentReportsResponse() {
     return { incidents: [] };
 }
-exports.GetStudentIncidentsResponse = {
+exports.ListIncidentReportsResponse = {
     encode(message, writer = new wire_1.BinaryWriter()) {
         for (const v of message.incidents) {
-            student_incident_1.StudentIncident.encode(v, writer.uint32(10).fork()).join();
+            student_incident_1.IncidentReport.encode(v, writer.uint32(10).fork()).join();
         }
         return writer;
     },
     decode(input, length) {
         const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
         let end = length === undefined ? reader.len : reader.pos + length;
-        const message = createBaseGetStudentIncidentsResponse();
+        const message = createBaseListIncidentReportsResponse();
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -479,7 +275,7 @@ exports.GetStudentIncidentsResponse = {
                     if (tag !== 10) {
                         break;
                     }
-                    message.incidents.push(student_incident_1.StudentIncident.decode(reader, reader.uint32()));
+                    message.incidents.push(student_incident_1.IncidentReport.decode(reader, reader.uint32()));
                     continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
@@ -492,47 +288,26 @@ exports.GetStudentIncidentsResponse = {
     fromJSON(object) {
         return {
             incidents: globalThis.Array.isArray(object?.incidents)
-                ? object.incidents.map((e) => student_incident_1.StudentIncident.fromJSON(e))
+                ? object.incidents.map((e) => student_incident_1.IncidentReport.fromJSON(e))
                 : [],
         };
     },
     toJSON(message) {
         const obj = {};
         if (message.incidents?.length) {
-            obj.incidents = message.incidents.map((e) => student_incident_1.StudentIncident.toJSON(e));
+            obj.incidents = message.incidents.map((e) => student_incident_1.IncidentReport.toJSON(e));
         }
         return obj;
     },
     create(base) {
-        return exports.GetStudentIncidentsResponse.fromPartial(base ?? {});
+        return exports.ListIncidentReportsResponse.fromPartial(base ?? {});
     },
     fromPartial(object) {
-        const message = createBaseGetStudentIncidentsResponse();
-        message.incidents = object.incidents?.map((e) => student_incident_1.StudentIncident.fromPartial(e)) || [];
+        const message = createBaseListIncidentReportsResponse();
+        message.incidents = object.incidents?.map((e) => student_incident_1.IncidentReport.fromPartial(e)) || [];
         return message;
     },
 };
-function toTimestamp(date) {
-    const seconds = Math.trunc(date.getTime() / 1_000);
-    const nanos = (date.getTime() % 1_000) * 1_000_000;
-    return { seconds, nanos };
-}
-function fromTimestamp(t) {
-    let millis = (t.seconds || 0) * 1_000;
-    millis += (t.nanos || 0) / 1_000_000;
-    return new globalThis.Date(millis);
-}
-function fromJsonTimestamp(o) {
-    if (o instanceof globalThis.Date) {
-        return o;
-    }
-    else if (typeof o === "string") {
-        return new globalThis.Date(o);
-    }
-    else {
-        return fromTimestamp(timestamp_1.Timestamp.fromJSON(o));
-    }
-}
 function isSet(value) {
     return value !== null && value !== undefined;
 }

@@ -21,6 +21,11 @@ export interface CommunicationFilters {
     semester_ids: ObjectId[];
     school_year_id?: ObjectId | undefined;
     audience_user_types: UserType[];
+    incident_parents?: IncidentParentAudience | undefined;
+}
+export interface IncidentParentAudience {
+    incident_id: ObjectId | undefined;
+    parent_ids: ObjectId[];
 }
 export interface CommunicationBroadcast {
     id: ObjectId | undefined;
@@ -81,6 +86,7 @@ export interface CommunicationRecipientPreview {
     push_registered?: boolean | undefined;
 }
 export declare const CommunicationFilters: MessageFns<CommunicationFilters>;
+export declare const IncidentParentAudience: MessageFns<IncidentParentAudience>;
 export declare const CommunicationBroadcast: MessageFns<CommunicationBroadcast>;
 export declare const CommunicationAttachment: MessageFns<CommunicationAttachment>;
 export declare const CommunicationTarget: MessageFns<CommunicationTarget>;

@@ -1,43 +1,29 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import { StudentIncident, StudentIncidentSeverity, StudentIncidentStatus } from "./student_incident";
+import { IncidentReport, IncidentReportInput } from "./student_incident";
 export declare const protobufPackage = "user_service";
-export interface CreateStudentIncidentRequest {
+export interface CreateIncidentReportRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
-    title?: string | undefined;
-    date: Date | undefined;
+    report: IncidentReportInput | undefined;
 }
-export interface UpdateStudentIncidentRequest {
+export interface UpdateIncidentReportRequest {
     context: RequestContext | undefined;
     incident_id: ObjectId | undefined;
-    title?: string | undefined;
-    date: Date | undefined;
-    description?: string | undefined;
-    status?: StudentIncidentStatus | undefined;
-    severity?: StudentIncidentSeverity | undefined;
-    police_officer_name?: string | undefined;
-    police_case_id?: string | undefined;
-    action_taken?: string | undefined;
-    police_date_contact?: Date | undefined;
-    police_date_investigation?: Date | undefined;
+    report: IncidentReportInput | undefined;
 }
-export interface GetStudentIncidentsRequest {
+export interface ListIncidentReportsRequest {
     context: RequestContext | undefined;
     student_id: ObjectId | undefined;
 }
-export interface StudentIncidentResponse {
-    incident: StudentIncident | undefined;
+export interface ListIncidentReportsResponse {
+    incidents: IncidentReport[];
 }
-export interface GetStudentIncidentsResponse {
-    incidents: StudentIncident[];
-}
-export declare const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentRequest>;
-export declare const UpdateStudentIncidentRequest: MessageFns<UpdateStudentIncidentRequest>;
-export declare const GetStudentIncidentsRequest: MessageFns<GetStudentIncidentsRequest>;
-export declare const StudentIncidentResponse: MessageFns<StudentIncidentResponse>;
-export declare const GetStudentIncidentsResponse: MessageFns<GetStudentIncidentsResponse>;
+export declare const CreateIncidentReportRequest: MessageFns<CreateIncidentReportRequest>;
+export declare const UpdateIncidentReportRequest: MessageFns<UpdateIncidentReportRequest>;
+export declare const ListIncidentReportsRequest: MessageFns<ListIncidentReportsRequest>;
+export declare const ListIncidentReportsResponse: MessageFns<ListIncidentReportsResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

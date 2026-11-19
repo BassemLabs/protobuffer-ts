@@ -77,6 +77,12 @@ export interface CommunicationFilters {
   semester_ids: ObjectId[];
   school_year_id?: ObjectId | undefined;
   audience_user_types: UserType[];
+  incident_parents?: IncidentParentAudience | undefined;
+}
+
+export interface IncidentParentAudience {
+  incident_id: ObjectId | undefined;
+  parent_ids: ObjectId[];
 }
 
 export interface CommunicationBroadcast {
@@ -159,6 +165,7 @@ function createBaseCommunicationFilters(): CommunicationFilters {
     semester_ids: [],
     school_year_id: undefined,
     audience_user_types: [],
+    incident_parents: undefined,
   };
 }
 
@@ -184,6 +191,9 @@ export const CommunicationFilters: MessageFns<CommunicationFilters> = {
       writer.int32(userTypeToNumber(v));
     }
     writer.join();
+    if (message.incident_parents !== undefined) {
+      IncidentParentAudience.encode(message.incident_parents, writer.uint32(58).fork()).join();
+    }
     return writer;
   },
 
@@ -246,6 +256,13 @@ export const CommunicationFilters: MessageFns<CommunicationFilters> = {
           }
 
           break;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.incident_parents = IncidentParentAudience.decode(reader, reader.uint32());
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -273,6 +290,9 @@ export const CommunicationFilters: MessageFns<CommunicationFilters> = {
       audience_user_types: globalThis.Array.isArray(object?.audienceUserTypes)
         ? object.audienceUserTypes.map((e: any) => userTypeFromJSON(e))
         : [],
+      incident_parents: isSet(object.incidentParents)
+        ? IncidentParentAudience.fromJSON(object.incidentParents)
+        : undefined,
     };
   },
 
@@ -296,6 +316,9 @@ export const CommunicationFilters: MessageFns<CommunicationFilters> = {
     if (message.audience_user_types?.length) {
       obj.audienceUserTypes = message.audience_user_types.map((e) => userTypeToJSON(e));
     }
+    if (message.incident_parents !== undefined) {
+      obj.incidentParents = IncidentParentAudience.toJSON(message.incident_parents);
+    }
     return obj;
   },
 
@@ -312,6 +335,87 @@ export const CommunicationFilters: MessageFns<CommunicationFilters> = {
       ? ObjectId.fromPartial(object.school_year_id)
       : undefined;
     message.audience_user_types = object.audience_user_types?.map((e) => e) || [];
+    message.incident_parents = (object.incident_parents !== undefined && object.incident_parents !== null)
+      ? IncidentParentAudience.fromPartial(object.incident_parents)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseIncidentParentAudience(): IncidentParentAudience {
+  return { incident_id: undefined, parent_ids: [] };
+}
+
+export const IncidentParentAudience: MessageFns<IncidentParentAudience> = {
+  encode(message: IncidentParentAudience, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.incident_id !== undefined) {
+      ObjectId.encode(message.incident_id, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.parent_ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): IncidentParentAudience {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseIncidentParentAudience();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.incident_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.parent_ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): IncidentParentAudience {
+    return {
+      incident_id: isSet(object.incidentId) ? ObjectId.fromJSON(object.incidentId) : undefined,
+      parent_ids: globalThis.Array.isArray(object?.parentIds)
+        ? object.parentIds.map((e: any) => ObjectId.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: IncidentParentAudience): unknown {
+    const obj: any = {};
+    if (message.incident_id !== undefined) {
+      obj.incidentId = ObjectId.toJSON(message.incident_id);
+    }
+    if (message.parent_ids?.length) {
+      obj.parentIds = message.parent_ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<IncidentParentAudience>, I>>(base?: I): IncidentParentAudience {
+    return IncidentParentAudience.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<IncidentParentAudience>, I>>(object: I): IncidentParentAudience {
+    const message = createBaseIncidentParentAudience();
+    message.incident_id = (object.incident_id !== undefined && object.incident_id !== null)
+      ? ObjectId.fromPartial(object.incident_id)
+      : undefined;
+    message.parent_ids = object.parent_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

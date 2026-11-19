@@ -165,6 +165,7 @@ function createBaseSendCommunicationRequest() {
         subject: undefined,
         body: undefined,
         attachment_ids: [],
+        request_id: undefined,
     };
 }
 exports.SendCommunicationRequest = {
@@ -188,6 +189,9 @@ exports.SendCommunicationRequest = {
         }
         for (const v of message.attachment_ids) {
             object_id_1.ObjectId.encode(v, writer.uint32(50).fork()).join();
+        }
+        if (message.request_id !== undefined) {
+            object_id_1.ObjectId.encode(message.request_id, writer.uint32(58).fork()).join();
         }
         return writer;
     },
@@ -241,6 +245,12 @@ exports.SendCommunicationRequest = {
                     }
                     message.attachment_ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
                     continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.request_id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -261,6 +271,7 @@ exports.SendCommunicationRequest = {
             attachment_ids: globalThis.Array.isArray(object?.attachmentIds)
                 ? object.attachmentIds.map((e) => object_id_1.ObjectId.fromJSON(e))
                 : [],
+            request_id: isSet(object.requestId) ? object_id_1.ObjectId.fromJSON(object.requestId) : undefined,
         };
     },
     toJSON(message) {
@@ -283,6 +294,9 @@ exports.SendCommunicationRequest = {
         if (message.attachment_ids?.length) {
             obj.attachmentIds = message.attachment_ids.map((e) => object_id_1.ObjectId.toJSON(e));
         }
+        if (message.request_id !== undefined) {
+            obj.requestId = object_id_1.ObjectId.toJSON(message.request_id);
+        }
         return obj;
     },
     create(base) {
@@ -300,6 +314,9 @@ exports.SendCommunicationRequest = {
         message.subject = object.subject ?? undefined;
         message.body = object.body ?? undefined;
         message.attachment_ids = object.attachment_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
+        message.request_id = (object.request_id !== undefined && object.request_id !== null)
+            ? object_id_1.ObjectId.fromPartial(object.request_id)
+            : undefined;
         return message;
     },
 };

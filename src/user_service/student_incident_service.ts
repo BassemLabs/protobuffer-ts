@@ -6,83 +6,55 @@
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
-import { Timestamp } from "../google/protobuf/timestamp";
 import { ObjectId } from "../utils/object_id";
 import { RequestContext } from "../utils/request_context";
-import {
-  StudentIncident,
-  StudentIncidentSeverity,
-  studentIncidentSeverityFromJSON,
-  studentIncidentSeverityToJSON,
-  studentIncidentSeverityToNumber,
-  StudentIncidentStatus,
-  studentIncidentStatusFromJSON,
-  studentIncidentStatusToJSON,
-  studentIncidentStatusToNumber,
-} from "./student_incident";
+import { IncidentReport, IncidentReportInput } from "./student_incident";
 
 export const protobufPackage = "user_service";
 
-export interface CreateStudentIncidentRequest {
+export interface CreateIncidentReportRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
-  title?: string | undefined;
-  date: Date | undefined;
+  report: IncidentReportInput | undefined;
 }
 
-export interface UpdateStudentIncidentRequest {
+export interface UpdateIncidentReportRequest {
   context: RequestContext | undefined;
   incident_id: ObjectId | undefined;
-  title?: string | undefined;
-  date: Date | undefined;
-  description?: string | undefined;
-  status?: StudentIncidentStatus | undefined;
-  severity?: StudentIncidentSeverity | undefined;
-  police_officer_name?: string | undefined;
-  police_case_id?: string | undefined;
-  action_taken?: string | undefined;
-  police_date_contact?: Date | undefined;
-  police_date_investigation?: Date | undefined;
+  report: IncidentReportInput | undefined;
 }
 
-export interface GetStudentIncidentsRequest {
+export interface ListIncidentReportsRequest {
   context: RequestContext | undefined;
   student_id: ObjectId | undefined;
 }
 
-export interface StudentIncidentResponse {
-  incident: StudentIncident | undefined;
+export interface ListIncidentReportsResponse {
+  incidents: IncidentReport[];
 }
 
-export interface GetStudentIncidentsResponse {
-  incidents: StudentIncident[];
+function createBaseCreateIncidentReportRequest(): CreateIncidentReportRequest {
+  return { context: undefined, student_id: undefined, report: undefined };
 }
 
-function createBaseCreateStudentIncidentRequest(): CreateStudentIncidentRequest {
-  return { context: undefined, student_id: undefined, title: undefined, date: undefined };
-}
-
-export const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentRequest> = {
-  encode(message: CreateStudentIncidentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const CreateIncidentReportRequest: MessageFns<CreateIncidentReportRequest> = {
+  encode(message: CreateIncidentReportRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
     if (message.student_id !== undefined) {
       ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
     }
-    if (message.title !== undefined) {
-      writer.uint32(26).string(message.title);
-    }
-    if (message.date !== undefined) {
-      Timestamp.encode(toTimestamp(message.date), writer.uint32(34).fork()).join();
+    if (message.report !== undefined) {
+      IncidentReportInput.encode(message.report, writer.uint32(26).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): CreateStudentIncidentRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateIncidentReportRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreateStudentIncidentRequest();
+    const message = createBaseCreateIncidentReportRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -105,14 +77,7 @@ export const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentReque
             break;
           }
 
-          message.title = reader.string();
-          continue;
-        case 4:
-          if (tag !== 34) {
-            break;
-          }
-
-          message.date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.report = IncidentReportInput.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -123,16 +88,15 @@ export const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentReque
     return message;
   },
 
-  fromJSON(object: any): CreateStudentIncidentRequest {
+  fromJSON(object: any): CreateIncidentReportRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
-      date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
+      report: isSet(object.report) ? IncidentReportInput.fromJSON(object.report) : undefined,
     };
   },
 
-  toJSON(message: CreateStudentIncidentRequest): unknown {
+  toJSON(message: CreateIncidentReportRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
@@ -140,94 +104,52 @@ export const CreateStudentIncidentRequest: MessageFns<CreateStudentIncidentReque
     if (message.student_id !== undefined) {
       obj.studentId = ObjectId.toJSON(message.student_id);
     }
-    if (message.title !== undefined) {
-      obj.title = message.title;
-    }
-    if (message.date !== undefined) {
-      obj.date = message.date.toISOString();
+    if (message.report !== undefined) {
+      obj.report = IncidentReportInput.toJSON(message.report);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CreateStudentIncidentRequest>, I>>(base?: I): CreateStudentIncidentRequest {
-    return CreateStudentIncidentRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<CreateIncidentReportRequest>, I>>(base?: I): CreateIncidentReportRequest {
+    return CreateIncidentReportRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<CreateStudentIncidentRequest>, I>>(object: I): CreateStudentIncidentRequest {
-    const message = createBaseCreateStudentIncidentRequest();
+  fromPartial<I extends Exact<DeepPartial<CreateIncidentReportRequest>, I>>(object: I): CreateIncidentReportRequest {
+    const message = createBaseCreateIncidentReportRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.student_id = (object.student_id !== undefined && object.student_id !== null)
       ? ObjectId.fromPartial(object.student_id)
       : undefined;
-    message.title = object.title ?? undefined;
-    message.date = object.date ?? undefined;
+    message.report = (object.report !== undefined && object.report !== null)
+      ? IncidentReportInput.fromPartial(object.report)
+      : undefined;
     return message;
   },
 };
 
-function createBaseUpdateStudentIncidentRequest(): UpdateStudentIncidentRequest {
-  return {
-    context: undefined,
-    incident_id: undefined,
-    title: undefined,
-    date: undefined,
-    description: undefined,
-    status: undefined,
-    severity: undefined,
-    police_officer_name: undefined,
-    police_case_id: undefined,
-    action_taken: undefined,
-    police_date_contact: undefined,
-    police_date_investigation: undefined,
-  };
+function createBaseUpdateIncidentReportRequest(): UpdateIncidentReportRequest {
+  return { context: undefined, incident_id: undefined, report: undefined };
 }
 
-export const UpdateStudentIncidentRequest: MessageFns<UpdateStudentIncidentRequest> = {
-  encode(message: UpdateStudentIncidentRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const UpdateIncidentReportRequest: MessageFns<UpdateIncidentReportRequest> = {
+  encode(message: UpdateIncidentReportRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
     if (message.incident_id !== undefined) {
       ObjectId.encode(message.incident_id, writer.uint32(18).fork()).join();
     }
-    if (message.title !== undefined) {
-      writer.uint32(26).string(message.title);
-    }
-    if (message.date !== undefined) {
-      Timestamp.encode(toTimestamp(message.date), writer.uint32(34).fork()).join();
-    }
-    if (message.description !== undefined) {
-      writer.uint32(42).string(message.description);
-    }
-    if (message.status !== undefined) {
-      writer.uint32(48).int32(studentIncidentStatusToNumber(message.status));
-    }
-    if (message.severity !== undefined) {
-      writer.uint32(56).int32(studentIncidentSeverityToNumber(message.severity));
-    }
-    if (message.police_officer_name !== undefined) {
-      writer.uint32(66).string(message.police_officer_name);
-    }
-    if (message.police_case_id !== undefined) {
-      writer.uint32(74).string(message.police_case_id);
-    }
-    if (message.action_taken !== undefined) {
-      writer.uint32(82).string(message.action_taken);
-    }
-    if (message.police_date_contact !== undefined) {
-      Timestamp.encode(toTimestamp(message.police_date_contact), writer.uint32(90).fork()).join();
-    }
-    if (message.police_date_investigation !== undefined) {
-      Timestamp.encode(toTimestamp(message.police_date_investigation), writer.uint32(98).fork()).join();
+    if (message.report !== undefined) {
+      IncidentReportInput.encode(message.report, writer.uint32(26).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): UpdateStudentIncidentRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateIncidentReportRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUpdateStudentIncidentRequest();
+    const message = createBaseUpdateIncidentReportRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -250,70 +172,7 @@ export const UpdateStudentIncidentRequest: MessageFns<UpdateStudentIncidentReque
             break;
           }
 
-          message.title = reader.string();
-          continue;
-        case 4:
-          if (tag !== 34) {
-            break;
-          }
-
-          message.date = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          continue;
-        case 5:
-          if (tag !== 42) {
-            break;
-          }
-
-          message.description = reader.string();
-          continue;
-        case 6:
-          if (tag !== 48) {
-            break;
-          }
-
-          message.status = studentIncidentStatusFromJSON(reader.int32());
-          continue;
-        case 7:
-          if (tag !== 56) {
-            break;
-          }
-
-          message.severity = studentIncidentSeverityFromJSON(reader.int32());
-          continue;
-        case 8:
-          if (tag !== 66) {
-            break;
-          }
-
-          message.police_officer_name = reader.string();
-          continue;
-        case 9:
-          if (tag !== 74) {
-            break;
-          }
-
-          message.police_case_id = reader.string();
-          continue;
-        case 10:
-          if (tag !== 82) {
-            break;
-          }
-
-          message.action_taken = reader.string();
-          continue;
-        case 11:
-          if (tag !== 90) {
-            break;
-          }
-
-          message.police_date_contact = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
-          continue;
-        case 12:
-          if (tag !== 98) {
-            break;
-          }
-
-          message.police_date_investigation = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.report = IncidentReportInput.decode(reader, reader.uint32());
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -324,26 +183,15 @@ export const UpdateStudentIncidentRequest: MessageFns<UpdateStudentIncidentReque
     return message;
   },
 
-  fromJSON(object: any): UpdateStudentIncidentRequest {
+  fromJSON(object: any): UpdateIncidentReportRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       incident_id: isSet(object.incidentId) ? ObjectId.fromJSON(object.incidentId) : undefined,
-      title: isSet(object.title) ? globalThis.String(object.title) : undefined,
-      date: isSet(object.date) ? fromJsonTimestamp(object.date) : undefined,
-      description: isSet(object.description) ? globalThis.String(object.description) : undefined,
-      status: isSet(object.status) ? studentIncidentStatusFromJSON(object.status) : undefined,
-      severity: isSet(object.severity) ? studentIncidentSeverityFromJSON(object.severity) : undefined,
-      police_officer_name: isSet(object.policeOfficerName) ? globalThis.String(object.policeOfficerName) : undefined,
-      police_case_id: isSet(object.policeCaseId) ? globalThis.String(object.policeCaseId) : undefined,
-      action_taken: isSet(object.actionTaken) ? globalThis.String(object.actionTaken) : undefined,
-      police_date_contact: isSet(object.policeDateContact) ? fromJsonTimestamp(object.policeDateContact) : undefined,
-      police_date_investigation: isSet(object.policeDateInvestigation)
-        ? fromJsonTimestamp(object.policeDateInvestigation)
-        : undefined,
+      report: isSet(object.report) ? IncidentReportInput.fromJSON(object.report) : undefined,
     };
   },
 
-  toJSON(message: UpdateStudentIncidentRequest): unknown {
+  toJSON(message: UpdateIncidentReportRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
@@ -351,70 +199,36 @@ export const UpdateStudentIncidentRequest: MessageFns<UpdateStudentIncidentReque
     if (message.incident_id !== undefined) {
       obj.incidentId = ObjectId.toJSON(message.incident_id);
     }
-    if (message.title !== undefined) {
-      obj.title = message.title;
-    }
-    if (message.date !== undefined) {
-      obj.date = message.date.toISOString();
-    }
-    if (message.description !== undefined) {
-      obj.description = message.description;
-    }
-    if (message.status !== undefined) {
-      obj.status = studentIncidentStatusToJSON(message.status);
-    }
-    if (message.severity !== undefined) {
-      obj.severity = studentIncidentSeverityToJSON(message.severity);
-    }
-    if (message.police_officer_name !== undefined) {
-      obj.policeOfficerName = message.police_officer_name;
-    }
-    if (message.police_case_id !== undefined) {
-      obj.policeCaseId = message.police_case_id;
-    }
-    if (message.action_taken !== undefined) {
-      obj.actionTaken = message.action_taken;
-    }
-    if (message.police_date_contact !== undefined) {
-      obj.policeDateContact = message.police_date_contact.toISOString();
-    }
-    if (message.police_date_investigation !== undefined) {
-      obj.policeDateInvestigation = message.police_date_investigation.toISOString();
+    if (message.report !== undefined) {
+      obj.report = IncidentReportInput.toJSON(message.report);
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<UpdateStudentIncidentRequest>, I>>(base?: I): UpdateStudentIncidentRequest {
-    return UpdateStudentIncidentRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<UpdateIncidentReportRequest>, I>>(base?: I): UpdateIncidentReportRequest {
+    return UpdateIncidentReportRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<UpdateStudentIncidentRequest>, I>>(object: I): UpdateStudentIncidentRequest {
-    const message = createBaseUpdateStudentIncidentRequest();
+  fromPartial<I extends Exact<DeepPartial<UpdateIncidentReportRequest>, I>>(object: I): UpdateIncidentReportRequest {
+    const message = createBaseUpdateIncidentReportRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.incident_id = (object.incident_id !== undefined && object.incident_id !== null)
       ? ObjectId.fromPartial(object.incident_id)
       : undefined;
-    message.title = object.title ?? undefined;
-    message.date = object.date ?? undefined;
-    message.description = object.description ?? undefined;
-    message.status = object.status ?? undefined;
-    message.severity = object.severity ?? undefined;
-    message.police_officer_name = object.police_officer_name ?? undefined;
-    message.police_case_id = object.police_case_id ?? undefined;
-    message.action_taken = object.action_taken ?? undefined;
-    message.police_date_contact = object.police_date_contact ?? undefined;
-    message.police_date_investigation = object.police_date_investigation ?? undefined;
+    message.report = (object.report !== undefined && object.report !== null)
+      ? IncidentReportInput.fromPartial(object.report)
+      : undefined;
     return message;
   },
 };
 
-function createBaseGetStudentIncidentsRequest(): GetStudentIncidentsRequest {
+function createBaseListIncidentReportsRequest(): ListIncidentReportsRequest {
   return { context: undefined, student_id: undefined };
 }
 
-export const GetStudentIncidentsRequest: MessageFns<GetStudentIncidentsRequest> = {
-  encode(message: GetStudentIncidentsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const ListIncidentReportsRequest: MessageFns<ListIncidentReportsRequest> = {
+  encode(message: ListIncidentReportsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.context !== undefined) {
       RequestContext.encode(message.context, writer.uint32(10).fork()).join();
     }
@@ -424,10 +238,10 @@ export const GetStudentIncidentsRequest: MessageFns<GetStudentIncidentsRequest> 
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentIncidentsRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): ListIncidentReportsRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetStudentIncidentsRequest();
+    const message = createBaseListIncidentReportsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -454,14 +268,14 @@ export const GetStudentIncidentsRequest: MessageFns<GetStudentIncidentsRequest> 
     return message;
   },
 
-  fromJSON(object: any): GetStudentIncidentsRequest {
+  fromJSON(object: any): ListIncidentReportsRequest {
     return {
       context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
       student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
     };
   },
 
-  toJSON(message: GetStudentIncidentsRequest): unknown {
+  toJSON(message: ListIncidentReportsRequest): unknown {
     const obj: any = {};
     if (message.context !== undefined) {
       obj.context = RequestContext.toJSON(message.context);
@@ -472,11 +286,11 @@ export const GetStudentIncidentsRequest: MessageFns<GetStudentIncidentsRequest> 
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetStudentIncidentsRequest>, I>>(base?: I): GetStudentIncidentsRequest {
-    return GetStudentIncidentsRequest.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<ListIncidentReportsRequest>, I>>(base?: I): ListIncidentReportsRequest {
+    return ListIncidentReportsRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GetStudentIncidentsRequest>, I>>(object: I): GetStudentIncidentsRequest {
-    const message = createBaseGetStudentIncidentsRequest();
+  fromPartial<I extends Exact<DeepPartial<ListIncidentReportsRequest>, I>>(object: I): ListIncidentReportsRequest {
+    const message = createBaseListIncidentReportsRequest();
     message.context = (object.context !== undefined && object.context !== null)
       ? RequestContext.fromPartial(object.context)
       : undefined;
@@ -487,81 +301,22 @@ export const GetStudentIncidentsRequest: MessageFns<GetStudentIncidentsRequest> 
   },
 };
 
-function createBaseStudentIncidentResponse(): StudentIncidentResponse {
-  return { incident: undefined };
-}
-
-export const StudentIncidentResponse: MessageFns<StudentIncidentResponse> = {
-  encode(message: StudentIncidentResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.incident !== undefined) {
-      StudentIncident.encode(message.incident, writer.uint32(10).fork()).join();
-    }
-    return writer;
-  },
-
-  decode(input: BinaryReader | Uint8Array, length?: number): StudentIncidentResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseStudentIncidentResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          if (tag !== 10) {
-            break;
-          }
-
-          message.incident = StudentIncident.decode(reader, reader.uint32());
-          continue;
-      }
-      if ((tag & 7) === 4 || tag === 0) {
-        break;
-      }
-      reader.skip(tag & 7);
-    }
-    return message;
-  },
-
-  fromJSON(object: any): StudentIncidentResponse {
-    return { incident: isSet(object.incident) ? StudentIncident.fromJSON(object.incident) : undefined };
-  },
-
-  toJSON(message: StudentIncidentResponse): unknown {
-    const obj: any = {};
-    if (message.incident !== undefined) {
-      obj.incident = StudentIncident.toJSON(message.incident);
-    }
-    return obj;
-  },
-
-  create<I extends Exact<DeepPartial<StudentIncidentResponse>, I>>(base?: I): StudentIncidentResponse {
-    return StudentIncidentResponse.fromPartial(base ?? ({} as any));
-  },
-  fromPartial<I extends Exact<DeepPartial<StudentIncidentResponse>, I>>(object: I): StudentIncidentResponse {
-    const message = createBaseStudentIncidentResponse();
-    message.incident = (object.incident !== undefined && object.incident !== null)
-      ? StudentIncident.fromPartial(object.incident)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseGetStudentIncidentsResponse(): GetStudentIncidentsResponse {
+function createBaseListIncidentReportsResponse(): ListIncidentReportsResponse {
   return { incidents: [] };
 }
 
-export const GetStudentIncidentsResponse: MessageFns<GetStudentIncidentsResponse> = {
-  encode(message: GetStudentIncidentsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const ListIncidentReportsResponse: MessageFns<ListIncidentReportsResponse> = {
+  encode(message: ListIncidentReportsResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     for (const v of message.incidents) {
-      StudentIncident.encode(v!, writer.uint32(10).fork()).join();
+      IncidentReport.encode(v!, writer.uint32(10).fork()).join();
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): GetStudentIncidentsResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): ListIncidentReportsResponse {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseGetStudentIncidentsResponse();
+    const message = createBaseListIncidentReportsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -570,7 +325,7 @@ export const GetStudentIncidentsResponse: MessageFns<GetStudentIncidentsResponse
             break;
           }
 
-          message.incidents.push(StudentIncident.decode(reader, reader.uint32()));
+          message.incidents.push(IncidentReport.decode(reader, reader.uint32()));
           continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
@@ -581,28 +336,28 @@ export const GetStudentIncidentsResponse: MessageFns<GetStudentIncidentsResponse
     return message;
   },
 
-  fromJSON(object: any): GetStudentIncidentsResponse {
+  fromJSON(object: any): ListIncidentReportsResponse {
     return {
       incidents: globalThis.Array.isArray(object?.incidents)
-        ? object.incidents.map((e: any) => StudentIncident.fromJSON(e))
+        ? object.incidents.map((e: any) => IncidentReport.fromJSON(e))
         : [],
     };
   },
 
-  toJSON(message: GetStudentIncidentsResponse): unknown {
+  toJSON(message: ListIncidentReportsResponse): unknown {
     const obj: any = {};
     if (message.incidents?.length) {
-      obj.incidents = message.incidents.map((e) => StudentIncident.toJSON(e));
+      obj.incidents = message.incidents.map((e) => IncidentReport.toJSON(e));
     }
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<GetStudentIncidentsResponse>, I>>(base?: I): GetStudentIncidentsResponse {
-    return GetStudentIncidentsResponse.fromPartial(base ?? ({} as any));
+  create<I extends Exact<DeepPartial<ListIncidentReportsResponse>, I>>(base?: I): ListIncidentReportsResponse {
+    return ListIncidentReportsResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<GetStudentIncidentsResponse>, I>>(object: I): GetStudentIncidentsResponse {
-    const message = createBaseGetStudentIncidentsResponse();
-    message.incidents = object.incidents?.map((e) => StudentIncident.fromPartial(e)) || [];
+  fromPartial<I extends Exact<DeepPartial<ListIncidentReportsResponse>, I>>(object: I): ListIncidentReportsResponse {
+    const message = createBaseListIncidentReportsResponse();
+    message.incidents = object.incidents?.map((e) => IncidentReport.fromPartial(e)) || [];
     return message;
   },
 };
@@ -618,28 +373,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function toTimestamp(date: Date): Timestamp {
-  const seconds = Math.trunc(date.getTime() / 1_000);
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = (t.seconds || 0) * 1_000;
-  millis += (t.nanos || 0) / 1_000_000;
-  return new globalThis.Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof globalThis.Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new globalThis.Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
-  }
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
