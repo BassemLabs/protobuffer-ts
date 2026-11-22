@@ -81,12 +81,17 @@ export interface ParentContext {
     /** Missing means version 0 for existing sessions. */
     auth_version?: number | undefined;
 }
+export interface ObjectIdsRequest {
+    context: RequestContext | undefined;
+    ids: ObjectId[];
+}
 export declare const RequestContext: MessageFns<RequestContext>;
 export declare const UserContext: MessageFns<UserContext>;
 export declare const HomeroomSubjectId: MessageFns<HomeroomSubjectId>;
 export declare const TeacherContext: MessageFns<TeacherContext>;
 export declare const StudentContext: MessageFns<StudentContext>;
 export declare const ParentContext: MessageFns<ParentContext>;
+export declare const ObjectIdsRequest: MessageFns<ObjectIdsRequest>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

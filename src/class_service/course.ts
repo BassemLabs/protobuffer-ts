@@ -8,10 +8,10 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { AbstractCourse } from "./abstract_course";
-import { Homeroom, ListHomeroom } from "./homeroom";
+import { Homeroom, ListHomeroom, SummaryHomeroom, TeacherDisplay } from "./homeroom";
 import { LmsCourse } from "./lms_course";
 import { ReportLayout } from "./report_layout";
-import { ListSemester, Semester } from "./semester";
+import { ClassLookup, ListSemester, Semester, SummarySemester } from "./semester";
 
 export const protobufPackage = "class_service";
 
@@ -45,6 +45,25 @@ export interface ListCourse {
 export interface CourseList {
   courses: ListCourse[];
   courses_count?: number | undefined;
+}
+
+export interface CourseSummary {
+  id: ObjectId | undefined;
+  name?: string | undefined;
+  archived?: boolean | undefined;
+  semester: SummarySemester | undefined;
+  course_code?: string | undefined;
+  homeroom?: SummaryHomeroom | undefined;
+  teachers: TeacherDisplay[];
+}
+
+export interface CourseSummaryList {
+  courses: CourseSummary[];
+  courses_count?: number | undefined;
+}
+
+export interface CourseLookupList {
+  courses: ClassLookup[];
 }
 
 function createBaseCourse(): Course {
@@ -571,6 +590,304 @@ export const CourseList: MessageFns<CourseList> = {
     const message = createBaseCourseList();
     message.courses = object.courses?.map((e) => ListCourse.fromPartial(e)) || [];
     message.courses_count = object.courses_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCourseSummary(): CourseSummary {
+  return {
+    id: undefined,
+    name: undefined,
+    archived: undefined,
+    semester: undefined,
+    course_code: undefined,
+    homeroom: undefined,
+    teachers: [],
+  };
+}
+
+export const CourseSummary: MessageFns<CourseSummary> = {
+  encode(message: CourseSummary, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.archived !== undefined) {
+      writer.uint32(24).bool(message.archived);
+    }
+    if (message.semester !== undefined) {
+      SummarySemester.encode(message.semester, writer.uint32(34).fork()).join();
+    }
+    if (message.course_code !== undefined) {
+      writer.uint32(42).string(message.course_code);
+    }
+    if (message.homeroom !== undefined) {
+      SummaryHomeroom.encode(message.homeroom, writer.uint32(50).fork()).join();
+    }
+    for (const v of message.teachers) {
+      TeacherDisplay.encode(v!, writer.uint32(58).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CourseSummary {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCourseSummary();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.archived = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.semester = SummarySemester.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.course_code = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.homeroom = SummaryHomeroom.decode(reader, reader.uint32());
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.teachers.push(TeacherDisplay.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CourseSummary {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
+      semester: isSet(object.semester) ? SummarySemester.fromJSON(object.semester) : undefined,
+      course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+      homeroom: isSet(object.homeroom) ? SummaryHomeroom.fromJSON(object.homeroom) : undefined,
+      teachers: globalThis.Array.isArray(object?.teachers)
+        ? object.teachers.map((e: any) => TeacherDisplay.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: CourseSummary): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.archived !== undefined) {
+      obj.archived = message.archived;
+    }
+    if (message.semester !== undefined) {
+      obj.semester = SummarySemester.toJSON(message.semester);
+    }
+    if (message.course_code !== undefined) {
+      obj.courseCode = message.course_code;
+    }
+    if (message.homeroom !== undefined) {
+      obj.homeroom = SummaryHomeroom.toJSON(message.homeroom);
+    }
+    if (message.teachers?.length) {
+      obj.teachers = message.teachers.map((e) => TeacherDisplay.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CourseSummary>, I>>(base?: I): CourseSummary {
+    return CourseSummary.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CourseSummary>, I>>(object: I): CourseSummary {
+    const message = createBaseCourseSummary();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? undefined;
+    message.archived = object.archived ?? undefined;
+    message.semester = (object.semester !== undefined && object.semester !== null)
+      ? SummarySemester.fromPartial(object.semester)
+      : undefined;
+    message.course_code = object.course_code ?? undefined;
+    message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
+      ? SummaryHomeroom.fromPartial(object.homeroom)
+      : undefined;
+    message.teachers = object.teachers?.map((e) => TeacherDisplay.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCourseSummaryList(): CourseSummaryList {
+  return { courses: [], courses_count: undefined };
+}
+
+export const CourseSummaryList: MessageFns<CourseSummaryList> = {
+  encode(message: CourseSummaryList, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.courses) {
+      CourseSummary.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.courses_count !== undefined) {
+      writer.uint32(16).uint64(message.courses_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CourseSummaryList {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCourseSummaryList();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.courses.push(CourseSummary.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.courses_count = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CourseSummaryList {
+    return {
+      courses: globalThis.Array.isArray(object?.courses)
+        ? object.courses.map((e: any) => CourseSummary.fromJSON(e))
+        : [],
+      courses_count: isSet(object.coursesCount) ? globalThis.Number(object.coursesCount) : undefined,
+    };
+  },
+
+  toJSON(message: CourseSummaryList): unknown {
+    const obj: any = {};
+    if (message.courses?.length) {
+      obj.courses = message.courses.map((e) => CourseSummary.toJSON(e));
+    }
+    if (message.courses_count !== undefined) {
+      obj.coursesCount = Math.round(message.courses_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CourseSummaryList>, I>>(base?: I): CourseSummaryList {
+    return CourseSummaryList.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CourseSummaryList>, I>>(object: I): CourseSummaryList {
+    const message = createBaseCourseSummaryList();
+    message.courses = object.courses?.map((e) => CourseSummary.fromPartial(e)) || [];
+    message.courses_count = object.courses_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseCourseLookupList(): CourseLookupList {
+  return { courses: [] };
+}
+
+export const CourseLookupList: MessageFns<CourseLookupList> = {
+  encode(message: CourseLookupList, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.courses) {
+      ClassLookup.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CourseLookupList {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCourseLookupList();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.courses.push(ClassLookup.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CourseLookupList {
+    return {
+      courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e: any) => ClassLookup.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: CourseLookupList): unknown {
+    const obj: any = {};
+    if (message.courses?.length) {
+      obj.courses = message.courses.map((e) => ClassLookup.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CourseLookupList>, I>>(base?: I): CourseLookupList {
+    return CourseLookupList.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<CourseLookupList>, I>>(object: I): CourseLookupList {
+    const message = createBaseCourseLookupList();
+    message.courses = object.courses?.map((e) => ClassLookup.fromPartial(e)) || [];
     return message;
   },
 };

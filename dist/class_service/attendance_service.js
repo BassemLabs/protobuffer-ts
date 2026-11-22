@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/attendance_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GetSingleStudentCourseAttendanceEntryResponse = exports.GetSingleStudentCourseAttendanceEntryRequest = exports.GetCourseAttendanceDetailsResponse = exports.GetCourseAttendanceDetailsRequest = exports.GetAttendanceCsvDataResponse = exports.GetAttendanceCsvDataRequest = exports.AttendanceDateMapEntry = exports.GetAttendanceDateMapResponse = exports.GetAttendanceDateMapRequest = exports.GetSingleStudentHomeroomAttendanceEntryResponse = exports.GetSingleStudentHomeroomAttendanceEntryRequest = exports.GetHomeroomAttendanceDetailsResponse = exports.GetHomeroomAttendanceDetailsRequest = exports.HomeroomEntryStatus = exports.GetHomeroomsAttendanceOverviewResponse = exports.GetHomeroomsAttendanceOverviewRequest = exports.CourseEntryStatus = exports.GetCoursesAttendanceOverviewResponse = exports.GetCoursesAttendanceOverviewRequest = exports.StudentsAttendanceCountsResponse = exports.StudentAttendanceCounts = exports.AttendanceCounts = exports.UpdateExcuseStudentRequest = exports.UpdateReasonRequest = exports.UpdateTimeRequest = exports.UpdateStatusRequest = exports.GetStudentsEntriesCountRequest = exports.GetStudentEntriesRequest = exports.AttendanceResponse = exports.GetPrincipalDashboardAttendanceSummaryResponse = exports.PrincipalDashboardChronicAbsentee = exports.PrincipalDashboardAttendanceTodayRow = exports.PrincipalDashboardAttendanceTrendPoint = exports.GetPrincipalDashboardAttendanceSummaryRequest = exports.AttendanceCompletionStatus = exports.TimeType = exports.PrincipalDashboardAttendanceScopeType = exports.protobufPackage = void 0;
+exports.GetAttendanceScopeAvailabilityResponse = exports.GetAttendanceScopeAvailabilityRequest = exports.GetHomeroomsAttendanceSummaryResponse = exports.GetCoursesAttendanceSummaryResponse = exports.GetSingleStudentCourseAttendanceEntryResponse = exports.GetSingleStudentCourseAttendanceEntryRequest = exports.GetCourseAttendanceDetailsResponse = exports.GetCourseAttendanceDetailsRequest = exports.GetAttendanceCsvDataResponse = exports.GetAttendanceCsvDataRequest = exports.AttendanceDateMapEntry = exports.GetAttendanceDateMapResponse = exports.GetAttendanceDateMapRequest = exports.GetSingleStudentHomeroomAttendanceEntryResponse = exports.GetSingleStudentHomeroomAttendanceEntryRequest = exports.GetHomeroomAttendanceDetailsResponse = exports.GetHomeroomAttendanceDetailsRequest = exports.HomeroomEntryStatus = exports.GetHomeroomsAttendanceOverviewResponse = exports.GetHomeroomsAttendanceOverviewRequest = exports.CourseEntryStatus = exports.GetCoursesAttendanceOverviewResponse = exports.GetCoursesAttendanceOverviewRequest = exports.StudentsAttendanceCountsResponse = exports.StudentAttendanceCounts = exports.AttendanceCounts = exports.UpdateExcuseStudentRequest = exports.UpdateReasonRequest = exports.UpdateTimeRequest = exports.UpdateStatusRequest = exports.GetStudentsEntriesCountRequest = exports.GetStudentEntriesRequest = exports.AttendanceResponse = exports.GetPrincipalDashboardAttendanceSummaryResponse = exports.PrincipalDashboardChronicAbsentee = exports.PrincipalDashboardAttendanceTodayRow = exports.PrincipalDashboardAttendanceTrendPoint = exports.GetPrincipalDashboardAttendanceSummaryRequest = exports.AttendanceCompletionStatus = exports.TimeType = exports.PrincipalDashboardAttendanceScopeType = exports.protobufPackage = void 0;
 exports.principalDashboardAttendanceScopeTypeFromJSON = principalDashboardAttendanceScopeTypeFromJSON;
 exports.principalDashboardAttendanceScopeTypeToJSON = principalDashboardAttendanceScopeTypeToJSON;
 exports.principalDashboardAttendanceScopeTypeToNumber = principalDashboardAttendanceScopeTypeToNumber;
@@ -3542,6 +3542,264 @@ exports.GetSingleStudentCourseAttendanceEntryResponse = {
             ? course_1.Course.fromPartial(object.course)
             : undefined;
         message.is_school_day = object.is_school_day ?? undefined;
+        return message;
+    },
+};
+function createBaseGetCoursesAttendanceSummaryResponse() {
+    return { courses: [], entry_status: [] };
+}
+exports.GetCoursesAttendanceSummaryResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.courses) {
+            course_1.CourseSummary.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.entry_status) {
+            exports.CourseEntryStatus.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetCoursesAttendanceSummaryResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.courses.push(course_1.CourseSummary.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.entry_status.push(exports.CourseEntryStatus.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            courses: globalThis.Array.isArray(object?.courses)
+                ? object.courses.map((e) => course_1.CourseSummary.fromJSON(e))
+                : [],
+            entry_status: globalThis.Array.isArray(object?.entryStatus)
+                ? object.entryStatus.map((e) => exports.CourseEntryStatus.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.courses?.length) {
+            obj.courses = message.courses.map((e) => course_1.CourseSummary.toJSON(e));
+        }
+        if (message.entry_status?.length) {
+            obj.entryStatus = message.entry_status.map((e) => exports.CourseEntryStatus.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetCoursesAttendanceSummaryResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetCoursesAttendanceSummaryResponse();
+        message.courses = object.courses?.map((e) => course_1.CourseSummary.fromPartial(e)) || [];
+        message.entry_status = object.entry_status?.map((e) => exports.CourseEntryStatus.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetHomeroomsAttendanceSummaryResponse() {
+    return { homerooms: [], entry_status: [] };
+}
+exports.GetHomeroomsAttendanceSummaryResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.homerooms) {
+            homeroom_1.HomeroomSummary.encode(v, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.entry_status) {
+            exports.HomeroomEntryStatus.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetHomeroomsAttendanceSummaryResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.homerooms.push(homeroom_1.HomeroomSummary.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.entry_status.push(exports.HomeroomEntryStatus.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            homerooms: globalThis.Array.isArray(object?.homerooms)
+                ? object.homerooms.map((e) => homeroom_1.HomeroomSummary.fromJSON(e))
+                : [],
+            entry_status: globalThis.Array.isArray(object?.entryStatus)
+                ? object.entryStatus.map((e) => exports.HomeroomEntryStatus.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.homerooms?.length) {
+            obj.homerooms = message.homerooms.map((e) => homeroom_1.HomeroomSummary.toJSON(e));
+        }
+        if (message.entry_status?.length) {
+            obj.entryStatus = message.entry_status.map((e) => exports.HomeroomEntryStatus.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetHomeroomsAttendanceSummaryResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetHomeroomsAttendanceSummaryResponse();
+        message.homerooms = object.homerooms?.map((e) => homeroom_1.HomeroomSummary.fromPartial(e)) || [];
+        message.entry_status = object.entry_status?.map((e) => exports.HomeroomEntryStatus.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseGetAttendanceScopeAvailabilityRequest() {
+    return { context: undefined };
+}
+exports.GetAttendanceScopeAvailabilityRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            request_context_1.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAttendanceScopeAvailabilityRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = request_context_1.RequestContext.decode(reader, reader.uint32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { context: isSet(object.context) ? request_context_1.RequestContext.fromJSON(object.context) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = request_context_1.RequestContext.toJSON(message.context);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAttendanceScopeAvailabilityRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAttendanceScopeAvailabilityRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? request_context_1.RequestContext.fromPartial(object.context)
+            : undefined;
+        return message;
+    },
+};
+function createBaseGetAttendanceScopeAvailabilityResponse() {
+    return { has_courses: undefined, has_homerooms: undefined };
+}
+exports.GetAttendanceScopeAvailabilityResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.has_courses !== undefined) {
+            writer.uint32(8).bool(message.has_courses);
+        }
+        if (message.has_homerooms !== undefined) {
+            writer.uint32(16).bool(message.has_homerooms);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseGetAttendanceScopeAvailabilityResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.has_courses = reader.bool();
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.has_homerooms = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            has_courses: isSet(object.hasCourses) ? globalThis.Boolean(object.hasCourses) : undefined,
+            has_homerooms: isSet(object.hasHomerooms) ? globalThis.Boolean(object.hasHomerooms) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.has_courses !== undefined) {
+            obj.hasCourses = message.has_courses;
+        }
+        if (message.has_homerooms !== undefined) {
+            obj.hasHomerooms = message.has_homerooms;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.GetAttendanceScopeAvailabilityResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseGetAttendanceScopeAvailabilityResponse();
+        message.has_courses = object.has_courses ?? undefined;
+        message.has_homerooms = object.has_homerooms ?? undefined;
         return message;
     },
 };

@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/semester.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SemesterList = exports.ListSemester = exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.SemesterReportSchedule = exports.Semester = exports.protobufPackage = void 0;
+exports.ClassLookup = exports.SummarySemester = exports.SemesterList = exports.ListSemester = exports.SemesterLearningSkill = exports.ReportDates = exports.SemesterReportLayout = exports.SemesterReportSchedule = exports.Semester = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const timestamp_1 = require("../google/protobuf/timestamp");
@@ -802,6 +802,182 @@ exports.SemesterList = {
         const message = createBaseSemesterList();
         message.semesters = object.semesters?.map((e) => exports.ListSemester.fromPartial(e)) || [];
         message.semesters_count = object.semesters_count ?? undefined;
+        return message;
+    },
+};
+function createBaseSummarySemester() {
+    return { id: undefined, name: undefined, start_date: undefined };
+}
+exports.SummarySemester = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.start_date !== undefined) {
+            timestamp_1.Timestamp.encode(toTimestamp(message.start_date), writer.uint32(26).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseSummarySemester();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 26) {
+                        break;
+                    }
+                    message.start_date = fromTimestamp(timestamp_1.Timestamp.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            start_date: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.start_date !== undefined) {
+            obj.startDate = message.start_date.toISOString();
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.SummarySemester.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseSummarySemester();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.name = object.name ?? undefined;
+        message.start_date = object.start_date ?? undefined;
+        return message;
+    },
+};
+function createBaseClassLookup() {
+    return { id: undefined, name: undefined, semester: undefined, course_code: undefined };
+}
+exports.ClassLookup = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.semester !== undefined) {
+            exports.SummarySemester.encode(message.semester, writer.uint32(34).fork()).join();
+        }
+        if (message.course_code !== undefined) {
+            writer.uint32(42).string(message.course_code);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseClassLookup();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.semester = exports.SummarySemester.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.course_code = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            semester: isSet(object.semester) ? exports.SummarySemester.fromJSON(object.semester) : undefined,
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.semester !== undefined) {
+            obj.semester = exports.SummarySemester.toJSON(message.semester);
+        }
+        if (message.course_code !== undefined) {
+            obj.courseCode = message.course_code;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ClassLookup.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseClassLookup();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.name = object.name ?? undefined;
+        message.semester = (object.semester !== undefined && object.semester !== null)
+            ? exports.SummarySemester.fromPartial(object.semester)
+            : undefined;
+        message.course_code = object.course_code ?? undefined;
         return message;
     },
 };

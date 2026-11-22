@@ -6,8 +6,8 @@ import { RequestContext } from "../utils/request_context";
 import { UserType } from "../utils/user_type";
 import { Attendance, AttendanceStatus } from "./attendance";
 import { ClassRef } from "./class_ref";
-import { Course } from "./course";
-import { Homeroom } from "./homeroom";
+import { Course, CourseSummary } from "./course";
+import { Homeroom, HomeroomSummary } from "./homeroom";
 export declare const protobufPackage = "class_service.attendance_service";
 export declare enum PrincipalDashboardAttendanceScopeType {
     PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM = "PRINCIPAL_DASHBOARD_ATTENDANCE_SCOPE_HOMEROOM",
@@ -264,6 +264,21 @@ export interface GetSingleStudentCourseAttendanceEntryResponse {
     course: Course | undefined;
     is_school_day?: boolean | undefined;
 }
+export interface GetCoursesAttendanceSummaryResponse {
+    courses: CourseSummary[];
+    entry_status: CourseEntryStatus[];
+}
+export interface GetHomeroomsAttendanceSummaryResponse {
+    homerooms: HomeroomSummary[];
+    entry_status: HomeroomEntryStatus[];
+}
+export interface GetAttendanceScopeAvailabilityRequest {
+    context: RequestContext | undefined;
+}
+export interface GetAttendanceScopeAvailabilityResponse {
+    has_courses?: boolean | undefined;
+    has_homerooms?: boolean | undefined;
+}
 export declare const GetPrincipalDashboardAttendanceSummaryRequest: MessageFns<GetPrincipalDashboardAttendanceSummaryRequest>;
 export declare const PrincipalDashboardAttendanceTrendPoint: MessageFns<PrincipalDashboardAttendanceTrendPoint>;
 export declare const PrincipalDashboardAttendanceTodayRow: MessageFns<PrincipalDashboardAttendanceTodayRow>;
@@ -298,6 +313,10 @@ export declare const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAtte
 export declare const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceDetailsResponse>;
 export declare const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleStudentCourseAttendanceEntryRequest>;
 export declare const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingleStudentCourseAttendanceEntryResponse>;
+export declare const GetCoursesAttendanceSummaryResponse: MessageFns<GetCoursesAttendanceSummaryResponse>;
+export declare const GetHomeroomsAttendanceSummaryResponse: MessageFns<GetHomeroomsAttendanceSummaryResponse>;
+export declare const GetAttendanceScopeAvailabilityRequest: MessageFns<GetAttendanceScopeAvailabilityRequest>;
+export declare const GetAttendanceScopeAvailabilityResponse: MessageFns<GetAttendanceScopeAvailabilityResponse>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

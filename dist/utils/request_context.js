@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: utils/request_context.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ParentContext = exports.StudentContext = exports.TeacherContext = exports.HomeroomSubjectId = exports.UserContext = exports.RequestContext = exports.ServiceContext = exports.protobufPackage = void 0;
+exports.ObjectIdsRequest = exports.ParentContext = exports.StudentContext = exports.TeacherContext = exports.HomeroomSubjectId = exports.UserContext = exports.RequestContext = exports.ServiceContext = exports.protobufPackage = void 0;
 exports.serviceContextFromJSON = serviceContextFromJSON;
 exports.serviceContextToJSON = serviceContextToJSON;
 exports.serviceContextToNumber = serviceContextToNumber;
@@ -989,6 +989,74 @@ exports.ParentContext = {
         message.homeroom_ids = object.homeroom_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.teacher_basic_info_ids = object.teacher_basic_info_ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         message.auth_version = object.auth_version ?? undefined;
+        return message;
+    },
+};
+function createBaseObjectIdsRequest() {
+    return { context: undefined, ids: [] };
+}
+exports.ObjectIdsRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.context !== undefined) {
+            exports.RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+        }
+        for (const v of message.ids) {
+            object_id_1.ObjectId.encode(v, writer.uint32(18).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseObjectIdsRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.context = exports.RequestContext.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.ids.push(object_id_1.ObjectId.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            context: isSet(object.context) ? exports.RequestContext.fromJSON(object.context) : undefined,
+            ids: globalThis.Array.isArray(object?.ids) ? object.ids.map((e) => object_id_1.ObjectId.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.context !== undefined) {
+            obj.context = exports.RequestContext.toJSON(message.context);
+        }
+        if (message.ids?.length) {
+            obj.ids = message.ids.map((e) => object_id_1.ObjectId.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ObjectIdsRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseObjectIdsRequest();
+        message.context = (object.context !== undefined && object.context !== null)
+            ? exports.RequestContext.fromPartial(object.context)
+            : undefined;
+        message.ids = object.ids?.map((e) => object_id_1.ObjectId.fromPartial(e)) || [];
         return message;
     },
 };

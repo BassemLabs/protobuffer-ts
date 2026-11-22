@@ -193,6 +193,11 @@ export interface ParentContext {
   auth_version?: number | undefined;
 }
 
+export interface ObjectIdsRequest {
+  context: RequestContext | undefined;
+  ids: ObjectId[];
+}
+
 function createBaseRequestContext(): RequestContext {
   return {
     user_context: undefined,
@@ -1143,6 +1148,82 @@ export const ParentContext: MessageFns<ParentContext> = {
     message.homeroom_ids = object.homeroom_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.teacher_basic_info_ids = object.teacher_basic_info_ids?.map((e) => ObjectId.fromPartial(e)) || [];
     message.auth_version = object.auth_version ?? undefined;
+    return message;
+  },
+};
+
+function createBaseObjectIdsRequest(): ObjectIdsRequest {
+  return { context: undefined, ids: [] };
+}
+
+export const ObjectIdsRequest: MessageFns<ObjectIdsRequest> = {
+  encode(message: ObjectIdsRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.ids) {
+      ObjectId.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ObjectIdsRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseObjectIdsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.ids.push(ObjectId.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ObjectIdsRequest {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      ids: globalThis.Array.isArray(object?.ids) ? object.ids.map((e: any) => ObjectId.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: ObjectIdsRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.ids?.length) {
+      obj.ids = message.ids.map((e) => ObjectId.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ObjectIdsRequest>, I>>(base?: I): ObjectIdsRequest {
+    return ObjectIdsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ObjectIdsRequest>, I>>(object: I): ObjectIdsRequest {
+    const message = createBaseObjectIdsRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.ids = object.ids?.map((e) => ObjectId.fromPartial(e)) || [];
     return message;
   },
 };

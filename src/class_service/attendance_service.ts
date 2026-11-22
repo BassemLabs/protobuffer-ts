@@ -20,8 +20,8 @@ import {
   attendanceStatusToNumber,
 } from "./attendance";
 import { ClassRef } from "./class_ref";
-import { Course } from "./course";
-import { Homeroom } from "./homeroom";
+import { Course, CourseSummary } from "./course";
+import { Homeroom, HomeroomSummary } from "./homeroom";
 
 export const protobufPackage = "class_service.attendance_service";
 
@@ -462,6 +462,25 @@ export interface GetSingleStudentCourseAttendanceEntryResponse {
   attendance_entry?: Attendance | undefined;
   course: Course | undefined;
   is_school_day?: boolean | undefined;
+}
+
+export interface GetCoursesAttendanceSummaryResponse {
+  courses: CourseSummary[];
+  entry_status: CourseEntryStatus[];
+}
+
+export interface GetHomeroomsAttendanceSummaryResponse {
+  homerooms: HomeroomSummary[];
+  entry_status: HomeroomEntryStatus[];
+}
+
+export interface GetAttendanceScopeAvailabilityRequest {
+  context: RequestContext | undefined;
+}
+
+export interface GetAttendanceScopeAvailabilityResponse {
+  has_courses?: boolean | undefined;
+  has_homerooms?: boolean | undefined;
 }
 
 function createBaseGetPrincipalDashboardAttendanceSummaryRequest(): GetPrincipalDashboardAttendanceSummaryRequest {
@@ -4285,6 +4304,311 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
       return message;
     },
   };
+
+function createBaseGetCoursesAttendanceSummaryResponse(): GetCoursesAttendanceSummaryResponse {
+  return { courses: [], entry_status: [] };
+}
+
+export const GetCoursesAttendanceSummaryResponse: MessageFns<GetCoursesAttendanceSummaryResponse> = {
+  encode(message: GetCoursesAttendanceSummaryResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.courses) {
+      CourseSummary.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.entry_status) {
+      CourseEntryStatus.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetCoursesAttendanceSummaryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetCoursesAttendanceSummaryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.courses.push(CourseSummary.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.entry_status.push(CourseEntryStatus.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetCoursesAttendanceSummaryResponse {
+    return {
+      courses: globalThis.Array.isArray(object?.courses)
+        ? object.courses.map((e: any) => CourseSummary.fromJSON(e))
+        : [],
+      entry_status: globalThis.Array.isArray(object?.entryStatus)
+        ? object.entryStatus.map((e: any) => CourseEntryStatus.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetCoursesAttendanceSummaryResponse): unknown {
+    const obj: any = {};
+    if (message.courses?.length) {
+      obj.courses = message.courses.map((e) => CourseSummary.toJSON(e));
+    }
+    if (message.entry_status?.length) {
+      obj.entryStatus = message.entry_status.map((e) => CourseEntryStatus.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetCoursesAttendanceSummaryResponse>, I>>(
+    base?: I,
+  ): GetCoursesAttendanceSummaryResponse {
+    return GetCoursesAttendanceSummaryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetCoursesAttendanceSummaryResponse>, I>>(
+    object: I,
+  ): GetCoursesAttendanceSummaryResponse {
+    const message = createBaseGetCoursesAttendanceSummaryResponse();
+    message.courses = object.courses?.map((e) => CourseSummary.fromPartial(e)) || [];
+    message.entry_status = object.entry_status?.map((e) => CourseEntryStatus.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetHomeroomsAttendanceSummaryResponse(): GetHomeroomsAttendanceSummaryResponse {
+  return { homerooms: [], entry_status: [] };
+}
+
+export const GetHomeroomsAttendanceSummaryResponse: MessageFns<GetHomeroomsAttendanceSummaryResponse> = {
+  encode(message: GetHomeroomsAttendanceSummaryResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.homerooms) {
+      HomeroomSummary.encode(v!, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.entry_status) {
+      HomeroomEntryStatus.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetHomeroomsAttendanceSummaryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetHomeroomsAttendanceSummaryResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.homerooms.push(HomeroomSummary.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.entry_status.push(HomeroomEntryStatus.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetHomeroomsAttendanceSummaryResponse {
+    return {
+      homerooms: globalThis.Array.isArray(object?.homerooms)
+        ? object.homerooms.map((e: any) => HomeroomSummary.fromJSON(e))
+        : [],
+      entry_status: globalThis.Array.isArray(object?.entryStatus)
+        ? object.entryStatus.map((e: any) => HomeroomEntryStatus.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetHomeroomsAttendanceSummaryResponse): unknown {
+    const obj: any = {};
+    if (message.homerooms?.length) {
+      obj.homerooms = message.homerooms.map((e) => HomeroomSummary.toJSON(e));
+    }
+    if (message.entry_status?.length) {
+      obj.entryStatus = message.entry_status.map((e) => HomeroomEntryStatus.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetHomeroomsAttendanceSummaryResponse>, I>>(
+    base?: I,
+  ): GetHomeroomsAttendanceSummaryResponse {
+    return GetHomeroomsAttendanceSummaryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetHomeroomsAttendanceSummaryResponse>, I>>(
+    object: I,
+  ): GetHomeroomsAttendanceSummaryResponse {
+    const message = createBaseGetHomeroomsAttendanceSummaryResponse();
+    message.homerooms = object.homerooms?.map((e) => HomeroomSummary.fromPartial(e)) || [];
+    message.entry_status = object.entry_status?.map((e) => HomeroomEntryStatus.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseGetAttendanceScopeAvailabilityRequest(): GetAttendanceScopeAvailabilityRequest {
+  return { context: undefined };
+}
+
+export const GetAttendanceScopeAvailabilityRequest: MessageFns<GetAttendanceScopeAvailabilityRequest> = {
+  encode(message: GetAttendanceScopeAvailabilityRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAttendanceScopeAvailabilityRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAttendanceScopeAvailabilityRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAttendanceScopeAvailabilityRequest {
+    return { context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined };
+  },
+
+  toJSON(message: GetAttendanceScopeAvailabilityRequest): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAttendanceScopeAvailabilityRequest>, I>>(
+    base?: I,
+  ): GetAttendanceScopeAvailabilityRequest {
+    return GetAttendanceScopeAvailabilityRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAttendanceScopeAvailabilityRequest>, I>>(
+    object: I,
+  ): GetAttendanceScopeAvailabilityRequest {
+    const message = createBaseGetAttendanceScopeAvailabilityRequest();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseGetAttendanceScopeAvailabilityResponse(): GetAttendanceScopeAvailabilityResponse {
+  return { has_courses: undefined, has_homerooms: undefined };
+}
+
+export const GetAttendanceScopeAvailabilityResponse: MessageFns<GetAttendanceScopeAvailabilityResponse> = {
+  encode(message: GetAttendanceScopeAvailabilityResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.has_courses !== undefined) {
+      writer.uint32(8).bool(message.has_courses);
+    }
+    if (message.has_homerooms !== undefined) {
+      writer.uint32(16).bool(message.has_homerooms);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAttendanceScopeAvailabilityResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAttendanceScopeAvailabilityResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.has_courses = reader.bool();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.has_homerooms = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAttendanceScopeAvailabilityResponse {
+    return {
+      has_courses: isSet(object.hasCourses) ? globalThis.Boolean(object.hasCourses) : undefined,
+      has_homerooms: isSet(object.hasHomerooms) ? globalThis.Boolean(object.hasHomerooms) : undefined,
+    };
+  },
+
+  toJSON(message: GetAttendanceScopeAvailabilityResponse): unknown {
+    const obj: any = {};
+    if (message.has_courses !== undefined) {
+      obj.hasCourses = message.has_courses;
+    }
+    if (message.has_homerooms !== undefined) {
+      obj.hasHomerooms = message.has_homerooms;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAttendanceScopeAvailabilityResponse>, I>>(
+    base?: I,
+  ): GetAttendanceScopeAvailabilityResponse {
+    return GetAttendanceScopeAvailabilityResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAttendanceScopeAvailabilityResponse>, I>>(
+    object: I,
+  ): GetAttendanceScopeAvailabilityResponse {
+    const message = createBaseGetAttendanceScopeAvailabilityResponse();
+    message.has_courses = object.has_courses ?? undefined;
+    message.has_homerooms = object.has_homerooms ?? undefined;
+    return message;
+  },
+};
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

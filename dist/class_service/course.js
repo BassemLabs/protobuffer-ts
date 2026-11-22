@@ -5,7 +5,7 @@
 //   protoc               unknown
 // source: class_service/course.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CourseList = exports.ListCourse = exports.Course = exports.protobufPackage = void 0;
+exports.CourseLookupList = exports.CourseSummaryList = exports.CourseSummary = exports.CourseList = exports.ListCourse = exports.Course = exports.protobufPackage = void 0;
 /* eslint-disable */
 const wire_1 = require("@bufbuild/protobuf/wire");
 const object_id_1 = require("../utils/object_id");
@@ -499,6 +499,276 @@ exports.CourseList = {
         const message = createBaseCourseList();
         message.courses = object.courses?.map((e) => exports.ListCourse.fromPartial(e)) || [];
         message.courses_count = object.courses_count ?? undefined;
+        return message;
+    },
+};
+function createBaseCourseSummary() {
+    return {
+        id: undefined,
+        name: undefined,
+        archived: undefined,
+        semester: undefined,
+        course_code: undefined,
+        homeroom: undefined,
+        teachers: [],
+    };
+}
+exports.CourseSummary = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.id !== undefined) {
+            object_id_1.ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+        }
+        if (message.name !== undefined) {
+            writer.uint32(18).string(message.name);
+        }
+        if (message.archived !== undefined) {
+            writer.uint32(24).bool(message.archived);
+        }
+        if (message.semester !== undefined) {
+            semester_1.SummarySemester.encode(message.semester, writer.uint32(34).fork()).join();
+        }
+        if (message.course_code !== undefined) {
+            writer.uint32(42).string(message.course_code);
+        }
+        if (message.homeroom !== undefined) {
+            homeroom_1.SummaryHomeroom.encode(message.homeroom, writer.uint32(50).fork()).join();
+        }
+        for (const v of message.teachers) {
+            homeroom_1.TeacherDisplay.encode(v, writer.uint32(58).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCourseSummary();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.id = object_id_1.ObjectId.decode(reader, reader.uint32());
+                    continue;
+                case 2:
+                    if (tag !== 18) {
+                        break;
+                    }
+                    message.name = reader.string();
+                    continue;
+                case 3:
+                    if (tag !== 24) {
+                        break;
+                    }
+                    message.archived = reader.bool();
+                    continue;
+                case 4:
+                    if (tag !== 34) {
+                        break;
+                    }
+                    message.semester = semester_1.SummarySemester.decode(reader, reader.uint32());
+                    continue;
+                case 5:
+                    if (tag !== 42) {
+                        break;
+                    }
+                    message.course_code = reader.string();
+                    continue;
+                case 6:
+                    if (tag !== 50) {
+                        break;
+                    }
+                    message.homeroom = homeroom_1.SummaryHomeroom.decode(reader, reader.uint32());
+                    continue;
+                case 7:
+                    if (tag !== 58) {
+                        break;
+                    }
+                    message.teachers.push(homeroom_1.TeacherDisplay.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            id: isSet(object.id) ? object_id_1.ObjectId.fromJSON(object.id) : undefined,
+            name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+            archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
+            semester: isSet(object.semester) ? semester_1.SummarySemester.fromJSON(object.semester) : undefined,
+            course_code: isSet(object.courseCode) ? globalThis.String(object.courseCode) : undefined,
+            homeroom: isSet(object.homeroom) ? homeroom_1.SummaryHomeroom.fromJSON(object.homeroom) : undefined,
+            teachers: globalThis.Array.isArray(object?.teachers)
+                ? object.teachers.map((e) => homeroom_1.TeacherDisplay.fromJSON(e))
+                : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.id !== undefined) {
+            obj.id = object_id_1.ObjectId.toJSON(message.id);
+        }
+        if (message.name !== undefined) {
+            obj.name = message.name;
+        }
+        if (message.archived !== undefined) {
+            obj.archived = message.archived;
+        }
+        if (message.semester !== undefined) {
+            obj.semester = semester_1.SummarySemester.toJSON(message.semester);
+        }
+        if (message.course_code !== undefined) {
+            obj.courseCode = message.course_code;
+        }
+        if (message.homeroom !== undefined) {
+            obj.homeroom = homeroom_1.SummaryHomeroom.toJSON(message.homeroom);
+        }
+        if (message.teachers?.length) {
+            obj.teachers = message.teachers.map((e) => homeroom_1.TeacherDisplay.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CourseSummary.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCourseSummary();
+        message.id = (object.id !== undefined && object.id !== null) ? object_id_1.ObjectId.fromPartial(object.id) : undefined;
+        message.name = object.name ?? undefined;
+        message.archived = object.archived ?? undefined;
+        message.semester = (object.semester !== undefined && object.semester !== null)
+            ? semester_1.SummarySemester.fromPartial(object.semester)
+            : undefined;
+        message.course_code = object.course_code ?? undefined;
+        message.homeroom = (object.homeroom !== undefined && object.homeroom !== null)
+            ? homeroom_1.SummaryHomeroom.fromPartial(object.homeroom)
+            : undefined;
+        message.teachers = object.teachers?.map((e) => homeroom_1.TeacherDisplay.fromPartial(e)) || [];
+        return message;
+    },
+};
+function createBaseCourseSummaryList() {
+    return { courses: [], courses_count: undefined };
+}
+exports.CourseSummaryList = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.courses) {
+            exports.CourseSummary.encode(v, writer.uint32(10).fork()).join();
+        }
+        if (message.courses_count !== undefined) {
+            writer.uint32(16).uint64(message.courses_count);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCourseSummaryList();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.courses.push(exports.CourseSummary.decode(reader, reader.uint32()));
+                    continue;
+                case 2:
+                    if (tag !== 16) {
+                        break;
+                    }
+                    message.courses_count = longToNumber(reader.uint64());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            courses: globalThis.Array.isArray(object?.courses)
+                ? object.courses.map((e) => exports.CourseSummary.fromJSON(e))
+                : [],
+            courses_count: isSet(object.coursesCount) ? globalThis.Number(object.coursesCount) : undefined,
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.courses?.length) {
+            obj.courses = message.courses.map((e) => exports.CourseSummary.toJSON(e));
+        }
+        if (message.courses_count !== undefined) {
+            obj.coursesCount = Math.round(message.courses_count);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CourseSummaryList.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCourseSummaryList();
+        message.courses = object.courses?.map((e) => exports.CourseSummary.fromPartial(e)) || [];
+        message.courses_count = object.courses_count ?? undefined;
+        return message;
+    },
+};
+function createBaseCourseLookupList() {
+    return { courses: [] };
+}
+exports.CourseLookupList = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        for (const v of message.courses) {
+            semester_1.ClassLookup.encode(v, writer.uint32(10).fork()).join();
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseCourseLookupList();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.courses.push(semester_1.ClassLookup.decode(reader, reader.uint32()));
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return {
+            courses: globalThis.Array.isArray(object?.courses) ? object.courses.map((e) => semester_1.ClassLookup.fromJSON(e)) : [],
+        };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.courses?.length) {
+            obj.courses = message.courses.map((e) => semester_1.ClassLookup.toJSON(e));
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.CourseLookupList.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseCourseLookupList();
+        message.courses = object.courses?.map((e) => semester_1.ClassLookup.fromPartial(e)) || [];
         return message;
     },
 };

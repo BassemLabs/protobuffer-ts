@@ -9,7 +9,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { StudentGrade, studentGradeFromJSON, studentGradeToJSON, studentGradeToNumber } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { LmsCourse } from "./lms_course";
-import { ListSemester, Semester } from "./semester";
+import { ClassLookup, ListSemester, Semester, SummarySemester } from "./semester";
 
 export const protobufPackage = "class_service";
 
@@ -39,6 +39,35 @@ export interface ListHomeroom {
 export interface HomeroomList {
   homerooms: ListHomeroom[];
   homerooms_count?: number | undefined;
+}
+
+export interface TeacherDisplay {
+  id: ObjectId | undefined;
+  first_name?: string | undefined;
+  last_name?: string | undefined;
+}
+
+export interface SummaryHomeroom {
+  id: ObjectId | undefined;
+  name?: string | undefined;
+}
+
+export interface HomeroomSummary {
+  id: ObjectId | undefined;
+  name?: string | undefined;
+  archived?: boolean | undefined;
+  semester: SummarySemester | undefined;
+  grades: string[];
+  teachers: TeacherDisplay[];
+}
+
+export interface HomeroomSummaryList {
+  homerooms: HomeroomSummary[];
+  homerooms_count?: number | undefined;
+}
+
+export interface HomeroomLookupList {
+  homerooms: ClassLookup[];
 }
 
 function createBaseHomeroom(): Homeroom {
@@ -505,6 +534,444 @@ export const HomeroomList: MessageFns<HomeroomList> = {
     const message = createBaseHomeroomList();
     message.homerooms = object.homerooms?.map((e) => ListHomeroom.fromPartial(e)) || [];
     message.homerooms_count = object.homerooms_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseTeacherDisplay(): TeacherDisplay {
+  return { id: undefined, first_name: undefined, last_name: undefined };
+}
+
+export const TeacherDisplay: MessageFns<TeacherDisplay> = {
+  encode(message: TeacherDisplay, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.first_name !== undefined) {
+      writer.uint32(18).string(message.first_name);
+    }
+    if (message.last_name !== undefined) {
+      writer.uint32(26).string(message.last_name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): TeacherDisplay {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTeacherDisplay();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.first_name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.last_name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TeacherDisplay {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      first_name: isSet(object.firstName) ? globalThis.String(object.firstName) : undefined,
+      last_name: isSet(object.lastName) ? globalThis.String(object.lastName) : undefined,
+    };
+  },
+
+  toJSON(message: TeacherDisplay): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.first_name !== undefined) {
+      obj.firstName = message.first_name;
+    }
+    if (message.last_name !== undefined) {
+      obj.lastName = message.last_name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TeacherDisplay>, I>>(base?: I): TeacherDisplay {
+    return TeacherDisplay.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<TeacherDisplay>, I>>(object: I): TeacherDisplay {
+    const message = createBaseTeacherDisplay();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.first_name = object.first_name ?? undefined;
+    message.last_name = object.last_name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseSummaryHomeroom(): SummaryHomeroom {
+  return { id: undefined, name: undefined };
+}
+
+export const SummaryHomeroom: MessageFns<SummaryHomeroom> = {
+  encode(message: SummaryHomeroom, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SummaryHomeroom {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSummaryHomeroom();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SummaryHomeroom {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+    };
+  },
+
+  toJSON(message: SummaryHomeroom): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SummaryHomeroom>, I>>(base?: I): SummaryHomeroom {
+    return SummaryHomeroom.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SummaryHomeroom>, I>>(object: I): SummaryHomeroom {
+    const message = createBaseSummaryHomeroom();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseHomeroomSummary(): HomeroomSummary {
+  return { id: undefined, name: undefined, archived: undefined, semester: undefined, grades: [], teachers: [] };
+}
+
+export const HomeroomSummary: MessageFns<HomeroomSummary> = {
+  encode(message: HomeroomSummary, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.archived !== undefined) {
+      writer.uint32(24).bool(message.archived);
+    }
+    if (message.semester !== undefined) {
+      SummarySemester.encode(message.semester, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.grades) {
+      writer.uint32(42).string(v!);
+    }
+    for (const v of message.teachers) {
+      TeacherDisplay.encode(v!, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HomeroomSummary {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHomeroomSummary();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.archived = reader.bool();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.semester = SummarySemester.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.grades.push(reader.string());
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.teachers.push(TeacherDisplay.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HomeroomSummary {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      archived: isSet(object.archived) ? globalThis.Boolean(object.archived) : undefined,
+      semester: isSet(object.semester) ? SummarySemester.fromJSON(object.semester) : undefined,
+      grades: globalThis.Array.isArray(object?.grades) ? object.grades.map((e: any) => globalThis.String(e)) : [],
+      teachers: globalThis.Array.isArray(object?.teachers)
+        ? object.teachers.map((e: any) => TeacherDisplay.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: HomeroomSummary): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.archived !== undefined) {
+      obj.archived = message.archived;
+    }
+    if (message.semester !== undefined) {
+      obj.semester = SummarySemester.toJSON(message.semester);
+    }
+    if (message.grades?.length) {
+      obj.grades = message.grades;
+    }
+    if (message.teachers?.length) {
+      obj.teachers = message.teachers.map((e) => TeacherDisplay.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HomeroomSummary>, I>>(base?: I): HomeroomSummary {
+    return HomeroomSummary.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HomeroomSummary>, I>>(object: I): HomeroomSummary {
+    const message = createBaseHomeroomSummary();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? undefined;
+    message.archived = object.archived ?? undefined;
+    message.semester = (object.semester !== undefined && object.semester !== null)
+      ? SummarySemester.fromPartial(object.semester)
+      : undefined;
+    message.grades = object.grades?.map((e) => e) || [];
+    message.teachers = object.teachers?.map((e) => TeacherDisplay.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseHomeroomSummaryList(): HomeroomSummaryList {
+  return { homerooms: [], homerooms_count: undefined };
+}
+
+export const HomeroomSummaryList: MessageFns<HomeroomSummaryList> = {
+  encode(message: HomeroomSummaryList, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.homerooms) {
+      HomeroomSummary.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.homerooms_count !== undefined) {
+      writer.uint32(16).uint64(message.homerooms_count);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HomeroomSummaryList {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHomeroomSummaryList();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.homerooms.push(HomeroomSummary.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.homerooms_count = longToNumber(reader.uint64());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HomeroomSummaryList {
+    return {
+      homerooms: globalThis.Array.isArray(object?.homerooms)
+        ? object.homerooms.map((e: any) => HomeroomSummary.fromJSON(e))
+        : [],
+      homerooms_count: isSet(object.homeroomsCount) ? globalThis.Number(object.homeroomsCount) : undefined,
+    };
+  },
+
+  toJSON(message: HomeroomSummaryList): unknown {
+    const obj: any = {};
+    if (message.homerooms?.length) {
+      obj.homerooms = message.homerooms.map((e) => HomeroomSummary.toJSON(e));
+    }
+    if (message.homerooms_count !== undefined) {
+      obj.homeroomsCount = Math.round(message.homerooms_count);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HomeroomSummaryList>, I>>(base?: I): HomeroomSummaryList {
+    return HomeroomSummaryList.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HomeroomSummaryList>, I>>(object: I): HomeroomSummaryList {
+    const message = createBaseHomeroomSummaryList();
+    message.homerooms = object.homerooms?.map((e) => HomeroomSummary.fromPartial(e)) || [];
+    message.homerooms_count = object.homerooms_count ?? undefined;
+    return message;
+  },
+};
+
+function createBaseHomeroomLookupList(): HomeroomLookupList {
+  return { homerooms: [] };
+}
+
+export const HomeroomLookupList: MessageFns<HomeroomLookupList> = {
+  encode(message: HomeroomLookupList, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.homerooms) {
+      ClassLookup.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HomeroomLookupList {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHomeroomLookupList();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.homerooms.push(ClassLookup.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HomeroomLookupList {
+    return {
+      homerooms: globalThis.Array.isArray(object?.homerooms)
+        ? object.homerooms.map((e: any) => ClassLookup.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: HomeroomLookupList): unknown {
+    const obj: any = {};
+    if (message.homerooms?.length) {
+      obj.homerooms = message.homerooms.map((e) => ClassLookup.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HomeroomLookupList>, I>>(base?: I): HomeroomLookupList {
+    return HomeroomLookupList.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HomeroomLookupList>, I>>(object: I): HomeroomLookupList {
+    const message = createBaseHomeroomLookupList();
+    message.homerooms = object.homerooms?.map((e) => ClassLookup.fromPartial(e)) || [];
     return message;
   },
 };

@@ -1,10 +1,10 @@
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { ObjectId } from "../utils/object_id";
 import { AbstractCourse } from "./abstract_course";
-import { Homeroom, ListHomeroom } from "./homeroom";
+import { Homeroom, ListHomeroom, SummaryHomeroom, TeacherDisplay } from "./homeroom";
 import { LmsCourse } from "./lms_course";
 import { ReportLayout } from "./report_layout";
-import { ListSemester, Semester } from "./semester";
+import { ClassLookup, ListSemester, Semester, SummarySemester } from "./semester";
 export declare const protobufPackage = "class_service";
 export interface Course {
     id: ObjectId | undefined;
@@ -35,9 +35,28 @@ export interface CourseList {
     courses: ListCourse[];
     courses_count?: number | undefined;
 }
+export interface CourseSummary {
+    id: ObjectId | undefined;
+    name?: string | undefined;
+    archived?: boolean | undefined;
+    semester: SummarySemester | undefined;
+    course_code?: string | undefined;
+    homeroom?: SummaryHomeroom | undefined;
+    teachers: TeacherDisplay[];
+}
+export interface CourseSummaryList {
+    courses: CourseSummary[];
+    courses_count?: number | undefined;
+}
+export interface CourseLookupList {
+    courses: ClassLookup[];
+}
 export declare const Course: MessageFns<Course>;
 export declare const ListCourse: MessageFns<ListCourse>;
 export declare const CourseList: MessageFns<CourseList>;
+export declare const CourseSummary: MessageFns<CourseSummary>;
+export declare const CourseSummaryList: MessageFns<CourseSummaryList>;
+export declare const CourseLookupList: MessageFns<CourseLookupList>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

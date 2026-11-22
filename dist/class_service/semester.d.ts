@@ -53,6 +53,17 @@ export interface SemesterList {
     semesters: ListSemester[];
     semesters_count?: number | undefined;
 }
+export interface SummarySemester {
+    id: ObjectId | undefined;
+    name?: string | undefined;
+    start_date: Date | undefined;
+}
+export interface ClassLookup {
+    id: ObjectId | undefined;
+    name?: string | undefined;
+    semester: SummarySemester | undefined;
+    course_code?: string | undefined;
+}
 export declare const Semester: MessageFns<Semester>;
 export declare const SemesterReportSchedule: MessageFns<SemesterReportSchedule>;
 export declare const SemesterReportLayout: MessageFns<SemesterReportLayout>;
@@ -60,6 +71,8 @@ export declare const ReportDates: MessageFns<ReportDates>;
 export declare const SemesterLearningSkill: MessageFns<SemesterLearningSkill>;
 export declare const ListSemester: MessageFns<ListSemester>;
 export declare const SemesterList: MessageFns<SemesterList>;
+export declare const SummarySemester: MessageFns<SummarySemester>;
+export declare const ClassLookup: MessageFns<ClassLookup>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;

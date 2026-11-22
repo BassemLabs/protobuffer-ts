@@ -2,7 +2,7 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 import { StudentGrade } from "../user_service/student";
 import { ObjectId } from "../utils/object_id";
 import { LmsCourse } from "./lms_course";
-import { ListSemester, Semester } from "./semester";
+import { ClassLookup, ListSemester, Semester, SummarySemester } from "./semester";
 export declare const protobufPackage = "class_service";
 export interface Homeroom {
     id: ObjectId | undefined;
@@ -29,9 +29,38 @@ export interface HomeroomList {
     homerooms: ListHomeroom[];
     homerooms_count?: number | undefined;
 }
+export interface TeacherDisplay {
+    id: ObjectId | undefined;
+    first_name?: string | undefined;
+    last_name?: string | undefined;
+}
+export interface SummaryHomeroom {
+    id: ObjectId | undefined;
+    name?: string | undefined;
+}
+export interface HomeroomSummary {
+    id: ObjectId | undefined;
+    name?: string | undefined;
+    archived?: boolean | undefined;
+    semester: SummarySemester | undefined;
+    grades: string[];
+    teachers: TeacherDisplay[];
+}
+export interface HomeroomSummaryList {
+    homerooms: HomeroomSummary[];
+    homerooms_count?: number | undefined;
+}
+export interface HomeroomLookupList {
+    homerooms: ClassLookup[];
+}
 export declare const Homeroom: MessageFns<Homeroom>;
 export declare const ListHomeroom: MessageFns<ListHomeroom>;
 export declare const HomeroomList: MessageFns<HomeroomList>;
+export declare const TeacherDisplay: MessageFns<TeacherDisplay>;
+export declare const SummaryHomeroom: MessageFns<SummaryHomeroom>;
+export declare const HomeroomSummary: MessageFns<HomeroomSummary>;
+export declare const HomeroomSummaryList: MessageFns<HomeroomSummaryList>;
+export declare const HomeroomLookupList: MessageFns<HomeroomLookupList>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 export type DeepPartial<T> = T extends Builtin ? T : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {
     [K in keyof T]?: DeepPartial<T[K]>;
