@@ -89,6 +89,7 @@ function createBaseAttendance() {
         student_excused_by: undefined,
         student_excused_by_user_type: undefined,
         parent_reason: undefined,
+        approved_absence: undefined,
     };
 }
 exports.Attendance = {
@@ -134,6 +135,9 @@ exports.Attendance = {
         }
         if (message.parent_reason !== undefined) {
             writer.uint32(122).string(message.parent_reason);
+        }
+        if (message.approved_absence !== undefined) {
+            writer.uint32(128).bool(message.approved_absence);
         }
         return writer;
     },
@@ -228,6 +232,12 @@ exports.Attendance = {
                     }
                     message.parent_reason = reader.string();
                     continue;
+                case 16:
+                    if (tag !== 128) {
+                        break;
+                    }
+                    message.approved_absence = reader.bool();
+                    continue;
             }
             if ((tag & 7) === 4 || tag === 0) {
                 break;
@@ -254,6 +264,7 @@ exports.Attendance = {
                 ? (0, user_type_1.userTypeFromJSON)(object.studentExcusedByUserType)
                 : undefined,
             parent_reason: isSet(object.parentReason) ? globalThis.String(object.parentReason) : undefined,
+            approved_absence: isSet(object.approvedAbsence) ? globalThis.Boolean(object.approvedAbsence) : undefined,
         };
     },
     toJSON(message) {
@@ -300,6 +311,9 @@ exports.Attendance = {
         if (message.parent_reason !== undefined) {
             obj.parentReason = message.parent_reason;
         }
+        if (message.approved_absence !== undefined) {
+            obj.approvedAbsence = message.approved_absence;
+        }
         return obj;
     },
     create(base) {
@@ -331,6 +345,7 @@ exports.Attendance = {
             : undefined;
         message.student_excused_by_user_type = object.student_excused_by_user_type ?? undefined;
         message.parent_reason = object.parent_reason ?? undefined;
+        message.approved_absence = object.approved_absence ?? undefined;
         return message;
     },
 };

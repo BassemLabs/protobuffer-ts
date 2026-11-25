@@ -34,6 +34,19 @@ export declare enum AttendanceCompletionStatus {
 export declare function attendanceCompletionStatusFromJSON(object: any): AttendanceCompletionStatus;
 export declare function attendanceCompletionStatusToJSON(object: AttendanceCompletionStatus): string;
 export declare function attendanceCompletionStatusToNumber(object: AttendanceCompletionStatus): number;
+export declare enum AbsenceRequestStatus {
+    ABSENCE_REQUEST_STATUS_UNSPECIFIED = "ABSENCE_REQUEST_STATUS_UNSPECIFIED",
+    ABSENCE_REQUEST_STATUS_NOTICE = "ABSENCE_REQUEST_STATUS_NOTICE",
+    ABSENCE_REQUEST_STATUS_PENDING_REVIEW = "ABSENCE_REQUEST_STATUS_PENDING_REVIEW",
+    ABSENCE_REQUEST_STATUS_MORE_INFORMATION_NEEDED = "ABSENCE_REQUEST_STATUS_MORE_INFORMATION_NEEDED",
+    ABSENCE_REQUEST_STATUS_APPROVED = "ABSENCE_REQUEST_STATUS_APPROVED",
+    ABSENCE_REQUEST_STATUS_DECLINED = "ABSENCE_REQUEST_STATUS_DECLINED",
+    ABSENCE_REQUEST_STATUS_WITHDRAWN = "ABSENCE_REQUEST_STATUS_WITHDRAWN",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function absenceRequestStatusFromJSON(object: any): AbsenceRequestStatus;
+export declare function absenceRequestStatusToJSON(object: AbsenceRequestStatus): string;
+export declare function absenceRequestStatusToNumber(object: AbsenceRequestStatus): number;
 export interface GetPrincipalDashboardAttendanceSummaryRequest {
     context: RequestContext | undefined;
     school_year_id: ObjectId | undefined;
@@ -264,6 +277,94 @@ export interface GetSingleStudentCourseAttendanceEntryResponse {
     course: Course | undefined;
     is_school_day?: boolean | undefined;
 }
+export interface AbsenceRequestUpload {
+    name?: string | undefined;
+    media_type?: string | undefined;
+    content?: Uint8Array | undefined;
+}
+export interface AbsenceRequestFile {
+    id: ObjectId | undefined;
+    name?: string | undefined;
+    media_type?: string | undefined;
+}
+export interface AbsenceRequestFileContent {
+    file: AbsenceRequestFile | undefined;
+    content?: Uint8Array | undefined;
+}
+export interface AbsenceRequestEvent {
+    actor_id: ObjectId | undefined;
+    actor_type?: UserType | undefined;
+    occurred_at: Date | undefined;
+    status?: AbsenceRequestStatus | undefined;
+    message?: string | undefined;
+    files: AbsenceRequestFile[];
+    /** Current display name, when resolved and visible to the viewer. */
+    actor_name?: string | undefined;
+}
+export interface AbsenceRequestAttendanceDay {
+    school_date?: string | undefined;
+    present?: number | undefined;
+    late?: number | undefined;
+    absent?: number | undefined;
+}
+export interface AbsenceRequest {
+    id: ObjectId | undefined;
+    student_id: ObjectId | undefined;
+    student_name?: string | undefined;
+    school_year_id: ObjectId | undefined;
+    school_dates: string[];
+    status?: AbsenceRequestStatus | undefined;
+    revision?: number | undefined;
+    submitted_at: Date | undefined;
+    events: AbsenceRequestEvent[];
+    attendance: AbsenceRequestAttendanceDay[];
+}
+export interface SubmitAbsenceRequestInput {
+    context: RequestContext | undefined;
+    student_id: ObjectId | undefined;
+    start_date?: string | undefined;
+    end_date?: string | undefined;
+    request_excusal?: boolean | undefined;
+    reason?: string | undefined;
+    submission_key?: string | undefined;
+    files: AbsenceRequestUpload[];
+}
+export interface ListAbsenceRequestsInput {
+    context: RequestContext | undefined;
+    student_id?: ObjectId | undefined;
+    school_year_id?: ObjectId | undefined;
+    status?: AbsenceRequestStatus | undefined;
+    offset?: number | undefined;
+    limit?: number | undefined;
+}
+export interface AbsenceRequestsPage {
+    requests: AbsenceRequest[];
+    total?: number | undefined;
+}
+export interface GetAbsenceRequestInput {
+    context: RequestContext | undefined;
+    request_id: ObjectId | undefined;
+}
+export interface ReplyToAbsenceRequestInput {
+    context: RequestContext | undefined;
+    request_id: ObjectId | undefined;
+    revision?: number | undefined;
+    message?: string | undefined;
+    submission_key?: string | undefined;
+    files: AbsenceRequestUpload[];
+}
+export interface ReviewAbsenceRequestInput {
+    context: RequestContext | undefined;
+    request_id: ObjectId | undefined;
+    revision?: number | undefined;
+    status?: AbsenceRequestStatus | undefined;
+    message?: string | undefined;
+}
+export interface DownloadAbsenceRequestFileInput {
+    context: RequestContext | undefined;
+    request_id: ObjectId | undefined;
+    file_id: ObjectId | undefined;
+}
 export interface GetCoursesAttendanceSummaryResponse {
     courses: CourseSummary[];
     entry_status: CourseEntryStatus[];
@@ -313,6 +414,19 @@ export declare const GetCourseAttendanceDetailsRequest: MessageFns<GetCourseAtte
 export declare const GetCourseAttendanceDetailsResponse: MessageFns<GetCourseAttendanceDetailsResponse>;
 export declare const GetSingleStudentCourseAttendanceEntryRequest: MessageFns<GetSingleStudentCourseAttendanceEntryRequest>;
 export declare const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingleStudentCourseAttendanceEntryResponse>;
+export declare const AbsenceRequestUpload: MessageFns<AbsenceRequestUpload>;
+export declare const AbsenceRequestFile: MessageFns<AbsenceRequestFile>;
+export declare const AbsenceRequestFileContent: MessageFns<AbsenceRequestFileContent>;
+export declare const AbsenceRequestEvent: MessageFns<AbsenceRequestEvent>;
+export declare const AbsenceRequestAttendanceDay: MessageFns<AbsenceRequestAttendanceDay>;
+export declare const AbsenceRequest: MessageFns<AbsenceRequest>;
+export declare const SubmitAbsenceRequestInput: MessageFns<SubmitAbsenceRequestInput>;
+export declare const ListAbsenceRequestsInput: MessageFns<ListAbsenceRequestsInput>;
+export declare const AbsenceRequestsPage: MessageFns<AbsenceRequestsPage>;
+export declare const GetAbsenceRequestInput: MessageFns<GetAbsenceRequestInput>;
+export declare const ReplyToAbsenceRequestInput: MessageFns<ReplyToAbsenceRequestInput>;
+export declare const ReviewAbsenceRequestInput: MessageFns<ReviewAbsenceRequestInput>;
+export declare const DownloadAbsenceRequestFileInput: MessageFns<DownloadAbsenceRequestFileInput>;
 export declare const GetCoursesAttendanceSummaryResponse: MessageFns<GetCoursesAttendanceSummaryResponse>;
 export declare const GetHomeroomsAttendanceSummaryResponse: MessageFns<GetHomeroomsAttendanceSummaryResponse>;
 export declare const GetAttendanceScopeAvailabilityRequest: MessageFns<GetAttendanceScopeAvailabilityRequest>;

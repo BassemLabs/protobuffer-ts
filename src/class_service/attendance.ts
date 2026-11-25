@@ -90,7 +90,11 @@ export interface Attendance {
   status?: AttendanceStatus | undefined;
   student_excused_by?: ObjectId | undefined;
   student_excused_by_user_type?: UserType | undefined;
-  parent_reason?: string | undefined;
+  parent_reason?:
+    | string
+    | undefined;
+  /** The recorded absence matches an approved whole-day request. */
+  approved_absence?: boolean | undefined;
 }
 
 function createBaseAttendance(): Attendance {
@@ -109,6 +113,7 @@ function createBaseAttendance(): Attendance {
     student_excused_by: undefined,
     student_excused_by_user_type: undefined,
     parent_reason: undefined,
+    approved_absence: undefined,
   };
 }
 
@@ -155,6 +160,9 @@ export const Attendance: MessageFns<Attendance> = {
     }
     if (message.parent_reason !== undefined) {
       writer.uint32(122).string(message.parent_reason);
+    }
+    if (message.approved_absence !== undefined) {
+      writer.uint32(128).bool(message.approved_absence);
     }
     return writer;
   },
@@ -264,6 +272,13 @@ export const Attendance: MessageFns<Attendance> = {
 
           message.parent_reason = reader.string();
           continue;
+        case 16:
+          if (tag !== 128) {
+            break;
+          }
+
+          message.approved_absence = reader.bool();
+          continue;
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -291,6 +306,7 @@ export const Attendance: MessageFns<Attendance> = {
         ? userTypeFromJSON(object.studentExcusedByUserType)
         : undefined,
       parent_reason: isSet(object.parentReason) ? globalThis.String(object.parentReason) : undefined,
+      approved_absence: isSet(object.approvedAbsence) ? globalThis.Boolean(object.approvedAbsence) : undefined,
     };
   },
 
@@ -338,6 +354,9 @@ export const Attendance: MessageFns<Attendance> = {
     if (message.parent_reason !== undefined) {
       obj.parentReason = message.parent_reason;
     }
+    if (message.approved_absence !== undefined) {
+      obj.approvedAbsence = message.approved_absence;
+    }
     return obj;
   },
 
@@ -370,6 +389,7 @@ export const Attendance: MessageFns<Attendance> = {
       : undefined;
     message.student_excused_by_user_type = object.student_excused_by_user_type ?? undefined;
     message.parent_reason = object.parent_reason ?? undefined;
+    message.approved_absence = object.approved_absence ?? undefined;
     return message;
   },
 };

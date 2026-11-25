@@ -168,6 +168,91 @@ export function attendanceCompletionStatusToNumber(object: AttendanceCompletionS
   }
 }
 
+export enum AbsenceRequestStatus {
+  ABSENCE_REQUEST_STATUS_UNSPECIFIED = "ABSENCE_REQUEST_STATUS_UNSPECIFIED",
+  ABSENCE_REQUEST_STATUS_NOTICE = "ABSENCE_REQUEST_STATUS_NOTICE",
+  ABSENCE_REQUEST_STATUS_PENDING_REVIEW = "ABSENCE_REQUEST_STATUS_PENDING_REVIEW",
+  ABSENCE_REQUEST_STATUS_MORE_INFORMATION_NEEDED = "ABSENCE_REQUEST_STATUS_MORE_INFORMATION_NEEDED",
+  ABSENCE_REQUEST_STATUS_APPROVED = "ABSENCE_REQUEST_STATUS_APPROVED",
+  ABSENCE_REQUEST_STATUS_DECLINED = "ABSENCE_REQUEST_STATUS_DECLINED",
+  ABSENCE_REQUEST_STATUS_WITHDRAWN = "ABSENCE_REQUEST_STATUS_WITHDRAWN",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function absenceRequestStatusFromJSON(object: any): AbsenceRequestStatus {
+  switch (object) {
+    case 0:
+    case "ABSENCE_REQUEST_STATUS_UNSPECIFIED":
+      return AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_UNSPECIFIED;
+    case 1:
+    case "ABSENCE_REQUEST_STATUS_NOTICE":
+      return AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_NOTICE;
+    case 2:
+    case "ABSENCE_REQUEST_STATUS_PENDING_REVIEW":
+      return AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_PENDING_REVIEW;
+    case 3:
+    case "ABSENCE_REQUEST_STATUS_MORE_INFORMATION_NEEDED":
+      return AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_MORE_INFORMATION_NEEDED;
+    case 4:
+    case "ABSENCE_REQUEST_STATUS_APPROVED":
+      return AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_APPROVED;
+    case 5:
+    case "ABSENCE_REQUEST_STATUS_DECLINED":
+      return AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_DECLINED;
+    case 6:
+    case "ABSENCE_REQUEST_STATUS_WITHDRAWN":
+      return AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_WITHDRAWN;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return AbsenceRequestStatus.UNRECOGNIZED;
+  }
+}
+
+export function absenceRequestStatusToJSON(object: AbsenceRequestStatus): string {
+  switch (object) {
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_UNSPECIFIED:
+      return "ABSENCE_REQUEST_STATUS_UNSPECIFIED";
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_NOTICE:
+      return "ABSENCE_REQUEST_STATUS_NOTICE";
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_PENDING_REVIEW:
+      return "ABSENCE_REQUEST_STATUS_PENDING_REVIEW";
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_MORE_INFORMATION_NEEDED:
+      return "ABSENCE_REQUEST_STATUS_MORE_INFORMATION_NEEDED";
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_APPROVED:
+      return "ABSENCE_REQUEST_STATUS_APPROVED";
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_DECLINED:
+      return "ABSENCE_REQUEST_STATUS_DECLINED";
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_WITHDRAWN:
+      return "ABSENCE_REQUEST_STATUS_WITHDRAWN";
+    case AbsenceRequestStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function absenceRequestStatusToNumber(object: AbsenceRequestStatus): number {
+  switch (object) {
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_UNSPECIFIED:
+      return 0;
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_NOTICE:
+      return 1;
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_PENDING_REVIEW:
+      return 2;
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_MORE_INFORMATION_NEEDED:
+      return 3;
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_APPROVED:
+      return 4;
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_DECLINED:
+      return 5;
+    case AbsenceRequestStatus.ABSENCE_REQUEST_STATUS_WITHDRAWN:
+      return 6;
+    case AbsenceRequestStatus.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export interface GetPrincipalDashboardAttendanceSummaryRequest {
   context: RequestContext | undefined;
   school_year_id: ObjectId | undefined;
@@ -462,6 +547,107 @@ export interface GetSingleStudentCourseAttendanceEntryResponse {
   attendance_entry?: Attendance | undefined;
   course: Course | undefined;
   is_school_day?: boolean | undefined;
+}
+
+export interface AbsenceRequestUpload {
+  name?: string | undefined;
+  media_type?: string | undefined;
+  content?: Uint8Array | undefined;
+}
+
+export interface AbsenceRequestFile {
+  id: ObjectId | undefined;
+  name?: string | undefined;
+  media_type?: string | undefined;
+}
+
+export interface AbsenceRequestFileContent {
+  file: AbsenceRequestFile | undefined;
+  content?: Uint8Array | undefined;
+}
+
+export interface AbsenceRequestEvent {
+  actor_id: ObjectId | undefined;
+  actor_type?: UserType | undefined;
+  occurred_at: Date | undefined;
+  status?: AbsenceRequestStatus | undefined;
+  message?: string | undefined;
+  files: AbsenceRequestFile[];
+  /** Current display name, when resolved and visible to the viewer. */
+  actor_name?: string | undefined;
+}
+
+export interface AbsenceRequestAttendanceDay {
+  school_date?: string | undefined;
+  present?: number | undefined;
+  late?: number | undefined;
+  absent?: number | undefined;
+}
+
+export interface AbsenceRequest {
+  id: ObjectId | undefined;
+  student_id: ObjectId | undefined;
+  student_name?: string | undefined;
+  school_year_id: ObjectId | undefined;
+  school_dates: string[];
+  status?: AbsenceRequestStatus | undefined;
+  revision?: number | undefined;
+  submitted_at: Date | undefined;
+  events: AbsenceRequestEvent[];
+  attendance: AbsenceRequestAttendanceDay[];
+}
+
+export interface SubmitAbsenceRequestInput {
+  context: RequestContext | undefined;
+  student_id: ObjectId | undefined;
+  start_date?: string | undefined;
+  end_date?: string | undefined;
+  request_excusal?: boolean | undefined;
+  reason?: string | undefined;
+  submission_key?: string | undefined;
+  files: AbsenceRequestUpload[];
+}
+
+export interface ListAbsenceRequestsInput {
+  context: RequestContext | undefined;
+  student_id?: ObjectId | undefined;
+  school_year_id?: ObjectId | undefined;
+  status?: AbsenceRequestStatus | undefined;
+  offset?: number | undefined;
+  limit?: number | undefined;
+}
+
+export interface AbsenceRequestsPage {
+  requests: AbsenceRequest[];
+  total?: number | undefined;
+}
+
+export interface GetAbsenceRequestInput {
+  context: RequestContext | undefined;
+  request_id: ObjectId | undefined;
+}
+
+export interface ReplyToAbsenceRequestInput {
+  context: RequestContext | undefined;
+  request_id: ObjectId | undefined;
+  revision?: number | undefined;
+  message?: string | undefined;
+  submission_key?: string | undefined;
+  files: AbsenceRequestUpload[];
+}
+
+export interface ReviewAbsenceRequestInput {
+  context: RequestContext | undefined;
+  request_id: ObjectId | undefined;
+  revision?: number | undefined;
+  status?: AbsenceRequestStatus | undefined;
+  message?: string | undefined;
+}
+
+export interface DownloadAbsenceRequestFileInput {
+  context: RequestContext | undefined;
+  request_id: ObjectId | undefined;
+  file_id: ObjectId | undefined;
 }
 
 export interface GetCoursesAttendanceSummaryResponse {
@@ -4305,6 +4491,1587 @@ export const GetSingleStudentCourseAttendanceEntryResponse: MessageFns<GetSingle
     },
   };
 
+function createBaseAbsenceRequestUpload(): AbsenceRequestUpload {
+  return { name: undefined, media_type: undefined, content: undefined };
+}
+
+export const AbsenceRequestUpload: MessageFns<AbsenceRequestUpload> = {
+  encode(message: AbsenceRequestUpload, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== undefined) {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.media_type !== undefined) {
+      writer.uint32(18).string(message.media_type);
+    }
+    if (message.content !== undefined) {
+      writer.uint32(26).bytes(message.content);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AbsenceRequestUpload {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAbsenceRequestUpload();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.media_type = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.content = reader.bytes();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AbsenceRequestUpload {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      media_type: isSet(object.mediaType) ? globalThis.String(object.mediaType) : undefined,
+      content: isSet(object.content) ? bytesFromBase64(object.content) : undefined,
+    };
+  },
+
+  toJSON(message: AbsenceRequestUpload): unknown {
+    const obj: any = {};
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.media_type !== undefined) {
+      obj.mediaType = message.media_type;
+    }
+    if (message.content !== undefined) {
+      obj.content = base64FromBytes(message.content);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AbsenceRequestUpload>, I>>(base?: I): AbsenceRequestUpload {
+    return AbsenceRequestUpload.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AbsenceRequestUpload>, I>>(object: I): AbsenceRequestUpload {
+    const message = createBaseAbsenceRequestUpload();
+    message.name = object.name ?? undefined;
+    message.media_type = object.media_type ?? undefined;
+    message.content = object.content ?? undefined;
+    return message;
+  },
+};
+
+function createBaseAbsenceRequestFile(): AbsenceRequestFile {
+  return { id: undefined, name: undefined, media_type: undefined };
+}
+
+export const AbsenceRequestFile: MessageFns<AbsenceRequestFile> = {
+  encode(message: AbsenceRequestFile, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.name !== undefined) {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.media_type !== undefined) {
+      writer.uint32(26).string(message.media_type);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AbsenceRequestFile {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAbsenceRequestFile();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.media_type = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AbsenceRequestFile {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      name: isSet(object.name) ? globalThis.String(object.name) : undefined,
+      media_type: isSet(object.mediaType) ? globalThis.String(object.mediaType) : undefined,
+    };
+  },
+
+  toJSON(message: AbsenceRequestFile): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.name !== undefined) {
+      obj.name = message.name;
+    }
+    if (message.media_type !== undefined) {
+      obj.mediaType = message.media_type;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AbsenceRequestFile>, I>>(base?: I): AbsenceRequestFile {
+    return AbsenceRequestFile.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AbsenceRequestFile>, I>>(object: I): AbsenceRequestFile {
+    const message = createBaseAbsenceRequestFile();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.name = object.name ?? undefined;
+    message.media_type = object.media_type ?? undefined;
+    return message;
+  },
+};
+
+function createBaseAbsenceRequestFileContent(): AbsenceRequestFileContent {
+  return { file: undefined, content: undefined };
+}
+
+export const AbsenceRequestFileContent: MessageFns<AbsenceRequestFileContent> = {
+  encode(message: AbsenceRequestFileContent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.file !== undefined) {
+      AbsenceRequestFile.encode(message.file, writer.uint32(10).fork()).join();
+    }
+    if (message.content !== undefined) {
+      writer.uint32(18).bytes(message.content);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AbsenceRequestFileContent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAbsenceRequestFileContent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.file = AbsenceRequestFile.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.content = reader.bytes();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AbsenceRequestFileContent {
+    return {
+      file: isSet(object.file) ? AbsenceRequestFile.fromJSON(object.file) : undefined,
+      content: isSet(object.content) ? bytesFromBase64(object.content) : undefined,
+    };
+  },
+
+  toJSON(message: AbsenceRequestFileContent): unknown {
+    const obj: any = {};
+    if (message.file !== undefined) {
+      obj.file = AbsenceRequestFile.toJSON(message.file);
+    }
+    if (message.content !== undefined) {
+      obj.content = base64FromBytes(message.content);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AbsenceRequestFileContent>, I>>(base?: I): AbsenceRequestFileContent {
+    return AbsenceRequestFileContent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AbsenceRequestFileContent>, I>>(object: I): AbsenceRequestFileContent {
+    const message = createBaseAbsenceRequestFileContent();
+    message.file = (object.file !== undefined && object.file !== null)
+      ? AbsenceRequestFile.fromPartial(object.file)
+      : undefined;
+    message.content = object.content ?? undefined;
+    return message;
+  },
+};
+
+function createBaseAbsenceRequestEvent(): AbsenceRequestEvent {
+  return {
+    actor_id: undefined,
+    actor_type: undefined,
+    occurred_at: undefined,
+    status: undefined,
+    message: undefined,
+    files: [],
+    actor_name: undefined,
+  };
+}
+
+export const AbsenceRequestEvent: MessageFns<AbsenceRequestEvent> = {
+  encode(message: AbsenceRequestEvent, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.actor_id !== undefined) {
+      ObjectId.encode(message.actor_id, writer.uint32(10).fork()).join();
+    }
+    if (message.actor_type !== undefined) {
+      writer.uint32(16).int32(userTypeToNumber(message.actor_type));
+    }
+    if (message.occurred_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.occurred_at), writer.uint32(26).fork()).join();
+    }
+    if (message.status !== undefined) {
+      writer.uint32(32).int32(absenceRequestStatusToNumber(message.status));
+    }
+    if (message.message !== undefined) {
+      writer.uint32(42).string(message.message);
+    }
+    for (const v of message.files) {
+      AbsenceRequestFile.encode(v!, writer.uint32(50).fork()).join();
+    }
+    if (message.actor_name !== undefined) {
+      writer.uint32(58).string(message.actor_name);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AbsenceRequestEvent {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAbsenceRequestEvent();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.actor_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.actor_type = userTypeFromJSON(reader.int32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.occurred_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.status = absenceRequestStatusFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.files.push(AbsenceRequestFile.decode(reader, reader.uint32()));
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.actor_name = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AbsenceRequestEvent {
+    return {
+      actor_id: isSet(object.actorId) ? ObjectId.fromJSON(object.actorId) : undefined,
+      actor_type: isSet(object.actorType) ? userTypeFromJSON(object.actorType) : undefined,
+      occurred_at: isSet(object.occurredAt) ? fromJsonTimestamp(object.occurredAt) : undefined,
+      status: isSet(object.status) ? absenceRequestStatusFromJSON(object.status) : undefined,
+      message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+      files: globalThis.Array.isArray(object?.files)
+        ? object.files.map((e: any) => AbsenceRequestFile.fromJSON(e))
+        : [],
+      actor_name: isSet(object.actorName) ? globalThis.String(object.actorName) : undefined,
+    };
+  },
+
+  toJSON(message: AbsenceRequestEvent): unknown {
+    const obj: any = {};
+    if (message.actor_id !== undefined) {
+      obj.actorId = ObjectId.toJSON(message.actor_id);
+    }
+    if (message.actor_type !== undefined) {
+      obj.actorType = userTypeToJSON(message.actor_type);
+    }
+    if (message.occurred_at !== undefined) {
+      obj.occurredAt = message.occurred_at.toISOString();
+    }
+    if (message.status !== undefined) {
+      obj.status = absenceRequestStatusToJSON(message.status);
+    }
+    if (message.message !== undefined) {
+      obj.message = message.message;
+    }
+    if (message.files?.length) {
+      obj.files = message.files.map((e) => AbsenceRequestFile.toJSON(e));
+    }
+    if (message.actor_name !== undefined) {
+      obj.actorName = message.actor_name;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AbsenceRequestEvent>, I>>(base?: I): AbsenceRequestEvent {
+    return AbsenceRequestEvent.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AbsenceRequestEvent>, I>>(object: I): AbsenceRequestEvent {
+    const message = createBaseAbsenceRequestEvent();
+    message.actor_id = (object.actor_id !== undefined && object.actor_id !== null)
+      ? ObjectId.fromPartial(object.actor_id)
+      : undefined;
+    message.actor_type = object.actor_type ?? undefined;
+    message.occurred_at = object.occurred_at ?? undefined;
+    message.status = object.status ?? undefined;
+    message.message = object.message ?? undefined;
+    message.files = object.files?.map((e) => AbsenceRequestFile.fromPartial(e)) || [];
+    message.actor_name = object.actor_name ?? undefined;
+    return message;
+  },
+};
+
+function createBaseAbsenceRequestAttendanceDay(): AbsenceRequestAttendanceDay {
+  return { school_date: undefined, present: undefined, late: undefined, absent: undefined };
+}
+
+export const AbsenceRequestAttendanceDay: MessageFns<AbsenceRequestAttendanceDay> = {
+  encode(message: AbsenceRequestAttendanceDay, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.school_date !== undefined) {
+      writer.uint32(10).string(message.school_date);
+    }
+    if (message.present !== undefined) {
+      writer.uint32(16).uint32(message.present);
+    }
+    if (message.late !== undefined) {
+      writer.uint32(24).uint32(message.late);
+    }
+    if (message.absent !== undefined) {
+      writer.uint32(32).uint32(message.absent);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AbsenceRequestAttendanceDay {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAbsenceRequestAttendanceDay();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.school_date = reader.string();
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.present = reader.uint32();
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.late = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.absent = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AbsenceRequestAttendanceDay {
+    return {
+      school_date: isSet(object.schoolDate) ? globalThis.String(object.schoolDate) : undefined,
+      present: isSet(object.present) ? globalThis.Number(object.present) : undefined,
+      late: isSet(object.late) ? globalThis.Number(object.late) : undefined,
+      absent: isSet(object.absent) ? globalThis.Number(object.absent) : undefined,
+    };
+  },
+
+  toJSON(message: AbsenceRequestAttendanceDay): unknown {
+    const obj: any = {};
+    if (message.school_date !== undefined) {
+      obj.schoolDate = message.school_date;
+    }
+    if (message.present !== undefined) {
+      obj.present = Math.round(message.present);
+    }
+    if (message.late !== undefined) {
+      obj.late = Math.round(message.late);
+    }
+    if (message.absent !== undefined) {
+      obj.absent = Math.round(message.absent);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AbsenceRequestAttendanceDay>, I>>(base?: I): AbsenceRequestAttendanceDay {
+    return AbsenceRequestAttendanceDay.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AbsenceRequestAttendanceDay>, I>>(object: I): AbsenceRequestAttendanceDay {
+    const message = createBaseAbsenceRequestAttendanceDay();
+    message.school_date = object.school_date ?? undefined;
+    message.present = object.present ?? undefined;
+    message.late = object.late ?? undefined;
+    message.absent = object.absent ?? undefined;
+    return message;
+  },
+};
+
+function createBaseAbsenceRequest(): AbsenceRequest {
+  return {
+    id: undefined,
+    student_id: undefined,
+    student_name: undefined,
+    school_year_id: undefined,
+    school_dates: [],
+    status: undefined,
+    revision: undefined,
+    submitted_at: undefined,
+    events: [],
+    attendance: [],
+  };
+}
+
+export const AbsenceRequest: MessageFns<AbsenceRequest> = {
+  encode(message: AbsenceRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      ObjectId.encode(message.id, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.student_name !== undefined) {
+      writer.uint32(26).string(message.student_name);
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(34).fork()).join();
+    }
+    for (const v of message.school_dates) {
+      writer.uint32(42).string(v!);
+    }
+    if (message.status !== undefined) {
+      writer.uint32(48).int32(absenceRequestStatusToNumber(message.status));
+    }
+    if (message.revision !== undefined) {
+      writer.uint32(56).uint32(message.revision);
+    }
+    if (message.submitted_at !== undefined) {
+      Timestamp.encode(toTimestamp(message.submitted_at), writer.uint32(66).fork()).join();
+    }
+    for (const v of message.events) {
+      AbsenceRequestEvent.encode(v!, writer.uint32(74).fork()).join();
+    }
+    for (const v of message.attendance) {
+      AbsenceRequestAttendanceDay.encode(v!, writer.uint32(82).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AbsenceRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAbsenceRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.student_name = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.school_dates.push(reader.string());
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.status = absenceRequestStatusFromJSON(reader.int32());
+          continue;
+        case 7:
+          if (tag !== 56) {
+            break;
+          }
+
+          message.revision = reader.uint32();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.submitted_at = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          continue;
+        case 9:
+          if (tag !== 74) {
+            break;
+          }
+
+          message.events.push(AbsenceRequestEvent.decode(reader, reader.uint32()));
+          continue;
+        case 10:
+          if (tag !== 82) {
+            break;
+          }
+
+          message.attendance.push(AbsenceRequestAttendanceDay.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AbsenceRequest {
+    return {
+      id: isSet(object.id) ? ObjectId.fromJSON(object.id) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      student_name: isSet(object.studentName) ? globalThis.String(object.studentName) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      school_dates: globalThis.Array.isArray(object?.schoolDates)
+        ? object.schoolDates.map((e: any) => globalThis.String(e))
+        : [],
+      status: isSet(object.status) ? absenceRequestStatusFromJSON(object.status) : undefined,
+      revision: isSet(object.revision) ? globalThis.Number(object.revision) : undefined,
+      submitted_at: isSet(object.submittedAt) ? fromJsonTimestamp(object.submittedAt) : undefined,
+      events: globalThis.Array.isArray(object?.events)
+        ? object.events.map((e: any) => AbsenceRequestEvent.fromJSON(e))
+        : [],
+      attendance: globalThis.Array.isArray(object?.attendance)
+        ? object.attendance.map((e: any) => AbsenceRequestAttendanceDay.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: AbsenceRequest): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = ObjectId.toJSON(message.id);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.student_name !== undefined) {
+      obj.studentName = message.student_name;
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.school_dates?.length) {
+      obj.schoolDates = message.school_dates;
+    }
+    if (message.status !== undefined) {
+      obj.status = absenceRequestStatusToJSON(message.status);
+    }
+    if (message.revision !== undefined) {
+      obj.revision = Math.round(message.revision);
+    }
+    if (message.submitted_at !== undefined) {
+      obj.submittedAt = message.submitted_at.toISOString();
+    }
+    if (message.events?.length) {
+      obj.events = message.events.map((e) => AbsenceRequestEvent.toJSON(e));
+    }
+    if (message.attendance?.length) {
+      obj.attendance = message.attendance.map((e) => AbsenceRequestAttendanceDay.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AbsenceRequest>, I>>(base?: I): AbsenceRequest {
+    return AbsenceRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AbsenceRequest>, I>>(object: I): AbsenceRequest {
+    const message = createBaseAbsenceRequest();
+    message.id = (object.id !== undefined && object.id !== null) ? ObjectId.fromPartial(object.id) : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.student_name = object.student_name ?? undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.school_dates = object.school_dates?.map((e) => e) || [];
+    message.status = object.status ?? undefined;
+    message.revision = object.revision ?? undefined;
+    message.submitted_at = object.submitted_at ?? undefined;
+    message.events = object.events?.map((e) => AbsenceRequestEvent.fromPartial(e)) || [];
+    message.attendance = object.attendance?.map((e) => AbsenceRequestAttendanceDay.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseSubmitAbsenceRequestInput(): SubmitAbsenceRequestInput {
+  return {
+    context: undefined,
+    student_id: undefined,
+    start_date: undefined,
+    end_date: undefined,
+    request_excusal: undefined,
+    reason: undefined,
+    submission_key: undefined,
+    files: [],
+  };
+}
+
+export const SubmitAbsenceRequestInput: MessageFns<SubmitAbsenceRequestInput> = {
+  encode(message: SubmitAbsenceRequestInput, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.start_date !== undefined) {
+      writer.uint32(26).string(message.start_date);
+    }
+    if (message.end_date !== undefined) {
+      writer.uint32(34).string(message.end_date);
+    }
+    if (message.request_excusal !== undefined) {
+      writer.uint32(40).bool(message.request_excusal);
+    }
+    if (message.reason !== undefined) {
+      writer.uint32(50).string(message.reason);
+    }
+    if (message.submission_key !== undefined) {
+      writer.uint32(58).string(message.submission_key);
+    }
+    for (const v of message.files) {
+      AbsenceRequestUpload.encode(v!, writer.uint32(66).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SubmitAbsenceRequestInput {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSubmitAbsenceRequestInput();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.start_date = reader.string();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.end_date = reader.string();
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.request_excusal = reader.bool();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.reason = reader.string();
+          continue;
+        case 7:
+          if (tag !== 58) {
+            break;
+          }
+
+          message.submission_key = reader.string();
+          continue;
+        case 8:
+          if (tag !== 66) {
+            break;
+          }
+
+          message.files.push(AbsenceRequestUpload.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SubmitAbsenceRequestInput {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      start_date: isSet(object.startDate) ? globalThis.String(object.startDate) : undefined,
+      end_date: isSet(object.endDate) ? globalThis.String(object.endDate) : undefined,
+      request_excusal: isSet(object.requestExcusal) ? globalThis.Boolean(object.requestExcusal) : undefined,
+      reason: isSet(object.reason) ? globalThis.String(object.reason) : undefined,
+      submission_key: isSet(object.submissionKey) ? globalThis.String(object.submissionKey) : undefined,
+      files: globalThis.Array.isArray(object?.files)
+        ? object.files.map((e: any) => AbsenceRequestUpload.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: SubmitAbsenceRequestInput): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.start_date !== undefined) {
+      obj.startDate = message.start_date;
+    }
+    if (message.end_date !== undefined) {
+      obj.endDate = message.end_date;
+    }
+    if (message.request_excusal !== undefined) {
+      obj.requestExcusal = message.request_excusal;
+    }
+    if (message.reason !== undefined) {
+      obj.reason = message.reason;
+    }
+    if (message.submission_key !== undefined) {
+      obj.submissionKey = message.submission_key;
+    }
+    if (message.files?.length) {
+      obj.files = message.files.map((e) => AbsenceRequestUpload.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SubmitAbsenceRequestInput>, I>>(base?: I): SubmitAbsenceRequestInput {
+    return SubmitAbsenceRequestInput.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<SubmitAbsenceRequestInput>, I>>(object: I): SubmitAbsenceRequestInput {
+    const message = createBaseSubmitAbsenceRequestInput();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.start_date = object.start_date ?? undefined;
+    message.end_date = object.end_date ?? undefined;
+    message.request_excusal = object.request_excusal ?? undefined;
+    message.reason = object.reason ?? undefined;
+    message.submission_key = object.submission_key ?? undefined;
+    message.files = object.files?.map((e) => AbsenceRequestUpload.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseListAbsenceRequestsInput(): ListAbsenceRequestsInput {
+  return {
+    context: undefined,
+    student_id: undefined,
+    school_year_id: undefined,
+    status: undefined,
+    offset: undefined,
+    limit: undefined,
+  };
+}
+
+export const ListAbsenceRequestsInput: MessageFns<ListAbsenceRequestsInput> = {
+  encode(message: ListAbsenceRequestsInput, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.student_id !== undefined) {
+      ObjectId.encode(message.student_id, writer.uint32(18).fork()).join();
+    }
+    if (message.school_year_id !== undefined) {
+      ObjectId.encode(message.school_year_id, writer.uint32(26).fork()).join();
+    }
+    if (message.status !== undefined) {
+      writer.uint32(32).int32(absenceRequestStatusToNumber(message.status));
+    }
+    if (message.offset !== undefined) {
+      writer.uint32(40).uint32(message.offset);
+    }
+    if (message.limit !== undefined) {
+      writer.uint32(48).uint32(message.limit);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ListAbsenceRequestsInput {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListAbsenceRequestsInput();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.student_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.school_year_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.status = absenceRequestStatusFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 40) {
+            break;
+          }
+
+          message.offset = reader.uint32();
+          continue;
+        case 6:
+          if (tag !== 48) {
+            break;
+          }
+
+          message.limit = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListAbsenceRequestsInput {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      student_id: isSet(object.studentId) ? ObjectId.fromJSON(object.studentId) : undefined,
+      school_year_id: isSet(object.schoolYearId) ? ObjectId.fromJSON(object.schoolYearId) : undefined,
+      status: isSet(object.status) ? absenceRequestStatusFromJSON(object.status) : undefined,
+      offset: isSet(object.offset) ? globalThis.Number(object.offset) : undefined,
+      limit: isSet(object.limit) ? globalThis.Number(object.limit) : undefined,
+    };
+  },
+
+  toJSON(message: ListAbsenceRequestsInput): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.student_id !== undefined) {
+      obj.studentId = ObjectId.toJSON(message.student_id);
+    }
+    if (message.school_year_id !== undefined) {
+      obj.schoolYearId = ObjectId.toJSON(message.school_year_id);
+    }
+    if (message.status !== undefined) {
+      obj.status = absenceRequestStatusToJSON(message.status);
+    }
+    if (message.offset !== undefined) {
+      obj.offset = Math.round(message.offset);
+    }
+    if (message.limit !== undefined) {
+      obj.limit = Math.round(message.limit);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListAbsenceRequestsInput>, I>>(base?: I): ListAbsenceRequestsInput {
+    return ListAbsenceRequestsInput.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ListAbsenceRequestsInput>, I>>(object: I): ListAbsenceRequestsInput {
+    const message = createBaseListAbsenceRequestsInput();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.student_id = (object.student_id !== undefined && object.student_id !== null)
+      ? ObjectId.fromPartial(object.student_id)
+      : undefined;
+    message.school_year_id = (object.school_year_id !== undefined && object.school_year_id !== null)
+      ? ObjectId.fromPartial(object.school_year_id)
+      : undefined;
+    message.status = object.status ?? undefined;
+    message.offset = object.offset ?? undefined;
+    message.limit = object.limit ?? undefined;
+    return message;
+  },
+};
+
+function createBaseAbsenceRequestsPage(): AbsenceRequestsPage {
+  return { requests: [], total: undefined };
+}
+
+export const AbsenceRequestsPage: MessageFns<AbsenceRequestsPage> = {
+  encode(message: AbsenceRequestsPage, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    for (const v of message.requests) {
+      AbsenceRequest.encode(v!, writer.uint32(10).fork()).join();
+    }
+    if (message.total !== undefined) {
+      writer.uint32(16).uint32(message.total);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AbsenceRequestsPage {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAbsenceRequestsPage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.requests.push(AbsenceRequest.decode(reader, reader.uint32()));
+          continue;
+        case 2:
+          if (tag !== 16) {
+            break;
+          }
+
+          message.total = reader.uint32();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AbsenceRequestsPage {
+    return {
+      requests: globalThis.Array.isArray(object?.requests)
+        ? object.requests.map((e: any) => AbsenceRequest.fromJSON(e))
+        : [],
+      total: isSet(object.total) ? globalThis.Number(object.total) : undefined,
+    };
+  },
+
+  toJSON(message: AbsenceRequestsPage): unknown {
+    const obj: any = {};
+    if (message.requests?.length) {
+      obj.requests = message.requests.map((e) => AbsenceRequest.toJSON(e));
+    }
+    if (message.total !== undefined) {
+      obj.total = Math.round(message.total);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AbsenceRequestsPage>, I>>(base?: I): AbsenceRequestsPage {
+    return AbsenceRequestsPage.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<AbsenceRequestsPage>, I>>(object: I): AbsenceRequestsPage {
+    const message = createBaseAbsenceRequestsPage();
+    message.requests = object.requests?.map((e) => AbsenceRequest.fromPartial(e)) || [];
+    message.total = object.total ?? undefined;
+    return message;
+  },
+};
+
+function createBaseGetAbsenceRequestInput(): GetAbsenceRequestInput {
+  return { context: undefined, request_id: undefined };
+}
+
+export const GetAbsenceRequestInput: MessageFns<GetAbsenceRequestInput> = {
+  encode(message: GetAbsenceRequestInput, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.request_id !== undefined) {
+      ObjectId.encode(message.request_id, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetAbsenceRequestInput {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetAbsenceRequestInput();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.request_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetAbsenceRequestInput {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      request_id: isSet(object.requestId) ? ObjectId.fromJSON(object.requestId) : undefined,
+    };
+  },
+
+  toJSON(message: GetAbsenceRequestInput): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.request_id !== undefined) {
+      obj.requestId = ObjectId.toJSON(message.request_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAbsenceRequestInput>, I>>(base?: I): GetAbsenceRequestInput {
+    return GetAbsenceRequestInput.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<GetAbsenceRequestInput>, I>>(object: I): GetAbsenceRequestInput {
+    const message = createBaseGetAbsenceRequestInput();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.request_id = (object.request_id !== undefined && object.request_id !== null)
+      ? ObjectId.fromPartial(object.request_id)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseReplyToAbsenceRequestInput(): ReplyToAbsenceRequestInput {
+  return {
+    context: undefined,
+    request_id: undefined,
+    revision: undefined,
+    message: undefined,
+    submission_key: undefined,
+    files: [],
+  };
+}
+
+export const ReplyToAbsenceRequestInput: MessageFns<ReplyToAbsenceRequestInput> = {
+  encode(message: ReplyToAbsenceRequestInput, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.request_id !== undefined) {
+      ObjectId.encode(message.request_id, writer.uint32(18).fork()).join();
+    }
+    if (message.revision !== undefined) {
+      writer.uint32(24).uint32(message.revision);
+    }
+    if (message.message !== undefined) {
+      writer.uint32(34).string(message.message);
+    }
+    if (message.submission_key !== undefined) {
+      writer.uint32(42).string(message.submission_key);
+    }
+    for (const v of message.files) {
+      AbsenceRequestUpload.encode(v!, writer.uint32(50).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReplyToAbsenceRequestInput {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReplyToAbsenceRequestInput();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.request_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.revision = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 34) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.submission_key = reader.string();
+          continue;
+        case 6:
+          if (tag !== 50) {
+            break;
+          }
+
+          message.files.push(AbsenceRequestUpload.decode(reader, reader.uint32()));
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReplyToAbsenceRequestInput {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      request_id: isSet(object.requestId) ? ObjectId.fromJSON(object.requestId) : undefined,
+      revision: isSet(object.revision) ? globalThis.Number(object.revision) : undefined,
+      message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+      submission_key: isSet(object.submissionKey) ? globalThis.String(object.submissionKey) : undefined,
+      files: globalThis.Array.isArray(object?.files)
+        ? object.files.map((e: any) => AbsenceRequestUpload.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: ReplyToAbsenceRequestInput): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.request_id !== undefined) {
+      obj.requestId = ObjectId.toJSON(message.request_id);
+    }
+    if (message.revision !== undefined) {
+      obj.revision = Math.round(message.revision);
+    }
+    if (message.message !== undefined) {
+      obj.message = message.message;
+    }
+    if (message.submission_key !== undefined) {
+      obj.submissionKey = message.submission_key;
+    }
+    if (message.files?.length) {
+      obj.files = message.files.map((e) => AbsenceRequestUpload.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReplyToAbsenceRequestInput>, I>>(base?: I): ReplyToAbsenceRequestInput {
+    return ReplyToAbsenceRequestInput.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReplyToAbsenceRequestInput>, I>>(object: I): ReplyToAbsenceRequestInput {
+    const message = createBaseReplyToAbsenceRequestInput();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.request_id = (object.request_id !== undefined && object.request_id !== null)
+      ? ObjectId.fromPartial(object.request_id)
+      : undefined;
+    message.revision = object.revision ?? undefined;
+    message.message = object.message ?? undefined;
+    message.submission_key = object.submission_key ?? undefined;
+    message.files = object.files?.map((e) => AbsenceRequestUpload.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseReviewAbsenceRequestInput(): ReviewAbsenceRequestInput {
+  return { context: undefined, request_id: undefined, revision: undefined, status: undefined, message: undefined };
+}
+
+export const ReviewAbsenceRequestInput: MessageFns<ReviewAbsenceRequestInput> = {
+  encode(message: ReviewAbsenceRequestInput, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.request_id !== undefined) {
+      ObjectId.encode(message.request_id, writer.uint32(18).fork()).join();
+    }
+    if (message.revision !== undefined) {
+      writer.uint32(24).uint32(message.revision);
+    }
+    if (message.status !== undefined) {
+      writer.uint32(32).int32(absenceRequestStatusToNumber(message.status));
+    }
+    if (message.message !== undefined) {
+      writer.uint32(42).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReviewAbsenceRequestInput {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseReviewAbsenceRequestInput();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.request_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 24) {
+            break;
+          }
+
+          message.revision = reader.uint32();
+          continue;
+        case 4:
+          if (tag !== 32) {
+            break;
+          }
+
+          message.status = absenceRequestStatusFromJSON(reader.int32());
+          continue;
+        case 5:
+          if (tag !== 42) {
+            break;
+          }
+
+          message.message = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ReviewAbsenceRequestInput {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      request_id: isSet(object.requestId) ? ObjectId.fromJSON(object.requestId) : undefined,
+      revision: isSet(object.revision) ? globalThis.Number(object.revision) : undefined,
+      status: isSet(object.status) ? absenceRequestStatusFromJSON(object.status) : undefined,
+      message: isSet(object.message) ? globalThis.String(object.message) : undefined,
+    };
+  },
+
+  toJSON(message: ReviewAbsenceRequestInput): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.request_id !== undefined) {
+      obj.requestId = ObjectId.toJSON(message.request_id);
+    }
+    if (message.revision !== undefined) {
+      obj.revision = Math.round(message.revision);
+    }
+    if (message.status !== undefined) {
+      obj.status = absenceRequestStatusToJSON(message.status);
+    }
+    if (message.message !== undefined) {
+      obj.message = message.message;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReviewAbsenceRequestInput>, I>>(base?: I): ReviewAbsenceRequestInput {
+    return ReviewAbsenceRequestInput.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReviewAbsenceRequestInput>, I>>(object: I): ReviewAbsenceRequestInput {
+    const message = createBaseReviewAbsenceRequestInput();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.request_id = (object.request_id !== undefined && object.request_id !== null)
+      ? ObjectId.fromPartial(object.request_id)
+      : undefined;
+    message.revision = object.revision ?? undefined;
+    message.status = object.status ?? undefined;
+    message.message = object.message ?? undefined;
+    return message;
+  },
+};
+
+function createBaseDownloadAbsenceRequestFileInput(): DownloadAbsenceRequestFileInput {
+  return { context: undefined, request_id: undefined, file_id: undefined };
+}
+
+export const DownloadAbsenceRequestFileInput: MessageFns<DownloadAbsenceRequestFileInput> = {
+  encode(message: DownloadAbsenceRequestFileInput, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.context !== undefined) {
+      RequestContext.encode(message.context, writer.uint32(10).fork()).join();
+    }
+    if (message.request_id !== undefined) {
+      ObjectId.encode(message.request_id, writer.uint32(18).fork()).join();
+    }
+    if (message.file_id !== undefined) {
+      ObjectId.encode(message.file_id, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DownloadAbsenceRequestFileInput {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDownloadAbsenceRequestFileInput();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.context = RequestContext.decode(reader, reader.uint32());
+          continue;
+        case 2:
+          if (tag !== 18) {
+            break;
+          }
+
+          message.request_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+        case 3:
+          if (tag !== 26) {
+            break;
+          }
+
+          message.file_id = ObjectId.decode(reader, reader.uint32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DownloadAbsenceRequestFileInput {
+    return {
+      context: isSet(object.context) ? RequestContext.fromJSON(object.context) : undefined,
+      request_id: isSet(object.requestId) ? ObjectId.fromJSON(object.requestId) : undefined,
+      file_id: isSet(object.fileId) ? ObjectId.fromJSON(object.fileId) : undefined,
+    };
+  },
+
+  toJSON(message: DownloadAbsenceRequestFileInput): unknown {
+    const obj: any = {};
+    if (message.context !== undefined) {
+      obj.context = RequestContext.toJSON(message.context);
+    }
+    if (message.request_id !== undefined) {
+      obj.requestId = ObjectId.toJSON(message.request_id);
+    }
+    if (message.file_id !== undefined) {
+      obj.fileId = ObjectId.toJSON(message.file_id);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DownloadAbsenceRequestFileInput>, I>>(base?: I): DownloadAbsenceRequestFileInput {
+    return DownloadAbsenceRequestFileInput.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<DownloadAbsenceRequestFileInput>, I>>(
+    object: I,
+  ): DownloadAbsenceRequestFileInput {
+    const message = createBaseDownloadAbsenceRequestFileInput();
+    message.context = (object.context !== undefined && object.context !== null)
+      ? RequestContext.fromPartial(object.context)
+      : undefined;
+    message.request_id = (object.request_id !== undefined && object.request_id !== null)
+      ? ObjectId.fromPartial(object.request_id)
+      : undefined;
+    message.file_id = (object.file_id !== undefined && object.file_id !== null)
+      ? ObjectId.fromPartial(object.file_id)
+      : undefined;
+    return message;
+  },
+};
+
 function createBaseGetCoursesAttendanceSummaryResponse(): GetCoursesAttendanceSummaryResponse {
   return { courses: [], entry_status: [] };
 }
@@ -4609,6 +6376,23 @@ export const GetAttendanceScopeAvailabilityResponse: MessageFns<GetAttendanceSco
     return message;
   },
 };
+
+function bytesFromBase64(b64: string): Uint8Array {
+  const bin = globalThis.atob(b64);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; ++i) {
+    arr[i] = bin.charCodeAt(i);
+  }
+  return arr;
+}
+
+function base64FromBytes(arr: Uint8Array): string {
+  const bin: string[] = [];
+  arr.forEach((byte) => {
+    bin.push(globalThis.String.fromCharCode(byte));
+  });
+  return globalThis.btoa(bin.join(""));
+}
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 

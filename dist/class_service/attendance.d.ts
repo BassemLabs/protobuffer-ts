@@ -28,6 +28,8 @@ export interface Attendance {
     student_excused_by?: ObjectId | undefined;
     student_excused_by_user_type?: UserType | undefined;
     parent_reason?: string | undefined;
+    /** The recorded absence matches an approved whole-day request. */
+    approved_absence?: boolean | undefined;
 }
 export declare const Attendance: MessageFns<Attendance>;
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

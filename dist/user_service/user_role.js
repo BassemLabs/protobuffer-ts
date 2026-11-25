@@ -71,6 +71,7 @@ var StaffPermission;
     StaffPermission["TRANSACTIONS_CREATE_MANUAL_TRANSACTION"] = "TRANSACTIONS_CREATE_MANUAL_TRANSACTION";
     StaffPermission["SCHEDULING_MANAGER"] = "SCHEDULING_MANAGER";
     StaffPermission["SUPPORT_READ_SCHOOL"] = "SUPPORT_READ_SCHOOL";
+    StaffPermission["ATTENDANCE_EXCUSE_REVIEW"] = "ATTENDANCE_EXCUSE_REVIEW";
     StaffPermission["UNRECOGNIZED"] = "UNRECOGNIZED";
 })(StaffPermission || (exports.StaffPermission = StaffPermission = {}));
 function staffPermissionFromJSON(object) {
@@ -249,6 +250,9 @@ function staffPermissionFromJSON(object) {
         case 75:
         case "SUPPORT_READ_SCHOOL":
             return StaffPermission.SUPPORT_READ_SCHOOL;
+        case 76:
+        case "ATTENDANCE_EXCUSE_REVIEW":
+            return StaffPermission.ATTENDANCE_EXCUSE_REVIEW;
         case -1:
         case "UNRECOGNIZED":
         default:
@@ -373,6 +377,8 @@ function staffPermissionToJSON(object) {
             return "SCHEDULING_MANAGER";
         case StaffPermission.SUPPORT_READ_SCHOOL:
             return "SUPPORT_READ_SCHOOL";
+        case StaffPermission.ATTENDANCE_EXCUSE_REVIEW:
+            return "ATTENDANCE_EXCUSE_REVIEW";
         case StaffPermission.UNRECOGNIZED:
         default:
             return "UNRECOGNIZED";
@@ -496,6 +502,8 @@ function staffPermissionToNumber(object) {
             return 74;
         case StaffPermission.SUPPORT_READ_SCHOOL:
             return 75;
+        case StaffPermission.ATTENDANCE_EXCUSE_REVIEW:
+            return 76;
         case StaffPermission.UNRECOGNIZED:
         default:
             return -1;
