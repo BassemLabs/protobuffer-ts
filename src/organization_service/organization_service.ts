@@ -523,7 +523,6 @@ export interface UpdateOrganizationSettingsRequest {
   default_domain?: string | undefined;
   country_code?: string | undefined;
   currency?: Currency | undefined;
-  login_id?: string | undefined;
   main_address?: string | undefined;
   weekend_days: DayOfWeek[];
   timezone?: string | undefined;
@@ -1507,7 +1506,6 @@ function createBaseUpdateOrganizationSettingsRequest(): UpdateOrganizationSettin
     default_domain: undefined,
     country_code: undefined,
     currency: undefined,
-    login_id: undefined,
     main_address: undefined,
     weekend_days: [],
     timezone: undefined,
@@ -1536,9 +1534,6 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     }
     if (message.currency !== undefined) {
       writer.uint32(56).int32(currencyToNumber(message.currency));
-    }
-    if (message.login_id !== undefined) {
-      writer.uint32(66).string(message.login_id);
     }
     if (message.main_address !== undefined) {
       writer.uint32(74).string(message.main_address);
@@ -1610,13 +1605,6 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
 
           message.currency = currencyFromJSON(reader.int32());
           continue;
-        case 8:
-          if (tag !== 66) {
-            break;
-          }
-
-          message.login_id = reader.string();
-          continue;
         case 9:
           if (tag !== 74) {
             break;
@@ -1666,7 +1654,6 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
       default_domain: isSet(object.defaultDomain) ? globalThis.String(object.defaultDomain) : undefined,
       country_code: isSet(object.countryCode) ? globalThis.String(object.countryCode) : undefined,
       currency: isSet(object.currency) ? currencyFromJSON(object.currency) : undefined,
-      login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined,
       main_address: isSet(object.mainAddress) ? globalThis.String(object.mainAddress) : undefined,
       weekend_days: globalThis.Array.isArray(object?.weekendDays)
         ? object.weekendDays.map((e: any) => dayOfWeekFromJSON(e))
@@ -1697,9 +1684,6 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     }
     if (message.currency !== undefined) {
       obj.currency = currencyToJSON(message.currency);
-    }
-    if (message.login_id !== undefined) {
-      obj.loginId = message.login_id;
     }
     if (message.main_address !== undefined) {
       obj.mainAddress = message.main_address;
@@ -1733,7 +1717,6 @@ export const UpdateOrganizationSettingsRequest: MessageFns<UpdateOrganizationSet
     message.default_domain = object.default_domain ?? undefined;
     message.country_code = object.country_code ?? undefined;
     message.currency = object.currency ?? undefined;
-    message.login_id = object.login_id ?? undefined;
     message.main_address = object.main_address ?? undefined;
     message.weekend_days = object.weekend_days?.map((e) => e) || [];
     message.timezone = object.timezone ?? undefined;

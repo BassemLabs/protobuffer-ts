@@ -128,7 +128,6 @@ export interface UpdateOrganizationSettingsRequest {
     default_domain?: string | undefined;
     country_code?: string | undefined;
     currency?: Currency | undefined;
-    login_id?: string | undefined;
     main_address?: string | undefined;
     weekend_days: DayOfWeek[];
     timezone?: string | undefined;
