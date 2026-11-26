@@ -34,6 +34,59 @@ import {
 
 export const protobufPackage = "organization_service";
 
+export enum OrganizationHostingRegion {
+  ORGANIZATION_HOSTING_REGION_UNSPECIFIED = "ORGANIZATION_HOSTING_REGION_UNSPECIFIED",
+  ORGANIZATION_HOSTING_REGION_US = "ORGANIZATION_HOSTING_REGION_US",
+  ORGANIZATION_HOSTING_REGION_CA = "ORGANIZATION_HOSTING_REGION_CA",
+  UNRECOGNIZED = "UNRECOGNIZED",
+}
+
+export function organizationHostingRegionFromJSON(object: any): OrganizationHostingRegion {
+  switch (object) {
+    case 0:
+    case "ORGANIZATION_HOSTING_REGION_UNSPECIFIED":
+      return OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_UNSPECIFIED;
+    case 1:
+    case "ORGANIZATION_HOSTING_REGION_US":
+      return OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_US;
+    case 2:
+    case "ORGANIZATION_HOSTING_REGION_CA":
+      return OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_CA;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return OrganizationHostingRegion.UNRECOGNIZED;
+  }
+}
+
+export function organizationHostingRegionToJSON(object: OrganizationHostingRegion): string {
+  switch (object) {
+    case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_UNSPECIFIED:
+      return "ORGANIZATION_HOSTING_REGION_UNSPECIFIED";
+    case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_US:
+      return "ORGANIZATION_HOSTING_REGION_US";
+    case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_CA:
+      return "ORGANIZATION_HOSTING_REGION_CA";
+    case OrganizationHostingRegion.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
+export function organizationHostingRegionToNumber(object: OrganizationHostingRegion): number {
+  switch (object) {
+    case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_UNSPECIFIED:
+      return 0;
+    case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_US:
+      return 1;
+    case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_CA:
+      return 2;
+    case OrganizationHostingRegion.UNRECOGNIZED:
+    default:
+      return -1;
+  }
+}
+
 export enum ReregistrationPhase {
   REREGISTRATION_PHASE_SETUP_STUDENTS = "REREGISTRATION_PHASE_SETUP_STUDENTS",
   REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS = "REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS",
@@ -648,6 +701,15 @@ export interface UpdateOrganizationStripePaymentInfoRequest {
 export interface GetOrganizationByLoginIdRequest {
   context: RequestContext | undefined;
   login_id?: string | undefined;
+}
+
+export interface ResolveOrganizationRouteRequest {
+  login_id?: string | undefined;
+}
+
+export interface ResolveOrganizationRouteResponse {
+  /** Absent when the directory confirms that no active route exists. */
+  region?: OrganizationHostingRegion | undefined;
 }
 
 export interface GetOrganizationsByIdRequest {
@@ -3604,6 +3666,126 @@ export const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginI
       ? RequestContext.fromPartial(object.context)
       : undefined;
     message.login_id = object.login_id ?? undefined;
+    return message;
+  },
+};
+
+function createBaseResolveOrganizationRouteRequest(): ResolveOrganizationRouteRequest {
+  return { login_id: undefined };
+}
+
+export const ResolveOrganizationRouteRequest: MessageFns<ResolveOrganizationRouteRequest> = {
+  encode(message: ResolveOrganizationRouteRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.login_id !== undefined) {
+      writer.uint32(10).string(message.login_id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ResolveOrganizationRouteRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseResolveOrganizationRouteRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 10) {
+            break;
+          }
+
+          message.login_id = reader.string();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ResolveOrganizationRouteRequest {
+    return { login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined };
+  },
+
+  toJSON(message: ResolveOrganizationRouteRequest): unknown {
+    const obj: any = {};
+    if (message.login_id !== undefined) {
+      obj.loginId = message.login_id;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ResolveOrganizationRouteRequest>, I>>(base?: I): ResolveOrganizationRouteRequest {
+    return ResolveOrganizationRouteRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ResolveOrganizationRouteRequest>, I>>(
+    object: I,
+  ): ResolveOrganizationRouteRequest {
+    const message = createBaseResolveOrganizationRouteRequest();
+    message.login_id = object.login_id ?? undefined;
+    return message;
+  },
+};
+
+function createBaseResolveOrganizationRouteResponse(): ResolveOrganizationRouteResponse {
+  return { region: undefined };
+}
+
+export const ResolveOrganizationRouteResponse: MessageFns<ResolveOrganizationRouteResponse> = {
+  encode(message: ResolveOrganizationRouteResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.region !== undefined) {
+      writer.uint32(8).int32(organizationHostingRegionToNumber(message.region));
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ResolveOrganizationRouteResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseResolveOrganizationRouteResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.region = organizationHostingRegionFromJSON(reader.int32());
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ResolveOrganizationRouteResponse {
+    return { region: isSet(object.region) ? organizationHostingRegionFromJSON(object.region) : undefined };
+  },
+
+  toJSON(message: ResolveOrganizationRouteResponse): unknown {
+    const obj: any = {};
+    if (message.region !== undefined) {
+      obj.region = organizationHostingRegionToJSON(message.region);
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ResolveOrganizationRouteResponse>, I>>(
+    base?: I,
+  ): ResolveOrganizationRouteResponse {
+    return ResolveOrganizationRouteResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ResolveOrganizationRouteResponse>, I>>(
+    object: I,
+  ): ResolveOrganizationRouteResponse {
+    const message = createBaseResolveOrganizationRouteResponse();
+    message.region = object.region ?? undefined;
     return message;
   },
 };

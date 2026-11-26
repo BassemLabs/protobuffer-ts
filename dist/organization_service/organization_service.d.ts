@@ -6,6 +6,15 @@ import { RequestContext } from "../utils/request_context";
 import { OnboardingStepName, OnboardingStepsStatus } from "./onboarding_steps";
 import { Currency, DirectoryProviderType, Organization, OrganizationEmailBranding, SchoolYear } from "./organization";
 export declare const protobufPackage = "organization_service";
+export declare enum OrganizationHostingRegion {
+    ORGANIZATION_HOSTING_REGION_UNSPECIFIED = "ORGANIZATION_HOSTING_REGION_UNSPECIFIED",
+    ORGANIZATION_HOSTING_REGION_US = "ORGANIZATION_HOSTING_REGION_US",
+    ORGANIZATION_HOSTING_REGION_CA = "ORGANIZATION_HOSTING_REGION_CA",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+export declare function organizationHostingRegionFromJSON(object: any): OrganizationHostingRegion;
+export declare function organizationHostingRegionToJSON(object: OrganizationHostingRegion): string;
+export declare function organizationHostingRegionToNumber(object: OrganizationHostingRegion): number;
 export declare enum ReregistrationPhase {
     REREGISTRATION_PHASE_SETUP_STUDENTS = "REREGISTRATION_PHASE_SETUP_STUDENTS",
     REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS = "REREGISTRATION_PHASE_RESET_CUSTOM_FIELDS",
@@ -231,6 +240,13 @@ export interface GetOrganizationByLoginIdRequest {
     context: RequestContext | undefined;
     login_id?: string | undefined;
 }
+export interface ResolveOrganizationRouteRequest {
+    login_id?: string | undefined;
+}
+export interface ResolveOrganizationRouteResponse {
+    /** Absent when the directory confirms that no active route exists. */
+    region?: OrganizationHostingRegion | undefined;
+}
 export interface GetOrganizationsByIdRequest {
     context: RequestContext | undefined;
     organization_ids: ObjectId[];
@@ -421,6 +437,8 @@ export declare const GetOrganizationByStripeRequest: MessageFns<GetOrganizationB
 export declare const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest>;
 export declare const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrganizationStripePaymentInfoRequest>;
 export declare const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginIdRequest>;
+export declare const ResolveOrganizationRouteRequest: MessageFns<ResolveOrganizationRouteRequest>;
+export declare const ResolveOrganizationRouteResponse: MessageFns<ResolveOrganizationRouteResponse>;
 export declare const GetOrganizationsByIdRequest: MessageFns<GetOrganizationsByIdRequest>;
 export declare const GetOrganizationOnboardingStepsStatusRequest: MessageFns<GetOrganizationOnboardingStepsStatusRequest>;
 export declare const GetAllOrganizationsOnboardingStepsStatusRequest: MessageFns<GetAllOrganizationsOnboardingStepsStatusRequest>;

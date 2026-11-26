@@ -5,8 +5,11 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CompleteReregistrationPreparationStepRequest = exports.GetCurrentReregistrationPreparationRequest = exports.ReregistrationPreparation = exports.ReregistrationPreparationStepState = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.DisableStudentDirectoryAccountsRequest = exports.DeleteOrganizationLogoRequest = exports.UpdateOrganizationLogoRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.OrganizationSetupInvitationState = exports.OrganizationProvisioningPhase = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPreparationStep = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.protobufPackage = void 0;
-exports.SendOrganizationSetupInvitationRequest = exports.GetOrganizationProvisioningRequest = exports.ProvisionOrganizationRequest = exports.OrganizationProvisioning = exports.FirstOrganizationAdminInput = exports.UpdateOrganizationEmailBrandingRequest = exports.OrganizationEmailContext = exports.GetOrganizationEmailBrandingRequest = exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = void 0;
+exports.ReregistrationPreparationStepState = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.ResolveOrganizationRouteResponse = exports.ResolveOrganizationRouteRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.DisableStudentDirectoryAccountsRequest = exports.DeleteOrganizationLogoRequest = exports.UpdateOrganizationLogoRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.OrganizationSetupInvitationState = exports.OrganizationProvisioningPhase = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPreparationStep = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.OrganizationHostingRegion = exports.protobufPackage = void 0;
+exports.SendOrganizationSetupInvitationRequest = exports.GetOrganizationProvisioningRequest = exports.ProvisionOrganizationRequest = exports.OrganizationProvisioning = exports.FirstOrganizationAdminInput = exports.UpdateOrganizationEmailBrandingRequest = exports.OrganizationEmailContext = exports.GetOrganizationEmailBrandingRequest = exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = exports.CompleteReregistrationPreparationStepRequest = exports.GetCurrentReregistrationPreparationRequest = exports.ReregistrationPreparation = void 0;
+exports.organizationHostingRegionFromJSON = organizationHostingRegionFromJSON;
+exports.organizationHostingRegionToJSON = organizationHostingRegionToJSON;
+exports.organizationHostingRegionToNumber = organizationHostingRegionToNumber;
 exports.reregistrationPhaseFromJSON = reregistrationPhaseFromJSON;
 exports.reregistrationPhaseToJSON = reregistrationPhaseToJSON;
 exports.reregistrationPhaseToNumber = reregistrationPhaseToNumber;
@@ -38,6 +41,56 @@ const request_context_1 = require("../utils/request_context");
 const onboarding_steps_1 = require("./onboarding_steps");
 const organization_1 = require("./organization");
 exports.protobufPackage = "organization_service";
+var OrganizationHostingRegion;
+(function (OrganizationHostingRegion) {
+    OrganizationHostingRegion["ORGANIZATION_HOSTING_REGION_UNSPECIFIED"] = "ORGANIZATION_HOSTING_REGION_UNSPECIFIED";
+    OrganizationHostingRegion["ORGANIZATION_HOSTING_REGION_US"] = "ORGANIZATION_HOSTING_REGION_US";
+    OrganizationHostingRegion["ORGANIZATION_HOSTING_REGION_CA"] = "ORGANIZATION_HOSTING_REGION_CA";
+    OrganizationHostingRegion["UNRECOGNIZED"] = "UNRECOGNIZED";
+})(OrganizationHostingRegion || (exports.OrganizationHostingRegion = OrganizationHostingRegion = {}));
+function organizationHostingRegionFromJSON(object) {
+    switch (object) {
+        case 0:
+        case "ORGANIZATION_HOSTING_REGION_UNSPECIFIED":
+            return OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_UNSPECIFIED;
+        case 1:
+        case "ORGANIZATION_HOSTING_REGION_US":
+            return OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_US;
+        case 2:
+        case "ORGANIZATION_HOSTING_REGION_CA":
+            return OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_CA;
+        case -1:
+        case "UNRECOGNIZED":
+        default:
+            return OrganizationHostingRegion.UNRECOGNIZED;
+    }
+}
+function organizationHostingRegionToJSON(object) {
+    switch (object) {
+        case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_UNSPECIFIED:
+            return "ORGANIZATION_HOSTING_REGION_UNSPECIFIED";
+        case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_US:
+            return "ORGANIZATION_HOSTING_REGION_US";
+        case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_CA:
+            return "ORGANIZATION_HOSTING_REGION_CA";
+        case OrganizationHostingRegion.UNRECOGNIZED:
+        default:
+            return "UNRECOGNIZED";
+    }
+}
+function organizationHostingRegionToNumber(object) {
+    switch (object) {
+        case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_UNSPECIFIED:
+            return 0;
+        case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_US:
+            return 1;
+        case OrganizationHostingRegion.ORGANIZATION_HOSTING_REGION_CA:
+            return 2;
+        case OrganizationHostingRegion.UNRECOGNIZED:
+        default:
+            return -1;
+    }
+}
 var ReregistrationPhase;
 (function (ReregistrationPhase) {
     ReregistrationPhase["REREGISTRATION_PHASE_SETUP_STUDENTS"] = "REREGISTRATION_PHASE_SETUP_STUDENTS";
@@ -2890,6 +2943,106 @@ exports.GetOrganizationByLoginIdRequest = {
             ? request_context_1.RequestContext.fromPartial(object.context)
             : undefined;
         message.login_id = object.login_id ?? undefined;
+        return message;
+    },
+};
+function createBaseResolveOrganizationRouteRequest() {
+    return { login_id: undefined };
+}
+exports.ResolveOrganizationRouteRequest = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.login_id !== undefined) {
+            writer.uint32(10).string(message.login_id);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseResolveOrganizationRouteRequest();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 10) {
+                        break;
+                    }
+                    message.login_id = reader.string();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { login_id: isSet(object.loginId) ? globalThis.String(object.loginId) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.login_id !== undefined) {
+            obj.loginId = message.login_id;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ResolveOrganizationRouteRequest.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseResolveOrganizationRouteRequest();
+        message.login_id = object.login_id ?? undefined;
+        return message;
+    },
+};
+function createBaseResolveOrganizationRouteResponse() {
+    return { region: undefined };
+}
+exports.ResolveOrganizationRouteResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.region !== undefined) {
+            writer.uint32(8).int32(organizationHostingRegionToNumber(message.region));
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseResolveOrganizationRouteResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.region = organizationHostingRegionFromJSON(reader.int32());
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { region: isSet(object.region) ? organizationHostingRegionFromJSON(object.region) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.region !== undefined) {
+            obj.region = organizationHostingRegionToJSON(message.region);
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.ResolveOrganizationRouteResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseResolveOrganizationRouteResponse();
+        message.region = object.region ?? undefined;
         return message;
     },
 };
