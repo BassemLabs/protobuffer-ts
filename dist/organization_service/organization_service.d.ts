@@ -224,6 +224,9 @@ export interface StartSchoolYearRequest {
 export interface GetOrganizationByStripeRequest {
     stripe_account_id?: string | undefined;
 }
+export interface HasLinkedStripeAccountResponse {
+    linked?: boolean | undefined;
+}
 export interface UpdateStripeIdRequest {
     context: RequestContext | undefined;
     organization_id: ObjectId | undefined;
@@ -434,6 +437,7 @@ export declare const GetSchoolYearOpenGradesResponse: MessageFns<GetSchoolYearOp
 export declare const CreateSchoolYearResponse: MessageFns<CreateSchoolYearResponse>;
 export declare const StartSchoolYearRequest: MessageFns<StartSchoolYearRequest>;
 export declare const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeRequest>;
+export declare const HasLinkedStripeAccountResponse: MessageFns<HasLinkedStripeAccountResponse>;
 export declare const UpdateStripeIdRequest: MessageFns<UpdateStripeIdRequest>;
 export declare const UpdateOrganizationStripePaymentInfoRequest: MessageFns<UpdateOrganizationStripePaymentInfoRequest>;
 export declare const GetOrganizationByLoginIdRequest: MessageFns<GetOrganizationByLoginIdRequest>;

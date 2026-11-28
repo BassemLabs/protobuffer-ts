@@ -5,8 +5,8 @@
 //   protoc               unknown
 // source: organization_service/organization_service.proto
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReregistrationPreparationStepState = exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.ResolveOrganizationRouteResponse = exports.ResolveOrganizationRouteRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.DisableStudentDirectoryAccountsRequest = exports.DeleteOrganizationLogoRequest = exports.UpdateOrganizationLogoRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.OrganizationSetupInvitationState = exports.OrganizationProvisioningPhase = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPreparationStep = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.OrganizationHostingRegion = exports.protobufPackage = void 0;
-exports.SendOrganizationSetupInvitationRequest = exports.GetOrganizationProvisioningRequest = exports.ProvisionOrganizationRequest = exports.OrganizationProvisioning = exports.FirstOrganizationAdminInput = exports.UpdateOrganizationEmailBrandingRequest = exports.OrganizationEmailContext = exports.GetOrganizationEmailBrandingRequest = exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = exports.CompleteReregistrationPreparationStepRequest = exports.GetCurrentReregistrationPreparationRequest = exports.ReregistrationPreparation = void 0;
+exports.GetDirectoryProviderResponse = exports.GetDirectoryProviderRequest = exports.UpdateInvoiceSettingsRequest = exports.MarkOnboardingStepAsCompletedRequest = exports.GetAllOrganizationsOnboardingStepsStatusResponse = exports.GetAllOrganizationsOnboardingStepsStatusRequest = exports.GetOrganizationOnboardingStepsStatusRequest = exports.GetOrganizationsByIdRequest = exports.ResolveOrganizationRouteResponse = exports.ResolveOrganizationRouteRequest = exports.GetOrganizationByLoginIdRequest = exports.UpdateOrganizationStripePaymentInfoRequest = exports.UpdateStripeIdRequest = exports.HasLinkedStripeAccountResponse = exports.GetOrganizationByStripeRequest = exports.StartSchoolYearRequest = exports.CreateSchoolYearResponse = exports.GetSchoolYearOpenGradesResponse = exports.GetSchoolYearOpenGradesRequest = exports.UpdateSchoolYearRequest = exports.UpdateSchoolYearRegistrationStatusRequest = exports.CreateSchoolYearRequest = exports.GetSchoolYearsResponse = exports.GetSchoolYearRequest = exports.GetSchoolYearsRequest = exports.GetOrganizationsResponse = exports.GetOrganizationsRequest = exports.UpdateAutoPayRetryConfigRequest = exports.UpdateOrganizationAutoPayRequest = exports.DisableStudentDirectoryAccountsRequest = exports.DeleteOrganizationLogoRequest = exports.UpdateOrganizationLogoRequest = exports.UpdateOrganizationSettingsRequest = exports.RemoveDomainRequest = exports.AddDomainRequest = exports.UpdateDefaultDomainRequest = exports.RenameOrganizationRequest = exports.UnsafeGetOrganizationByDomainRequest = exports.UnsafeGetOrganizationByOrganizationIdRequest = exports.GetOrganizationByDomainRequest = exports.GetOrganizationRequest = exports.OrganizationSetupInvitationState = exports.OrganizationProvisioningPhase = exports.StartSchoolYearPhaseStatus = exports.StartSchoolYearPhase = exports.ReregistrationPreparationStep = exports.ReregistrationPhaseStatus = exports.ReregistrationPhase = exports.OrganizationHostingRegion = exports.protobufPackage = void 0;
+exports.SendOrganizationSetupInvitationRequest = exports.GetOrganizationProvisioningRequest = exports.ProvisionOrganizationRequest = exports.OrganizationProvisioning = exports.FirstOrganizationAdminInput = exports.UpdateOrganizationEmailBrandingRequest = exports.OrganizationEmailContext = exports.GetOrganizationEmailBrandingRequest = exports.StartCurrentStartSchoolYearPhaseRequest = exports.GetCurrentStartSchoolYearRunResponse = exports.GetCurrentStartSchoolYearRunRequest = exports.StartSchoolYearRun = exports.StartCurrentReregistrationPhaseRequest = exports.GetCurrentReregistrationRunResponse = exports.GetCurrentReregistrationRunRequest = exports.ReregistrationRun = exports.CompleteReregistrationPreparationStepRequest = exports.GetCurrentReregistrationPreparationRequest = exports.ReregistrationPreparation = exports.ReregistrationPreparationStepState = void 0;
 exports.organizationHostingRegionFromJSON = organizationHostingRegionFromJSON;
 exports.organizationHostingRegionToJSON = organizationHostingRegionToJSON;
 exports.organizationHostingRegionToNumber = organizationHostingRegionToNumber;
@@ -2667,6 +2667,56 @@ exports.GetOrganizationByStripeRequest = {
     fromPartial(object) {
         const message = createBaseGetOrganizationByStripeRequest();
         message.stripe_account_id = object.stripe_account_id ?? undefined;
+        return message;
+    },
+};
+function createBaseHasLinkedStripeAccountResponse() {
+    return { linked: undefined };
+}
+exports.HasLinkedStripeAccountResponse = {
+    encode(message, writer = new wire_1.BinaryWriter()) {
+        if (message.linked !== undefined) {
+            writer.uint32(8).bool(message.linked);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof wire_1.BinaryReader ? input : new wire_1.BinaryReader(input);
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = createBaseHasLinkedStripeAccountResponse();
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    if (tag !== 8) {
+                        break;
+                    }
+                    message.linked = reader.bool();
+                    continue;
+            }
+            if ((tag & 7) === 4 || tag === 0) {
+                break;
+            }
+            reader.skip(tag & 7);
+        }
+        return message;
+    },
+    fromJSON(object) {
+        return { linked: isSet(object.linked) ? globalThis.Boolean(object.linked) : undefined };
+    },
+    toJSON(message) {
+        const obj = {};
+        if (message.linked !== undefined) {
+            obj.linked = message.linked;
+        }
+        return obj;
+    },
+    create(base) {
+        return exports.HasLinkedStripeAccountResponse.fromPartial(base ?? {});
+    },
+    fromPartial(object) {
+        const message = createBaseHasLinkedStripeAccountResponse();
+        message.linked = object.linked ?? undefined;
         return message;
     },
 };

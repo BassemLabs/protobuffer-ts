@@ -684,6 +684,10 @@ export interface GetOrganizationByStripeRequest {
   stripe_account_id?: string | undefined;
 }
 
+export interface HasLinkedStripeAccountResponse {
+  linked?: boolean | undefined;
+}
+
 export interface UpdateStripeIdRequest {
   context: RequestContext | undefined;
   organization_id: ObjectId | undefined;
@@ -3356,6 +3360,65 @@ export const GetOrganizationByStripeRequest: MessageFns<GetOrganizationByStripeR
   ): GetOrganizationByStripeRequest {
     const message = createBaseGetOrganizationByStripeRequest();
     message.stripe_account_id = object.stripe_account_id ?? undefined;
+    return message;
+  },
+};
+
+function createBaseHasLinkedStripeAccountResponse(): HasLinkedStripeAccountResponse {
+  return { linked: undefined };
+}
+
+export const HasLinkedStripeAccountResponse: MessageFns<HasLinkedStripeAccountResponse> = {
+  encode(message: HasLinkedStripeAccountResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.linked !== undefined) {
+      writer.uint32(8).bool(message.linked);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): HasLinkedStripeAccountResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseHasLinkedStripeAccountResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          if (tag !== 8) {
+            break;
+          }
+
+          message.linked = reader.bool();
+          continue;
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): HasLinkedStripeAccountResponse {
+    return { linked: isSet(object.linked) ? globalThis.Boolean(object.linked) : undefined };
+  },
+
+  toJSON(message: HasLinkedStripeAccountResponse): unknown {
+    const obj: any = {};
+    if (message.linked !== undefined) {
+      obj.linked = message.linked;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<HasLinkedStripeAccountResponse>, I>>(base?: I): HasLinkedStripeAccountResponse {
+    return HasLinkedStripeAccountResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<HasLinkedStripeAccountResponse>, I>>(
+    object: I,
+  ): HasLinkedStripeAccountResponse {
+    const message = createBaseHasLinkedStripeAccountResponse();
+    message.linked = object.linked ?? undefined;
     return message;
   },
 };
